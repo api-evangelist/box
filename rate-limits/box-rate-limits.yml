@@ -1,0 +1,44 @@
+specification: API Commons Rate Limits
+specificationVersion: '0.1'
+schema: https://raw.githubusercontent.com/api-evangelist/interface-research/main/schema/api-commons.yml#/$defs/RateLimits
+provider: Box
+providerId: box
+created: '2026-05-04'
+modified: '2026-05-04'
+reconciled: true
+tags:
+  - Rate Limiting
+  - Content Cloud
+description: Box API enforces per-account rate limits and concurrent upload limits.
+sources:
+  - https://www.box.com/pricing
+  - https://developer.box.com/guides/api-calls/rate-limits/
+headers:
+  retryAfter: Retry-After
+responseCodes:
+  throttled: 429
+limits:
+  - name: API calls (Business)
+    scope: account
+    metric: calls_per_month
+    limit: 50000
+    timeFrame: month
+  - name: API calls (Enterprise)
+    scope: account
+    metric: calls_per_month
+    limit: 100000
+    timeFrame: month
+  - name: API calls (Enterprise Advanced)
+    scope: account
+    metric: calls_per_month
+    limit: 200000
+    timeFrame: month
+  - name: Per-user API calls
+    scope: user
+    metric: requests_per_minute
+    limit: 1000
+    timeFrame: minute
+  - name: Concurrent uploads
+    scope: account
+    metric: concurrent
+    limit: 100
