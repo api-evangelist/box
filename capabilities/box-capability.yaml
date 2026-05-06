@@ -1,0 +1,114 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Box Authorize API
+  description: Needs a description.
+  tags:
+  - Box
+  - API
+  created: '2026-05-06'
+  modified: '2026-05-06'
+capability:
+  consumes:
+  - type: http
+    namespace: box
+    baseUri: https://api.example.com
+    description: Box Authorize API HTTP API.
+    resources:
+    - name: authorize
+      path: /authorize
+      operations:
+      - name: get-authorize
+        method: GET
+        description: Box Authorize user
+        inputParameters:
+        - name: response_type
+          in: query
+          type: string
+          required: true
+          description: The type of response we'd like to receive.
+        - name: client_id
+          in: query
+          type: string
+          required: true
+          description: The Client ID of the application that is requesting to authenticate the user. To get the Client ID
+            for your application, log in to your Box developer console an
+        - name: redirect_uri
+          in: query
+          type: string
+          description: The URI to which Box redirects the browser after the user has granted or denied the application permission.
+            This URI match one of the redirect URIs in the confi
+        - name: state
+          in: query
+          type: string
+          description: A custom string of your choice. Box will pass the same string to the redirect URL when authentication
+            is complete. This parameter can be used to identify a user
+        - name: scope
+          in: query
+          type: string
+          description: A space-separated list of application scopes you'd like to authenticate the user for. This defaults
+            to all the scopes configured for the application in its conf
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+  exposes:
+  - type: rest
+    port: 8080
+    namespace: box-rest
+    description: REST adapter for Box Authorize API.
+    resources:
+    - path: /authorize
+      name: get-authorize
+      operations:
+      - method: GET
+        name: get-authorize
+        description: Box Authorize user
+        call: box.get-authorize
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    port: 9090
+    namespace: box-mcp
+    transport: http
+    description: MCP adapter for Box Authorize API for AI agent use.
+    tools:
+    - name: get-authorize
+      description: Box Authorize user
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: box.get-authorize
+      with:
+        response_type: tools.response_type
+        client_id: tools.client_id
+        redirect_uri: tools.redirect_uri
+        state: tools.state
+        scope: tools.scope
+      inputParameters:
+      - name: response_type
+        type: string
+        description: The type of response we'd like to receive.
+        required: true
+      - name: client_id
+        type: string
+        description: The Client ID of the application that is requesting to authenticate the user. To get the Client ID for
+          your application, log in to your Box developer console an
+        required: true
+      - name: redirect_uri
+        type: string
+        description: The URI to which Box redirects the browser after the user has granted or denied the application permission.
+          This URI match one of the redirect URIs in the confi
+      - name: state
+        type: string
+        description: A custom string of your choice. Box will pass the same string to the redirect URL when authentication
+          is complete. This parameter can be used to identify a user
+      - name: scope
+        type: string
+        description: A space-separated list of application scopes you'd like to authenticate the user for. This defaults to
+          all the scopes configured for the application in its conf
+      outputParameters:
+      - type: object
+        mapping: $.
