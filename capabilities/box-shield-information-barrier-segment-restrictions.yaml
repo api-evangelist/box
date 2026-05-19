@@ -1,0 +1,205 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Box Platform API — Shield Information Barrier Segment Restrictions
+  description: 'Box Platform API — Shield Information Barrier Segment Restrictions. 4 operations. Lead operation: Box List
+    shield information barrier segment restrictions. Self-contained Naftiko capability covering one Box business surface.'
+  tags:
+  - Box
+  - Shield Information Barrier Segment Restrictions
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    BOX_API_KEY: BOX_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: box-shield-information-barrier-segment-restrictions
+    baseUri: https://api.box.com/2.0
+    description: Box Platform API — Shield Information Barrier Segment Restrictions business capability. Self-contained, no
+      shared references.
+    resources:
+    - name: shield_information_barrier_segment_restrictions
+      path: /shield_information_barrier_segment_restrictions
+      operations:
+      - name: getshieldinformationbarriersegmentrestrictions
+        method: GET
+        description: Box List shield information barrier segment restrictions
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: shield_information_barrier_segment_id
+          in: query
+          type: string
+          description: The ID of the shield information barrier segment.
+          required: true
+        - name: marker
+          in: query
+          type: string
+          description: Defines the position marker at which to begin returning results. This is
+        - name: limit
+          in: query
+          type: integer
+          description: The maximum number of items to return per page.
+      - name: postshieldinformationbarriersegmentrestrictions
+        method: POST
+        description: Box Create shield information barrier segment restriction
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: false
+    - name: shield_information_barrier_segment_restrictions-shield_information_barrier_segme
+      path: /shield_information_barrier_segment_restrictions/{shield_information_barrier_segment_restriction_id}
+      operations:
+      - name: getshieldinformationbarriersegmentrestrictionsid
+        method: GET
+        description: Box Get shield information barrier segment restriction by ID
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: shield_information_barrier_segment_restriction_id
+          in: path
+          type: string
+          description: The ID of the shield information barrier segment Restriction.
+          required: true
+      - name: deleteshieldinformationbarriersegmentrestrictionsid
+        method: DELETE
+        description: Box Delete shield information barrier segment restriction by ID
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: shield_information_barrier_segment_restriction_id
+          in: path
+          type: string
+          description: The ID of the shield information barrier segment Restriction.
+          required: true
+    authentication:
+      type: bearer
+      token: '{{env.BOX_API_KEY}}'
+  exposes:
+  - type: rest
+    namespace: box-shield-information-barrier-segment-restrictions-rest
+    port: 8080
+    description: REST adapter for Box Platform API — Shield Information Barrier Segment Restrictions. One Spectral-compliant
+      resource per consumed operation, prefixed with /v1.
+    resources:
+    - path: /v1/shield-information-barrier-segment-restrictions
+      name: shield-information-barrier-segment-restrictions
+      description: REST surface for shield_information_barrier_segment_restrictions.
+      operations:
+      - method: GET
+        name: getshieldinformationbarriersegmentrestrictions
+        description: Box List shield information barrier segment restrictions
+        call: box-shield-information-barrier-segment-restrictions.getshieldinformationbarriersegmentrestrictions
+        with:
+          shield_information_barrier_segment_id: rest.shield_information_barrier_segment_id
+          marker: rest.marker
+          limit: rest.limit
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: POST
+        name: postshieldinformationbarriersegmentrestrictions
+        description: Box Create shield information barrier segment restriction
+        call: box-shield-information-barrier-segment-restrictions.postshieldinformationbarriersegmentrestrictions
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/shield-information-barrier-segment-restrictions/{shield-information-barrier-segment-restriction-id}
+      name: shield-information-barrier-segment-restrictions-shield-information-barrier-segme
+      description: REST surface for shield_information_barrier_segment_restrictions-shield_information_barrier_segme.
+      operations:
+      - method: GET
+        name: getshieldinformationbarriersegmentrestrictionsid
+        description: Box Get shield information barrier segment restriction by ID
+        call: box-shield-information-barrier-segment-restrictions.getshieldinformationbarriersegmentrestrictionsid
+        with:
+          shield_information_barrier_segment_restriction_id: rest.shield_information_barrier_segment_restriction_id
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: DELETE
+        name: deleteshieldinformationbarriersegmentrestrictionsid
+        description: Box Delete shield information barrier segment restriction by ID
+        call: box-shield-information-barrier-segment-restrictions.deleteshieldinformationbarriersegmentrestrictionsid
+        with:
+          shield_information_barrier_segment_restriction_id: rest.shield_information_barrier_segment_restriction_id
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: box-shield-information-barrier-segment-restrictions-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Box Platform API — Shield Information Barrier Segment Restrictions. One tool per consumed
+      operation, routed inline through this capability's consumes block.
+    tools:
+    - name: box-list-shield-information-barrier
+      description: Box List shield information barrier segment restrictions
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: box-shield-information-barrier-segment-restrictions.getshieldinformationbarriersegmentrestrictions
+      with:
+        shield_information_barrier_segment_id: tools.shield_information_barrier_segment_id
+        marker: tools.marker
+        limit: tools.limit
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: box-create-shield-information-barrier
+      description: Box Create shield information barrier segment restriction
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: box-shield-information-barrier-segment-restrictions.postshieldinformationbarriersegmentrestrictions
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: box-get-shield-information-barrier
+      description: Box Get shield information barrier segment restriction by ID
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: box-shield-information-barrier-segment-restrictions.getshieldinformationbarriersegmentrestrictionsid
+      with:
+        shield_information_barrier_segment_restriction_id: tools.shield_information_barrier_segment_restriction_id
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: box-delete-shield-information-barrier
+      description: Box Delete shield information barrier segment restriction by ID
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: box-shield-information-barrier-segment-restrictions.deleteshieldinformationbarriersegmentrestrictionsid
+      with:
+        shield_information_barrier_segment_restriction_id: tools.shield_information_barrier_segment_restriction_id
+      outputParameters:
+      - type: object
+        mapping: $.

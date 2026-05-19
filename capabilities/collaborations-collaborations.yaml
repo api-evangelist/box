@@ -1,0 +1,267 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Box Collaborations API — Collaborations
+  description: 'Box Collaborations API — Collaborations. 5 operations. Lead operation: Box List pending collaborations. Self-contained
+    Naftiko capability covering one Box business surface.'
+  tags:
+  - Box
+  - Collaborations
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    BOX_API_KEY: BOX_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: collaborations-collaborations
+    baseUri: ''
+    description: Box Collaborations API — Collaborations business capability. Self-contained, no shared references.
+    resources:
+    - name: collaborations
+      path: /collaborations
+      operations:
+      - name: getcollaborations
+        method: GET
+        description: Box List pending collaborations
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: status
+          in: query
+          type: string
+          description: The status of the collaborations to retrieve
+          required: true
+        - name: fields
+          in: query
+          type: array
+          description: A comma-separated list of attributes to include in the
+        - name: offset
+          in: query
+          type: integer
+          description: The offset of the item at which to begin the response.
+        - name: limit
+          in: query
+          type: integer
+          description: The maximum number of items to return per page.
+      - name: postcollaborations
+        method: POST
+        description: Box Create collaboration
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: fields
+          in: query
+          type: array
+          description: A comma-separated list of attributes to include in the
+        - name: notify
+          in: query
+          type: boolean
+          description: Determines if users should receive email notification
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: false
+    - name: collaborations-collaboration_id
+      path: /collaborations/{collaboration_id}
+      operations:
+      - name: getcollaborationsid
+        method: GET
+        description: Box Get collaboration
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: collaboration_id
+          in: path
+          type: string
+          description: The ID of the collaboration
+          required: true
+        - name: fields
+          in: query
+          type: array
+          description: A comma-separated list of attributes to include in the
+      - name: putcollaborationsid
+        method: PUT
+        description: Box Update collaboration
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: collaboration_id
+          in: path
+          type: string
+          description: The ID of the collaboration
+          required: true
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: false
+      - name: deletecollaborationsid
+        method: DELETE
+        description: Box Remove collaboration
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: collaboration_id
+          in: path
+          type: string
+          description: The ID of the collaboration
+          required: true
+  exposes:
+  - type: rest
+    namespace: collaborations-collaborations-rest
+    port: 8080
+    description: REST adapter for Box Collaborations API — Collaborations. One Spectral-compliant resource per consumed operation,
+      prefixed with /v1.
+    resources:
+    - path: /v1/collaborations
+      name: collaborations
+      description: REST surface for collaborations.
+      operations:
+      - method: GET
+        name: getcollaborations
+        description: Box List pending collaborations
+        call: collaborations-collaborations.getcollaborations
+        with:
+          status: rest.status
+          fields: rest.fields
+          offset: rest.offset
+          limit: rest.limit
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: POST
+        name: postcollaborations
+        description: Box Create collaboration
+        call: collaborations-collaborations.postcollaborations
+        with:
+          fields: rest.fields
+          notify: rest.notify
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/collaborations/{collaboration-id}
+      name: collaborations-collaboration-id
+      description: REST surface for collaborations-collaboration_id.
+      operations:
+      - method: GET
+        name: getcollaborationsid
+        description: Box Get collaboration
+        call: collaborations-collaborations.getcollaborationsid
+        with:
+          collaboration_id: rest.collaboration_id
+          fields: rest.fields
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: PUT
+        name: putcollaborationsid
+        description: Box Update collaboration
+        call: collaborations-collaborations.putcollaborationsid
+        with:
+          collaboration_id: rest.collaboration_id
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: DELETE
+        name: deletecollaborationsid
+        description: Box Remove collaboration
+        call: collaborations-collaborations.deletecollaborationsid
+        with:
+          collaboration_id: rest.collaboration_id
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: collaborations-collaborations-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Box Collaborations API — Collaborations. One tool per consumed operation, routed inline through
+      this capability's consumes block.
+    tools:
+    - name: box-list-pending-collaborations
+      description: Box List pending collaborations
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: collaborations-collaborations.getcollaborations
+      with:
+        status: tools.status
+        fields: tools.fields
+        offset: tools.offset
+        limit: tools.limit
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: box-create-collaboration
+      description: Box Create collaboration
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: collaborations-collaborations.postcollaborations
+      with:
+        fields: tools.fields
+        notify: tools.notify
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: box-get-collaboration
+      description: Box Get collaboration
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: collaborations-collaborations.getcollaborationsid
+      with:
+        collaboration_id: tools.collaboration_id
+        fields: tools.fields
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: box-update-collaboration
+      description: Box Update collaboration
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: true
+      call: collaborations-collaborations.putcollaborationsid
+      with:
+        collaboration_id: tools.collaboration_id
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: box-remove-collaboration
+      description: Box Remove collaboration
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: collaborations-collaborations.deletecollaborationsid
+      with:
+        collaboration_id: tools.collaboration_id
+      outputParameters:
+      - type: object
+        mapping: $.

@@ -1,0 +1,95 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Box Enterprises API — Enterprises
+  description: 'Box Enterprises API — Enterprises. 1 operations. Lead operation: Box List enterprise device pins. Self-contained
+    Naftiko capability covering one Box business surface.'
+  tags:
+  - Box
+  - Enterprises
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    BOX_API_KEY: BOX_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: enterprises-enterprises
+    baseUri: ''
+    description: Box Enterprises API — Enterprises business capability. Self-contained, no shared references.
+    resources:
+    - name: enterprises-enterprise_id-device_pinners
+      path: /enterprises/{enterprise_id}/device_pinners
+      operations:
+      - name: getenterprisesiddevicepinners
+        method: GET
+        description: Box List enterprise device pins
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: enterprise_id
+          in: path
+          type: string
+          description: The ID of the enterprise
+          required: true
+        - name: marker
+          in: query
+          type: string
+          description: Defines the position marker at which to begin returning results. This is
+        - name: limit
+          in: query
+          type: integer
+          description: The maximum number of items to return per page.
+        - name: direction
+          in: query
+          type: string
+          description: The direction to sort results in. This can be either in alphabetical ascending
+  exposes:
+  - type: rest
+    namespace: enterprises-enterprises-rest
+    port: 8080
+    description: REST adapter for Box Enterprises API — Enterprises. One Spectral-compliant resource per consumed operation,
+      prefixed with /v1.
+    resources:
+    - path: /v1/enterprises/{enterprise-id}/device-pinners
+      name: enterprises-enterprise-id-device-pinners
+      description: REST surface for enterprises-enterprise_id-device_pinners.
+      operations:
+      - method: GET
+        name: getenterprisesiddevicepinners
+        description: Box List enterprise device pins
+        call: enterprises-enterprises.getenterprisesiddevicepinners
+        with:
+          enterprise_id: rest.enterprise_id
+          marker: rest.marker
+          limit: rest.limit
+          direction: rest.direction
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: enterprises-enterprises-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Box Enterprises API — Enterprises. One tool per consumed operation, routed inline through
+      this capability's consumes block.
+    tools:
+    - name: box-list-enterprise-device-pins
+      description: Box List enterprise device pins
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: enterprises-enterprises.getenterprisesiddevicepinners
+      with:
+        enterprise_id: tools.enterprise_id
+        marker: tools.marker
+        limit: tools.limit
+        direction: tools.direction
+      outputParameters:
+      - type: object
+        mapping: $.

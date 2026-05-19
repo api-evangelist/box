@@ -1,0 +1,102 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Box Authorize API — Authorize
+  description: 'Box Authorize API — Authorize. 1 operations. Lead operation: Box Authorize user. Self-contained Naftiko capability
+    covering one Box business surface.'
+  tags:
+  - Box
+  - Authorize
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    BOX_API_KEY: BOX_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: authorize-authorize
+    baseUri: ''
+    description: Box Authorize API — Authorize business capability. Self-contained, no shared references.
+    resources:
+    - name: authorize
+      path: /authorize
+      operations:
+      - name: getauthorize
+        method: GET
+        description: Box Authorize user
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: response_type
+          in: query
+          type: string
+          description: The type of response we'd like to receive.
+          required: true
+        - name: client_id
+          in: query
+          type: string
+          description: The Client ID of the application that is requesting to authenticate
+          required: true
+        - name: redirect_uri
+          in: query
+          type: string
+          description: The URI to which Box redirects the browser after the user has granted
+        - name: state
+          in: query
+          type: string
+          description: A custom string of your choice. Box will pass the same string to
+        - name: scope
+          in: query
+          type: string
+          description: A space-separated list of application scopes you'd like to
+  exposes:
+  - type: rest
+    namespace: authorize-authorize-rest
+    port: 8080
+    description: REST adapter for Box Authorize API — Authorize. One Spectral-compliant resource per consumed operation, prefixed
+      with /v1.
+    resources:
+    - path: /v1/authorize
+      name: authorize
+      description: REST surface for authorize.
+      operations:
+      - method: GET
+        name: getauthorize
+        description: Box Authorize user
+        call: authorize-authorize.getauthorize
+        with:
+          response_type: rest.response_type
+          client_id: rest.client_id
+          redirect_uri: rest.redirect_uri
+          state: rest.state
+          scope: rest.scope
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: authorize-authorize-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Box Authorize API — Authorize. One tool per consumed operation, routed inline through this
+      capability's consumes block.
+    tools:
+    - name: box-authorize-user
+      description: Box Authorize user
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: authorize-authorize.getauthorize
+      with:
+        response_type: tools.response_type
+        client_id: tools.client_id
+        redirect_uri: tools.redirect_uri
+        state: tools.state
+        scope: tools.scope
+      outputParameters:
+      - type: object
+        mapping: $.

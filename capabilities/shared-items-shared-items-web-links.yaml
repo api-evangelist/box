@@ -1,0 +1,89 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Box Shared Items API — Shared Items#web Links
+  description: 'Box Shared Items API — Shared Items#web Links. 1 operations. Lead operation: Box Find web link for shared
+    link. Self-contained Naftiko capability covering one Box business surface.'
+  tags:
+  - Box
+  - Shared Items#web Links
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    BOX_API_KEY: BOX_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: shared-items-shared-items-web-links
+    baseUri: ''
+    description: Box Shared Items API — Shared Items#web Links business capability. Self-contained, no shared references.
+    resources:
+    - name: shared_items#web_links
+      path: /shared_items#web_links
+      operations:
+      - name: getshareditemsweblinks
+        method: GET
+        description: Box Find web link for shared link
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: if-none-match
+          in: header
+          type: string
+          description: Ensures an item is only returned if it has changed.
+        - name: fields
+          in: query
+          type: array
+          description: A comma-separated list of attributes to include in the
+        - name: boxapi
+          in: header
+          type: string
+          description: A header containing the shared link and optional password for the
+          required: true
+  exposes:
+  - type: rest
+    namespace: shared-items-shared-items-web-links-rest
+    port: 8080
+    description: REST adapter for Box Shared Items API — Shared Items#web Links. One Spectral-compliant resource per consumed
+      operation, prefixed with /v1.
+    resources:
+    - path: /v1/shared-items-web-links
+      name: shared-items-web-links
+      description: REST surface for shared_items#web_links.
+      operations:
+      - method: GET
+        name: getshareditemsweblinks
+        description: Box Find web link for shared link
+        call: shared-items-shared-items-web-links.getshareditemsweblinks
+        with:
+          if-none-match: rest.if-none-match
+          fields: rest.fields
+          boxapi: rest.boxapi
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: shared-items-shared-items-web-links-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Box Shared Items API — Shared Items#web Links. One tool per consumed operation, routed inline
+      through this capability's consumes block.
+    tools:
+    - name: box-find-web-link-shared
+      description: Box Find web link for shared link
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: shared-items-shared-items-web-links.getshareditemsweblinks
+      with:
+        if-none-match: tools.if-none-match
+        fields: tools.fields
+        boxapi: tools.boxapi
+      outputParameters:
+      - type: object
+        mapping: $.

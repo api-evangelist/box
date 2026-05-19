@@ -1,0 +1,196 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Box Platform API — Classifications
+  description: 'Box Platform API — Classifications. 4 operations. Lead operation: Box List all classifications. Self-contained
+    Naftiko capability covering one Box business surface.'
+  tags:
+  - Box
+  - Classifications
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    BOX_API_KEY: BOX_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: box-classifications
+    baseUri: https://api.box.com/2.0
+    description: Box Platform API — Classifications business capability. Self-contained, no shared references.
+    resources:
+    - name: metadata_templates-enterprise-securityClassification-6VMVochwUWo-schema
+      path: /metadata_templates/enterprise/securityClassification-6VMVochwUWo/schema
+      operations:
+      - name: getmetadatatemplatesenterprisesecurityclassification6vmvochwuwoschema
+        method: GET
+        description: Box List all classifications
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: metadata_templates-enterprise-securityClassification-6VMVochwUWo-schema#add
+      path: /metadata_templates/enterprise/securityClassification-6VMVochwUWo/schema#add
+      operations:
+      - name: putmetadatatemplatesenterprisesecurityclassification6vmvochwuwoschemaadd
+        method: PUT
+        description: Box Add classification
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: false
+    - name: metadata_templates-enterprise-securityClassification-6VMVochwUWo-schema#update
+      path: /metadata_templates/enterprise/securityClassification-6VMVochwUWo/schema#update
+      operations:
+      - name: putmetadatatemplatesenterprisesecurityclassification6vmvochwuwoschemaupdate
+        method: PUT
+        description: Box Update classification
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: false
+    - name: metadata_templates-schema#classifications
+      path: /metadata_templates/schema#classifications
+      operations:
+      - name: postmetadatatemplatesschemaclassifications
+        method: POST
+        description: Box Add initial classifications
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: false
+    authentication:
+      type: bearer
+      token: '{{env.BOX_API_KEY}}'
+  exposes:
+  - type: rest
+    namespace: box-classifications-rest
+    port: 8080
+    description: REST adapter for Box Platform API — Classifications. One Spectral-compliant resource per consumed operation,
+      prefixed with /v1.
+    resources:
+    - path: /v1/metadata-templates/enterprise/securityclassification-6vmvochwuwo/schema
+      name: metadata-templates-enterprise-securityclassification-6vmvochwuwo-schema
+      description: REST surface for metadata_templates-enterprise-securityClassification-6VMVochwUWo-schema.
+      operations:
+      - method: GET
+        name: getmetadatatemplatesenterprisesecurityclassification6vmvochwuwoschema
+        description: Box List all classifications
+        call: box-classifications.getmetadatatemplatesenterprisesecurityclassification6vmvochwuwoschema
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/metadata-templates/enterprise/securityclassification-6vmvochwuwo/schema-add
+      name: metadata-templates-enterprise-securityclassification-6vmvochwuwo-schema-add
+      description: REST surface for metadata_templates-enterprise-securityClassification-6VMVochwUWo-schema#add.
+      operations:
+      - method: PUT
+        name: putmetadatatemplatesenterprisesecurityclassification6vmvochwuwoschemaadd
+        description: Box Add classification
+        call: box-classifications.putmetadatatemplatesenterprisesecurityclassification6vmvochwuwoschemaadd
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/metadata-templates/enterprise/securityclassification-6vmvochwuwo/schema-update
+      name: metadata-templates-enterprise-securityclassification-6vmvochwuwo-schema-update
+      description: REST surface for metadata_templates-enterprise-securityClassification-6VMVochwUWo-schema#update.
+      operations:
+      - method: PUT
+        name: putmetadatatemplatesenterprisesecurityclassification6vmvochwuwoschemaupdate
+        description: Box Update classification
+        call: box-classifications.putmetadatatemplatesenterprisesecurityclassification6vmvochwuwoschemaupdate
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/metadata-templates/schema-classifications
+      name: metadata-templates-schema-classifications
+      description: REST surface for metadata_templates-schema#classifications.
+      operations:
+      - method: POST
+        name: postmetadatatemplatesschemaclassifications
+        description: Box Add initial classifications
+        call: box-classifications.postmetadatatemplatesschemaclassifications
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: box-classifications-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Box Platform API — Classifications. One tool per consumed operation, routed inline through
+      this capability's consumes block.
+    tools:
+    - name: box-list-all-classifications
+      description: Box List all classifications
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: box-classifications.getmetadatatemplatesenterprisesecurityclassification6vmvochwuwoschema
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: box-add-classification
+      description: Box Add classification
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: true
+      call: box-classifications.putmetadatatemplatesenterprisesecurityclassification6vmvochwuwoschemaadd
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: box-update-classification
+      description: Box Update classification
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: true
+      call: box-classifications.putmetadatatemplatesenterprisesecurityclassification6vmvochwuwoschemaupdate
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: box-add-initial-classifications
+      description: Box Add initial classifications
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: box-classifications.postmetadatatemplatesschemaclassifications
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.

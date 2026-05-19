@@ -1,0 +1,124 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Box Sign Templates API — Sign Templates
+  description: 'Box Sign Templates API — Sign Templates. 2 operations. Lead operation: List Box Sign templates. Self-contained
+    Naftiko capability covering one Box business surface.'
+  tags:
+  - Box
+  - Sign Templates
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    BOX_API_KEY: BOX_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: sign-templates-sign-templates
+    baseUri: ''
+    description: Box Sign Templates API — Sign Templates business capability. Self-contained, no shared references.
+    resources:
+    - name: sign_templates
+      path: /sign_templates
+      operations:
+      - name: getsigntemplates
+        method: GET
+        description: List Box Sign templates
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: marker
+          in: query
+          type: string
+          description: Defines the position marker at which to begin returning results. This is
+        - name: limit
+          in: query
+          type: integer
+          description: The maximum number of items to return per page.
+    - name: sign_templates-template_id
+      path: /sign_templates/{template_id}
+      operations:
+      - name: getsigntemplatesid
+        method: GET
+        description: Get Box Sign template by ID
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: template_id
+          in: path
+          type: string
+          description: The ID of a Box Sign template.
+          required: true
+  exposes:
+  - type: rest
+    namespace: sign-templates-sign-templates-rest
+    port: 8080
+    description: REST adapter for Box Sign Templates API — Sign Templates. One Spectral-compliant resource per consumed operation,
+      prefixed with /v1.
+    resources:
+    - path: /v1/sign-templates
+      name: sign-templates
+      description: REST surface for sign_templates.
+      operations:
+      - method: GET
+        name: getsigntemplates
+        description: List Box Sign templates
+        call: sign-templates-sign-templates.getsigntemplates
+        with:
+          marker: rest.marker
+          limit: rest.limit
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/sign-templates/{template-id}
+      name: sign-templates-template-id
+      description: REST surface for sign_templates-template_id.
+      operations:
+      - method: GET
+        name: getsigntemplatesid
+        description: Get Box Sign template by ID
+        call: sign-templates-sign-templates.getsigntemplatesid
+        with:
+          template_id: rest.template_id
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: sign-templates-sign-templates-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Box Sign Templates API — Sign Templates. One tool per consumed operation, routed inline through
+      this capability's consumes block.
+    tools:
+    - name: list-box-sign-templates
+      description: List Box Sign templates
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: sign-templates-sign-templates.getsigntemplates
+      with:
+        marker: tools.marker
+        limit: tools.limit
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: get-box-sign-template-id
+      description: Get Box Sign template by ID
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: sign-templates-sign-templates.getsigntemplatesid
+      with:
+        template_id: tools.template_id
+      outputParameters:
+      - type: object
+        mapping: $.

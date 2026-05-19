@@ -1,0 +1,112 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Box Device Pinners API — Device Pinners
+  description: 'Box Device Pinners API — Device Pinners. 2 operations. Lead operation: Box Get device pin. Self-contained
+    Naftiko capability covering one Box business surface.'
+  tags:
+  - Box
+  - Device Pinners
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    BOX_API_KEY: BOX_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: device-pinners-device-pinners
+    baseUri: ''
+    description: Box Device Pinners API — Device Pinners business capability. Self-contained, no shared references.
+    resources:
+    - name: device_pinners-device_pinner_id
+      path: /device_pinners/{device_pinner_id}
+      operations:
+      - name: getdevicepinnersid
+        method: GET
+        description: Box Get device pin
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: device_pinner_id
+          in: path
+          type: string
+          description: The ID of the device pin
+          required: true
+      - name: deletedevicepinnersid
+        method: DELETE
+        description: Box Remove device pin
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: device_pinner_id
+          in: path
+          type: string
+          description: The ID of the device pin
+          required: true
+  exposes:
+  - type: rest
+    namespace: device-pinners-device-pinners-rest
+    port: 8080
+    description: REST adapter for Box Device Pinners API — Device Pinners. One Spectral-compliant resource per consumed operation,
+      prefixed with /v1.
+    resources:
+    - path: /v1/device-pinners/{device-pinner-id}
+      name: device-pinners-device-pinner-id
+      description: REST surface for device_pinners-device_pinner_id.
+      operations:
+      - method: GET
+        name: getdevicepinnersid
+        description: Box Get device pin
+        call: device-pinners-device-pinners.getdevicepinnersid
+        with:
+          device_pinner_id: rest.device_pinner_id
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: DELETE
+        name: deletedevicepinnersid
+        description: Box Remove device pin
+        call: device-pinners-device-pinners.deletedevicepinnersid
+        with:
+          device_pinner_id: rest.device_pinner_id
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: device-pinners-device-pinners-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Box Device Pinners API — Device Pinners. One tool per consumed operation, routed inline through
+      this capability's consumes block.
+    tools:
+    - name: box-get-device-pin
+      description: Box Get device pin
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: device-pinners-device-pinners.getdevicepinnersid
+      with:
+        device_pinner_id: tools.device_pinner_id
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: box-remove-device-pin
+      description: Box Remove device pin
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: device-pinners-device-pinners.deletedevicepinnersid
+      with:
+        device_pinner_id: tools.device_pinner_id
+      outputParameters:
+      - type: object
+        mapping: $.

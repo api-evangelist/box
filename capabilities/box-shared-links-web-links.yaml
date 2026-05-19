@@ -1,0 +1,309 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Box Platform API — Shared Links (Web Links)
+  description: 'Box Platform API — Shared Links (Web Links). 5 operations. Lead operation: Box Find web link for shared link.
+    Self-contained Naftiko capability covering one Box business surface.'
+  tags:
+  - Box
+  - Shared Links (Web Links)
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    BOX_API_KEY: BOX_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: box-shared-links-web-links
+    baseUri: https://api.box.com/2.0
+    description: Box Platform API — Shared Links (Web Links) business capability. Self-contained, no shared references.
+    resources:
+    - name: shared_items#web_links
+      path: /shared_items#web_links
+      operations:
+      - name: getshareditemsweblinks
+        method: GET
+        description: Box Find web link for shared link
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: if-none-match
+          in: header
+          type: string
+          description: Ensures an item is only returned if it has changed.
+        - name: fields
+          in: query
+          type: array
+          description: A comma-separated list of attributes to include in the
+        - name: boxapi
+          in: header
+          type: string
+          description: A header containing the shared link and optional password for the
+          required: true
+    - name: web_links-web_link_id}#add_shared_link
+      path: /web_links/{web_link_id}#add_shared_link
+      operations:
+      - name: putweblinksidaddsharedlink
+        method: PUT
+        description: Box Add shared link to web link
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: web_link_id
+          in: path
+          type: string
+          description: The ID of the web link.
+          required: true
+        - name: fields
+          in: query
+          type: string
+          description: Explicitly request the `shared_link` fields
+          required: true
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: false
+    - name: web_links-web_link_id}#get_shared_link
+      path: /web_links/{web_link_id}#get_shared_link
+      operations:
+      - name: getweblinksidgetsharedlink
+        method: GET
+        description: Box Get shared link for web link
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: web_link_id
+          in: path
+          type: string
+          description: The ID of the web link.
+          required: true
+        - name: fields
+          in: query
+          type: string
+          description: Explicitly request the `shared_link` fields
+          required: true
+    - name: web_links-web_link_id}#remove_shared_link
+      path: /web_links/{web_link_id}#remove_shared_link
+      operations:
+      - name: putweblinksidremovesharedlink
+        method: PUT
+        description: Box Remove shared link from web link
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: web_link_id
+          in: path
+          type: string
+          description: The ID of the web link.
+          required: true
+        - name: fields
+          in: query
+          type: string
+          description: Explicitly request the `shared_link` fields
+          required: true
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: false
+    - name: web_links-web_link_id}#update_shared_link
+      path: /web_links/{web_link_id}#update_shared_link
+      operations:
+      - name: putweblinksidupdatesharedlink
+        method: PUT
+        description: Box Update shared link on web link
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: web_link_id
+          in: path
+          type: string
+          description: The ID of the web link.
+          required: true
+        - name: fields
+          in: query
+          type: string
+          description: Explicitly request the `shared_link` fields
+          required: true
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: false
+    authentication:
+      type: bearer
+      token: '{{env.BOX_API_KEY}}'
+  exposes:
+  - type: rest
+    namespace: box-shared-links-web-links-rest
+    port: 8080
+    description: REST adapter for Box Platform API — Shared Links (Web Links). One Spectral-compliant resource per consumed
+      operation, prefixed with /v1.
+    resources:
+    - path: /v1/shared-items-web-links
+      name: shared-items-web-links
+      description: REST surface for shared_items#web_links.
+      operations:
+      - method: GET
+        name: getshareditemsweblinks
+        description: Box Find web link for shared link
+        call: box-shared-links-web-links.getshareditemsweblinks
+        with:
+          if-none-match: rest.if-none-match
+          fields: rest.fields
+          boxapi: rest.boxapi
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/web-links/web-link-id-add-shared-link
+      name: web-links-web-link-id-add-shared-link
+      description: REST surface for web_links-web_link_id}#add_shared_link.
+      operations:
+      - method: PUT
+        name: putweblinksidaddsharedlink
+        description: Box Add shared link to web link
+        call: box-shared-links-web-links.putweblinksidaddsharedlink
+        with:
+          web_link_id: rest.web_link_id
+          fields: rest.fields
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/web-links/web-link-id-get-shared-link
+      name: web-links-web-link-id-get-shared-link
+      description: REST surface for web_links-web_link_id}#get_shared_link.
+      operations:
+      - method: GET
+        name: getweblinksidgetsharedlink
+        description: Box Get shared link for web link
+        call: box-shared-links-web-links.getweblinksidgetsharedlink
+        with:
+          web_link_id: rest.web_link_id
+          fields: rest.fields
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/web-links/web-link-id-remove-shared-link
+      name: web-links-web-link-id-remove-shared-link
+      description: REST surface for web_links-web_link_id}#remove_shared_link.
+      operations:
+      - method: PUT
+        name: putweblinksidremovesharedlink
+        description: Box Remove shared link from web link
+        call: box-shared-links-web-links.putweblinksidremovesharedlink
+        with:
+          web_link_id: rest.web_link_id
+          fields: rest.fields
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/web-links/web-link-id-update-shared-link
+      name: web-links-web-link-id-update-shared-link
+      description: REST surface for web_links-web_link_id}#update_shared_link.
+      operations:
+      - method: PUT
+        name: putweblinksidupdatesharedlink
+        description: Box Update shared link on web link
+        call: box-shared-links-web-links.putweblinksidupdatesharedlink
+        with:
+          web_link_id: rest.web_link_id
+          fields: rest.fields
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: box-shared-links-web-links-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Box Platform API — Shared Links (Web Links). One tool per consumed operation, routed inline
+      through this capability's consumes block.
+    tools:
+    - name: box-find-web-link-shared
+      description: Box Find web link for shared link
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: box-shared-links-web-links.getshareditemsweblinks
+      with:
+        if-none-match: tools.if-none-match
+        fields: tools.fields
+        boxapi: tools.boxapi
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: box-add-shared-link-web
+      description: Box Add shared link to web link
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: true
+      call: box-shared-links-web-links.putweblinksidaddsharedlink
+      with:
+        web_link_id: tools.web_link_id
+        fields: tools.fields
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: box-get-shared-link-web
+      description: Box Get shared link for web link
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: box-shared-links-web-links.getweblinksidgetsharedlink
+      with:
+        web_link_id: tools.web_link_id
+        fields: tools.fields
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: box-remove-shared-link-web
+      description: Box Remove shared link from web link
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: true
+      call: box-shared-links-web-links.putweblinksidremovesharedlink
+      with:
+        web_link_id: tools.web_link_id
+        fields: tools.fields
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: box-update-shared-link-web
+      description: Box Update shared link on web link
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: true
+      call: box-shared-links-web-links.putweblinksidupdatesharedlink
+      with:
+        web_link_id: tools.web_link_id
+        fields: tools.fields
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.

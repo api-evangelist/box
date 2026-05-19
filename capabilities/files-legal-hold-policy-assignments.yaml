@@ -1,0 +1,95 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Box Files API — Legal Hold Policy Assignments
+  description: 'Box Files API — Legal Hold Policy Assignments. 1 operations. Lead operation: Box List current file versions
+    for legal hold policy assignment. Self-contained Naftiko capability covering one Box business surface.'
+  tags:
+  - Box
+  - Legal Hold Policy Assignments
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    BOX_API_KEY: BOX_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: files-legal-hold-policy-assignments
+    baseUri: ''
+    description: Box Files API — Legal Hold Policy Assignments business capability. Self-contained, no shared references.
+    resources:
+    - name: legal_hold_policy_assignments-legal_hold_policy_assignment_id-files_on_hold
+      path: /legal_hold_policy_assignments/{legal_hold_policy_assignment_id}/files_on_hold
+      operations:
+      - name: getlegalholdpolicyassignmentsidfilesonhold
+        method: GET
+        description: Box List current file versions for legal hold policy assignment
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: legal_hold_policy_assignment_id
+          in: path
+          type: string
+          description: The ID of the legal hold policy assignment
+          required: true
+        - name: marker
+          in: query
+          type: string
+          description: Defines the position marker at which to begin returning results. This is
+        - name: limit
+          in: query
+          type: integer
+          description: The maximum number of items to return per page.
+        - name: fields
+          in: query
+          type: array
+          description: A comma-separated list of attributes to include in the
+  exposes:
+  - type: rest
+    namespace: files-legal-hold-policy-assignments-rest
+    port: 8080
+    description: REST adapter for Box Files API — Legal Hold Policy Assignments. One Spectral-compliant resource per consumed
+      operation, prefixed with /v1.
+    resources:
+    - path: /v1/legal-hold-policy-assignments/{legal-hold-policy-assignment-id}/files-on-hold
+      name: legal-hold-policy-assignments-legal-hold-policy-assignment-id-files-on-hold
+      description: REST surface for legal_hold_policy_assignments-legal_hold_policy_assignment_id-files_on_hold.
+      operations:
+      - method: GET
+        name: getlegalholdpolicyassignmentsidfilesonhold
+        description: Box List current file versions for legal hold policy assignment
+        call: files-legal-hold-policy-assignments.getlegalholdpolicyassignmentsidfilesonhold
+        with:
+          legal_hold_policy_assignment_id: rest.legal_hold_policy_assignment_id
+          marker: rest.marker
+          limit: rest.limit
+          fields: rest.fields
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: files-legal-hold-policy-assignments-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Box Files API — Legal Hold Policy Assignments. One tool per consumed operation, routed inline
+      through this capability's consumes block.
+    tools:
+    - name: box-list-current-file-versions
+      description: Box List current file versions for legal hold policy assignment
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: files-legal-hold-policy-assignments.getlegalholdpolicyassignmentsidfilesonhold
+      with:
+        legal_hold_policy_assignment_id: tools.legal_hold_policy_assignment_id
+        marker: tools.marker
+        limit: tools.limit
+        fields: tools.fields
+      outputParameters:
+      - type: object
+        mapping: $.

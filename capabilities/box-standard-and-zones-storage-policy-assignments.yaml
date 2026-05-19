@@ -1,0 +1,248 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Box Platform API — Standard and Zones Storage Policy Assignments
+  description: 'Box Platform API — Standard and Zones Storage Policy Assignments. 5 operations. Lead operation: Box List storage
+    policy assignments. Self-contained Naftiko capability covering one Box business surface.'
+  tags:
+  - Box
+  - Standard and Zones Storage Policy Assignments
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    BOX_API_KEY: BOX_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: box-standard-and-zones-storage-policy-assignments
+    baseUri: https://api.box.com/2.0
+    description: Box Platform API — Standard and Zones Storage Policy Assignments business capability. Self-contained, no
+      shared references.
+    resources:
+    - name: storage_policy_assignments
+      path: /storage_policy_assignments
+      operations:
+      - name: getstoragepolicyassignments
+        method: GET
+        description: Box List storage policy assignments
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: marker
+          in: query
+          type: string
+          description: Defines the position marker at which to begin returning results. This is
+        - name: resolved_for_type
+          in: query
+          type: string
+          description: The target type to return assignments for
+          required: true
+        - name: resolved_for_id
+          in: query
+          type: string
+          description: The ID of the user or enterprise to return assignments for
+          required: true
+      - name: poststoragepolicyassignments
+        method: POST
+        description: Box Assign storage policy
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: false
+    - name: storage_policy_assignments-storage_policy_assignment_id
+      path: /storage_policy_assignments/{storage_policy_assignment_id}
+      operations:
+      - name: getstoragepolicyassignmentsid
+        method: GET
+        description: Box Get storage policy assignment
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: storage_policy_assignment_id
+          in: path
+          type: string
+          description: The ID of the storage policy assignment.
+          required: true
+      - name: putstoragepolicyassignmentsid
+        method: PUT
+        description: Box Update storage policy assignment
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: storage_policy_assignment_id
+          in: path
+          type: string
+          description: The ID of the storage policy assignment.
+          required: true
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: false
+      - name: deletestoragepolicyassignmentsid
+        method: DELETE
+        description: Box Unassign storage policy
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: storage_policy_assignment_id
+          in: path
+          type: string
+          description: The ID of the storage policy assignment.
+          required: true
+    authentication:
+      type: bearer
+      token: '{{env.BOX_API_KEY}}'
+  exposes:
+  - type: rest
+    namespace: box-standard-and-zones-storage-policy-assignments-rest
+    port: 8080
+    description: REST adapter for Box Platform API — Standard and Zones Storage Policy Assignments. One Spectral-compliant
+      resource per consumed operation, prefixed with /v1.
+    resources:
+    - path: /v1/storage-policy-assignments
+      name: storage-policy-assignments
+      description: REST surface for storage_policy_assignments.
+      operations:
+      - method: GET
+        name: getstoragepolicyassignments
+        description: Box List storage policy assignments
+        call: box-standard-and-zones-storage-policy-assignments.getstoragepolicyassignments
+        with:
+          marker: rest.marker
+          resolved_for_type: rest.resolved_for_type
+          resolved_for_id: rest.resolved_for_id
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: POST
+        name: poststoragepolicyassignments
+        description: Box Assign storage policy
+        call: box-standard-and-zones-storage-policy-assignments.poststoragepolicyassignments
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/storage-policy-assignments/{storage-policy-assignment-id}
+      name: storage-policy-assignments-storage-policy-assignment-id
+      description: REST surface for storage_policy_assignments-storage_policy_assignment_id.
+      operations:
+      - method: GET
+        name: getstoragepolicyassignmentsid
+        description: Box Get storage policy assignment
+        call: box-standard-and-zones-storage-policy-assignments.getstoragepolicyassignmentsid
+        with:
+          storage_policy_assignment_id: rest.storage_policy_assignment_id
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: PUT
+        name: putstoragepolicyassignmentsid
+        description: Box Update storage policy assignment
+        call: box-standard-and-zones-storage-policy-assignments.putstoragepolicyassignmentsid
+        with:
+          storage_policy_assignment_id: rest.storage_policy_assignment_id
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: DELETE
+        name: deletestoragepolicyassignmentsid
+        description: Box Unassign storage policy
+        call: box-standard-and-zones-storage-policy-assignments.deletestoragepolicyassignmentsid
+        with:
+          storage_policy_assignment_id: rest.storage_policy_assignment_id
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: box-standard-and-zones-storage-policy-assignments-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Box Platform API — Standard and Zones Storage Policy Assignments. One tool per consumed operation,
+      routed inline through this capability's consumes block.
+    tools:
+    - name: box-list-storage-policy-assignments
+      description: Box List storage policy assignments
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: box-standard-and-zones-storage-policy-assignments.getstoragepolicyassignments
+      with:
+        marker: tools.marker
+        resolved_for_type: tools.resolved_for_type
+        resolved_for_id: tools.resolved_for_id
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: box-assign-storage-policy
+      description: Box Assign storage policy
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: box-standard-and-zones-storage-policy-assignments.poststoragepolicyassignments
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: box-get-storage-policy-assignment
+      description: Box Get storage policy assignment
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: box-standard-and-zones-storage-policy-assignments.getstoragepolicyassignmentsid
+      with:
+        storage_policy_assignment_id: tools.storage_policy_assignment_id
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: box-update-storage-policy-assignment
+      description: Box Update storage policy assignment
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: true
+      call: box-standard-and-zones-storage-policy-assignments.putstoragepolicyassignmentsid
+      with:
+        storage_policy_assignment_id: tools.storage_policy_assignment_id
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: box-unassign-storage-policy
+      description: Box Unassign storage policy
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: box-standard-and-zones-storage-policy-assignments.deletestoragepolicyassignmentsid
+      with:
+        storage_policy_assignment_id: tools.storage_policy_assignment_id
+      outputParameters:
+      - type: object
+        mapping: $.

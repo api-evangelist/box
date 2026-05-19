@@ -1,0 +1,297 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Box Platform API — Metadata Instances (Files)
+  description: 'Box Platform API — Metadata Instances (Files). 5 operations. Lead operation: Box List metadata instances on
+    file. Self-contained Naftiko capability covering one Box business surface.'
+  tags:
+  - Box
+  - Metadata Instances (Files)
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    BOX_API_KEY: BOX_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: box-metadata-instances-files
+    baseUri: https://api.box.com/2.0
+    description: Box Platform API — Metadata Instances (Files) business capability. Self-contained, no shared references.
+    resources:
+    - name: files-file_id-metadata
+      path: /files/{file_id}/metadata
+      operations:
+      - name: getfilesidmetadata
+        method: GET
+        description: Box List metadata instances on file
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: file_id
+          in: path
+          type: string
+          description: The unique identifier that represents a file.
+          required: true
+    - name: files-file_id-metadata-scope-template_key
+      path: /files/{file_id}/metadata/{scope}/{template_key}
+      operations:
+      - name: getfilesidmetadataidid
+        method: GET
+        description: Box Get metadata instance on file
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: file_id
+          in: path
+          type: string
+          description: The unique identifier that represents a file.
+          required: true
+        - name: scope
+          in: path
+          type: string
+          description: The scope of the metadata template
+          required: true
+        - name: template_key
+          in: path
+          type: string
+          description: The name of the metadata template
+          required: true
+      - name: postfilesidmetadataidid
+        method: POST
+        description: Box Create metadata instance on file
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: file_id
+          in: path
+          type: string
+          description: The unique identifier that represents a file.
+          required: true
+        - name: scope
+          in: path
+          type: string
+          description: The scope of the metadata template
+          required: true
+        - name: template_key
+          in: path
+          type: string
+          description: The name of the metadata template
+          required: true
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: false
+      - name: putfilesidmetadataidid
+        method: PUT
+        description: Box Update metadata instance on file
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: file_id
+          in: path
+          type: string
+          description: The unique identifier that represents a file.
+          required: true
+        - name: scope
+          in: path
+          type: string
+          description: The scope of the metadata template
+          required: true
+        - name: template_key
+          in: path
+          type: string
+          description: The name of the metadata template
+          required: true
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: false
+      - name: deletefilesidmetadataidid
+        method: DELETE
+        description: Box Remove metadata instance from file
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: file_id
+          in: path
+          type: string
+          description: The unique identifier that represents a file.
+          required: true
+        - name: scope
+          in: path
+          type: string
+          description: The scope of the metadata template
+          required: true
+        - name: template_key
+          in: path
+          type: string
+          description: The name of the metadata template
+          required: true
+    authentication:
+      type: bearer
+      token: '{{env.BOX_API_KEY}}'
+  exposes:
+  - type: rest
+    namespace: box-metadata-instances-files-rest
+    port: 8080
+    description: REST adapter for Box Platform API — Metadata Instances (Files). One Spectral-compliant resource per consumed
+      operation, prefixed with /v1.
+    resources:
+    - path: /v1/files/{file-id}/metadata
+      name: files-file-id-metadata
+      description: REST surface for files-file_id-metadata.
+      operations:
+      - method: GET
+        name: getfilesidmetadata
+        description: Box List metadata instances on file
+        call: box-metadata-instances-files.getfilesidmetadata
+        with:
+          file_id: rest.file_id
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/files/{file-id}/metadata/{scope}/{template-key}
+      name: files-file-id-metadata-scope-template-key
+      description: REST surface for files-file_id-metadata-scope-template_key.
+      operations:
+      - method: GET
+        name: getfilesidmetadataidid
+        description: Box Get metadata instance on file
+        call: box-metadata-instances-files.getfilesidmetadataidid
+        with:
+          file_id: rest.file_id
+          scope: rest.scope
+          template_key: rest.template_key
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: POST
+        name: postfilesidmetadataidid
+        description: Box Create metadata instance on file
+        call: box-metadata-instances-files.postfilesidmetadataidid
+        with:
+          file_id: rest.file_id
+          scope: rest.scope
+          template_key: rest.template_key
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: PUT
+        name: putfilesidmetadataidid
+        description: Box Update metadata instance on file
+        call: box-metadata-instances-files.putfilesidmetadataidid
+        with:
+          file_id: rest.file_id
+          scope: rest.scope
+          template_key: rest.template_key
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: DELETE
+        name: deletefilesidmetadataidid
+        description: Box Remove metadata instance from file
+        call: box-metadata-instances-files.deletefilesidmetadataidid
+        with:
+          file_id: rest.file_id
+          scope: rest.scope
+          template_key: rest.template_key
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: box-metadata-instances-files-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Box Platform API — Metadata Instances (Files). One tool per consumed operation, routed inline
+      through this capability's consumes block.
+    tools:
+    - name: box-list-metadata-instances-file
+      description: Box List metadata instances on file
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: box-metadata-instances-files.getfilesidmetadata
+      with:
+        file_id: tools.file_id
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: box-get-metadata-instance-file
+      description: Box Get metadata instance on file
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: box-metadata-instances-files.getfilesidmetadataidid
+      with:
+        file_id: tools.file_id
+        scope: tools.scope
+        template_key: tools.template_key
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: box-create-metadata-instance-file
+      description: Box Create metadata instance on file
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: box-metadata-instances-files.postfilesidmetadataidid
+      with:
+        file_id: tools.file_id
+        scope: tools.scope
+        template_key: tools.template_key
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: box-update-metadata-instance-file
+      description: Box Update metadata instance on file
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: true
+      call: box-metadata-instances-files.putfilesidmetadataidid
+      with:
+        file_id: tools.file_id
+        scope: tools.scope
+        template_key: tools.template_key
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: box-remove-metadata-instance-file
+      description: Box Remove metadata instance from file
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: box-metadata-instances-files.deletefilesidmetadataidid
+      with:
+        file_id: tools.file_id
+        scope: tools.scope
+        template_key: tools.template_key
+      outputParameters:
+      - type: object
+        mapping: $.

@@ -1,0 +1,277 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Box Platform API — Comments
+  description: 'Box Platform API — Comments. 5 operations. Lead operation: Box Create comment. Self-contained Naftiko capability
+    covering one Box business surface.'
+  tags:
+  - Box
+  - Comments
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    BOX_API_KEY: BOX_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: box-comments
+    baseUri: https://api.box.com/2.0
+    description: Box Platform API — Comments business capability. Self-contained, no shared references.
+    resources:
+    - name: comments
+      path: /comments
+      operations:
+      - name: postcomments
+        method: POST
+        description: Box Create comment
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: fields
+          in: query
+          type: array
+          description: A comma-separated list of attributes to include in the
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: false
+    - name: comments-comment_id
+      path: /comments/{comment_id}
+      operations:
+      - name: getcommentsid
+        method: GET
+        description: Box Get comment
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: comment_id
+          in: path
+          type: string
+          description: The ID of the comment.
+          required: true
+        - name: fields
+          in: query
+          type: array
+          description: A comma-separated list of attributes to include in the
+      - name: putcommentsid
+        method: PUT
+        description: Box Update comment
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: comment_id
+          in: path
+          type: string
+          description: The ID of the comment.
+          required: true
+        - name: fields
+          in: query
+          type: array
+          description: A comma-separated list of attributes to include in the
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: false
+      - name: deletecommentsid
+        method: DELETE
+        description: Box Remove comment
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: comment_id
+          in: path
+          type: string
+          description: The ID of the comment.
+          required: true
+    - name: files-file_id-comments
+      path: /files/{file_id}/comments
+      operations:
+      - name: getfilesidcomments
+        method: GET
+        description: Box List file comments
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: file_id
+          in: path
+          type: string
+          description: The unique identifier that represents a file.
+          required: true
+        - name: fields
+          in: query
+          type: array
+          description: A comma-separated list of attributes to include in the
+        - name: limit
+          in: query
+          type: integer
+          description: The maximum number of items to return per page.
+        - name: offset
+          in: query
+          type: integer
+          description: The offset of the item at which to begin the response.
+    authentication:
+      type: bearer
+      token: '{{env.BOX_API_KEY}}'
+  exposes:
+  - type: rest
+    namespace: box-comments-rest
+    port: 8080
+    description: REST adapter for Box Platform API — Comments. One Spectral-compliant resource per consumed operation, prefixed
+      with /v1.
+    resources:
+    - path: /v1/comments
+      name: comments
+      description: REST surface for comments.
+      operations:
+      - method: POST
+        name: postcomments
+        description: Box Create comment
+        call: box-comments.postcomments
+        with:
+          fields: rest.fields
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/comments/{comment-id}
+      name: comments-comment-id
+      description: REST surface for comments-comment_id.
+      operations:
+      - method: GET
+        name: getcommentsid
+        description: Box Get comment
+        call: box-comments.getcommentsid
+        with:
+          comment_id: rest.comment_id
+          fields: rest.fields
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: PUT
+        name: putcommentsid
+        description: Box Update comment
+        call: box-comments.putcommentsid
+        with:
+          comment_id: rest.comment_id
+          fields: rest.fields
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: DELETE
+        name: deletecommentsid
+        description: Box Remove comment
+        call: box-comments.deletecommentsid
+        with:
+          comment_id: rest.comment_id
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/files/{file-id}/comments
+      name: files-file-id-comments
+      description: REST surface for files-file_id-comments.
+      operations:
+      - method: GET
+        name: getfilesidcomments
+        description: Box List file comments
+        call: box-comments.getfilesidcomments
+        with:
+          file_id: rest.file_id
+          fields: rest.fields
+          limit: rest.limit
+          offset: rest.offset
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: box-comments-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Box Platform API — Comments. One tool per consumed operation, routed inline through this
+      capability's consumes block.
+    tools:
+    - name: box-create-comment
+      description: Box Create comment
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: box-comments.postcomments
+      with:
+        fields: tools.fields
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: box-get-comment
+      description: Box Get comment
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: box-comments.getcommentsid
+      with:
+        comment_id: tools.comment_id
+        fields: tools.fields
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: box-update-comment
+      description: Box Update comment
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: true
+      call: box-comments.putcommentsid
+      with:
+        comment_id: tools.comment_id
+        fields: tools.fields
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: box-remove-comment
+      description: Box Remove comment
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: box-comments.deletecommentsid
+      with:
+        comment_id: tools.comment_id
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: box-list-file-comments
+      description: Box List file comments
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: box-comments.getfilesidcomments
+      with:
+        file_id: tools.file_id
+        fields: tools.fields
+        limit: tools.limit
+        offset: tools.offset
+      outputParameters:
+      - type: object
+        mapping: $.

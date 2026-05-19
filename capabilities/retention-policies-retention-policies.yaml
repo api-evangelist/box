@@ -1,0 +1,332 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Box Retention Policies API — Retention Policies
+  description: 'Box Retention Policies API — Retention Policies. 6 operations. Lead operation: Box List retention policies.
+    Self-contained Naftiko capability covering one Box business surface.'
+  tags:
+  - Box
+  - Retention Policies
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    BOX_API_KEY: BOX_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: retention-policies-retention-policies
+    baseUri: ''
+    description: Box Retention Policies API — Retention Policies business capability. Self-contained, no shared references.
+    resources:
+    - name: retention_policies
+      path: /retention_policies
+      operations:
+      - name: getretentionpolicies
+        method: GET
+        description: Box List retention policies
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: policy_name
+          in: query
+          type: string
+          description: Filters results by a case sensitive prefix of the name of
+        - name: policy_type
+          in: query
+          type: string
+          description: Filters results by the type of retention policy.
+        - name: created_by_user_id
+          in: query
+          type: string
+          description: Filters results by the ID of the user who created policy.
+        - name: fields
+          in: query
+          type: array
+          description: A comma-separated list of attributes to include in the
+        - name: limit
+          in: query
+          type: integer
+          description: The maximum number of items to return per page.
+        - name: marker
+          in: query
+          type: string
+          description: Defines the position marker at which to begin returning results. This is
+      - name: postretentionpolicies
+        method: POST
+        description: Box Create retention policy
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: false
+    - name: retention_policies-retention_policy_id
+      path: /retention_policies/{retention_policy_id}
+      operations:
+      - name: getretentionpoliciesid
+        method: GET
+        description: Box Get retention policy
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: retention_policy_id
+          in: path
+          type: string
+          description: The ID of the retention policy.
+          required: true
+        - name: fields
+          in: query
+          type: array
+          description: A comma-separated list of attributes to include in the
+      - name: putretentionpoliciesid
+        method: PUT
+        description: Box Update retention policy
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: retention_policy_id
+          in: path
+          type: string
+          description: The ID of the retention policy.
+          required: true
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: false
+      - name: deleteretentionpoliciesid
+        method: DELETE
+        description: Box Delete retention policy
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: retention_policy_id
+          in: path
+          type: string
+          description: The ID of the retention policy.
+          required: true
+    - name: retention_policies-retention_policy_id-assignments
+      path: /retention_policies/{retention_policy_id}/assignments
+      operations:
+      - name: getretentionpoliciesidassignments
+        method: GET
+        description: Box List retention policy assignments
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: retention_policy_id
+          in: path
+          type: string
+          description: The ID of the retention policy.
+          required: true
+        - name: type
+          in: query
+          type: string
+          description: The type of the retention policy assignment to retrieve.
+        - name: fields
+          in: query
+          type: array
+          description: A comma-separated list of attributes to include in the
+        - name: marker
+          in: query
+          type: string
+          description: Defines the position marker at which to begin returning results. This is
+        - name: limit
+          in: query
+          type: integer
+          description: The maximum number of items to return per page.
+  exposes:
+  - type: rest
+    namespace: retention-policies-retention-policies-rest
+    port: 8080
+    description: REST adapter for Box Retention Policies API — Retention Policies. One Spectral-compliant resource per consumed
+      operation, prefixed with /v1.
+    resources:
+    - path: /v1/retention-policies
+      name: retention-policies
+      description: REST surface for retention_policies.
+      operations:
+      - method: GET
+        name: getretentionpolicies
+        description: Box List retention policies
+        call: retention-policies-retention-policies.getretentionpolicies
+        with:
+          policy_name: rest.policy_name
+          policy_type: rest.policy_type
+          created_by_user_id: rest.created_by_user_id
+          fields: rest.fields
+          limit: rest.limit
+          marker: rest.marker
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: POST
+        name: postretentionpolicies
+        description: Box Create retention policy
+        call: retention-policies-retention-policies.postretentionpolicies
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/retention-policies/{retention-policy-id}
+      name: retention-policies-retention-policy-id
+      description: REST surface for retention_policies-retention_policy_id.
+      operations:
+      - method: GET
+        name: getretentionpoliciesid
+        description: Box Get retention policy
+        call: retention-policies-retention-policies.getretentionpoliciesid
+        with:
+          retention_policy_id: rest.retention_policy_id
+          fields: rest.fields
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: PUT
+        name: putretentionpoliciesid
+        description: Box Update retention policy
+        call: retention-policies-retention-policies.putretentionpoliciesid
+        with:
+          retention_policy_id: rest.retention_policy_id
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: DELETE
+        name: deleteretentionpoliciesid
+        description: Box Delete retention policy
+        call: retention-policies-retention-policies.deleteretentionpoliciesid
+        with:
+          retention_policy_id: rest.retention_policy_id
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/retention-policies/{retention-policy-id}/assignments
+      name: retention-policies-retention-policy-id-assignments
+      description: REST surface for retention_policies-retention_policy_id-assignments.
+      operations:
+      - method: GET
+        name: getretentionpoliciesidassignments
+        description: Box List retention policy assignments
+        call: retention-policies-retention-policies.getretentionpoliciesidassignments
+        with:
+          retention_policy_id: rest.retention_policy_id
+          type: rest.type
+          fields: rest.fields
+          marker: rest.marker
+          limit: rest.limit
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: retention-policies-retention-policies-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Box Retention Policies API — Retention Policies. One tool per consumed operation, routed
+      inline through this capability's consumes block.
+    tools:
+    - name: box-list-retention-policies
+      description: Box List retention policies
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: retention-policies-retention-policies.getretentionpolicies
+      with:
+        policy_name: tools.policy_name
+        policy_type: tools.policy_type
+        created_by_user_id: tools.created_by_user_id
+        fields: tools.fields
+        limit: tools.limit
+        marker: tools.marker
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: box-create-retention-policy
+      description: Box Create retention policy
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: retention-policies-retention-policies.postretentionpolicies
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: box-get-retention-policy
+      description: Box Get retention policy
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: retention-policies-retention-policies.getretentionpoliciesid
+      with:
+        retention_policy_id: tools.retention_policy_id
+        fields: tools.fields
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: box-update-retention-policy
+      description: Box Update retention policy
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: true
+      call: retention-policies-retention-policies.putretentionpoliciesid
+      with:
+        retention_policy_id: tools.retention_policy_id
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: box-delete-retention-policy
+      description: Box Delete retention policy
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: retention-policies-retention-policies.deleteretentionpoliciesid
+      with:
+        retention_policy_id: tools.retention_policy_id
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: box-list-retention-policy-assignments
+      description: Box List retention policy assignments
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: retention-policies-retention-policies.getretentionpoliciesidassignments
+      with:
+        retention_policy_id: tools.retention_policy_id
+        type: tools.type
+        fields: tools.fields
+        marker: tools.marker
+        limit: tools.limit
+      outputParameters:
+      - type: object
+        mapping: $.

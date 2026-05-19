@@ -1,0 +1,251 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Box Platform API — Legal Hold Policies
+  description: 'Box Platform API — Legal Hold Policies. 5 operations. Lead operation: Box List all legal hold policies. Self-contained
+    Naftiko capability covering one Box business surface.'
+  tags:
+  - Box
+  - Legal Hold Policies
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    BOX_API_KEY: BOX_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: box-legal-hold-policies
+    baseUri: https://api.box.com/2.0
+    description: Box Platform API — Legal Hold Policies business capability. Self-contained, no shared references.
+    resources:
+    - name: legal_hold_policies
+      path: /legal_hold_policies
+      operations:
+      - name: getlegalholdpolicies
+        method: GET
+        description: Box List all legal hold policies
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: policy_name
+          in: query
+          type: string
+          description: Limits results to policies for which the names start with
+        - name: fields
+          in: query
+          type: array
+          description: A comma-separated list of attributes to include in the
+        - name: marker
+          in: query
+          type: string
+          description: Defines the position marker at which to begin returning results. This is
+        - name: limit
+          in: query
+          type: integer
+          description: The maximum number of items to return per page.
+      - name: postlegalholdpolicies
+        method: POST
+        description: Box Create legal hold policy
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: false
+    - name: legal_hold_policies-legal_hold_policy_id
+      path: /legal_hold_policies/{legal_hold_policy_id}
+      operations:
+      - name: getlegalholdpoliciesid
+        method: GET
+        description: Box Get legal hold policy
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: legal_hold_policy_id
+          in: path
+          type: string
+          description: The ID of the legal hold policy
+          required: true
+      - name: putlegalholdpoliciesid
+        method: PUT
+        description: Box Update legal hold policy
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: legal_hold_policy_id
+          in: path
+          type: string
+          description: The ID of the legal hold policy
+          required: true
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: false
+      - name: deletelegalholdpoliciesid
+        method: DELETE
+        description: Box Remove legal hold policy
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: legal_hold_policy_id
+          in: path
+          type: string
+          description: The ID of the legal hold policy
+          required: true
+    authentication:
+      type: bearer
+      token: '{{env.BOX_API_KEY}}'
+  exposes:
+  - type: rest
+    namespace: box-legal-hold-policies-rest
+    port: 8080
+    description: REST adapter for Box Platform API — Legal Hold Policies. One Spectral-compliant resource per consumed operation,
+      prefixed with /v1.
+    resources:
+    - path: /v1/legal-hold-policies
+      name: legal-hold-policies
+      description: REST surface for legal_hold_policies.
+      operations:
+      - method: GET
+        name: getlegalholdpolicies
+        description: Box List all legal hold policies
+        call: box-legal-hold-policies.getlegalholdpolicies
+        with:
+          policy_name: rest.policy_name
+          fields: rest.fields
+          marker: rest.marker
+          limit: rest.limit
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: POST
+        name: postlegalholdpolicies
+        description: Box Create legal hold policy
+        call: box-legal-hold-policies.postlegalholdpolicies
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/legal-hold-policies/{legal-hold-policy-id}
+      name: legal-hold-policies-legal-hold-policy-id
+      description: REST surface for legal_hold_policies-legal_hold_policy_id.
+      operations:
+      - method: GET
+        name: getlegalholdpoliciesid
+        description: Box Get legal hold policy
+        call: box-legal-hold-policies.getlegalholdpoliciesid
+        with:
+          legal_hold_policy_id: rest.legal_hold_policy_id
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: PUT
+        name: putlegalholdpoliciesid
+        description: Box Update legal hold policy
+        call: box-legal-hold-policies.putlegalholdpoliciesid
+        with:
+          legal_hold_policy_id: rest.legal_hold_policy_id
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: DELETE
+        name: deletelegalholdpoliciesid
+        description: Box Remove legal hold policy
+        call: box-legal-hold-policies.deletelegalholdpoliciesid
+        with:
+          legal_hold_policy_id: rest.legal_hold_policy_id
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: box-legal-hold-policies-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Box Platform API — Legal Hold Policies. One tool per consumed operation, routed inline through
+      this capability's consumes block.
+    tools:
+    - name: box-list-all-legal-hold
+      description: Box List all legal hold policies
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: box-legal-hold-policies.getlegalholdpolicies
+      with:
+        policy_name: tools.policy_name
+        fields: tools.fields
+        marker: tools.marker
+        limit: tools.limit
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: box-create-legal-hold-policy
+      description: Box Create legal hold policy
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: box-legal-hold-policies.postlegalholdpolicies
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: box-get-legal-hold-policy
+      description: Box Get legal hold policy
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: box-legal-hold-policies.getlegalholdpoliciesid
+      with:
+        legal_hold_policy_id: tools.legal_hold_policy_id
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: box-update-legal-hold-policy
+      description: Box Update legal hold policy
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: true
+      call: box-legal-hold-policies.putlegalholdpoliciesid
+      with:
+        legal_hold_policy_id: tools.legal_hold_policy_id
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: box-remove-legal-hold-policy
+      description: Box Remove legal hold policy
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: box-legal-hold-policies.deletelegalholdpoliciesid
+      with:
+        legal_hold_policy_id: tools.legal_hold_policy_id
+      outputParameters:
+      - type: object
+        mapping: $.

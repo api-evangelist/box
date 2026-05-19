@@ -1,0 +1,309 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Box Platform API — Shared Links (Files)
+  description: 'Box Platform API — Shared Links (Files). 5 operations. Lead operation: Box Add shared link to file. Self-contained
+    Naftiko capability covering one Box business surface.'
+  tags:
+  - Box
+  - Shared Links (Files)
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    BOX_API_KEY: BOX_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: box-shared-links-files
+    baseUri: https://api.box.com/2.0
+    description: Box Platform API — Shared Links (Files) business capability. Self-contained, no shared references.
+    resources:
+    - name: files-file_id}#add_shared_link
+      path: /files/{file_id}#add_shared_link
+      operations:
+      - name: putfilesidaddsharedlink
+        method: PUT
+        description: Box Add shared link to file
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: file_id
+          in: path
+          type: string
+          description: The unique identifier that represents a file.
+          required: true
+        - name: fields
+          in: query
+          type: string
+          description: Explicitly request the `shared_link` fields
+          required: true
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: false
+    - name: files-file_id}#get_shared_link
+      path: /files/{file_id}#get_shared_link
+      operations:
+      - name: getfilesidgetsharedlink
+        method: GET
+        description: Box Get shared link for file
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: file_id
+          in: path
+          type: string
+          description: The unique identifier that represents a file.
+          required: true
+        - name: fields
+          in: query
+          type: string
+          description: Explicitly request the `shared_link` fields
+          required: true
+    - name: files-file_id}#remove_shared_link
+      path: /files/{file_id}#remove_shared_link
+      operations:
+      - name: putfilesidremovesharedlink
+        method: PUT
+        description: Box Remove shared link from file
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: file_id
+          in: path
+          type: string
+          description: The unique identifier that represents a file.
+          required: true
+        - name: fields
+          in: query
+          type: string
+          description: Explicitly request the `shared_link` fields
+          required: true
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: false
+    - name: files-file_id}#update_shared_link
+      path: /files/{file_id}#update_shared_link
+      operations:
+      - name: putfilesidupdatesharedlink
+        method: PUT
+        description: Box Update shared link on file
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: file_id
+          in: path
+          type: string
+          description: The unique identifier that represents a file.
+          required: true
+        - name: fields
+          in: query
+          type: string
+          description: Explicitly request the `shared_link` fields
+          required: true
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: false
+    - name: shared_items
+      path: /shared_items
+      operations:
+      - name: getshareditems
+        method: GET
+        description: Box Find file for shared link
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: if-none-match
+          in: header
+          type: string
+          description: Ensures an item is only returned if it has changed.
+        - name: fields
+          in: query
+          type: array
+          description: A comma-separated list of attributes to include in the
+        - name: boxapi
+          in: header
+          type: string
+          description: A header containing the shared link and optional password for the
+          required: true
+    authentication:
+      type: bearer
+      token: '{{env.BOX_API_KEY}}'
+  exposes:
+  - type: rest
+    namespace: box-shared-links-files-rest
+    port: 8080
+    description: REST adapter for Box Platform API — Shared Links (Files). One Spectral-compliant resource per consumed operation,
+      prefixed with /v1.
+    resources:
+    - path: /v1/files/file-id-add-shared-link
+      name: files-file-id-add-shared-link
+      description: REST surface for files-file_id}#add_shared_link.
+      operations:
+      - method: PUT
+        name: putfilesidaddsharedlink
+        description: Box Add shared link to file
+        call: box-shared-links-files.putfilesidaddsharedlink
+        with:
+          file_id: rest.file_id
+          fields: rest.fields
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/files/file-id-get-shared-link
+      name: files-file-id-get-shared-link
+      description: REST surface for files-file_id}#get_shared_link.
+      operations:
+      - method: GET
+        name: getfilesidgetsharedlink
+        description: Box Get shared link for file
+        call: box-shared-links-files.getfilesidgetsharedlink
+        with:
+          file_id: rest.file_id
+          fields: rest.fields
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/files/file-id-remove-shared-link
+      name: files-file-id-remove-shared-link
+      description: REST surface for files-file_id}#remove_shared_link.
+      operations:
+      - method: PUT
+        name: putfilesidremovesharedlink
+        description: Box Remove shared link from file
+        call: box-shared-links-files.putfilesidremovesharedlink
+        with:
+          file_id: rest.file_id
+          fields: rest.fields
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/files/file-id-update-shared-link
+      name: files-file-id-update-shared-link
+      description: REST surface for files-file_id}#update_shared_link.
+      operations:
+      - method: PUT
+        name: putfilesidupdatesharedlink
+        description: Box Update shared link on file
+        call: box-shared-links-files.putfilesidupdatesharedlink
+        with:
+          file_id: rest.file_id
+          fields: rest.fields
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/shared-items
+      name: shared-items
+      description: REST surface for shared_items.
+      operations:
+      - method: GET
+        name: getshareditems
+        description: Box Find file for shared link
+        call: box-shared-links-files.getshareditems
+        with:
+          if-none-match: rest.if-none-match
+          fields: rest.fields
+          boxapi: rest.boxapi
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: box-shared-links-files-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Box Platform API — Shared Links (Files). One tool per consumed operation, routed inline through
+      this capability's consumes block.
+    tools:
+    - name: box-add-shared-link-file
+      description: Box Add shared link to file
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: true
+      call: box-shared-links-files.putfilesidaddsharedlink
+      with:
+        file_id: tools.file_id
+        fields: tools.fields
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: box-get-shared-link-file
+      description: Box Get shared link for file
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: box-shared-links-files.getfilesidgetsharedlink
+      with:
+        file_id: tools.file_id
+        fields: tools.fields
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: box-remove-shared-link-file
+      description: Box Remove shared link from file
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: true
+      call: box-shared-links-files.putfilesidremovesharedlink
+      with:
+        file_id: tools.file_id
+        fields: tools.fields
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: box-update-shared-link-file
+      description: Box Update shared link on file
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: true
+      call: box-shared-links-files.putfilesidupdatesharedlink
+      with:
+        file_id: tools.file_id
+        fields: tools.fields
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: box-find-file-shared-link
+      description: Box Find file for shared link
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: box-shared-links-files.getshareditems
+      with:
+        if-none-match: tools.if-none-match
+        fields: tools.fields
+        boxapi: tools.boxapi
+      outputParameters:
+      - type: object
+        mapping: $.

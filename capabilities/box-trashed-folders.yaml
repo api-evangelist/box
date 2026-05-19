@@ -1,0 +1,176 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Box Platform API — Trashed Folders
+  description: 'Box Platform API — Trashed Folders. 3 operations. Lead operation: Box Restore folder. Self-contained Naftiko
+    capability covering one Box business surface.'
+  tags:
+  - Box
+  - Trashed Folders
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    BOX_API_KEY: BOX_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: box-trashed-folders
+    baseUri: https://api.box.com/2.0
+    description: Box Platform API — Trashed Folders business capability. Self-contained, no shared references.
+    resources:
+    - name: folders-folder_id
+      path: /folders/{folder_id}
+      operations:
+      - name: postfoldersid
+        method: POST
+        description: Box Restore folder
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: folder_id
+          in: path
+          type: string
+          description: The unique identifier that represent a folder.
+          required: true
+        - name: fields
+          in: query
+          type: array
+          description: A comma-separated list of attributes to include in the
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: false
+    - name: folders-folder_id-trash
+      path: /folders/{folder_id}/trash
+      operations:
+      - name: getfoldersidtrash
+        method: GET
+        description: Box Get trashed folder
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: folder_id
+          in: path
+          type: string
+          description: The unique identifier that represent a folder.
+          required: true
+        - name: fields
+          in: query
+          type: array
+          description: A comma-separated list of attributes to include in the
+      - name: deletefoldersidtrash
+        method: DELETE
+        description: Box Permanently remove folder
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: folder_id
+          in: path
+          type: string
+          description: The unique identifier that represent a folder.
+          required: true
+    authentication:
+      type: bearer
+      token: '{{env.BOX_API_KEY}}'
+  exposes:
+  - type: rest
+    namespace: box-trashed-folders-rest
+    port: 8080
+    description: REST adapter for Box Platform API — Trashed Folders. One Spectral-compliant resource per consumed operation,
+      prefixed with /v1.
+    resources:
+    - path: /v1/folders/{folder-id}
+      name: folders-folder-id
+      description: REST surface for folders-folder_id.
+      operations:
+      - method: POST
+        name: postfoldersid
+        description: Box Restore folder
+        call: box-trashed-folders.postfoldersid
+        with:
+          folder_id: rest.folder_id
+          fields: rest.fields
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/folders/{folder-id}/trash
+      name: folders-folder-id-trash
+      description: REST surface for folders-folder_id-trash.
+      operations:
+      - method: GET
+        name: getfoldersidtrash
+        description: Box Get trashed folder
+        call: box-trashed-folders.getfoldersidtrash
+        with:
+          folder_id: rest.folder_id
+          fields: rest.fields
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: DELETE
+        name: deletefoldersidtrash
+        description: Box Permanently remove folder
+        call: box-trashed-folders.deletefoldersidtrash
+        with:
+          folder_id: rest.folder_id
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: box-trashed-folders-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Box Platform API — Trashed Folders. One tool per consumed operation, routed inline through
+      this capability's consumes block.
+    tools:
+    - name: box-restore-folder
+      description: Box Restore folder
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: box-trashed-folders.postfoldersid
+      with:
+        folder_id: tools.folder_id
+        fields: tools.fields
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: box-get-trashed-folder
+      description: Box Get trashed folder
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: box-trashed-folders.getfoldersidtrash
+      with:
+        folder_id: tools.folder_id
+        fields: tools.fields
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: box-permanently-remove-folder
+      description: Box Permanently remove folder
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: box-trashed-folders.deletefoldersidtrash
+      with:
+        folder_id: tools.folder_id
+      outputParameters:
+      - type: object
+        mapping: $.

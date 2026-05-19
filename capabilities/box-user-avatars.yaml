@@ -1,0 +1,157 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Box Platform API — User Avatars
+  description: 'Box Platform API — User Avatars. 3 operations. Lead operation: Box Get user avatar. Self-contained Naftiko
+    capability covering one Box business surface.'
+  tags:
+  - Box
+  - User Avatars
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    BOX_API_KEY: BOX_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: box-user-avatars
+    baseUri: https://api.box.com/2.0
+    description: Box Platform API — User Avatars business capability. Self-contained, no shared references.
+    resources:
+    - name: users-user_id-avatar
+      path: /users/{user_id}/avatar
+      operations:
+      - name: getusersidavatar
+        method: GET
+        description: Box Get user avatar
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: user_id
+          in: path
+          type: string
+          description: The ID of the user.
+          required: true
+      - name: postusersidavatar
+        method: POST
+        description: Box Add or update user avatar
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: user_id
+          in: path
+          type: string
+          description: The ID of the user.
+          required: true
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: false
+      - name: deleteusersidavatar
+        method: DELETE
+        description: Box Delete user avatar
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: user_id
+          in: path
+          type: string
+          description: The ID of the user.
+          required: true
+    authentication:
+      type: bearer
+      token: '{{env.BOX_API_KEY}}'
+  exposes:
+  - type: rest
+    namespace: box-user-avatars-rest
+    port: 8080
+    description: REST adapter for Box Platform API — User Avatars. One Spectral-compliant resource per consumed operation,
+      prefixed with /v1.
+    resources:
+    - path: /v1/users/{user-id}/avatar
+      name: users-user-id-avatar
+      description: REST surface for users-user_id-avatar.
+      operations:
+      - method: GET
+        name: getusersidavatar
+        description: Box Get user avatar
+        call: box-user-avatars.getusersidavatar
+        with:
+          user_id: rest.user_id
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: POST
+        name: postusersidavatar
+        description: Box Add or update user avatar
+        call: box-user-avatars.postusersidavatar
+        with:
+          user_id: rest.user_id
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: DELETE
+        name: deleteusersidavatar
+        description: Box Delete user avatar
+        call: box-user-avatars.deleteusersidavatar
+        with:
+          user_id: rest.user_id
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: box-user-avatars-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Box Platform API — User Avatars. One tool per consumed operation, routed inline through this
+      capability's consumes block.
+    tools:
+    - name: box-get-user-avatar
+      description: Box Get user avatar
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: box-user-avatars.getusersidavatar
+      with:
+        user_id: tools.user_id
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: box-add-update-user-avatar
+      description: Box Add or update user avatar
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: box-user-avatars.postusersidavatar
+      with:
+        user_id: tools.user_id
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: box-delete-user-avatar
+      description: Box Delete user avatar
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: box-user-avatars.deleteusersidavatar
+      with:
+        user_id: tools.user_id
+      outputParameters:
+      - type: object
+        mapping: $.

@@ -1,0 +1,212 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Box Platform API — File Requests
+  description: 'Box Platform API — File Requests. 4 operations. Lead operation: Box Get file request. Self-contained Naftiko
+    capability covering one Box business surface.'
+  tags:
+  - Box
+  - File Requests
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    BOX_API_KEY: BOX_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: box-file-requests
+    baseUri: https://api.box.com/2.0
+    description: Box Platform API — File Requests business capability. Self-contained, no shared references.
+    resources:
+    - name: file_requests-file_request_id
+      path: /file_requests/{file_request_id}
+      operations:
+      - name: getfilerequestsid
+        method: GET
+        description: Box Get file request
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: file_request_id
+          in: path
+          type: string
+          description: The unique identifier that represent a file request.
+          required: true
+      - name: putfilerequestsid
+        method: PUT
+        description: Box Update file request
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: file_request_id
+          in: path
+          type: string
+          description: The unique identifier that represent a file request.
+          required: true
+        - name: if-match
+          in: header
+          type: string
+          description: Ensures this item hasn't recently changed before
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: false
+      - name: deletefilerequestsid
+        method: DELETE
+        description: Box Delete file request
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: file_request_id
+          in: path
+          type: string
+          description: The unique identifier that represent a file request.
+          required: true
+    - name: file_requests-file_request_id-copy
+      path: /file_requests/{file_request_id}/copy
+      operations:
+      - name: postfilerequestsidcopy
+        method: POST
+        description: Box Copy file request
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: file_request_id
+          in: path
+          type: string
+          description: The unique identifier that represent a file request.
+          required: true
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: false
+    authentication:
+      type: bearer
+      token: '{{env.BOX_API_KEY}}'
+  exposes:
+  - type: rest
+    namespace: box-file-requests-rest
+    port: 8080
+    description: REST adapter for Box Platform API — File Requests. One Spectral-compliant resource per consumed operation,
+      prefixed with /v1.
+    resources:
+    - path: /v1/file-requests/{file-request-id}
+      name: file-requests-file-request-id
+      description: REST surface for file_requests-file_request_id.
+      operations:
+      - method: GET
+        name: getfilerequestsid
+        description: Box Get file request
+        call: box-file-requests.getfilerequestsid
+        with:
+          file_request_id: rest.file_request_id
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: PUT
+        name: putfilerequestsid
+        description: Box Update file request
+        call: box-file-requests.putfilerequestsid
+        with:
+          file_request_id: rest.file_request_id
+          if-match: rest.if-match
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: DELETE
+        name: deletefilerequestsid
+        description: Box Delete file request
+        call: box-file-requests.deletefilerequestsid
+        with:
+          file_request_id: rest.file_request_id
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/file-requests/{file-request-id}/copy
+      name: file-requests-file-request-id-copy
+      description: REST surface for file_requests-file_request_id-copy.
+      operations:
+      - method: POST
+        name: postfilerequestsidcopy
+        description: Box Copy file request
+        call: box-file-requests.postfilerequestsidcopy
+        with:
+          file_request_id: rest.file_request_id
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: box-file-requests-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Box Platform API — File Requests. One tool per consumed operation, routed inline through
+      this capability's consumes block.
+    tools:
+    - name: box-get-file-request
+      description: Box Get file request
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: box-file-requests.getfilerequestsid
+      with:
+        file_request_id: tools.file_request_id
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: box-update-file-request
+      description: Box Update file request
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: true
+      call: box-file-requests.putfilerequestsid
+      with:
+        file_request_id: tools.file_request_id
+        if-match: tools.if-match
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: box-delete-file-request
+      description: Box Delete file request
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: box-file-requests.deletefilerequestsid
+      with:
+        file_request_id: tools.file_request_id
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: box-copy-file-request
+      description: Box Copy file request
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: box-file-requests.postfilerequestsidcopy
+      with:
+        file_request_id: tools.file_request_id
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.

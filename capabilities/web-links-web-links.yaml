@@ -1,0 +1,550 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Box Web Links API — Web Links
+  description: 'Box Web Links API — Web Links. 11 operations. Lead operation: Box Create web link. Self-contained Naftiko
+    capability covering one Box business surface.'
+  tags:
+  - Box
+  - Web Links
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    BOX_API_KEY: BOX_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: web-links-web-links
+    baseUri: ''
+    description: Box Web Links API — Web Links business capability. Self-contained, no shared references.
+    resources:
+    - name: web_links
+      path: /web_links
+      operations:
+      - name: postweblinks
+        method: POST
+        description: Box Create web link
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: false
+    - name: web_links-web_link_id
+      path: /web_links/{web_link_id}
+      operations:
+      - name: getweblinksid
+        method: GET
+        description: Box Get web link
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: web_link_id
+          in: path
+          type: string
+          description: The ID of the web link.
+          required: true
+        - name: boxapi
+          in: header
+          type: string
+          description: The URL, and optional password, for the shared link of this item.
+      - name: postweblinksid
+        method: POST
+        description: Box Restore web link
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: web_link_id
+          in: path
+          type: string
+          description: The ID of the web link.
+          required: true
+        - name: fields
+          in: query
+          type: array
+          description: A comma-separated list of attributes to include in the
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: false
+      - name: putweblinksid
+        method: PUT
+        description: Box Update web link
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: web_link_id
+          in: path
+          type: string
+          description: The ID of the web link.
+          required: true
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: false
+      - name: deleteweblinksid
+        method: DELETE
+        description: Box Remove web link
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: web_link_id
+          in: path
+          type: string
+          description: The ID of the web link.
+          required: true
+    - name: web_links-web_link_id}#add_shared_link
+      path: /web_links/{web_link_id}#add_shared_link
+      operations:
+      - name: putweblinksidaddsharedlink
+        method: PUT
+        description: Box Add shared link to web link
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: web_link_id
+          in: path
+          type: string
+          description: The ID of the web link.
+          required: true
+        - name: fields
+          in: query
+          type: string
+          description: Explicitly request the `shared_link` fields
+          required: true
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: false
+    - name: web_links-web_link_id}#get_shared_link
+      path: /web_links/{web_link_id}#get_shared_link
+      operations:
+      - name: getweblinksidgetsharedlink
+        method: GET
+        description: Box Get shared link for web link
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: web_link_id
+          in: path
+          type: string
+          description: The ID of the web link.
+          required: true
+        - name: fields
+          in: query
+          type: string
+          description: Explicitly request the `shared_link` fields
+          required: true
+    - name: web_links-web_link_id}#remove_shared_link
+      path: /web_links/{web_link_id}#remove_shared_link
+      operations:
+      - name: putweblinksidremovesharedlink
+        method: PUT
+        description: Box Remove shared link from web link
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: web_link_id
+          in: path
+          type: string
+          description: The ID of the web link.
+          required: true
+        - name: fields
+          in: query
+          type: string
+          description: Explicitly request the `shared_link` fields
+          required: true
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: false
+    - name: web_links-web_link_id}#update_shared_link
+      path: /web_links/{web_link_id}#update_shared_link
+      operations:
+      - name: putweblinksidupdatesharedlink
+        method: PUT
+        description: Box Update shared link on web link
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: web_link_id
+          in: path
+          type: string
+          description: The ID of the web link.
+          required: true
+        - name: fields
+          in: query
+          type: string
+          description: Explicitly request the `shared_link` fields
+          required: true
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: false
+    - name: web_links-web_link_id-trash
+      path: /web_links/{web_link_id}/trash
+      operations:
+      - name: getweblinksidtrash
+        method: GET
+        description: Box Get trashed web link
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: web_link_id
+          in: path
+          type: string
+          description: The ID of the web link.
+          required: true
+        - name: fields
+          in: query
+          type: array
+          description: A comma-separated list of attributes to include in the
+      - name: deleteweblinksidtrash
+        method: DELETE
+        description: Box Permanently remove web link
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: web_link_id
+          in: path
+          type: string
+          description: The ID of the web link.
+          required: true
+  exposes:
+  - type: rest
+    namespace: web-links-web-links-rest
+    port: 8080
+    description: REST adapter for Box Web Links API — Web Links. One Spectral-compliant resource per consumed operation, prefixed
+      with /v1.
+    resources:
+    - path: /v1/web-links
+      name: web-links
+      description: REST surface for web_links.
+      operations:
+      - method: POST
+        name: postweblinks
+        description: Box Create web link
+        call: web-links-web-links.postweblinks
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/web-links/{web-link-id}
+      name: web-links-web-link-id
+      description: REST surface for web_links-web_link_id.
+      operations:
+      - method: GET
+        name: getweblinksid
+        description: Box Get web link
+        call: web-links-web-links.getweblinksid
+        with:
+          web_link_id: rest.web_link_id
+          boxapi: rest.boxapi
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: POST
+        name: postweblinksid
+        description: Box Restore web link
+        call: web-links-web-links.postweblinksid
+        with:
+          web_link_id: rest.web_link_id
+          fields: rest.fields
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: PUT
+        name: putweblinksid
+        description: Box Update web link
+        call: web-links-web-links.putweblinksid
+        with:
+          web_link_id: rest.web_link_id
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: DELETE
+        name: deleteweblinksid
+        description: Box Remove web link
+        call: web-links-web-links.deleteweblinksid
+        with:
+          web_link_id: rest.web_link_id
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/web-links/web-link-id-add-shared-link
+      name: web-links-web-link-id-add-shared-link
+      description: REST surface for web_links-web_link_id}#add_shared_link.
+      operations:
+      - method: PUT
+        name: putweblinksidaddsharedlink
+        description: Box Add shared link to web link
+        call: web-links-web-links.putweblinksidaddsharedlink
+        with:
+          web_link_id: rest.web_link_id
+          fields: rest.fields
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/web-links/web-link-id-get-shared-link
+      name: web-links-web-link-id-get-shared-link
+      description: REST surface for web_links-web_link_id}#get_shared_link.
+      operations:
+      - method: GET
+        name: getweblinksidgetsharedlink
+        description: Box Get shared link for web link
+        call: web-links-web-links.getweblinksidgetsharedlink
+        with:
+          web_link_id: rest.web_link_id
+          fields: rest.fields
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/web-links/web-link-id-remove-shared-link
+      name: web-links-web-link-id-remove-shared-link
+      description: REST surface for web_links-web_link_id}#remove_shared_link.
+      operations:
+      - method: PUT
+        name: putweblinksidremovesharedlink
+        description: Box Remove shared link from web link
+        call: web-links-web-links.putweblinksidremovesharedlink
+        with:
+          web_link_id: rest.web_link_id
+          fields: rest.fields
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/web-links/web-link-id-update-shared-link
+      name: web-links-web-link-id-update-shared-link
+      description: REST surface for web_links-web_link_id}#update_shared_link.
+      operations:
+      - method: PUT
+        name: putweblinksidupdatesharedlink
+        description: Box Update shared link on web link
+        call: web-links-web-links.putweblinksidupdatesharedlink
+        with:
+          web_link_id: rest.web_link_id
+          fields: rest.fields
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/web-links/{web-link-id}/trash
+      name: web-links-web-link-id-trash
+      description: REST surface for web_links-web_link_id-trash.
+      operations:
+      - method: GET
+        name: getweblinksidtrash
+        description: Box Get trashed web link
+        call: web-links-web-links.getweblinksidtrash
+        with:
+          web_link_id: rest.web_link_id
+          fields: rest.fields
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: DELETE
+        name: deleteweblinksidtrash
+        description: Box Permanently remove web link
+        call: web-links-web-links.deleteweblinksidtrash
+        with:
+          web_link_id: rest.web_link_id
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: web-links-web-links-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Box Web Links API — Web Links. One tool per consumed operation, routed inline through this
+      capability's consumes block.
+    tools:
+    - name: box-create-web-link
+      description: Box Create web link
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: web-links-web-links.postweblinks
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: box-get-web-link
+      description: Box Get web link
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: web-links-web-links.getweblinksid
+      with:
+        web_link_id: tools.web_link_id
+        boxapi: tools.boxapi
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: box-restore-web-link
+      description: Box Restore web link
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: web-links-web-links.postweblinksid
+      with:
+        web_link_id: tools.web_link_id
+        fields: tools.fields
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: box-update-web-link
+      description: Box Update web link
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: true
+      call: web-links-web-links.putweblinksid
+      with:
+        web_link_id: tools.web_link_id
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: box-remove-web-link
+      description: Box Remove web link
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: web-links-web-links.deleteweblinksid
+      with:
+        web_link_id: tools.web_link_id
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: box-add-shared-link-web
+      description: Box Add shared link to web link
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: true
+      call: web-links-web-links.putweblinksidaddsharedlink
+      with:
+        web_link_id: tools.web_link_id
+        fields: tools.fields
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: box-get-shared-link-web
+      description: Box Get shared link for web link
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: web-links-web-links.getweblinksidgetsharedlink
+      with:
+        web_link_id: tools.web_link_id
+        fields: tools.fields
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: box-remove-shared-link-web
+      description: Box Remove shared link from web link
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: true
+      call: web-links-web-links.putweblinksidremovesharedlink
+      with:
+        web_link_id: tools.web_link_id
+        fields: tools.fields
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: box-update-shared-link-web
+      description: Box Update shared link on web link
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: true
+      call: web-links-web-links.putweblinksidupdatesharedlink
+      with:
+        web_link_id: tools.web_link_id
+        fields: tools.fields
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: box-get-trashed-web-link
+      description: Box Get trashed web link
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: web-links-web-links.getweblinksidtrash
+      with:
+        web_link_id: tools.web_link_id
+        fields: tools.fields
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: box-permanently-remove-web-link
+      description: Box Permanently remove web link
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: web-links-web-links.deleteweblinksidtrash
+      with:
+        web_link_id: tools.web_link_id
+      outputParameters:
+      - type: object
+        mapping: $.

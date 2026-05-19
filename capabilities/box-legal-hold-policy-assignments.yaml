@@ -1,0 +1,342 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Box Platform API — Legal Hold Policy Assignments
+  description: 'Box Platform API — Legal Hold Policy Assignments. 6 operations. Lead operation: Box List legal hold policy
+    assignments. Self-contained Naftiko capability covering one Box business surface.'
+  tags:
+  - Box
+  - Legal Hold Policy Assignments
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    BOX_API_KEY: BOX_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: box-legal-hold-policy-assignments
+    baseUri: https://api.box.com/2.0
+    description: Box Platform API — Legal Hold Policy Assignments business capability. Self-contained, no shared references.
+    resources:
+    - name: legal_hold_policy_assignments
+      path: /legal_hold_policy_assignments
+      operations:
+      - name: getlegalholdpolicyassignments
+        method: GET
+        description: Box List legal hold policy assignments
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: policy_id
+          in: query
+          type: string
+          description: The ID of the legal hold policy
+          required: true
+        - name: assign_to_type
+          in: query
+          type: string
+          description: Filters the results by the type of item the
+        - name: assign_to_id
+          in: query
+          type: string
+          description: Filters the results by the ID of item the
+        - name: marker
+          in: query
+          type: string
+          description: Defines the position marker at which to begin returning results. This is
+        - name: limit
+          in: query
+          type: integer
+          description: The maximum number of items to return per page.
+        - name: fields
+          in: query
+          type: array
+          description: A comma-separated list of attributes to include in the
+      - name: postlegalholdpolicyassignments
+        method: POST
+        description: Box Assign legal hold policy
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: false
+    - name: legal_hold_policy_assignments-legal_hold_policy_assignment_id
+      path: /legal_hold_policy_assignments/{legal_hold_policy_assignment_id}
+      operations:
+      - name: getlegalholdpolicyassignmentsid
+        method: GET
+        description: Box Get legal hold policy assignment
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: legal_hold_policy_assignment_id
+          in: path
+          type: string
+          description: The ID of the legal hold policy assignment
+          required: true
+      - name: deletelegalholdpolicyassignmentsid
+        method: DELETE
+        description: Box Unassign legal hold policy
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: legal_hold_policy_assignment_id
+          in: path
+          type: string
+          description: The ID of the legal hold policy assignment
+          required: true
+    - name: legal_hold_policy_assignments-legal_hold_policy_assignment_id-file_versions_on_h
+      path: /legal_hold_policy_assignments/{legal_hold_policy_assignment_id}/file_versions_on_hold
+      operations:
+      - name: getlegalholdpolicyassignmentsidfileversionsonhold
+        method: GET
+        description: Box List previous file versions for legal hold policy assignment
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: legal_hold_policy_assignment_id
+          in: path
+          type: string
+          description: The ID of the legal hold policy assignment
+          required: true
+        - name: marker
+          in: query
+          type: string
+          description: Defines the position marker at which to begin returning results. This is
+        - name: limit
+          in: query
+          type: integer
+          description: The maximum number of items to return per page.
+        - name: fields
+          in: query
+          type: array
+          description: A comma-separated list of attributes to include in the
+    - name: legal_hold_policy_assignments-legal_hold_policy_assignment_id-files_on_hold
+      path: /legal_hold_policy_assignments/{legal_hold_policy_assignment_id}/files_on_hold
+      operations:
+      - name: getlegalholdpolicyassignmentsidfilesonhold
+        method: GET
+        description: Box List current file versions for legal hold policy assignment
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: legal_hold_policy_assignment_id
+          in: path
+          type: string
+          description: The ID of the legal hold policy assignment
+          required: true
+        - name: marker
+          in: query
+          type: string
+          description: Defines the position marker at which to begin returning results. This is
+        - name: limit
+          in: query
+          type: integer
+          description: The maximum number of items to return per page.
+        - name: fields
+          in: query
+          type: array
+          description: A comma-separated list of attributes to include in the
+    authentication:
+      type: bearer
+      token: '{{env.BOX_API_KEY}}'
+  exposes:
+  - type: rest
+    namespace: box-legal-hold-policy-assignments-rest
+    port: 8080
+    description: REST adapter for Box Platform API — Legal Hold Policy Assignments. One Spectral-compliant resource per consumed
+      operation, prefixed with /v1.
+    resources:
+    - path: /v1/legal-hold-policy-assignments
+      name: legal-hold-policy-assignments
+      description: REST surface for legal_hold_policy_assignments.
+      operations:
+      - method: GET
+        name: getlegalholdpolicyassignments
+        description: Box List legal hold policy assignments
+        call: box-legal-hold-policy-assignments.getlegalholdpolicyassignments
+        with:
+          policy_id: rest.policy_id
+          assign_to_type: rest.assign_to_type
+          assign_to_id: rest.assign_to_id
+          marker: rest.marker
+          limit: rest.limit
+          fields: rest.fields
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: POST
+        name: postlegalholdpolicyassignments
+        description: Box Assign legal hold policy
+        call: box-legal-hold-policy-assignments.postlegalholdpolicyassignments
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/legal-hold-policy-assignments/{legal-hold-policy-assignment-id}
+      name: legal-hold-policy-assignments-legal-hold-policy-assignment-id
+      description: REST surface for legal_hold_policy_assignments-legal_hold_policy_assignment_id.
+      operations:
+      - method: GET
+        name: getlegalholdpolicyassignmentsid
+        description: Box Get legal hold policy assignment
+        call: box-legal-hold-policy-assignments.getlegalholdpolicyassignmentsid
+        with:
+          legal_hold_policy_assignment_id: rest.legal_hold_policy_assignment_id
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: DELETE
+        name: deletelegalholdpolicyassignmentsid
+        description: Box Unassign legal hold policy
+        call: box-legal-hold-policy-assignments.deletelegalholdpolicyassignmentsid
+        with:
+          legal_hold_policy_assignment_id: rest.legal_hold_policy_assignment_id
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/legal-hold-policy-assignments/{legal-hold-policy-assignment-id}/file-versions-on-hold
+      name: legal-hold-policy-assignments-legal-hold-policy-assignment-id-file-versions-on-h
+      description: REST surface for legal_hold_policy_assignments-legal_hold_policy_assignment_id-file_versions_on_h.
+      operations:
+      - method: GET
+        name: getlegalholdpolicyassignmentsidfileversionsonhold
+        description: Box List previous file versions for legal hold policy assignment
+        call: box-legal-hold-policy-assignments.getlegalholdpolicyassignmentsidfileversionsonhold
+        with:
+          legal_hold_policy_assignment_id: rest.legal_hold_policy_assignment_id
+          marker: rest.marker
+          limit: rest.limit
+          fields: rest.fields
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/legal-hold-policy-assignments/{legal-hold-policy-assignment-id}/files-on-hold
+      name: legal-hold-policy-assignments-legal-hold-policy-assignment-id-files-on-hold
+      description: REST surface for legal_hold_policy_assignments-legal_hold_policy_assignment_id-files_on_hold.
+      operations:
+      - method: GET
+        name: getlegalholdpolicyassignmentsidfilesonhold
+        description: Box List current file versions for legal hold policy assignment
+        call: box-legal-hold-policy-assignments.getlegalholdpolicyassignmentsidfilesonhold
+        with:
+          legal_hold_policy_assignment_id: rest.legal_hold_policy_assignment_id
+          marker: rest.marker
+          limit: rest.limit
+          fields: rest.fields
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: box-legal-hold-policy-assignments-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Box Platform API — Legal Hold Policy Assignments. One tool per consumed operation, routed
+      inline through this capability's consumes block.
+    tools:
+    - name: box-list-legal-hold-policy
+      description: Box List legal hold policy assignments
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: box-legal-hold-policy-assignments.getlegalholdpolicyassignments
+      with:
+        policy_id: tools.policy_id
+        assign_to_type: tools.assign_to_type
+        assign_to_id: tools.assign_to_id
+        marker: tools.marker
+        limit: tools.limit
+        fields: tools.fields
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: box-assign-legal-hold-policy
+      description: Box Assign legal hold policy
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: box-legal-hold-policy-assignments.postlegalholdpolicyassignments
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: box-get-legal-hold-policy
+      description: Box Get legal hold policy assignment
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: box-legal-hold-policy-assignments.getlegalholdpolicyassignmentsid
+      with:
+        legal_hold_policy_assignment_id: tools.legal_hold_policy_assignment_id
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: box-unassign-legal-hold-policy
+      description: Box Unassign legal hold policy
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: box-legal-hold-policy-assignments.deletelegalholdpolicyassignmentsid
+      with:
+        legal_hold_policy_assignment_id: tools.legal_hold_policy_assignment_id
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: box-list-previous-file-versions
+      description: Box List previous file versions for legal hold policy assignment
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: box-legal-hold-policy-assignments.getlegalholdpolicyassignmentsidfileversionsonhold
+      with:
+        legal_hold_policy_assignment_id: tools.legal_hold_policy_assignment_id
+        marker: tools.marker
+        limit: tools.limit
+        fields: tools.fields
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: box-list-current-file-versions
+      description: Box List current file versions for legal hold policy assignment
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: box-legal-hold-policy-assignments.getlegalholdpolicyassignmentsidfilesonhold
+      with:
+        legal_hold_policy_assignment_id: tools.legal_hold_policy_assignment_id
+        marker: tools.marker
+        limit: tools.limit
+        fields: tools.fields
+      outputParameters:
+      - type: object
+        mapping: $.

@@ -1,0 +1,133 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Box Platform API — Standard and Zones Storage Policies
+  description: 'Box Platform API — Standard and Zones Storage Policies. 2 operations. Lead operation: Box List storage policies.
+    Self-contained Naftiko capability covering one Box business surface.'
+  tags:
+  - Box
+  - Standard and Zones Storage Policies
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    BOX_API_KEY: BOX_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: box-standard-and-zones-storage-policies
+    baseUri: https://api.box.com/2.0
+    description: Box Platform API — Standard and Zones Storage Policies business capability. Self-contained, no shared references.
+    resources:
+    - name: storage_policies
+      path: /storage_policies
+      operations:
+      - name: getstoragepolicies
+        method: GET
+        description: Box List storage policies
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: fields
+          in: query
+          type: array
+          description: A comma-separated list of attributes to include in the
+        - name: marker
+          in: query
+          type: string
+          description: Defines the position marker at which to begin returning results. This is
+        - name: limit
+          in: query
+          type: integer
+          description: The maximum number of items to return per page.
+    - name: storage_policies-storage_policy_id
+      path: /storage_policies/{storage_policy_id}
+      operations:
+      - name: getstoragepoliciesid
+        method: GET
+        description: Box Get storage policy
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: storage_policy_id
+          in: path
+          type: string
+          description: The ID of the storage policy.
+          required: true
+    authentication:
+      type: bearer
+      token: '{{env.BOX_API_KEY}}'
+  exposes:
+  - type: rest
+    namespace: box-standard-and-zones-storage-policies-rest
+    port: 8080
+    description: REST adapter for Box Platform API — Standard and Zones Storage Policies. One Spectral-compliant resource
+      per consumed operation, prefixed with /v1.
+    resources:
+    - path: /v1/storage-policies
+      name: storage-policies
+      description: REST surface for storage_policies.
+      operations:
+      - method: GET
+        name: getstoragepolicies
+        description: Box List storage policies
+        call: box-standard-and-zones-storage-policies.getstoragepolicies
+        with:
+          fields: rest.fields
+          marker: rest.marker
+          limit: rest.limit
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/storage-policies/{storage-policy-id}
+      name: storage-policies-storage-policy-id
+      description: REST surface for storage_policies-storage_policy_id.
+      operations:
+      - method: GET
+        name: getstoragepoliciesid
+        description: Box Get storage policy
+        call: box-standard-and-zones-storage-policies.getstoragepoliciesid
+        with:
+          storage_policy_id: rest.storage_policy_id
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: box-standard-and-zones-storage-policies-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Box Platform API — Standard and Zones Storage Policies. One tool per consumed operation,
+      routed inline through this capability's consumes block.
+    tools:
+    - name: box-list-storage-policies
+      description: Box List storage policies
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: box-standard-and-zones-storage-policies.getstoragepolicies
+      with:
+        fields: tools.fields
+        marker: tools.marker
+        limit: tools.limit
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: box-get-storage-policy
+      description: Box Get storage policy
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: box-standard-and-zones-storage-policies.getstoragepoliciesid
+      with:
+        storage_policy_id: tools.storage_policy_id
+      outputParameters:
+      - type: object
+        mapping: $.

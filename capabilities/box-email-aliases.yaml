@@ -1,0 +1,171 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Box Platform API — Email Aliases
+  description: 'Box Platform API — Email Aliases. 3 operations. Lead operation: Box List user''s email aliases. Self-contained
+    Naftiko capability covering one Box business surface.'
+  tags:
+  - Box
+  - Email Aliases
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    BOX_API_KEY: BOX_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: box-email-aliases
+    baseUri: https://api.box.com/2.0
+    description: Box Platform API — Email Aliases business capability. Self-contained, no shared references.
+    resources:
+    - name: users-user_id-email_aliases
+      path: /users/{user_id}/email_aliases
+      operations:
+      - name: getusersidemailaliases
+        method: GET
+        description: Box List user's email aliases
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: user_id
+          in: path
+          type: string
+          description: The ID of the user.
+          required: true
+      - name: postusersidemailaliases
+        method: POST
+        description: Box Create email alias
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: user_id
+          in: path
+          type: string
+          description: The ID of the user.
+          required: true
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: false
+    - name: users-user_id-email_aliases-email_alias_id
+      path: /users/{user_id}/email_aliases/{email_alias_id}
+      operations:
+      - name: deleteusersidemailaliasesid
+        method: DELETE
+        description: Box Remove email alias
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: user_id
+          in: path
+          type: string
+          description: The ID of the user.
+          required: true
+        - name: email_alias_id
+          in: path
+          type: string
+          description: The ID of the email alias.
+          required: true
+    authentication:
+      type: bearer
+      token: '{{env.BOX_API_KEY}}'
+  exposes:
+  - type: rest
+    namespace: box-email-aliases-rest
+    port: 8080
+    description: REST adapter for Box Platform API — Email Aliases. One Spectral-compliant resource per consumed operation,
+      prefixed with /v1.
+    resources:
+    - path: /v1/users/{user-id}/email-aliases
+      name: users-user-id-email-aliases
+      description: REST surface for users-user_id-email_aliases.
+      operations:
+      - method: GET
+        name: getusersidemailaliases
+        description: Box List user's email aliases
+        call: box-email-aliases.getusersidemailaliases
+        with:
+          user_id: rest.user_id
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: POST
+        name: postusersidemailaliases
+        description: Box Create email alias
+        call: box-email-aliases.postusersidemailaliases
+        with:
+          user_id: rest.user_id
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/users/{user-id}/email-aliases/{email-alias-id}
+      name: users-user-id-email-aliases-email-alias-id
+      description: REST surface for users-user_id-email_aliases-email_alias_id.
+      operations:
+      - method: DELETE
+        name: deleteusersidemailaliasesid
+        description: Box Remove email alias
+        call: box-email-aliases.deleteusersidemailaliasesid
+        with:
+          user_id: rest.user_id
+          email_alias_id: rest.email_alias_id
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: box-email-aliases-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Box Platform API — Email Aliases. One tool per consumed operation, routed inline through
+      this capability's consumes block.
+    tools:
+    - name: box-list-user-s-email-aliases
+      description: Box List user's email aliases
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: box-email-aliases.getusersidemailaliases
+      with:
+        user_id: tools.user_id
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: box-create-email-alias
+      description: Box Create email alias
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: box-email-aliases.postusersidemailaliases
+      with:
+        user_id: tools.user_id
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: box-remove-email-alias
+      description: Box Remove email alias
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: box-email-aliases.deleteusersidemailaliasesid
+      with:
+        user_id: tools.user_id
+        email_alias_id: tools.email_alias_id
+      outputParameters:
+      - type: object
+        mapping: $.

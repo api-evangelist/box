@@ -1,0 +1,241 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Box Platform API — Tasks
+  description: 'Box Platform API — Tasks. 5 operations. Lead operation: Box List tasks on file. Self-contained Naftiko capability
+    covering one Box business surface.'
+  tags:
+  - Box
+  - Tasks
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    BOX_API_KEY: BOX_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: box-tasks
+    baseUri: https://api.box.com/2.0
+    description: Box Platform API — Tasks business capability. Self-contained, no shared references.
+    resources:
+    - name: files-file_id-tasks
+      path: /files/{file_id}/tasks
+      operations:
+      - name: getfilesidtasks
+        method: GET
+        description: Box List tasks on file
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: file_id
+          in: path
+          type: string
+          description: The unique identifier that represents a file.
+          required: true
+    - name: tasks
+      path: /tasks
+      operations:
+      - name: posttasks
+        method: POST
+        description: Box Create task
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: false
+    - name: tasks-task_id
+      path: /tasks/{task_id}
+      operations:
+      - name: gettasksid
+        method: GET
+        description: Box Get task
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: task_id
+          in: path
+          type: string
+          description: The ID of the task.
+          required: true
+      - name: puttasksid
+        method: PUT
+        description: Box Update task
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: task_id
+          in: path
+          type: string
+          description: The ID of the task.
+          required: true
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: false
+      - name: deletetasksid
+        method: DELETE
+        description: Box Remove task
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: task_id
+          in: path
+          type: string
+          description: The ID of the task.
+          required: true
+    authentication:
+      type: bearer
+      token: '{{env.BOX_API_KEY}}'
+  exposes:
+  - type: rest
+    namespace: box-tasks-rest
+    port: 8080
+    description: REST adapter for Box Platform API — Tasks. One Spectral-compliant resource per consumed operation, prefixed
+      with /v1.
+    resources:
+    - path: /v1/files/{file-id}/tasks
+      name: files-file-id-tasks
+      description: REST surface for files-file_id-tasks.
+      operations:
+      - method: GET
+        name: getfilesidtasks
+        description: Box List tasks on file
+        call: box-tasks.getfilesidtasks
+        with:
+          file_id: rest.file_id
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/tasks
+      name: tasks
+      description: REST surface for tasks.
+      operations:
+      - method: POST
+        name: posttasks
+        description: Box Create task
+        call: box-tasks.posttasks
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/tasks/{task-id}
+      name: tasks-task-id
+      description: REST surface for tasks-task_id.
+      operations:
+      - method: GET
+        name: gettasksid
+        description: Box Get task
+        call: box-tasks.gettasksid
+        with:
+          task_id: rest.task_id
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: PUT
+        name: puttasksid
+        description: Box Update task
+        call: box-tasks.puttasksid
+        with:
+          task_id: rest.task_id
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: DELETE
+        name: deletetasksid
+        description: Box Remove task
+        call: box-tasks.deletetasksid
+        with:
+          task_id: rest.task_id
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: box-tasks-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Box Platform API — Tasks. One tool per consumed operation, routed inline through this capability's
+      consumes block.
+    tools:
+    - name: box-list-tasks-file
+      description: Box List tasks on file
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: box-tasks.getfilesidtasks
+      with:
+        file_id: tools.file_id
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: box-create-task
+      description: Box Create task
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: box-tasks.posttasks
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: box-get-task
+      description: Box Get task
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: box-tasks.gettasksid
+      with:
+        task_id: tools.task_id
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: box-update-task
+      description: Box Update task
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: true
+      call: box-tasks.puttasksid
+      with:
+        task_id: tools.task_id
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: box-remove-task
+      description: Box Remove task
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: box-tasks.deletetasksid
+      with:
+        task_id: tools.task_id
+      outputParameters:
+      - type: object
+        mapping: $.

@@ -1,0 +1,89 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Box Shared Items API — Shared Items
+  description: 'Box Shared Items API — Shared Items. 1 operations. Lead operation: Box Find file for shared link. Self-contained
+    Naftiko capability covering one Box business surface.'
+  tags:
+  - Box
+  - Shared Items
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    BOX_API_KEY: BOX_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: shared-items-shared-items
+    baseUri: ''
+    description: Box Shared Items API — Shared Items business capability. Self-contained, no shared references.
+    resources:
+    - name: shared_items
+      path: /shared_items
+      operations:
+      - name: getshareditems
+        method: GET
+        description: Box Find file for shared link
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: if-none-match
+          in: header
+          type: string
+          description: Ensures an item is only returned if it has changed.
+        - name: fields
+          in: query
+          type: array
+          description: A comma-separated list of attributes to include in the
+        - name: boxapi
+          in: header
+          type: string
+          description: A header containing the shared link and optional password for the
+          required: true
+  exposes:
+  - type: rest
+    namespace: shared-items-shared-items-rest
+    port: 8080
+    description: REST adapter for Box Shared Items API — Shared Items. One Spectral-compliant resource per consumed operation,
+      prefixed with /v1.
+    resources:
+    - path: /v1/shared-items
+      name: shared-items
+      description: REST surface for shared_items.
+      operations:
+      - method: GET
+        name: getshareditems
+        description: Box Find file for shared link
+        call: shared-items-shared-items.getshareditems
+        with:
+          if-none-match: rest.if-none-match
+          fields: rest.fields
+          boxapi: rest.boxapi
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: shared-items-shared-items-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Box Shared Items API — Shared Items. One tool per consumed operation, routed inline through
+      this capability's consumes block.
+    tools:
+    - name: box-find-file-shared-link
+      description: Box Find file for shared link
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: shared-items-shared-items.getshareditems
+      with:
+        if-none-match: tools.if-none-match
+        fields: tools.fields
+        boxapi: tools.boxapi
+      outputParameters:
+      - type: object
+        mapping: $.

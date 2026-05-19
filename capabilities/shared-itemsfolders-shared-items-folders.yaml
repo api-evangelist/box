@@ -1,0 +1,89 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Box Shared Items#folders API — Shared Items#folders
+  description: 'Box Shared Items#folders API — Shared Items#folders. 1 operations. Lead operation: Box Find folder for shared
+    link. Self-contained Naftiko capability covering one Box business surface.'
+  tags:
+  - Box
+  - Shared Items#folders
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    BOX_API_KEY: BOX_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: shared-itemsfolders-shared-items-folders
+    baseUri: ''
+    description: Box Shared Items#folders API — Shared Items#folders business capability. Self-contained, no shared references.
+    resources:
+    - name: shared_items#folders
+      path: /shared_items#folders
+      operations:
+      - name: getshareditemsfolders
+        method: GET
+        description: Box Find folder for shared link
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: if-none-match
+          in: header
+          type: string
+          description: Ensures an item is only returned if it has changed.
+        - name: fields
+          in: query
+          type: array
+          description: A comma-separated list of attributes to include in the
+        - name: boxapi
+          in: header
+          type: string
+          description: A header containing the shared link and optional password for the
+          required: true
+  exposes:
+  - type: rest
+    namespace: shared-itemsfolders-shared-items-folders-rest
+    port: 8080
+    description: REST adapter for Box Shared Items#folders API — Shared Items#folders. One Spectral-compliant resource per
+      consumed operation, prefixed with /v1.
+    resources:
+    - path: /v1/shared-items-folders
+      name: shared-items-folders
+      description: REST surface for shared_items#folders.
+      operations:
+      - method: GET
+        name: getshareditemsfolders
+        description: Box Find folder for shared link
+        call: shared-itemsfolders-shared-items-folders.getshareditemsfolders
+        with:
+          if-none-match: rest.if-none-match
+          fields: rest.fields
+          boxapi: rest.boxapi
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: shared-itemsfolders-shared-items-folders-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Box Shared Items#folders API — Shared Items#folders. One tool per consumed operation, routed
+      inline through this capability's consumes block.
+    tools:
+    - name: box-find-folder-shared-link
+      description: Box Find folder for shared link
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: shared-itemsfolders-shared-items-folders.getshareditemsfolders
+      with:
+        if-none-match: tools.if-none-match
+        fields: tools.fields
+        boxapi: tools.boxapi
+      outputParameters:
+      - type: object
+        mapping: $.

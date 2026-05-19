@@ -1,0 +1,752 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Box Users API — Users
+  description: 'Box Users API — Users. 15 operations. Lead operation: Box List enterprise users. Self-contained Naftiko capability
+    covering one Box business surface.'
+  tags:
+  - Box
+  - Users
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    BOX_API_KEY: BOX_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: users-users
+    baseUri: ''
+    description: Box Users API — Users business capability. Self-contained, no shared references.
+    resources:
+    - name: users
+      path: /users
+      operations:
+      - name: getusers
+        method: GET
+        description: Box List enterprise users
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: filter_term
+          in: query
+          type: string
+          description: Limits the results to only users who's `name` or
+        - name: user_type
+          in: query
+          type: string
+          description: Limits the results to the kind of user specified.
+        - name: external_app_user_id
+          in: query
+          type: string
+          description: Limits the results to app users with the given
+        - name: fields
+          in: query
+          type: array
+          description: A comma-separated list of attributes to include in the
+        - name: offset
+          in: query
+          type: integer
+          description: The offset of the item at which to begin the response.
+        - name: limit
+          in: query
+          type: integer
+          description: The maximum number of items to return per page.
+        - name: usemarker
+          in: query
+          type: boolean
+          description: Specifies whether to use marker-based pagination instead of
+        - name: marker
+          in: query
+          type: string
+          description: Defines the position marker at which to begin returning results. This is
+      - name: postusers
+        method: POST
+        description: Box Create user
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: fields
+          in: query
+          type: array
+          description: A comma-separated list of attributes to include in the
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: false
+    - name: users-me
+      path: /users/me
+      operations:
+      - name: getusersme
+        method: GET
+        description: Box Get current user
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: fields
+          in: query
+          type: array
+          description: A comma-separated list of attributes to include in the
+    - name: users-terminate_sessions
+      path: /users/terminate_sessions
+      operations:
+      - name: postusersterminatesessions
+        method: POST
+        description: Box Create jobs to terminate users session
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: false
+    - name: users-user_id
+      path: /users/{user_id}
+      operations:
+      - name: getusersid
+        method: GET
+        description: Box Get user
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: user_id
+          in: path
+          type: string
+          description: The ID of the user.
+          required: true
+        - name: fields
+          in: query
+          type: array
+          description: A comma-separated list of attributes to include in the
+      - name: putusersid
+        method: PUT
+        description: Box Update user
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: user_id
+          in: path
+          type: string
+          description: The ID of the user.
+          required: true
+        - name: fields
+          in: query
+          type: array
+          description: A comma-separated list of attributes to include in the
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: false
+      - name: deleteusersid
+        method: DELETE
+        description: Box Delete user
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: user_id
+          in: path
+          type: string
+          description: The ID of the user.
+          required: true
+        - name: notify
+          in: query
+          type: boolean
+          description: Whether the user will receive email notification of
+        - name: force
+          in: query
+          type: boolean
+          description: Whether the user should be deleted even if this user
+    - name: users-user_id-avatar
+      path: /users/{user_id}/avatar
+      operations:
+      - name: getusersidavatar
+        method: GET
+        description: Box Get user avatar
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: user_id
+          in: path
+          type: string
+          description: The ID of the user.
+          required: true
+      - name: postusersidavatar
+        method: POST
+        description: Box Add or update user avatar
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: user_id
+          in: path
+          type: string
+          description: The ID of the user.
+          required: true
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: false
+      - name: deleteusersidavatar
+        method: DELETE
+        description: Box Delete user avatar
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: user_id
+          in: path
+          type: string
+          description: The ID of the user.
+          required: true
+    - name: users-user_id-email_aliases
+      path: /users/{user_id}/email_aliases
+      operations:
+      - name: getusersidemailaliases
+        method: GET
+        description: Box List user's email aliases
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: user_id
+          in: path
+          type: string
+          description: The ID of the user.
+          required: true
+      - name: postusersidemailaliases
+        method: POST
+        description: Box Create email alias
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: user_id
+          in: path
+          type: string
+          description: The ID of the user.
+          required: true
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: false
+    - name: users-user_id-email_aliases-email_alias_id
+      path: /users/{user_id}/email_aliases/{email_alias_id}
+      operations:
+      - name: deleteusersidemailaliasesid
+        method: DELETE
+        description: Box Remove email alias
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: user_id
+          in: path
+          type: string
+          description: The ID of the user.
+          required: true
+        - name: email_alias_id
+          in: path
+          type: string
+          description: The ID of the email alias.
+          required: true
+    - name: users-user_id-folders-0
+      path: /users/{user_id}/folders/0
+      operations:
+      - name: putusersidfolders0
+        method: PUT
+        description: Box Transfer owned folders
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: user_id
+          in: path
+          type: string
+          description: The ID of the user.
+          required: true
+        - name: fields
+          in: query
+          type: array
+          description: A comma-separated list of attributes to include in the
+        - name: notify
+          in: query
+          type: boolean
+          description: Determines if users should receive email notification
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: false
+    - name: users-user_id-memberships
+      path: /users/{user_id}/memberships
+      operations:
+      - name: getusersidmemberships
+        method: GET
+        description: Box List user's groups
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: user_id
+          in: path
+          type: string
+          description: The ID of the user.
+          required: true
+        - name: limit
+          in: query
+          type: integer
+          description: The maximum number of items to return per page.
+        - name: offset
+          in: query
+          type: integer
+          description: The offset of the item at which to begin the response.
+  exposes:
+  - type: rest
+    namespace: users-users-rest
+    port: 8080
+    description: REST adapter for Box Users API — Users. One Spectral-compliant resource per consumed operation, prefixed
+      with /v1.
+    resources:
+    - path: /v1/users
+      name: users
+      description: REST surface for users.
+      operations:
+      - method: GET
+        name: getusers
+        description: Box List enterprise users
+        call: users-users.getusers
+        with:
+          filter_term: rest.filter_term
+          user_type: rest.user_type
+          external_app_user_id: rest.external_app_user_id
+          fields: rest.fields
+          offset: rest.offset
+          limit: rest.limit
+          usemarker: rest.usemarker
+          marker: rest.marker
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: POST
+        name: postusers
+        description: Box Create user
+        call: users-users.postusers
+        with:
+          fields: rest.fields
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/users/me
+      name: users-me
+      description: REST surface for users-me.
+      operations:
+      - method: GET
+        name: getusersme
+        description: Box Get current user
+        call: users-users.getusersme
+        with:
+          fields: rest.fields
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/users/terminate-sessions
+      name: users-terminate-sessions
+      description: REST surface for users-terminate_sessions.
+      operations:
+      - method: POST
+        name: postusersterminatesessions
+        description: Box Create jobs to terminate users session
+        call: users-users.postusersterminatesessions
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/users/{user-id}
+      name: users-user-id
+      description: REST surface for users-user_id.
+      operations:
+      - method: GET
+        name: getusersid
+        description: Box Get user
+        call: users-users.getusersid
+        with:
+          user_id: rest.user_id
+          fields: rest.fields
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: PUT
+        name: putusersid
+        description: Box Update user
+        call: users-users.putusersid
+        with:
+          user_id: rest.user_id
+          fields: rest.fields
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: DELETE
+        name: deleteusersid
+        description: Box Delete user
+        call: users-users.deleteusersid
+        with:
+          user_id: rest.user_id
+          notify: rest.notify
+          force: rest.force
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/users/{user-id}/avatar
+      name: users-user-id-avatar
+      description: REST surface for users-user_id-avatar.
+      operations:
+      - method: GET
+        name: getusersidavatar
+        description: Box Get user avatar
+        call: users-users.getusersidavatar
+        with:
+          user_id: rest.user_id
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: POST
+        name: postusersidavatar
+        description: Box Add or update user avatar
+        call: users-users.postusersidavatar
+        with:
+          user_id: rest.user_id
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: DELETE
+        name: deleteusersidavatar
+        description: Box Delete user avatar
+        call: users-users.deleteusersidavatar
+        with:
+          user_id: rest.user_id
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/users/{user-id}/email-aliases
+      name: users-user-id-email-aliases
+      description: REST surface for users-user_id-email_aliases.
+      operations:
+      - method: GET
+        name: getusersidemailaliases
+        description: Box List user's email aliases
+        call: users-users.getusersidemailaliases
+        with:
+          user_id: rest.user_id
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: POST
+        name: postusersidemailaliases
+        description: Box Create email alias
+        call: users-users.postusersidemailaliases
+        with:
+          user_id: rest.user_id
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/users/{user-id}/email-aliases/{email-alias-id}
+      name: users-user-id-email-aliases-email-alias-id
+      description: REST surface for users-user_id-email_aliases-email_alias_id.
+      operations:
+      - method: DELETE
+        name: deleteusersidemailaliasesid
+        description: Box Remove email alias
+        call: users-users.deleteusersidemailaliasesid
+        with:
+          user_id: rest.user_id
+          email_alias_id: rest.email_alias_id
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/users/{user-id}/folders/0
+      name: users-user-id-folders-0
+      description: REST surface for users-user_id-folders-0.
+      operations:
+      - method: PUT
+        name: putusersidfolders0
+        description: Box Transfer owned folders
+        call: users-users.putusersidfolders0
+        with:
+          user_id: rest.user_id
+          fields: rest.fields
+          notify: rest.notify
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/users/{user-id}/memberships
+      name: users-user-id-memberships
+      description: REST surface for users-user_id-memberships.
+      operations:
+      - method: GET
+        name: getusersidmemberships
+        description: Box List user's groups
+        call: users-users.getusersidmemberships
+        with:
+          user_id: rest.user_id
+          limit: rest.limit
+          offset: rest.offset
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: users-users-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Box Users API — Users. One tool per consumed operation, routed inline through this capability's
+      consumes block.
+    tools:
+    - name: box-list-enterprise-users
+      description: Box List enterprise users
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: users-users.getusers
+      with:
+        filter_term: tools.filter_term
+        user_type: tools.user_type
+        external_app_user_id: tools.external_app_user_id
+        fields: tools.fields
+        offset: tools.offset
+        limit: tools.limit
+        usemarker: tools.usemarker
+        marker: tools.marker
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: box-create-user
+      description: Box Create user
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: users-users.postusers
+      with:
+        fields: tools.fields
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: box-get-current-user
+      description: Box Get current user
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: users-users.getusersme
+      with:
+        fields: tools.fields
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: box-create-jobs-terminate-users
+      description: Box Create jobs to terminate users session
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: users-users.postusersterminatesessions
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: box-get-user
+      description: Box Get user
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: users-users.getusersid
+      with:
+        user_id: tools.user_id
+        fields: tools.fields
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: box-update-user
+      description: Box Update user
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: true
+      call: users-users.putusersid
+      with:
+        user_id: tools.user_id
+        fields: tools.fields
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: box-delete-user
+      description: Box Delete user
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: users-users.deleteusersid
+      with:
+        user_id: tools.user_id
+        notify: tools.notify
+        force: tools.force
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: box-get-user-avatar
+      description: Box Get user avatar
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: users-users.getusersidavatar
+      with:
+        user_id: tools.user_id
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: box-add-update-user-avatar
+      description: Box Add or update user avatar
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: users-users.postusersidavatar
+      with:
+        user_id: tools.user_id
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: box-delete-user-avatar
+      description: Box Delete user avatar
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: users-users.deleteusersidavatar
+      with:
+        user_id: tools.user_id
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: box-list-user-s-email-aliases
+      description: Box List user's email aliases
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: users-users.getusersidemailaliases
+      with:
+        user_id: tools.user_id
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: box-create-email-alias
+      description: Box Create email alias
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: users-users.postusersidemailaliases
+      with:
+        user_id: tools.user_id
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: box-remove-email-alias
+      description: Box Remove email alias
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: users-users.deleteusersidemailaliasesid
+      with:
+        user_id: tools.user_id
+        email_alias_id: tools.email_alias_id
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: box-transfer-owned-folders
+      description: Box Transfer owned folders
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: true
+      call: users-users.putusersidfolders0
+      with:
+        user_id: tools.user_id
+        fields: tools.fields
+        notify: tools.notify
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: box-list-user-s-groups
+      description: Box List user's groups
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: users-users.getusersidmemberships
+      with:
+        user_id: tools.user_id
+        limit: tools.limit
+        offset: tools.offset
+      outputParameters:
+      - type: object
+        mapping: $.

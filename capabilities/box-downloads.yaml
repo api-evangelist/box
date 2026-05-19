@@ -1,0 +1,105 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Box Platform API — Downloads
+  description: 'Box Platform API — Downloads. 1 operations. Lead operation: Box Download file. Self-contained Naftiko capability
+    covering one Box business surface.'
+  tags:
+  - Box
+  - Downloads
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    BOX_API_KEY: BOX_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: box-downloads
+    baseUri: https://api.box.com/2.0
+    description: Box Platform API — Downloads business capability. Self-contained, no shared references.
+    resources:
+    - name: files-file_id-content
+      path: /files/{file_id}/content
+      operations:
+      - name: getfilesidcontent
+        method: GET
+        description: Box Download file
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: file_id
+          in: path
+          type: string
+          description: The unique identifier that represents a file.
+          required: true
+        - name: range
+          in: header
+          type: string
+          description: The byte range of the content to download.
+        - name: boxapi
+          in: header
+          type: string
+          description: The URL, and optional password, for the shared link of this item.
+        - name: version
+          in: query
+          type: string
+          description: The file version to download
+        - name: access_token
+          in: query
+          type: string
+          description: An optional access token that can be used to pre-authenticate this request, which means that a download
+            link can be shared with a browser or a third party servi
+    authentication:
+      type: bearer
+      token: '{{env.BOX_API_KEY}}'
+  exposes:
+  - type: rest
+    namespace: box-downloads-rest
+    port: 8080
+    description: REST adapter for Box Platform API — Downloads. One Spectral-compliant resource per consumed operation, prefixed
+      with /v1.
+    resources:
+    - path: /v1/files/{file-id}/content
+      name: files-file-id-content
+      description: REST surface for files-file_id-content.
+      operations:
+      - method: GET
+        name: getfilesidcontent
+        description: Box Download file
+        call: box-downloads.getfilesidcontent
+        with:
+          file_id: rest.file_id
+          range: rest.range
+          boxapi: rest.boxapi
+          version: rest.version
+          access_token: rest.access_token
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: box-downloads-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Box Platform API — Downloads. One tool per consumed operation, routed inline through this
+      capability's consumes block.
+    tools:
+    - name: box-download-file
+      description: Box Download file
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: box-downloads.getfilesidcontent
+      with:
+        file_id: tools.file_id
+        range: tools.range
+        boxapi: tools.boxapi
+        version: tools.version
+        access_token: tools.access_token
+      outputParameters:
+      - type: object
+        mapping: $.

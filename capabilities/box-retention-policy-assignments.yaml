@@ -1,0 +1,337 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Box Platform API — Retention Policy Assignments
+  description: 'Box Platform API — Retention Policy Assignments. 6 operations. Lead operation: Box List retention policy assignments.
+    Self-contained Naftiko capability covering one Box business surface.'
+  tags:
+  - Box
+  - Retention Policy Assignments
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    BOX_API_KEY: BOX_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: box-retention-policy-assignments
+    baseUri: https://api.box.com/2.0
+    description: Box Platform API — Retention Policy Assignments business capability. Self-contained, no shared references.
+    resources:
+    - name: retention_policies-retention_policy_id-assignments
+      path: /retention_policies/{retention_policy_id}/assignments
+      operations:
+      - name: getretentionpoliciesidassignments
+        method: GET
+        description: Box List retention policy assignments
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: retention_policy_id
+          in: path
+          type: string
+          description: The ID of the retention policy.
+          required: true
+        - name: type
+          in: query
+          type: string
+          description: The type of the retention policy assignment to retrieve.
+        - name: fields
+          in: query
+          type: array
+          description: A comma-separated list of attributes to include in the
+        - name: marker
+          in: query
+          type: string
+          description: Defines the position marker at which to begin returning results. This is
+        - name: limit
+          in: query
+          type: integer
+          description: The maximum number of items to return per page.
+    - name: retention_policy_assignments
+      path: /retention_policy_assignments
+      operations:
+      - name: postretentionpolicyassignments
+        method: POST
+        description: Box Assign retention policy
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: false
+    - name: retention_policy_assignments-retention_policy_assignment_id
+      path: /retention_policy_assignments/{retention_policy_assignment_id}
+      operations:
+      - name: getretentionpolicyassignmentsid
+        method: GET
+        description: Box Get retention policy assignment
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: retention_policy_assignment_id
+          in: path
+          type: string
+          description: The ID of the retention policy assignment.
+          required: true
+        - name: fields
+          in: query
+          type: array
+          description: A comma-separated list of attributes to include in the
+      - name: deleteretentionpolicyassignmentsid
+        method: DELETE
+        description: Box Remove retention policy assignment
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: retention_policy_assignment_id
+          in: path
+          type: string
+          description: The ID of the retention policy assignment.
+          required: true
+    - name: retention_policy_assignments-retention_policy_assignment_id-file_versions_under_
+      path: /retention_policy_assignments/{retention_policy_assignment_id}/file_versions_under_retention
+      operations:
+      - name: getretentionpolicyassignmentsidfileversionsunderretention
+        method: GET
+        description: Box Get file versions under retention
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: retention_policy_assignment_id
+          in: path
+          type: string
+          description: The ID of the retention policy assignment.
+          required: true
+        - name: marker
+          in: query
+          type: string
+          description: Defines the position marker at which to begin returning results. This is
+        - name: limit
+          in: query
+          type: integer
+          description: The maximum number of items to return per page.
+    - name: retention_policy_assignments-retention_policy_assignment_id-files_under_retentio
+      path: /retention_policy_assignments/{retention_policy_assignment_id}/files_under_retention
+      operations:
+      - name: getretentionpolicyassignmentsidfilesunderretention
+        method: GET
+        description: Box Get files under retention
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: retention_policy_assignment_id
+          in: path
+          type: string
+          description: The ID of the retention policy assignment.
+          required: true
+        - name: marker
+          in: query
+          type: string
+          description: Defines the position marker at which to begin returning results. This is
+        - name: limit
+          in: query
+          type: integer
+          description: The maximum number of items to return per page.
+    authentication:
+      type: bearer
+      token: '{{env.BOX_API_KEY}}'
+  exposes:
+  - type: rest
+    namespace: box-retention-policy-assignments-rest
+    port: 8080
+    description: REST adapter for Box Platform API — Retention Policy Assignments. One Spectral-compliant resource per consumed
+      operation, prefixed with /v1.
+    resources:
+    - path: /v1/retention-policies/{retention-policy-id}/assignments
+      name: retention-policies-retention-policy-id-assignments
+      description: REST surface for retention_policies-retention_policy_id-assignments.
+      operations:
+      - method: GET
+        name: getretentionpoliciesidassignments
+        description: Box List retention policy assignments
+        call: box-retention-policy-assignments.getretentionpoliciesidassignments
+        with:
+          retention_policy_id: rest.retention_policy_id
+          type: rest.type
+          fields: rest.fields
+          marker: rest.marker
+          limit: rest.limit
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/retention-policy-assignments
+      name: retention-policy-assignments
+      description: REST surface for retention_policy_assignments.
+      operations:
+      - method: POST
+        name: postretentionpolicyassignments
+        description: Box Assign retention policy
+        call: box-retention-policy-assignments.postretentionpolicyassignments
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/retention-policy-assignments/{retention-policy-assignment-id}
+      name: retention-policy-assignments-retention-policy-assignment-id
+      description: REST surface for retention_policy_assignments-retention_policy_assignment_id.
+      operations:
+      - method: GET
+        name: getretentionpolicyassignmentsid
+        description: Box Get retention policy assignment
+        call: box-retention-policy-assignments.getretentionpolicyassignmentsid
+        with:
+          retention_policy_assignment_id: rest.retention_policy_assignment_id
+          fields: rest.fields
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: DELETE
+        name: deleteretentionpolicyassignmentsid
+        description: Box Remove retention policy assignment
+        call: box-retention-policy-assignments.deleteretentionpolicyassignmentsid
+        with:
+          retention_policy_assignment_id: rest.retention_policy_assignment_id
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/retention-policy-assignments/{retention-policy-assignment-id}/file-versions-under-retention
+      name: retention-policy-assignments-retention-policy-assignment-id-file-versions-under
+      description: REST surface for retention_policy_assignments-retention_policy_assignment_id-file_versions_under_.
+      operations:
+      - method: GET
+        name: getretentionpolicyassignmentsidfileversionsunderretention
+        description: Box Get file versions under retention
+        call: box-retention-policy-assignments.getretentionpolicyassignmentsidfileversionsunderretention
+        with:
+          retention_policy_assignment_id: rest.retention_policy_assignment_id
+          marker: rest.marker
+          limit: rest.limit
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/retention-policy-assignments/{retention-policy-assignment-id}/files-under-retention
+      name: retention-policy-assignments-retention-policy-assignment-id-files-under-retentio
+      description: REST surface for retention_policy_assignments-retention_policy_assignment_id-files_under_retentio.
+      operations:
+      - method: GET
+        name: getretentionpolicyassignmentsidfilesunderretention
+        description: Box Get files under retention
+        call: box-retention-policy-assignments.getretentionpolicyassignmentsidfilesunderretention
+        with:
+          retention_policy_assignment_id: rest.retention_policy_assignment_id
+          marker: rest.marker
+          limit: rest.limit
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: box-retention-policy-assignments-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Box Platform API — Retention Policy Assignments. One tool per consumed operation, routed
+      inline through this capability's consumes block.
+    tools:
+    - name: box-list-retention-policy-assignments
+      description: Box List retention policy assignments
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: box-retention-policy-assignments.getretentionpoliciesidassignments
+      with:
+        retention_policy_id: tools.retention_policy_id
+        type: tools.type
+        fields: tools.fields
+        marker: tools.marker
+        limit: tools.limit
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: box-assign-retention-policy
+      description: Box Assign retention policy
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: box-retention-policy-assignments.postretentionpolicyassignments
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: box-get-retention-policy-assignment
+      description: Box Get retention policy assignment
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: box-retention-policy-assignments.getretentionpolicyassignmentsid
+      with:
+        retention_policy_assignment_id: tools.retention_policy_assignment_id
+        fields: tools.fields
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: box-remove-retention-policy-assignment
+      description: Box Remove retention policy assignment
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: box-retention-policy-assignments.deleteretentionpolicyassignmentsid
+      with:
+        retention_policy_assignment_id: tools.retention_policy_assignment_id
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: box-get-file-versions-under
+      description: Box Get file versions under retention
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: box-retention-policy-assignments.getretentionpolicyassignmentsidfileversionsunderretention
+      with:
+        retention_policy_assignment_id: tools.retention_policy_assignment_id
+        marker: tools.marker
+        limit: tools.limit
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: box-get-files-under-retention
+      description: Box Get files under retention
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: box-retention-policy-assignments.getretentionpolicyassignmentsidfilesunderretention
+      with:
+        retention_policy_assignment_id: tools.retention_policy_assignment_id
+        marker: tools.marker
+        limit: tools.limit
+      outputParameters:
+      - type: object
+        mapping: $.

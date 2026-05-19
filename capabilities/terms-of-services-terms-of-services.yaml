@@ -1,0 +1,195 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Box Terms Of Services API — Terms of Services
+  description: 'Box Terms Of Services API — Terms of Services. 4 operations. Lead operation: Box List terms of services. Self-contained
+    Naftiko capability covering one Box business surface.'
+  tags:
+  - Box
+  - Terms of Services
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    BOX_API_KEY: BOX_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: terms-of-services-terms-of-services
+    baseUri: ''
+    description: Box Terms Of Services API — Terms of Services business capability. Self-contained, no shared references.
+    resources:
+    - name: terms_of_services
+      path: /terms_of_services
+      operations:
+      - name: gettermsofservices
+        method: GET
+        description: Box List terms of services
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: tos_type
+          in: query
+          type: string
+          description: Limits the results to the terms of service of the given type.
+      - name: posttermsofservices
+        method: POST
+        description: Box Create terms of service
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: false
+    - name: terms_of_services-terms_of_service_id
+      path: /terms_of_services/{terms_of_service_id}
+      operations:
+      - name: gettermsofservicesid
+        method: GET
+        description: Box Get terms of service
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: terms_of_service_id
+          in: path
+          type: string
+          description: The ID of the terms of service.
+          required: true
+      - name: puttermsofservicesid
+        method: PUT
+        description: Box Update terms of service
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: terms_of_service_id
+          in: path
+          type: string
+          description: The ID of the terms of service.
+          required: true
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: false
+  exposes:
+  - type: rest
+    namespace: terms-of-services-terms-of-services-rest
+    port: 8080
+    description: REST adapter for Box Terms Of Services API — Terms of Services. One Spectral-compliant resource per consumed
+      operation, prefixed with /v1.
+    resources:
+    - path: /v1/terms-of-services
+      name: terms-of-services
+      description: REST surface for terms_of_services.
+      operations:
+      - method: GET
+        name: gettermsofservices
+        description: Box List terms of services
+        call: terms-of-services-terms-of-services.gettermsofservices
+        with:
+          tos_type: rest.tos_type
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: POST
+        name: posttermsofservices
+        description: Box Create terms of service
+        call: terms-of-services-terms-of-services.posttermsofservices
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/terms-of-services/{terms-of-service-id}
+      name: terms-of-services-terms-of-service-id
+      description: REST surface for terms_of_services-terms_of_service_id.
+      operations:
+      - method: GET
+        name: gettermsofservicesid
+        description: Box Get terms of service
+        call: terms-of-services-terms-of-services.gettermsofservicesid
+        with:
+          terms_of_service_id: rest.terms_of_service_id
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: PUT
+        name: puttermsofservicesid
+        description: Box Update terms of service
+        call: terms-of-services-terms-of-services.puttermsofservicesid
+        with:
+          terms_of_service_id: rest.terms_of_service_id
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: terms-of-services-terms-of-services-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Box Terms Of Services API — Terms of Services. One tool per consumed operation, routed inline
+      through this capability's consumes block.
+    tools:
+    - name: box-list-terms-services
+      description: Box List terms of services
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: terms-of-services-terms-of-services.gettermsofservices
+      with:
+        tos_type: tools.tos_type
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: box-create-terms-service
+      description: Box Create terms of service
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: terms-of-services-terms-of-services.posttermsofservices
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: box-get-terms-service
+      description: Box Get terms of service
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: terms-of-services-terms-of-services.gettermsofservicesid
+      with:
+        terms_of_service_id: tools.terms_of_service_id
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: box-update-terms-service
+      description: Box Update terms of service
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: true
+      call: terms-of-services-terms-of-services.puttermsofservicesid
+      with:
+        terms_of_service_id: tools.terms_of_service_id
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.

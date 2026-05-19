@@ -1,0 +1,157 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Box Platform API — Watermarks (Files)
+  description: 'Box Platform API — Watermarks (Files). 3 operations. Lead operation: Box Get watermark on file. Self-contained
+    Naftiko capability covering one Box business surface.'
+  tags:
+  - Box
+  - Watermarks (Files)
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    BOX_API_KEY: BOX_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: box-watermarks-files
+    baseUri: https://api.box.com/2.0
+    description: Box Platform API — Watermarks (Files) business capability. Self-contained, no shared references.
+    resources:
+    - name: files-file_id-watermark
+      path: /files/{file_id}/watermark
+      operations:
+      - name: getfilesidwatermark
+        method: GET
+        description: Box Get watermark on file
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: file_id
+          in: path
+          type: string
+          description: The unique identifier that represents a file.
+          required: true
+      - name: putfilesidwatermark
+        method: PUT
+        description: Box Apply watermark to file
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: file_id
+          in: path
+          type: string
+          description: The unique identifier that represents a file.
+          required: true
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: false
+      - name: deletefilesidwatermark
+        method: DELETE
+        description: Box Remove watermark from file
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: file_id
+          in: path
+          type: string
+          description: The unique identifier that represents a file.
+          required: true
+    authentication:
+      type: bearer
+      token: '{{env.BOX_API_KEY}}'
+  exposes:
+  - type: rest
+    namespace: box-watermarks-files-rest
+    port: 8080
+    description: REST adapter for Box Platform API — Watermarks (Files). One Spectral-compliant resource per consumed operation,
+      prefixed with /v1.
+    resources:
+    - path: /v1/files/{file-id}/watermark
+      name: files-file-id-watermark
+      description: REST surface for files-file_id-watermark.
+      operations:
+      - method: GET
+        name: getfilesidwatermark
+        description: Box Get watermark on file
+        call: box-watermarks-files.getfilesidwatermark
+        with:
+          file_id: rest.file_id
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: PUT
+        name: putfilesidwatermark
+        description: Box Apply watermark to file
+        call: box-watermarks-files.putfilesidwatermark
+        with:
+          file_id: rest.file_id
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: DELETE
+        name: deletefilesidwatermark
+        description: Box Remove watermark from file
+        call: box-watermarks-files.deletefilesidwatermark
+        with:
+          file_id: rest.file_id
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: box-watermarks-files-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Box Platform API — Watermarks (Files). One tool per consumed operation, routed inline through
+      this capability's consumes block.
+    tools:
+    - name: box-get-watermark-file
+      description: Box Get watermark on file
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: box-watermarks-files.getfilesidwatermark
+      with:
+        file_id: tools.file_id
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: box-apply-watermark-file
+      description: Box Apply watermark to file
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: true
+      call: box-watermarks-files.putfilesidwatermark
+      with:
+        file_id: tools.file_id
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: box-remove-watermark-file
+      description: Box Remove watermark from file
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: box-watermarks-files.deletefilesidwatermark
+      with:
+        file_id: tools.file_id
+      outputParameters:
+      - type: object
+        mapping: $.

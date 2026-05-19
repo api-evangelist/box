@@ -1,0 +1,205 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Box Platform API — Web Links
+  description: 'Box Platform API — Web Links. 4 operations. Lead operation: Box Create web link. Self-contained Naftiko capability
+    covering one Box business surface.'
+  tags:
+  - Box
+  - Web Links
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    BOX_API_KEY: BOX_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: box-web-links
+    baseUri: https://api.box.com/2.0
+    description: Box Platform API — Web Links business capability. Self-contained, no shared references.
+    resources:
+    - name: web_links
+      path: /web_links
+      operations:
+      - name: postweblinks
+        method: POST
+        description: Box Create web link
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: false
+    - name: web_links-web_link_id
+      path: /web_links/{web_link_id}
+      operations:
+      - name: getweblinksid
+        method: GET
+        description: Box Get web link
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: web_link_id
+          in: path
+          type: string
+          description: The ID of the web link.
+          required: true
+        - name: boxapi
+          in: header
+          type: string
+          description: The URL, and optional password, for the shared link of this item.
+      - name: putweblinksid
+        method: PUT
+        description: Box Update web link
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: web_link_id
+          in: path
+          type: string
+          description: The ID of the web link.
+          required: true
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: false
+      - name: deleteweblinksid
+        method: DELETE
+        description: Box Remove web link
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: web_link_id
+          in: path
+          type: string
+          description: The ID of the web link.
+          required: true
+    authentication:
+      type: bearer
+      token: '{{env.BOX_API_KEY}}'
+  exposes:
+  - type: rest
+    namespace: box-web-links-rest
+    port: 8080
+    description: REST adapter for Box Platform API — Web Links. One Spectral-compliant resource per consumed operation, prefixed
+      with /v1.
+    resources:
+    - path: /v1/web-links
+      name: web-links
+      description: REST surface for web_links.
+      operations:
+      - method: POST
+        name: postweblinks
+        description: Box Create web link
+        call: box-web-links.postweblinks
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/web-links/{web-link-id}
+      name: web-links-web-link-id
+      description: REST surface for web_links-web_link_id.
+      operations:
+      - method: GET
+        name: getweblinksid
+        description: Box Get web link
+        call: box-web-links.getweblinksid
+        with:
+          web_link_id: rest.web_link_id
+          boxapi: rest.boxapi
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: PUT
+        name: putweblinksid
+        description: Box Update web link
+        call: box-web-links.putweblinksid
+        with:
+          web_link_id: rest.web_link_id
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: DELETE
+        name: deleteweblinksid
+        description: Box Remove web link
+        call: box-web-links.deleteweblinksid
+        with:
+          web_link_id: rest.web_link_id
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: box-web-links-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Box Platform API — Web Links. One tool per consumed operation, routed inline through this
+      capability's consumes block.
+    tools:
+    - name: box-create-web-link
+      description: Box Create web link
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: box-web-links.postweblinks
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: box-get-web-link
+      description: Box Get web link
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: box-web-links.getweblinksid
+      with:
+        web_link_id: tools.web_link_id
+        boxapi: tools.boxapi
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: box-update-web-link
+      description: Box Update web link
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: true
+      call: box-web-links.putweblinksid
+      with:
+        web_link_id: tools.web_link_id
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: box-remove-web-link
+      description: Box Remove web link
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: box-web-links.deleteweblinksid
+      with:
+        web_link_id: tools.web_link_id
+      outputParameters:
+      - type: object
+        mapping: $.

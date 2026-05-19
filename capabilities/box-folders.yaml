@@ -1,0 +1,416 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Box Platform API — Folders
+  description: 'Box Platform API — Folders. 6 operations. Lead operation: Box Create folder. Self-contained Naftiko capability
+    covering one Box business surface.'
+  tags:
+  - Box
+  - Folders
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    BOX_API_KEY: BOX_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: box-folders
+    baseUri: https://api.box.com/2.0
+    description: Box Platform API — Folders business capability. Self-contained, no shared references.
+    resources:
+    - name: folders
+      path: /folders
+      operations:
+      - name: postfolders
+        method: POST
+        description: Box Create folder
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: fields
+          in: query
+          type: array
+          description: A comma-separated list of attributes to include in the
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: false
+    - name: folders-folder_id
+      path: /folders/{folder_id}
+      operations:
+      - name: getfoldersid
+        method: GET
+        description: Box Get folder information
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: folder_id
+          in: path
+          type: string
+          description: The unique identifier that represent a folder.
+          required: true
+        - name: fields
+          in: query
+          type: array
+          description: A comma-separated list of attributes to include in the
+        - name: if-none-match
+          in: header
+          type: string
+          description: Ensures an item is only returned if it has changed.
+        - name: boxapi
+          in: header
+          type: string
+          description: The URL, and optional password, for the shared link of this item.
+        - name: sort
+          in: query
+          type: string
+          description: Defines the **second** attribute by which items
+        - name: direction
+          in: query
+          type: string
+          description: The direction to sort results in. This can be either in alphabetical ascending
+        - name: offset
+          in: query
+          type: integer
+          description: The offset of the item at which to begin the response.
+        - name: limit
+          in: query
+          type: integer
+          description: The maximum number of items to return per page.
+      - name: putfoldersid
+        method: PUT
+        description: Box Update folder
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: folder_id
+          in: path
+          type: string
+          description: The unique identifier that represent a folder.
+          required: true
+        - name: fields
+          in: query
+          type: array
+          description: A comma-separated list of attributes to include in the
+        - name: if-match
+          in: header
+          type: string
+          description: Ensures this item hasn't recently changed before
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: false
+      - name: deletefoldersid
+        method: DELETE
+        description: Box Delete folder
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: folder_id
+          in: path
+          type: string
+          description: The unique identifier that represent a folder.
+          required: true
+        - name: if-match
+          in: header
+          type: string
+          description: Ensures this item hasn't recently changed before
+        - name: recursive
+          in: query
+          type: boolean
+          description: Delete a folder that is not empty by recursively deleting the
+    - name: folders-folder_id-copy
+      path: /folders/{folder_id}/copy
+      operations:
+      - name: postfoldersidcopy
+        method: POST
+        description: Box Copy folder
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: folder_id
+          in: path
+          type: string
+          description: The unique identifier of the folder to copy.
+          required: true
+        - name: fields
+          in: query
+          type: array
+          description: A comma-separated list of attributes to include in the
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: false
+    - name: folders-folder_id-items
+      path: /folders/{folder_id}/items
+      operations:
+      - name: getfoldersiditems
+        method: GET
+        description: Box List items in folder
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: folder_id
+          in: path
+          type: string
+          description: The unique identifier that represent a folder.
+          required: true
+        - name: fields
+          in: query
+          type: array
+          description: A comma-separated list of attributes to include in the
+        - name: usemarker
+          in: query
+          type: boolean
+          description: Specifies whether to use marker-based pagination instead of
+        - name: marker
+          in: query
+          type: string
+          description: Defines the position marker at which to begin returning results. This is
+        - name: offset
+          in: query
+          type: integer
+          description: The offset of the item at which to begin the response.
+        - name: limit
+          in: query
+          type: integer
+          description: The maximum number of items to return per page.
+        - name: boxapi
+          in: header
+          type: string
+          description: The URL, and optional password, for the shared link of this item.
+        - name: sort
+          in: query
+          type: string
+          description: Defines the **second** attribute by which items
+        - name: direction
+          in: query
+          type: string
+          description: The direction to sort results in. This can be either in alphabetical ascending
+    authentication:
+      type: bearer
+      token: '{{env.BOX_API_KEY}}'
+  exposes:
+  - type: rest
+    namespace: box-folders-rest
+    port: 8080
+    description: REST adapter for Box Platform API — Folders. One Spectral-compliant resource per consumed operation, prefixed
+      with /v1.
+    resources:
+    - path: /v1/folders
+      name: folders
+      description: REST surface for folders.
+      operations:
+      - method: POST
+        name: postfolders
+        description: Box Create folder
+        call: box-folders.postfolders
+        with:
+          fields: rest.fields
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/folders/{folder-id}
+      name: folders-folder-id
+      description: REST surface for folders-folder_id.
+      operations:
+      - method: GET
+        name: getfoldersid
+        description: Box Get folder information
+        call: box-folders.getfoldersid
+        with:
+          folder_id: rest.folder_id
+          fields: rest.fields
+          if-none-match: rest.if-none-match
+          boxapi: rest.boxapi
+          sort: rest.sort
+          direction: rest.direction
+          offset: rest.offset
+          limit: rest.limit
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: PUT
+        name: putfoldersid
+        description: Box Update folder
+        call: box-folders.putfoldersid
+        with:
+          folder_id: rest.folder_id
+          fields: rest.fields
+          if-match: rest.if-match
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: DELETE
+        name: deletefoldersid
+        description: Box Delete folder
+        call: box-folders.deletefoldersid
+        with:
+          folder_id: rest.folder_id
+          if-match: rest.if-match
+          recursive: rest.recursive
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/folders/{folder-id}/copy
+      name: folders-folder-id-copy
+      description: REST surface for folders-folder_id-copy.
+      operations:
+      - method: POST
+        name: postfoldersidcopy
+        description: Box Copy folder
+        call: box-folders.postfoldersidcopy
+        with:
+          folder_id: rest.folder_id
+          fields: rest.fields
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/folders/{folder-id}/items
+      name: folders-folder-id-items
+      description: REST surface for folders-folder_id-items.
+      operations:
+      - method: GET
+        name: getfoldersiditems
+        description: Box List items in folder
+        call: box-folders.getfoldersiditems
+        with:
+          folder_id: rest.folder_id
+          fields: rest.fields
+          usemarker: rest.usemarker
+          marker: rest.marker
+          offset: rest.offset
+          limit: rest.limit
+          boxapi: rest.boxapi
+          sort: rest.sort
+          direction: rest.direction
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: box-folders-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Box Platform API — Folders. One tool per consumed operation, routed inline through this capability's
+      consumes block.
+    tools:
+    - name: box-create-folder
+      description: Box Create folder
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: box-folders.postfolders
+      with:
+        fields: tools.fields
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: box-get-folder-information
+      description: Box Get folder information
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: box-folders.getfoldersid
+      with:
+        folder_id: tools.folder_id
+        fields: tools.fields
+        if-none-match: tools.if-none-match
+        boxapi: tools.boxapi
+        sort: tools.sort
+        direction: tools.direction
+        offset: tools.offset
+        limit: tools.limit
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: box-update-folder
+      description: Box Update folder
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: true
+      call: box-folders.putfoldersid
+      with:
+        folder_id: tools.folder_id
+        fields: tools.fields
+        if-match: tools.if-match
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: box-delete-folder
+      description: Box Delete folder
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: box-folders.deletefoldersid
+      with:
+        folder_id: tools.folder_id
+        if-match: tools.if-match
+        recursive: tools.recursive
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: box-copy-folder
+      description: Box Copy folder
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: box-folders.postfoldersidcopy
+      with:
+        folder_id: tools.folder_id
+        fields: tools.fields
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: box-list-items-folder
+      description: Box List items in folder
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: box-folders.getfoldersiditems
+      with:
+        folder_id: tools.folder_id
+        fields: tools.fields
+        usemarker: tools.usemarker
+        marker: tools.marker
+        offset: tools.offset
+        limit: tools.limit
+        boxapi: tools.boxapi
+        sort: tools.sort
+        direction: tools.direction
+      outputParameters:
+      - type: object
+        mapping: $.

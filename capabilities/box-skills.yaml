@@ -1,0 +1,248 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Box Platform API — Skills
+  description: 'Box Platform API — Skills. 5 operations. Lead operation: List Box Skill cards on file. Self-contained Naftiko
+    capability covering one Box business surface.'
+  tags:
+  - Box
+  - Skills
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    BOX_API_KEY: BOX_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: box-skills
+    baseUri: https://api.box.com/2.0
+    description: Box Platform API — Skills business capability. Self-contained, no shared references.
+    resources:
+    - name: files-file_id-metadata-global-boxSkillsCards
+      path: /files/{file_id}/metadata/global/boxSkillsCards
+      operations:
+      - name: getfilesidmetadataglobalboxskillscards
+        method: GET
+        description: List Box Skill cards on file
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: file_id
+          in: path
+          type: string
+          description: The unique identifier that represents a file.
+          required: true
+      - name: postfilesidmetadataglobalboxskillscards
+        method: POST
+        description: Create Box Skill cards on file
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: file_id
+          in: path
+          type: string
+          description: The unique identifier that represents a file.
+          required: true
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: false
+      - name: putfilesidmetadataglobalboxskillscards
+        method: PUT
+        description: Update Box Skill cards on file
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: file_id
+          in: path
+          type: string
+          description: The unique identifier that represents a file.
+          required: true
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: false
+      - name: deletefilesidmetadataglobalboxskillscards
+        method: DELETE
+        description: Remove Box Skill cards from file
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: file_id
+          in: path
+          type: string
+          description: The unique identifier that represents a file.
+          required: true
+    - name: skill_invocations-skill_id
+      path: /skill_invocations/{skill_id}
+      operations:
+      - name: putskillinvocationsid
+        method: PUT
+        description: Update all Box Skill cards on file
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: skill_id
+          in: path
+          type: string
+          description: The ID of the skill to apply this metadata for.
+          required: true
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: false
+    authentication:
+      type: bearer
+      token: '{{env.BOX_API_KEY}}'
+  exposes:
+  - type: rest
+    namespace: box-skills-rest
+    port: 8080
+    description: REST adapter for Box Platform API — Skills. One Spectral-compliant resource per consumed operation, prefixed
+      with /v1.
+    resources:
+    - path: /v1/files/{file-id}/metadata/global/boxskillscards
+      name: files-file-id-metadata-global-boxskillscards
+      description: REST surface for files-file_id-metadata-global-boxSkillsCards.
+      operations:
+      - method: GET
+        name: getfilesidmetadataglobalboxskillscards
+        description: List Box Skill cards on file
+        call: box-skills.getfilesidmetadataglobalboxskillscards
+        with:
+          file_id: rest.file_id
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: POST
+        name: postfilesidmetadataglobalboxskillscards
+        description: Create Box Skill cards on file
+        call: box-skills.postfilesidmetadataglobalboxskillscards
+        with:
+          file_id: rest.file_id
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: PUT
+        name: putfilesidmetadataglobalboxskillscards
+        description: Update Box Skill cards on file
+        call: box-skills.putfilesidmetadataglobalboxskillscards
+        with:
+          file_id: rest.file_id
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: DELETE
+        name: deletefilesidmetadataglobalboxskillscards
+        description: Remove Box Skill cards from file
+        call: box-skills.deletefilesidmetadataglobalboxskillscards
+        with:
+          file_id: rest.file_id
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/skill-invocations/{skill-id}
+      name: skill-invocations-skill-id
+      description: REST surface for skill_invocations-skill_id.
+      operations:
+      - method: PUT
+        name: putskillinvocationsid
+        description: Update all Box Skill cards on file
+        call: box-skills.putskillinvocationsid
+        with:
+          skill_id: rest.skill_id
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: box-skills-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Box Platform API — Skills. One tool per consumed operation, routed inline through this capability's
+      consumes block.
+    tools:
+    - name: list-box-skill-cards-file
+      description: List Box Skill cards on file
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: box-skills.getfilesidmetadataglobalboxskillscards
+      with:
+        file_id: tools.file_id
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: create-box-skill-cards-file
+      description: Create Box Skill cards on file
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: box-skills.postfilesidmetadataglobalboxskillscards
+      with:
+        file_id: tools.file_id
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: update-box-skill-cards-file
+      description: Update Box Skill cards on file
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: true
+      call: box-skills.putfilesidmetadataglobalboxskillscards
+      with:
+        file_id: tools.file_id
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: remove-box-skill-cards-file
+      description: Remove Box Skill cards from file
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: box-skills.deletefilesidmetadataglobalboxskillscards
+      with:
+        file_id: tools.file_id
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: update-all-box-skill-cards
+      description: Update all Box Skill cards on file
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: true
+      call: box-skills.putskillinvocationsid
+      with:
+        skill_id: tools.skill_id
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.

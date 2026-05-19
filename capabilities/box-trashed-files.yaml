@@ -1,0 +1,176 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Box Platform API — Trashed Files
+  description: 'Box Platform API — Trashed Files. 3 operations. Lead operation: Box Restore file. Self-contained Naftiko capability
+    covering one Box business surface.'
+  tags:
+  - Box
+  - Trashed Files
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    BOX_API_KEY: BOX_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: box-trashed-files
+    baseUri: https://api.box.com/2.0
+    description: Box Platform API — Trashed Files business capability. Self-contained, no shared references.
+    resources:
+    - name: files-file_id
+      path: /files/{file_id}
+      operations:
+      - name: postfilesid
+        method: POST
+        description: Box Restore file
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: file_id
+          in: path
+          type: string
+          description: The unique identifier that represents a file.
+          required: true
+        - name: fields
+          in: query
+          type: array
+          description: A comma-separated list of attributes to include in the
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: false
+    - name: files-file_id-trash
+      path: /files/{file_id}/trash
+      operations:
+      - name: getfilesidtrash
+        method: GET
+        description: Box Get trashed file
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: file_id
+          in: path
+          type: string
+          description: The unique identifier that represents a file.
+          required: true
+        - name: fields
+          in: query
+          type: array
+          description: A comma-separated list of attributes to include in the
+      - name: deletefilesidtrash
+        method: DELETE
+        description: Box Permanently remove file
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: file_id
+          in: path
+          type: string
+          description: The unique identifier that represents a file.
+          required: true
+    authentication:
+      type: bearer
+      token: '{{env.BOX_API_KEY}}'
+  exposes:
+  - type: rest
+    namespace: box-trashed-files-rest
+    port: 8080
+    description: REST adapter for Box Platform API — Trashed Files. One Spectral-compliant resource per consumed operation,
+      prefixed with /v1.
+    resources:
+    - path: /v1/files/{file-id}
+      name: files-file-id
+      description: REST surface for files-file_id.
+      operations:
+      - method: POST
+        name: postfilesid
+        description: Box Restore file
+        call: box-trashed-files.postfilesid
+        with:
+          file_id: rest.file_id
+          fields: rest.fields
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/files/{file-id}/trash
+      name: files-file-id-trash
+      description: REST surface for files-file_id-trash.
+      operations:
+      - method: GET
+        name: getfilesidtrash
+        description: Box Get trashed file
+        call: box-trashed-files.getfilesidtrash
+        with:
+          file_id: rest.file_id
+          fields: rest.fields
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: DELETE
+        name: deletefilesidtrash
+        description: Box Permanently remove file
+        call: box-trashed-files.deletefilesidtrash
+        with:
+          file_id: rest.file_id
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: box-trashed-files-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Box Platform API — Trashed Files. One tool per consumed operation, routed inline through
+      this capability's consumes block.
+    tools:
+    - name: box-restore-file
+      description: Box Restore file
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: box-trashed-files.postfilesid
+      with:
+        file_id: tools.file_id
+        fields: tools.fields
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: box-get-trashed-file
+      description: Box Get trashed file
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: box-trashed-files.getfilesidtrash
+      with:
+        file_id: tools.file_id
+        fields: tools.fields
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: box-permanently-remove-file
+      description: Box Permanently remove file
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: true
+      call: box-trashed-files.deletefilesidtrash
+      with:
+        file_id: tools.file_id
+      outputParameters:
+      - type: object
+        mapping: $.

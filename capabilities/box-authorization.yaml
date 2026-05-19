@@ -1,0 +1,231 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Box Platform API — Authorization
+  description: 'Box Platform API — Authorization. 4 operations. Lead operation: Box Authorize user. Self-contained Naftiko
+    capability covering one Box business surface.'
+  tags:
+  - Box
+  - Authorization
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    BOX_API_KEY: BOX_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: box-authorization
+    baseUri: https://api.box.com/2.0
+    description: Box Platform API — Authorization business capability. Self-contained, no shared references.
+    resources:
+    - name: authorize
+      path: /authorize
+      operations:
+      - name: getauthorize
+        method: GET
+        description: Box Authorize user
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: response_type
+          in: query
+          type: string
+          description: The type of response we'd like to receive.
+          required: true
+        - name: client_id
+          in: query
+          type: string
+          description: The Client ID of the application that is requesting to authenticate
+          required: true
+        - name: redirect_uri
+          in: query
+          type: string
+          description: The URI to which Box redirects the browser after the user has granted
+        - name: state
+          in: query
+          type: string
+          description: A custom string of your choice. Box will pass the same string to
+        - name: scope
+          in: query
+          type: string
+          description: A space-separated list of application scopes you'd like to
+    - name: oauth2-revoke
+      path: /oauth2/revoke
+      operations:
+      - name: postoauth2revoke
+        method: POST
+        description: Box Revoke access token
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: false
+    - name: oauth2-token
+      path: /oauth2/token
+      operations:
+      - name: postoauth2token
+        method: POST
+        description: Box Request access token
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: false
+    - name: oauth2-token#refresh
+      path: /oauth2/token#refresh
+      operations:
+      - name: postoauth2tokenrefresh
+        method: POST
+        description: Box Refresh access token
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: false
+    authentication:
+      type: bearer
+      token: '{{env.BOX_API_KEY}}'
+  exposes:
+  - type: rest
+    namespace: box-authorization-rest
+    port: 8080
+    description: REST adapter for Box Platform API — Authorization. One Spectral-compliant resource per consumed operation,
+      prefixed with /v1.
+    resources:
+    - path: /v1/authorize
+      name: authorize
+      description: REST surface for authorize.
+      operations:
+      - method: GET
+        name: getauthorize
+        description: Box Authorize user
+        call: box-authorization.getauthorize
+        with:
+          response_type: rest.response_type
+          client_id: rest.client_id
+          redirect_uri: rest.redirect_uri
+          state: rest.state
+          scope: rest.scope
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/oauth2/revoke
+      name: oauth2-revoke
+      description: REST surface for oauth2-revoke.
+      operations:
+      - method: POST
+        name: postoauth2revoke
+        description: Box Revoke access token
+        call: box-authorization.postoauth2revoke
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/oauth2/token
+      name: oauth2-token
+      description: REST surface for oauth2-token.
+      operations:
+      - method: POST
+        name: postoauth2token
+        description: Box Request access token
+        call: box-authorization.postoauth2token
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/oauth2/token-refresh
+      name: oauth2-token-refresh
+      description: REST surface for oauth2-token#refresh.
+      operations:
+      - method: POST
+        name: postoauth2tokenrefresh
+        description: Box Refresh access token
+        call: box-authorization.postoauth2tokenrefresh
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: box-authorization-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Box Platform API — Authorization. One tool per consumed operation, routed inline through
+      this capability's consumes block.
+    tools:
+    - name: box-authorize-user
+      description: Box Authorize user
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: box-authorization.getauthorize
+      with:
+        response_type: tools.response_type
+        client_id: tools.client_id
+        redirect_uri: tools.redirect_uri
+        state: tools.state
+        scope: tools.scope
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: box-revoke-access-token
+      description: Box Revoke access token
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: box-authorization.postoauth2revoke
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: box-request-access-token
+      description: Box Request access token
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: box-authorization.postoauth2token
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: box-refresh-access-token
+      description: Box Refresh access token
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: box-authorization.postoauth2tokenrefresh
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.

@@ -1,0 +1,167 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Box Shield Information Barrier Reports API — Shield Information Barrier Reports
+  description: 'Box Shield Information Barrier Reports API — Shield Information Barrier Reports. 3 operations. Lead operation:
+    Box List shield information barrier reports. Self-contained Naftiko capability covering one Box business surface.'
+  tags:
+  - Box
+  - Shield Information Barrier Reports
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    BOX_API_KEY: BOX_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: shield-information-barrier-reports-shield-information-barrier-reports
+    baseUri: ''
+    description: Box Shield Information Barrier Reports API — Shield Information Barrier Reports business capability. Self-contained,
+      no shared references.
+    resources:
+    - name: shield_information_barrier_reports
+      path: /shield_information_barrier_reports
+      operations:
+      - name: getshieldinformationbarrierreports
+        method: GET
+        description: Box List shield information barrier reports
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: shield_information_barrier_id
+          in: query
+          type: string
+          description: The ID of the shield information barrier.
+          required: true
+        - name: marker
+          in: query
+          type: string
+          description: Defines the position marker at which to begin returning results. This is
+        - name: limit
+          in: query
+          type: integer
+          description: The maximum number of items to return per page.
+      - name: postshieldinformationbarrierreports
+        method: POST
+        description: Box Create shield information barrier report
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: false
+    - name: shield_information_barrier_reports-shield_information_barrier_report_id
+      path: /shield_information_barrier_reports/{shield_information_barrier_report_id}
+      operations:
+      - name: getshieldinformationbarrierreportsid
+        method: GET
+        description: Box Get shield information barrier report by ID
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: shield_information_barrier_report_id
+          in: path
+          type: string
+          description: The ID of the shield information barrier Report.
+          required: true
+  exposes:
+  - type: rest
+    namespace: shield-information-barrier-reports-shield-information-barrier-reports-rest
+    port: 8080
+    description: REST adapter for Box Shield Information Barrier Reports API — Shield Information Barrier Reports. One Spectral-compliant
+      resource per consumed operation, prefixed with /v1.
+    resources:
+    - path: /v1/shield-information-barrier-reports
+      name: shield-information-barrier-reports
+      description: REST surface for shield_information_barrier_reports.
+      operations:
+      - method: GET
+        name: getshieldinformationbarrierreports
+        description: Box List shield information barrier reports
+        call: shield-information-barrier-reports-shield-information-barrier-reports.getshieldinformationbarrierreports
+        with:
+          shield_information_barrier_id: rest.shield_information_barrier_id
+          marker: rest.marker
+          limit: rest.limit
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: POST
+        name: postshieldinformationbarrierreports
+        description: Box Create shield information barrier report
+        call: shield-information-barrier-reports-shield-information-barrier-reports.postshieldinformationbarrierreports
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/shield-information-barrier-reports/{shield-information-barrier-report-id}
+      name: shield-information-barrier-reports-shield-information-barrier-report-id
+      description: REST surface for shield_information_barrier_reports-shield_information_barrier_report_id.
+      operations:
+      - method: GET
+        name: getshieldinformationbarrierreportsid
+        description: Box Get shield information barrier report by ID
+        call: shield-information-barrier-reports-shield-information-barrier-reports.getshieldinformationbarrierreportsid
+        with:
+          shield_information_barrier_report_id: rest.shield_information_barrier_report_id
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: shield-information-barrier-reports-shield-information-barrier-reports-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Box Shield Information Barrier Reports API — Shield Information Barrier Reports. One tool
+      per consumed operation, routed inline through this capability's consumes block.
+    tools:
+    - name: box-list-shield-information-barrier
+      description: Box List shield information barrier reports
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: shield-information-barrier-reports-shield-information-barrier-reports.getshieldinformationbarrierreports
+      with:
+        shield_information_barrier_id: tools.shield_information_barrier_id
+        marker: tools.marker
+        limit: tools.limit
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: box-create-shield-information-barrier
+      description: Box Create shield information barrier report
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: shield-information-barrier-reports-shield-information-barrier-reports.postshieldinformationbarrierreports
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: box-get-shield-information-barrier
+      description: Box Get shield information barrier report by ID
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: shield-information-barrier-reports-shield-information-barrier-reports.getshieldinformationbarrierreportsid
+      with:
+        shield_information_barrier_report_id: tools.shield_information_barrier_report_id
+      outputParameters:
+      - type: object
+        mapping: $.
