@@ -1,0 +1,80 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/SignRequestCreateSigner",
+  "title": "Signer fields for Create Sign Request",
+  "type": "object",
+  "description": "The schema for a Signer in a POST Sign Request request body",
+  "properties": {
+    "email": {
+      "type": "string",
+      "description": "Email address of the signer.\nThe email address of the signer is required when making signature requests, except when using templates that are configured to include emails.",
+      "example": "example@gmail.com",
+      "nullable": true
+    },
+    "role": {
+      "type": "string",
+      "enum": [
+        "signer",
+        "approver",
+        "final_copy_reader"
+      ],
+      "description": "Defines the role of the signer in the sign request. A `signer`\nmust sign the document and an `approver` must approve the document. A\n`final_copy_reader` only receives the final signed document and signing\nlog.",
+      "example": "signer",
+      "default": "signer"
+    },
+    "is_in_person": {
+      "type": "boolean",
+      "description": "Used in combination with an embed URL for a sender. After the\nsender signs, they are redirected to the next `in_person` signer.",
+      "example": true
+    },
+    "order": {
+      "type": "integer",
+      "description": "Order of the signer",
+      "minimum": 0,
+      "example": 2
+    },
+    "embed_url_external_user_id": {
+      "type": "string",
+      "description": "User ID for the signer in an external application responsible\nfor authentication when accessing the embed URL.",
+      "example": "1234",
+      "nullable": true
+    },
+    "redirect_url": {
+      "type": "string",
+      "description": "The URL that a signer will be redirected\nto after signing a document. Defining this URL\noverrides default or global redirect URL\nsettings for a specific signer.\nIf no declined redirect URL is specified,\nthis URL will be used for decline actions as well.",
+      "example": "https://example.com",
+      "nullable": true
+    },
+    "declined_redirect_url": {
+      "type": "string",
+      "description": "The URL that a signer will be redirect\nto after declining to sign a document.\nDefining this URL overrides default or global\ndeclined redirect URL settings for a specific signer.",
+      "example": "https://declined-example.com",
+      "nullable": true
+    },
+    "login_required": {
+      "type": "boolean",
+      "description": "If set to true, signer will need to login to a Box account\nbefore signing the request. If the signer does not have\nan existing account, they will have an option to create\na free Box account.",
+      "example": true,
+      "nullable": true
+    },
+    "verification_phone_number": {
+      "type": "string",
+      "description": "If set, this phone number is be used to verify the signer\nvia two factor authentication before they are able to sign the document.",
+      "example": "6314578901",
+      "nullable": true
+    },
+    "password": {
+      "type": "string",
+      "writeOnly": true,
+      "description": "If set, the signer is required to enter the password before they are able\nto sign a document. This field is write only.",
+      "example": "SecretPassword123",
+      "nullable": true
+    },
+    "signer_group_id": {
+      "type": "string",
+      "description": "If set, signers who have the same value will be assigned to the same input and to the same signer group.\nA signer group is not a Box Group. It is an entity that belongs to a Sign Request and can only be\nused/accessed within this Sign Request. A signer group is expected to have more than one signer.\nIf the provided value is only used for one signer, this value will be ignored and request will be handled\nas it was intended for an individual signer. The value provided can be any string and only used to\ndetermine which signers belongs to same group. A successful response will provide a generated UUID value\ninstead for signers in the same signer group.",
+      "example": "cd4ff89-8fc1-42cf-8b29-1890dedd26d7",
+      "nullable": true
+    }
+  }
+}

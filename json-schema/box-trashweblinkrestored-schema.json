@@ -1,0 +1,177 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/TrashWebLinkRestored",
+  "title": "Trashed Web Link (Restored)",
+  "type": "object",
+  "x-box-resource-id": "trash_web_link_restored",
+  "x-box-tag": "trashed_web_links",
+  "description": "Represents a web link restored from the trash.",
+  "required": [
+    "sequence_id",
+    "path_collection"
+  ],
+  "properties": {
+    "type": {
+      "type": "string",
+      "description": "`web_link`",
+      "example": "web_link",
+      "enum": [
+        "web_link"
+      ]
+    },
+    "id": {
+      "type": "string",
+      "description": "The unique identifier for this web link",
+      "example": "11446498"
+    },
+    "sequence_id": {
+      "allOf": [
+        {
+          "type": "string",
+          "example": "3",
+          "nullable": true,
+          "description": "A numeric identifier that represents the most recent user event\nthat has been applied to this item.\n\nThis can be used in combination with the `GET /events`-endpoint\nto filter out user events that would have occurred before this\nidentifier was read.\n\nAn example would be where a Box Drive-like application\nwould fetch an item via the API, and then listen to incoming\nuser events for changes to the item. The application would\nignore any user events where the `sequence_id` in the event\nis smaller than or equal to the `sequence_id` in the originally\nfetched resource."
+        },
+        {
+          "nullable": false
+        }
+      ]
+    },
+    "etag": {
+      "type": "string",
+      "example": "1",
+      "description": "The entity tag of this web link. Used with `If-Match`\nheaders."
+    },
+    "name": {
+      "type": "string",
+      "description": "The name of the web link",
+      "example": "My Bookmark"
+    },
+    "url": {
+      "type": "string",
+      "example": "https://www.example.com/example/1234",
+      "description": "The URL this web link points to"
+    },
+    "parent": {
+      "allOf": [
+        {
+          "$ref": "#/components/schemas/Folder--Mini"
+        },
+        {
+          "description": "The parent object the web link belongs to"
+        }
+      ]
+    },
+    "description": {
+      "type": "string",
+      "example": "Example page",
+      "description": "The description accompanying the web link. This is\nvisible within the Box web application."
+    },
+    "path_collection": {
+      "allOf": [
+        {
+          "title": "Path collection",
+          "description": "A list of parent folders for an item.",
+          "type": "object",
+          "required": [
+            "total_count",
+            "entries"
+          ],
+          "properties": {
+            "total_count": {
+              "description": "The number of folders in this list.",
+              "example": 1,
+              "type": "integer",
+              "format": "int64",
+              "nullable": false
+            },
+            "entries": {
+              "type": "array",
+              "description": "The parent folders for this item",
+              "nullable": false,
+              "items": {
+                "$ref": "#/components/schemas/Folder--Mini"
+              }
+            }
+          }
+        },
+        {
+          "description": "The tree of folders that this web link is contained in,\nstarting at the root."
+        },
+        {
+          "nullable": false
+        }
+      ]
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "When this file was created on Box\u2019s servers.",
+      "example": "2012-12-12T10:53:43-08:00"
+    },
+    "modified_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "When this file was last updated on the Box\nservers.",
+      "example": "2012-12-12T10:53:43-08:00"
+    },
+    "trashed_at": {
+      "type": "string",
+      "nullable": true,
+      "description": "The time at which this bookmark was put in the\ntrash - becomes `null` after restore.",
+      "example": null
+    },
+    "purged_at": {
+      "type": "string",
+      "nullable": true,
+      "description": "The time at which this bookmark will be permanently\ndeleted - becomes `null` after restore.",
+      "example": null
+    },
+    "created_by": {
+      "allOf": [
+        {
+          "$ref": "#/components/schemas/User--Mini"
+        },
+        {
+          "description": "The user who created this web link"
+        }
+      ]
+    },
+    "modified_by": {
+      "allOf": [
+        {
+          "$ref": "#/components/schemas/User--Mini"
+        },
+        {
+          "description": "The user who last modified this web link"
+        }
+      ]
+    },
+    "owned_by": {
+      "allOf": [
+        {
+          "$ref": "#/components/schemas/User--Mini"
+        },
+        {
+          "description": "The user who owns this web link"
+        }
+      ]
+    },
+    "shared_link": {
+      "type": "string",
+      "description": "The shared link for this bookmark. This will\nbe `null` if a bookmark had been trashed, even though the original shared\nlink does become active again.",
+      "nullable": true,
+      "example": null
+    },
+    "item_status": {
+      "type": "string",
+      "example": "trashed",
+      "enum": [
+        "active",
+        "trashed",
+        "deleted"
+      ],
+      "description": "Whether this item is deleted or not. Values include `active`,\n`trashed` if the file has been moved to the trash, and `deleted` if\nthe file has been permanently deleted"
+    }
+  }
+}

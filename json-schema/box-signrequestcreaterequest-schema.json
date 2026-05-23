@@ -1,0 +1,56 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/SignRequestCreateRequest",
+  "title": "Create a sign request",
+  "type": "object",
+  "description": "A request to create a sign request object",
+  "required": [
+    "signers"
+  ],
+  "allOf": [
+    {
+      "$ref": "#/components/schemas/SignRequest--Base"
+    },
+    {
+      "properties": {
+        "source_files": {
+          "type": "array",
+          "items": {
+            "$ref": "#/components/schemas/File--Base"
+          },
+          "description": "List of files to create a signing document from. This is currently limited to ten files. Only the ID and type fields are required for each file.",
+          "maxItems": 10,
+          "nullable": true
+        },
+        "signature_color": {
+          "type": "string",
+          "example": "blue",
+          "description": "Force a specific color for the signature (blue, black, or red)",
+          "enum": [
+            "blue",
+            "black",
+            "red"
+          ],
+          "nullable": true
+        },
+        "signers": {
+          "type": "array",
+          "items": {
+            "$ref": "#/components/schemas/SignRequestCreateSigner"
+          },
+          "description": "Array of signers for the sign request. 35 is the max number of signers permitted."
+        },
+        "parent_folder": {
+          "allOf": [
+            {
+              "$ref": "#/components/schemas/Folder--Mini"
+            },
+            {
+              "description": "The destination folder to place final, signed document and signing\nlog. Only `ID` and `type` fields are required. The root folder,\nfolder ID `0`, cannot be used and can also not be null.\n\nWhen this value is not passed in when the signature request, then\nwe will use a default folder which is either the parent folder of\nthe first source file in the payload if we have the permission to\nupload to that folder or a folder called \"My Sign Requests\"."
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

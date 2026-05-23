@@ -1,0 +1,45 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/FileOrFolderScope",
+  "title": "File or folder scope",
+  "type": "object",
+  "description": "A relation between a resource (file or folder) and the scopes for which the resource can be accessed",
+  "properties": {
+    "scope": {
+      "type": "string",
+      "description": "The scopes for the resource access",
+      "example": "item_download",
+      "enum": [
+        "annotation_edit",
+        "annotation_view_all",
+        "annotation_view_self",
+        "base_explorer",
+        "base_picker",
+        "base_preview",
+        "base_upload",
+        "item_delete",
+        "item_download",
+        "item_preview",
+        "item_rename",
+        "item_share"
+      ]
+    },
+    "object": {
+      "allOf": [
+        {
+          "oneOf": [
+            {
+              "$ref": "#/components/schemas/Folder--Mini"
+            },
+            {
+              "$ref": "#/components/schemas/File--Mini"
+            }
+          ]
+        },
+        {
+          "description": "The file or folder resource"
+        }
+      ]
+    }
+  }
+}

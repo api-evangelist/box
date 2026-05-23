@@ -1,0 +1,46 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/SignTemplates",
+  "title": "Box Sign templates",
+  "type": "object",
+  "x-box-resource-id": "sign_templates",
+  "x-box-tag": "sign_templates",
+  "description": "A list of templates, as returned from any Box Sign\nAPI endpoints by default.",
+  "allOf": [
+    {
+      "type": "object",
+      "description": "The part of an API response that describes marker\nbased pagination",
+      "properties": {
+        "limit": {
+          "description": "The limit that was used for these entries. This will be the same as the\n`limit` query parameter unless that value exceeded the maximum value\nallowed. The maximum value varies by API.",
+          "example": 1000,
+          "type": "integer",
+          "format": "int64"
+        },
+        "next_marker": {
+          "description": "The marker for the start of the next page of results.",
+          "example": "JV9IRGZmieiBasejOG9yDCRNgd2ymoZIbjsxbJMjIs3kioVii",
+          "type": "string",
+          "nullable": true
+        },
+        "prev_marker": {
+          "description": "The marker for the start of the previous page of results.",
+          "example": "JV9IRGZmieiBasejOG9yDCRNgd2ymoZIbjsxbJMjIs3kioVih",
+          "type": "string",
+          "nullable": true
+        }
+      }
+    },
+    {
+      "properties": {
+        "entries": {
+          "type": "array",
+          "description": "A list of templates.",
+          "items": {
+            "$ref": "#/components/schemas/SignTemplate"
+          }
+        }
+      }
+    }
+  ]
+}

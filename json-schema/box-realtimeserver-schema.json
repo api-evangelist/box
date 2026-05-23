@@ -1,0 +1,35 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/RealtimeServer",
+  "title": "Real-time server",
+  "type": "object",
+  "x-box-resource-id": "realtime_server",
+  "description": "A real-time server that can be used for\nlong polling user events",
+  "properties": {
+    "type": {
+      "description": "`realtime_server`",
+      "type": "string",
+      "example": "realtime_server"
+    },
+    "url": {
+      "type": "string",
+      "example": "http://2.realtime.services.box.net/subscribe?channel=cc807c9c4869ffb1c81a&stream_type=all",
+      "description": "The URL for the server."
+    },
+    "ttl": {
+      "description": "The time in minutes for which this server is available",
+      "type": "integer",
+      "example": 10
+    },
+    "max_retries": {
+      "description": "The maximum number of retries this server will\nallow before a new long poll should be started by\ngetting a [new list of server](#options-events).",
+      "type": "integer",
+      "example": 10
+    },
+    "retry_timeout": {
+      "description": "The maximum number of seconds without a response\nafter which you should retry the long poll connection.\n\nThis helps to overcome network issues where the long\npoll looks to be working but no packages are coming\nthrough.",
+      "type": "integer",
+      "example": 610
+    }
+  }
+}

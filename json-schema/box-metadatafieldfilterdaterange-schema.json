@@ -1,0 +1,37 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/MetadataFieldFilterDateRange",
+  "title": "Metadata field filter (date range)",
+  "type": "object",
+  "x-box-resource-id": "metadata_field_filter_date_range",
+  "description": "Specifies which `date` field on the template to filter the search\nresults by, specifying a range of dates that can match.",
+  "example": {
+    "expirationDate": {
+      "lt": "2017-08-01T00:00:00Z",
+      "gt": "2016-08-01T00:00:00Z"
+    }
+  },
+  "additionalProperties": {
+    "type": "object",
+    "description": "Match a `date` metadata field to a range of values.",
+    "example": {
+      "lt": "2017-08-01T00:00:00Z",
+      "gt": "2016-08-01T00:00:00Z"
+    },
+    "x-box-example-key": "expirationDate",
+    "properties": {
+      "lt": {
+        "description": "Specifies the (inclusive) upper bound for the metadata field\nvalue. The value of a field must be lower than (`lt`) or\nequal to this value for the search query to match this\ntemplate.",
+        "type": "string",
+        "format": "date-time",
+        "example": "2017-08-01T00:00:00Z"
+      },
+      "gt": {
+        "description": "Specifies the (inclusive) lower bound for the metadata field\nvalue. The value of a field must be greater than (`gt`) or\nequal to this value for the search query to match this\ntemplate.",
+        "type": "string",
+        "format": "date-time",
+        "example": "2016-08-01T00:00:00Z"
+      }
+    }
+  }
+}

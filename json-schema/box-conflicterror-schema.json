@@ -1,0 +1,30 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/ConflictError",
+  "title": "Conflict error",
+  "type": "object",
+  "x-box-resource-id": "conflict_error",
+  "x-box-tag": "uploads",
+  "description": "The error that occurs when a file can not be created due\nto a conflict.",
+  "allOf": [
+    {
+      "$ref": "#/components/schemas/ClientError"
+    },
+    {
+      "properties": {
+        "context_info": {
+          "type": "object",
+          "properties": {
+            "conflicts": {
+              "type": "array",
+              "description": "A list of the file conflicts that caused this error.",
+              "items": {
+                "$ref": "#/components/schemas/FileConflict"
+              }
+            }
+          }
+        }
+      }
+    }
+  ]
+}

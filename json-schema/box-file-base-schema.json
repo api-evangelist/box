@@ -1,0 +1,45 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/File--Base",
+  "title": "File (Base)",
+  "type": "object",
+  "x-box-resource-id": "file--base",
+  "x-box-sanitized": true,
+  "x-box-tag": "files",
+  "x-box-variants": [
+    "base",
+    "mini",
+    "standard",
+    "full"
+  ],
+  "x-box-variant": "base",
+  "nullable": true,
+  "description": "The bare basic representation of a file, the minimal\namount of fields returned when using the `fields` query\nparameter.",
+  "required": [
+    "id",
+    "type"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "nullable": false,
+      "description": "The unique identifier that represent a file.\n\nThe ID for any file can be determined\nby visiting a file in the web application\nand copying the ID from the URL. For example,\nfor the URL `https://*.app.box.com/files/123`\nthe `file_id` is `123`.",
+      "example": "12345"
+    },
+    "etag": {
+      "type": "string",
+      "example": "1",
+      "nullable": true,
+      "description": "The HTTP `etag` of this file. This can be used within some API\nendpoints in the `If-Match` and `If-None-Match` headers to only\nperform changes on the file if (no) changes have happened."
+    },
+    "type": {
+      "type": "string",
+      "description": "`file`",
+      "example": "file",
+      "enum": [
+        "file"
+      ],
+      "nullable": false
+    }
+  }
+}

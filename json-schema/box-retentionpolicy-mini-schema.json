@@ -1,0 +1,39 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/RetentionPolicy--Mini",
+  "title": "Retention policy (Mini)",
+  "type": "object",
+  "x-box-resource-id": "retention_policy--mini",
+  "x-box-variant": "mini",
+  "description": "A mini representation of a retention policy, used when\nnested within another resource.",
+  "allOf": [
+    {
+      "$ref": "#/components/schemas/RetentionPolicy--Base"
+    },
+    {
+      "properties": {
+        "policy_name": {
+          "type": "string",
+          "description": "The name given to the retention policy.",
+          "example": "Some Policy Name"
+        },
+        "retention_length": {
+          "type": "string",
+          "format": "int32",
+          "example": "365",
+          "minimum": 1,
+          "description": "The length of the retention policy. This value\nspecifies the duration in days that the retention\npolicy will be active for after being assigned to\ncontent.  If the policy has a `policy_type` of\n`indefinite`, the `retention_length` will also be\n`indefinite`."
+        },
+        "disposition_action": {
+          "type": "string",
+          "example": "permanently_delete",
+          "description": "The disposition action of the retention policy.\nThis action can be `permanently_delete`, which\nwill cause the content retained by the policy\nto be permanently deleted, or `remove_retention`,\nwhich will lift the retention policy from the content,\nallowing it to be deleted by users,\nonce the retention policy has expired.",
+          "enum": [
+            "permanently_delete",
+            "remove_retention"
+          ]
+        }
+      }
+    }
+  ]
+}

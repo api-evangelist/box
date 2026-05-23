@@ -1,0 +1,67 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/SearchResults",
+  "title": "Search Results",
+  "type": "object",
+  "x-box-resource-id": "search_results",
+  "x-box-tag": "search",
+  "description": "A list of files, folders and web links that matched the search query.",
+  "required": [
+    "type"
+  ],
+  "allOf": [
+    {
+      "type": "object",
+      "properties": {
+        "total_count": {
+          "description": "One greater than the offset of the last entry in the search results.\nThe total number of entries in the collection may be less than\n`total_count`.",
+          "example": 5000,
+          "type": "integer",
+          "format": "int64"
+        },
+        "limit": {
+          "description": "The limit that was used for this search. This will be the same as the\n`limit` query parameter unless that value exceeded the maximum value\nallowed.",
+          "example": 1000,
+          "type": "integer",
+          "format": "int64"
+        },
+        "offset": {
+          "description": "The 0-based offset of the first entry in this set. This will be the same\nas the `offset` query parameter used.",
+          "example": 2000,
+          "type": "integer",
+          "format": "int64"
+        }
+      }
+    },
+    {
+      "properties": {
+        "type": {
+          "description": "Specifies the response as search result items without shared links",
+          "type": "string",
+          "example": "search_results_items",
+          "enum": [
+            "search_results_items"
+          ],
+          "nullable": false
+        },
+        "entries": {
+          "description": "The search results for the query provided.",
+          "type": "array",
+          "items": {
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/File--Full"
+              },
+              {
+                "$ref": "#/components/schemas/Folder--Full"
+              },
+              {
+                "$ref": "#/components/schemas/WebLink"
+              }
+            ]
+          }
+        }
+      }
+    }
+  ]
+}

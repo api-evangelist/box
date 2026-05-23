@@ -1,0 +1,129 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/FileRequest",
+  "title": "File Request",
+  "type": "object",
+  "x-box-resource-id": "file_request",
+  "x-box-tag": "file_requests",
+  "description": "A standard representation of a file request, as returned\nfrom any file request API endpoints by default.",
+  "required": [
+    "id",
+    "type",
+    "folder",
+    "created_at",
+    "updated_at"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "description": "The unique identifier for this file request.",
+      "readOnly": true,
+      "example": "42037322"
+    },
+    "type": {
+      "type": "string",
+      "description": "`file_request`",
+      "example": "file_request",
+      "enum": [
+        "file_request"
+      ],
+      "readOnly": true
+    },
+    "title": {
+      "type": "string",
+      "description": "The title of file request. This is shown\nin the Box UI to users uploading files.\n\nThis defaults to title of the file request that was\ncopied to create this file request.",
+      "example": "Please upload documents"
+    },
+    "description": {
+      "type": "string",
+      "nullable": true,
+      "description": "The optional description of this file request. This is\nshown in the Box UI to users uploading files.\n\nThis defaults to description of the file request that was\ncopied to create this file request.",
+      "example": "Following documents are requested for your process"
+    },
+    "status": {
+      "type": "string",
+      "example": "active",
+      "description": "The status of the file request. This defaults\nto `active`.\n\nWhen the status is set to `inactive`, the file request\nwill no longer accept new submissions, and any visitor\nto the file request URL will receive a `HTTP 404` status\ncode.\n\nThis defaults to status of file request that was\ncopied to create this file request.",
+      "enum": [
+        "active",
+        "inactive"
+      ]
+    },
+    "is_email_required": {
+      "type": "boolean",
+      "example": true,
+      "description": "Whether a file request submitter is required to provide\ntheir email address.\n\nWhen this setting is set to true, the Box UI will show\nan email field on the file request form.\n\nThis defaults to setting of file request that was\ncopied to create this file request."
+    },
+    "is_description_required": {
+      "type": "boolean",
+      "example": true,
+      "description": "Whether a file request submitter is required to provide\na description of the files they are submitting.\n\nWhen this setting is set to true, the Box UI will show\na description field on the file request form.\n\nThis defaults to setting of file request that was\ncopied to create this file request."
+    },
+    "expires_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "The date after which a file request will no longer accept new\nsubmissions.\n\nAfter this date, the `status` will automatically be set to\n`inactive`.",
+      "example": "2020-09-28T10:53:43-08:00"
+    },
+    "folder": {
+      "allOf": [
+        {
+          "$ref": "#/components/schemas/Folder--Mini"
+        },
+        {
+          "description": "The folder that this file request is associated with.\n\nFiles submitted through the file request form will be\nuploaded to this folder."
+        }
+      ],
+      "nullable": false
+    },
+    "url": {
+      "type": "string",
+      "description": "The generated URL for this file request. This URL can be shared\nwith users to let them upload files to the associated folder.",
+      "example": "/f/19e57f40ace247278a8e3d336678c64a",
+      "readOnly": true
+    },
+    "etag": {
+      "type": "string",
+      "example": "1",
+      "nullable": true,
+      "description": "The HTTP `etag` of this file. This can be used in combination with\nthe `If-Match` header when updating a file request. By providing that\nheader, a change will only be performed on the  file request if the `etag`\non the file request still matches the `etag` provided in the `If-Match`\nheader."
+    },
+    "created_by": {
+      "allOf": [
+        {
+          "$ref": "#/components/schemas/User--Mini"
+        },
+        {
+          "description": "The user who created this file request."
+        }
+      ]
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time",
+      "nullable": false,
+      "description": "The date and time when the file request was created.",
+      "example": "2020-09-28T10:53:43-08:00"
+    },
+    "updated_by": {
+      "allOf": [
+        {
+          "$ref": "#/components/schemas/User--Mini"
+        },
+        {
+          "description": "The user who last modified this file request."
+        },
+        {
+          "nullable": false
+        }
+      ]
+    },
+    "updated_at": {
+      "type": "string",
+      "format": "date-time",
+      "nullable": false,
+      "description": "The date and time when the file request was last updated.",
+      "example": "2020-09-28T10:53:43-08:00"
+    }
+  }
+}

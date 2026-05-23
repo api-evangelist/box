@@ -1,0 +1,104 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/RetentionPolicyAssignment",
+  "title": "Retention policy assignment",
+  "type": "object",
+  "x-box-resource-id": "retention_policy_assignment",
+  "x-box-tag": "retention_policy_assignments",
+  "description": "A retention assignment represents a rule specifying\nthe files a retention policy retains.\nAssignments can retain files based on their folder or metadata,\nor hold all files in the enterprise.",
+  "required": [
+    "id",
+    "type"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "description": "The unique identifier for a retention policy assignment.",
+      "example": "11446498"
+    },
+    "type": {
+      "type": "string",
+      "description": "`retention_policy_assignment`",
+      "example": "retention_policy_assignment",
+      "enum": [
+        "retention_policy_assignment"
+      ]
+    },
+    "retention_policy": {
+      "allOf": [
+        {
+          "$ref": "#/components/schemas/RetentionPolicy--Mini"
+        },
+        {
+          "description": "A mini representation of a retention policy object\nthat has been assigned to the content."
+        }
+      ]
+    },
+    "assigned_to": {
+      "type": "object",
+      "description": "The `type` and `id` of the content that is under\nretention. The `type` can either be `folder`\n`enterprise`, or `metadata_template`.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "nullable": true,
+          "example": "a983f69f-e85f-4ph4-9f46-4afdf9c1af65",
+          "description": "The ID of the folder, enterprise, or metadata template\nthe policy is assigned to.\nSet to null or omit when type is set to enterprise."
+        },
+        "type": {
+          "type": "string",
+          "example": "metadata_template",
+          "description": "The type of resource the policy is assigned to.",
+          "enum": [
+            "folder",
+            "enterprise",
+            "metadata_template"
+          ]
+        }
+      }
+    },
+    "filter_fields": {
+      "type": "array",
+      "nullable": true,
+      "description": "An array of field objects. Values are only returned if the `assigned_to`\ntype is `metadata_template`. Otherwise, the array is blank.",
+      "items": {
+        "type": "object",
+        "nullable": true,
+        "properties": {
+          "field": {
+            "type": "string",
+            "nullable": true,
+            "description": "The metadata attribute key id.",
+            "example": "a0f4ee4e-1dc1-4h90-a8a9-aef55fc681d4"
+          },
+          "value": {
+            "type": "string",
+            "nullable": true,
+            "description": "The metadata attribute field id. For value, only\nenum and multiselect types are supported.",
+            "example": "0c27b756-0p87-4fe0-a43a-59fb661ccc4e"
+          }
+        }
+      }
+    },
+    "assigned_by": {
+      "allOf": [
+        {
+          "$ref": "#/components/schemas/User--Mini"
+        },
+        {
+          "description": "A mini user object representing the user that\ncreated the retention policy assignment."
+        }
+      ]
+    },
+    "assigned_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "When the retention policy assignment object was\ncreated.",
+      "example": "2012-12-12T10:53:43-08:00"
+    },
+    "start_date_field": {
+      "type": "string",
+      "description": "The date the retention policy assignment begins.\nIf the `assigned_to` type is `metadata_template`,\nthis field can be a date field's metadata attribute key id.",
+      "example": "upload_date"
+    }
+  }
+}

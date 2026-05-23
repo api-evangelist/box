@@ -1,0 +1,277 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/WebLink",
+  "title": "Web link",
+  "type": "object",
+  "x-box-resource-id": "web_link",
+  "x-box-variant": "standard",
+  "description": "Web links are objects that point to URLs. These objects\nare also known as bookmarks within the Box web application.\n\nWeb link objects are treated similarly to file objects,\nthey will also support most actions that apply to regular files.",
+  "allOf": [
+    {
+      "$ref": "#/components/schemas/WebLink--Mini"
+    },
+    {
+      "properties": {
+        "parent": {
+          "allOf": [
+            {
+              "$ref": "#/components/schemas/Folder--Mini"
+            },
+            {
+              "description": "The parent object the web link belongs to"
+            }
+          ]
+        },
+        "description": {
+          "type": "string",
+          "example": "Example page",
+          "description": "The description accompanying the web link. This is\nvisible within the Box web application."
+        },
+        "path_collection": {
+          "allOf": [
+            {
+              "title": "Path collection",
+              "description": "A list of parent folders for an item.",
+              "type": "object",
+              "required": [
+                "total_count",
+                "entries"
+              ],
+              "properties": {
+                "total_count": {
+                  "description": "The number of folders in this list.",
+                  "example": 1,
+                  "type": "integer",
+                  "format": "int64",
+                  "nullable": false
+                },
+                "entries": {
+                  "type": "array",
+                  "description": "The parent folders for this item",
+                  "nullable": false,
+                  "items": {
+                    "$ref": "#/components/schemas/Folder--Mini"
+                  }
+                }
+              }
+            },
+            {
+              "description": "The tree of folders that this web link is contained in,\nstarting at the root."
+            },
+            {
+              "nullable": false
+            }
+          ]
+        },
+        "created_at": {
+          "type": "string",
+          "format": "date-time",
+          "description": "When this file was created on Box\u2019s servers.",
+          "example": "2012-12-12T10:53:43-08:00"
+        },
+        "modified_at": {
+          "type": "string",
+          "format": "date-time",
+          "description": "When this file was last updated on the Box\nservers.",
+          "example": "2012-12-12T10:53:43-08:00"
+        },
+        "trashed_at": {
+          "type": "string",
+          "format": "date-time",
+          "nullable": true,
+          "description": "When this file was moved to the trash.",
+          "example": "2012-12-12T10:53:43-08:00"
+        },
+        "purged_at": {
+          "type": "string",
+          "format": "date-time",
+          "nullable": true,
+          "description": "When this file will be permanently deleted.",
+          "example": "2012-12-12T10:53:43-08:00"
+        },
+        "created_by": {
+          "allOf": [
+            {
+              "$ref": "#/components/schemas/User--Mini"
+            },
+            {
+              "description": "The user who created this web link"
+            }
+          ]
+        },
+        "modified_by": {
+          "allOf": [
+            {
+              "$ref": "#/components/schemas/User--Mini"
+            },
+            {
+              "description": "The user who last modified this web link"
+            }
+          ]
+        },
+        "owned_by": {
+          "allOf": [
+            {
+              "$ref": "#/components/schemas/User--Mini"
+            },
+            {
+              "description": "The user who owns this web link"
+            }
+          ]
+        },
+        "shared_link": {
+          "allOf": [
+            {
+              "title": "Shared link",
+              "description": "Shared links provide direct, read-only access to files or folder on Box.\n\nShared links with open access level allow anyone with the URL\nto access the item, while shared links with company or collaborators access\nlevels can only be accessed by appropriately authenticated Box users.",
+              "type": "object",
+              "required": [
+                "url",
+                "accessed",
+                "effective_access",
+                "effective_permission",
+                "is_password_enabled",
+                "download_count",
+                "preview_count"
+              ],
+              "properties": {
+                "url": {
+                  "type": "string",
+                  "format": "url",
+                  "description": "The URL that can be used to access the item on Box.\n\nThis URL will display the item in Box's preview UI where the file\ncan be downloaded if allowed.\n\nThis URL will continue to work even when a custom `vanity_url`\nhas been set for this shared link.",
+                  "example": "https://www.box.com/s/vspke7y05sb214wjokpk",
+                  "nullable": false
+                },
+                "download_url": {
+                  "type": "string",
+                  "format": "url",
+                  "x-box-premium-feature": true,
+                  "description": "A URL that can be used to download the file. This URL can be used in\na browser to download the file. This URL includes the file\nextension so that the file will be saved with the right file type.\n\nThis property will be `null` for folders.",
+                  "example": "https://www.box.com/shared/static/rh935iit6ewrmw0unyul.jpeg",
+                  "nullable": true
+                },
+                "vanity_url": {
+                  "type": "string",
+                  "format": "url",
+                  "description": "The \"Custom URL\" that can also be used to preview the item on Box.  Custom\nURLs can only be created or modified in the Box Web application.",
+                  "example": "https://acme.app.box.com/v/my_url/",
+                  "nullable": true
+                },
+                "vanity_name": {
+                  "type": "string",
+                  "description": "The custom name of a shared link, as used in the `vanity_url` field.",
+                  "example": "my_url",
+                  "nullable": true
+                },
+                "access": {
+                  "type": "string",
+                  "description": "The access level for this shared link.\n\n* `open` - provides access to this item to anyone with this link\n* `company` - only provides access to this item to people the same company\n* `collaborators` - only provides access to this item to people who are\n   collaborators on this item\n\nIf this field is omitted when creating the shared link, the access level\nwill be set to the default access level specified by the enterprise admin.",
+                  "enum": [
+                    "open",
+                    "company",
+                    "collaborators"
+                  ],
+                  "example": "open",
+                  "nullable": false
+                },
+                "effective_access": {
+                  "type": "string",
+                  "description": "The effective access level for the shared link. This can be a more\nrestrictive access level than the value in the `access` field when the\nenterprise settings restrict the allowed access levels.",
+                  "enum": [
+                    "open",
+                    "company",
+                    "collaborators"
+                  ],
+                  "example": "company",
+                  "nullable": false
+                },
+                "effective_permission": {
+                  "type": "string",
+                  "description": "The effective permissions for this shared link.\nThese result in the more restrictive combination of\nthe share link permissions and the item permissions set\nby the administrator, the owner, and any ancestor item\nsuch as a folder.",
+                  "enum": [
+                    "can_edit",
+                    "can_download",
+                    "can_preview",
+                    "no_access"
+                  ],
+                  "example": "can_download",
+                  "nullable": false
+                },
+                "unshared_at": {
+                  "type": "string",
+                  "format": "date-time",
+                  "description": "The date and time when this link will be unshared. This field can only be\nset by users with paid accounts.",
+                  "example": "2018-04-13T13:53:23-07:00",
+                  "nullable": true
+                },
+                "is_password_enabled": {
+                  "type": "boolean",
+                  "description": "Defines if the shared link requires a password to access the item.",
+                  "example": true,
+                  "nullable": false
+                },
+                "permissions": {
+                  "type": "object",
+                  "description": "Defines if this link allows a user to preview, edit, and download an item.\nThese permissions refer to the shared link only and\ndo not supersede permissions applied to the item itself.",
+                  "required": [
+                    "can_download",
+                    "can_preview",
+                    "can_edit"
+                  ],
+                  "properties": {
+                    "can_download": {
+                      "type": "boolean",
+                      "example": true,
+                      "nullable": false,
+                      "description": "Defines if the shared link allows for the item to be downloaded. For\nshared links on folders, this also applies to any items in the folder.\n\nThis value can be set to `true` when the effective access level is\nset to `open` or `company`, not `collaborators`."
+                    },
+                    "can_preview": {
+                      "type": "boolean",
+                      "example": true,
+                      "nullable": false,
+                      "description": "Defines if the shared link allows for the item to be previewed.\n\nThis value is always `true`. For shared links on folders this also\napplies to any items in the folder."
+                    },
+                    "can_edit": {
+                      "type": "boolean",
+                      "example": false,
+                      "nullable": false,
+                      "description": "Defines if the shared link allows for the item to be edited.\n\nThis value can only be `true` if `can_download` is also `true` and if\nthe item has a type of `file`."
+                    }
+                  }
+                },
+                "download_count": {
+                  "type": "integer",
+                  "example": 3,
+                  "description": "The number of times this item has been downloaded.",
+                  "nullable": false
+                },
+                "preview_count": {
+                  "type": "integer",
+                  "example": 3,
+                  "description": "The number of times this item has been previewed.",
+                  "nullable": false
+                }
+              }
+            },
+            {
+              "description": "The shared link object for this item. Will be\n`null` if no shared link has been created."
+            },
+            {
+              "nullable": true
+            }
+          ]
+        },
+        "item_status": {
+          "type": "string",
+          "example": "active",
+          "enum": [
+            "active",
+            "trashed",
+            "deleted"
+          ],
+          "description": "Whether this item is deleted or not. Values include `active`,\n`trashed` if the file has been moved to the trash, and `deleted` if\nthe file has been permanently deleted"
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,41 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/WebLink--Mini",
+  "title": "Web link (Mini)",
+  "type": "object",
+  "x-box-resource-id": "web_link--mini",
+  "x-box-variant": "mini",
+  "description": "Web links are objects that point to URLs. These objects\nare also known as bookmarks within the Box web application.\n\nWeb link objects are treated similarly to file objects,\nthey will also support most actions that apply to regular files.",
+  "allOf": [
+    {
+      "$ref": "#/components/schemas/WebLink--Base"
+    },
+    {
+      "properties": {
+        "url": {
+          "type": "string",
+          "example": "https://www.example.com/example/1234",
+          "description": "The URL this web link points to"
+        },
+        "sequence_id": {
+          "allOf": [
+            {
+              "type": "string",
+              "example": "3",
+              "nullable": true,
+              "description": "A numeric identifier that represents the most recent user event\nthat has been applied to this item.\n\nThis can be used in combination with the `GET /events`-endpoint\nto filter out user events that would have occurred before this\nidentifier was read.\n\nAn example would be where a Box Drive-like application\nwould fetch an item via the API, and then listen to incoming\nuser events for changes to the item. The application would\nignore any user events where the `sequence_id` in the event\nis smaller than or equal to the `sequence_id` in the originally\nfetched resource."
+            },
+            {
+              "nullable": false
+            }
+          ]
+        },
+        "name": {
+          "type": "string",
+          "description": "The name of the web link",
+          "example": "My Bookmark"
+        }
+      }
+    }
+  ]
+}

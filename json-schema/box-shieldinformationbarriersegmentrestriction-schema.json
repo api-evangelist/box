@@ -1,0 +1,63 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/ShieldInformationBarrierSegmentRestriction",
+  "title": "Shield information barrier segment restriction",
+  "type": "object",
+  "x-box-resource-id": "shield_information_barrier_segment_restriction",
+  "x-box-tag": "shield_information_barrier_segment_restrictions",
+  "x-box-variants": [
+    "base",
+    "mini",
+    "standard"
+  ],
+  "x-box-variant": "standard",
+  "description": "A standard representation of a\nsegment restriction of a shield information barrier\nobject",
+  "required": [
+    "shield_information_barrier_segment",
+    "restricted_segment"
+  ],
+  "allOf": [
+    {
+      "$ref": "#/components/schemas/ShieldInformationBarrierSegmentRestriction--Mini"
+    },
+    {
+      "properties": {
+        "shield_information_barrier": {
+          "$ref": "#/components/schemas/ShieldInformationBarrier--Base"
+        },
+        "created_at": {
+          "type": "string",
+          "format": "date-time",
+          "example": "2020-06-26T18:44:45.869Z",
+          "description": "ISO date time string when this\nshield information barrier\nSegment Restriction object was created."
+        },
+        "created_by": {
+          "allOf": [
+            {
+              "$ref": "#/components/schemas/User--Base"
+            },
+            {
+              "description": "The user who created this shield information barrier segment Restriction."
+            }
+          ]
+        },
+        "updated_at": {
+          "type": "string",
+          "format": "date-time",
+          "example": "2020-07-26T18:44:45.869Z",
+          "description": "ISO date time string when this\nshield information barrier segment\nRestriction was updated."
+        },
+        "updated_by": {
+          "allOf": [
+            {
+              "$ref": "#/components/schemas/User--Base"
+            },
+            {
+              "description": "The user that updated this shield information barrier segment Restriction."
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,53 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/AccessToken",
+  "title": "Access token",
+  "type": "object",
+  "x-box-resource-id": "access_token",
+  "x-box-tag": "authorization",
+  "description": "A token that can be used to make authenticated API calls.",
+  "properties": {
+    "access_token": {
+      "type": "string",
+      "format": "token",
+      "example": "c3FIOG9vSGV4VHo4QzAyg5T1JvNnJoZ3ExaVNyQWw6WjRsanRKZG5lQk9qUE1BVQ",
+      "description": "The requested access token."
+    },
+    "expires_in": {
+      "type": "integer",
+      "format": "int64",
+      "example": 3600,
+      "description": "The time in seconds by which this token will expire."
+    },
+    "token_type": {
+      "type": "string",
+      "enum": [
+        "bearer"
+      ],
+      "example": "bearer",
+      "description": "The type of access token returned."
+    },
+    "restricted_to": {
+      "type": "array",
+      "description": "The permissions that this access token permits,\nproviding a list of resources (files, folders, etc)\nand the scopes permitted for each of those resources.",
+      "items": {
+        "$ref": "#/components/schemas/FileOrFolderScope"
+      }
+    },
+    "refresh_token": {
+      "type": "string",
+      "format": "token",
+      "example": "c3FIOG9vSGV4VHo4QzAyg5T1JvNnJoZ3ExaVNyQWw6WjRsanRKZG5lQk9qUE1BVQ",
+      "description": "The refresh token for this access token, which can be used\nto request a new access token when the current one expires."
+    },
+    "issued_token_type": {
+      "type": "string",
+      "format": "urn",
+      "example": "urn:ietf:params:oauth:token-type:access_token",
+      "enum": [
+        "urn:ietf:params:oauth:token-type:access_token"
+      ],
+      "description": "The type of downscoped access token returned. This is only\nreturned if an access token has been downscoped."
+    }
+  }
+}

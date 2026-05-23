@@ -1,0 +1,177 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/MetadataTemplate",
+  "title": "Metadata template",
+  "type": "object",
+  "x-box-resource-id": "metadata_template",
+  "x-box-tag": "metadata_templates",
+  "description": "A template for metadata that can be applied to files and folders",
+  "required": [
+    "type",
+    "id"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "example": "58063d82-4128-7b43-bba9-92f706befcdf",
+      "description": "The ID of the metadata template."
+    },
+    "type": {
+      "type": "string",
+      "description": "`metadata_template`",
+      "example": "metadata_template",
+      "enum": [
+        "metadata_template"
+      ],
+      "nullable": false
+    },
+    "scope": {
+      "type": "string",
+      "description": "The scope of the metadata template can either be `global` or\n`enterprise_*`. The `global` scope is used for templates that are\navailable to any Box enterprise. The `enterprise_*` scope represents\ntemplates that have been created within a specific enterprise, where `*`\nwill be the ID of that enterprise.",
+      "example": "enterprise_123456"
+    },
+    "templateKey": {
+      "type": "string",
+      "example": "productInfo",
+      "description": "A unique identifier for the template. This identifier is unique across\nthe `scope` of the enterprise to which the metadata template is being\napplied, yet is not necessarily unique across different enterprises.",
+      "maxLength": 64,
+      "pattern": "^[a-zA-Z_][-a-zA-Z0-9_]*$"
+    },
+    "displayName": {
+      "type": "string",
+      "description": "The display name of the template. This can be seen in the Box web app\nand mobile apps.",
+      "maxLength": 4096,
+      "example": "Product Info"
+    },
+    "hidden": {
+      "type": "boolean",
+      "example": true,
+      "description": "Defines if this template is visible in the Box web app UI, or if\nit is purely intended for usage through the API."
+    },
+    "fields": {
+      "type": "array",
+      "description": "An ordered list of template fields which are part of the template. Each\nfield can be a regular text field, date field, number field, as well as a\nsingle or multi-select list.",
+      "items": {
+        "type": "object",
+        "description": "A field within a metadata template. Fields can be a basic text, date, or\nnumber field, or a list of options.",
+        "allOf": [
+          {
+            "title": "Metadata Field (Read)",
+            "description": "A field within a metadata template. Fields can be a basic text, date, or\nnumber field, or a list of options.",
+            "required": [
+              "type",
+              "key",
+              "displayName"
+            ],
+            "type": "object",
+            "properties": {
+              "type": {
+                "type": "string",
+                "example": "string",
+                "description": "The type of field. The basic fields are a `string` field for text, a\n`float` field for numbers, and a `date` fields to present the user with a\ndate-time picker.\n\nAdditionally, metadata templates support an `enum` field for a basic list\nof items, and ` multiSelect` field for a similar list of items where the\nuser can select more than one value.\n\n**Note**: The `integer` value is deprecated.\nIt is still present in the response,\nbut cannot be used in the POST request.",
+                "enum": [
+                  "string",
+                  "float",
+                  "date",
+                  "enum",
+                  "multiSelect",
+                  "integer"
+                ]
+              },
+              "key": {
+                "type": "string",
+                "example": "category",
+                "description": "A unique identifier for the field. The identifier must\nbe unique within the template to which it belongs.",
+                "maxLength": 256
+              },
+              "displayName": {
+                "type": "string",
+                "example": "Category",
+                "description": "The display name of the field as it is shown to the user in the web and\nmobile apps.",
+                "maxLength": 4096
+              },
+              "description": {
+                "type": "string",
+                "example": "The category",
+                "description": "A description of the field. This is not shown to the user.",
+                "maxLength": 4096
+              },
+              "hidden": {
+                "type": "boolean",
+                "example": true,
+                "description": "Whether this field is hidden in the UI for the user and can only be set\nthrough the API instead."
+              },
+              "options": {
+                "description": "A list of options for this field. This is used in combination with the\n`enum` and `multiSelect` field types.",
+                "type": "array",
+                "items": {
+                  "title": "Metadata Option (Write)",
+                  "type": "object",
+                  "description": "An option for a Metadata Template Field.\n\nOptions only need to be provided for fields of type `enum` and `multiSelect`.\nOptions represent the value(s) a user can select for the field either through\nthe UI or through the API.",
+                  "required": [
+                    "key"
+                  ],
+                  "properties": {
+                    "key": {
+                      "description": "The text value of the option. This represents both the display name of the\noption and the internal key used when updating templates.",
+                      "example": "Category 1",
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          {
+            "properties": {
+              "id": {
+                "type": "string",
+                "example": "822227e0-47a5-921b-88a8-494760b2e6d2",
+                "description": "The unique ID of the metadata template field."
+              },
+              "options": {
+                "description": "A list of options for this field. This is used in combination\nwith the `enum` and `multiSelect` field types.",
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "description": "An option for a Metadata Template Field.\n\nOptions are only present for fields of type `enum` and\n`multiSelect`. Options represent the value(s) a user can\nselect for the field either through the UI or through the API.",
+                  "allOf": [
+                    {
+                      "title": "Metadata Option (Write)",
+                      "type": "object",
+                      "description": "An option for a Metadata Template Field.\n\nOptions only need to be provided for fields of type `enum` and `multiSelect`.\nOptions represent the value(s) a user can select for the field either through\nthe UI or through the API.",
+                      "required": [
+                        "key"
+                      ],
+                      "properties": {
+                        "key": {
+                          "description": "The text value of the option. This represents both the display name of the\noption and the internal key used when updating templates.",
+                          "example": "Category 1",
+                          "type": "string"
+                        }
+                      }
+                    },
+                    {
+                      "properties": {
+                        "id": {
+                          "type": "string",
+                          "example": "45dc2849-a4a7-40a9-a751-4a699a589190",
+                          "description": "The internal unique identifier of the the option."
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        ]
+      }
+    },
+    "copyInstanceOnItemCopy": {
+      "type": "boolean",
+      "description": "Whether or not to include the metadata when a file or folder is copied.",
+      "example": true
+    }
+  }
+}

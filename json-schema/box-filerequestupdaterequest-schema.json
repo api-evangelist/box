@@ -1,0 +1,44 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/FileRequestUpdateRequest",
+  "title": "File Request (Update)",
+  "type": "object",
+  "description": "The request body to update a file request.",
+  "properties": {
+    "title": {
+      "type": "string",
+      "description": "An optional new title for the file request. This can be\nused to change the title of the file request.\n\nThis will default to the value on the existing file request.",
+      "example": "Please upload required documents"
+    },
+    "description": {
+      "type": "string",
+      "description": "An optional new description for the file request. This can be\nused to change the description of the file request.\n\nThis will default to the value on the existing file request.",
+      "example": "Please upload required documents"
+    },
+    "status": {
+      "type": "string",
+      "description": "An optional new status of the file request.\n\nWhen the status is set to `inactive`, the file request\nwill no longer accept new submissions, and any visitor\nto the file request URL will receive a `HTTP 404` status\ncode.\n\nThis will default to the value on the existing file request.",
+      "example": "active",
+      "enum": [
+        "active",
+        "inactive"
+      ]
+    },
+    "is_email_required": {
+      "type": "boolean",
+      "example": true,
+      "description": "Whether a file request submitter is required to provide\ntheir email address.\n\nWhen this setting is set to true, the Box UI will show\nan email field on the file request form.\n\nThis will default to the value on the existing file request."
+    },
+    "is_description_required": {
+      "type": "boolean",
+      "example": true,
+      "description": "Whether a file request submitter is required to provide\na description of the files they are submitting.\n\nWhen this setting is set to true, the Box UI will show\na description field on the file request form.\n\nThis will default to the value on the existing file request."
+    },
+    "expires_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "The date after which a file request will no longer accept new\nsubmissions.\n\nAfter this date, the `status` will automatically be set to\n`inactive`.\n\nThis will default to the value on the existing file request.",
+      "example": "2020-09-28T10:53:43-08:00"
+    }
+  }
+}

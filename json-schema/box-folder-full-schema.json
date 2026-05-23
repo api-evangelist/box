@@ -1,0 +1,315 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/Folder--Full",
+  "title": "Folder (Full)",
+  "type": "object",
+  "x-box-resource-id": "folder--full",
+  "x-box-variant": "full",
+  "description": "A full representation of a folder, as can be returned from any\nfolder API endpoints by default",
+  "allOf": [
+    {
+      "$ref": "#/components/schemas/Folder"
+    },
+    {
+      "properties": {
+        "sync_state": {
+          "allOf": [
+            {
+              "type": "string",
+              "example": "synced",
+              "nullable": false,
+              "description": "Specifies whether a folder should be synced to a\nuser's device or not. This is used by Box Sync\n(discontinued) and is not used by Box Drive.",
+              "enum": [
+                "synced",
+                "not_synced",
+                "partially_synced"
+              ]
+            }
+          ]
+        },
+        "has_collaborations": {
+          "type": "boolean",
+          "example": true,
+          "nullable": false,
+          "description": "Specifies if this folder has any other collaborators."
+        },
+        "permissions": {
+          "allOf": [
+            {
+              "type": "object",
+              "description": "The permissions that the authenticated user has for a folder.",
+              "required": [
+                "can_upload"
+              ],
+              "allOf": [
+                {
+                  "type": "object",
+                  "description": "The permissions that the authenticated user has for an item.",
+                  "required": [
+                    "can_delete",
+                    "can_download",
+                    "can_invite_collaborator",
+                    "can_rename",
+                    "can_set_share_access",
+                    "can_share"
+                  ],
+                  "properties": {
+                    "can_delete": {
+                      "type": "boolean",
+                      "description": "Specifies if the current user can delete this item.",
+                      "example": true,
+                      "nullable": false
+                    },
+                    "can_download": {
+                      "type": "boolean",
+                      "description": "Specifies if the current user can download this item.",
+                      "example": true,
+                      "nullable": false
+                    },
+                    "can_invite_collaborator": {
+                      "type": "boolean",
+                      "description": "Specifies if the current user can invite new\nusers to collaborate on this item, and if the user can\nupdate the role of a user already collaborated on this\nitem.",
+                      "example": true,
+                      "nullable": false
+                    },
+                    "can_rename": {
+                      "type": "boolean",
+                      "description": "Specifies if the user can rename this item.",
+                      "example": true,
+                      "nullable": false
+                    },
+                    "can_set_share_access": {
+                      "type": "boolean",
+                      "description": "Specifies if the user can change the access level of an\nexisting shared link on this item.",
+                      "example": true,
+                      "nullable": false
+                    },
+                    "can_share": {
+                      "type": "boolean",
+                      "description": "Specifies if the user can create a shared link for this item.",
+                      "example": true,
+                      "nullable": false
+                    }
+                  }
+                },
+                {
+                  "properties": {
+                    "can_upload": {
+                      "type": "boolean",
+                      "description": "Specifies if the user can upload into this folder.",
+                      "example": true,
+                      "nullable": false
+                    }
+                  }
+                }
+              ]
+            },
+            {
+              "description": "Describes the permissions that the current user has\nfor this folder"
+            },
+            {
+              "nullable": false
+            }
+          ]
+        },
+        "tags": {
+          "allOf": [
+            {
+              "type": "array",
+              "example": [
+                "approved"
+              ],
+              "items": {
+                "type": "string"
+              },
+              "minItems": 1,
+              "maxItems": 100,
+              "description": "The tags for this item. These tags are shown in\nthe Box web app and mobile apps next to an item.\n\nTo add or remove a tag, retrieve the item's current tags,\nmodify them, and then update this field.\n\nThere is a limit of 100 tags per item, and 10,000\nunique tags per enterprise."
+            },
+            {
+              "nullable": false
+            }
+          ]
+        },
+        "can_non_owners_invite": {
+          "allOf": [
+            {
+              "type": "boolean",
+              "example": true,
+              "description": "Specifies if users who are not the owner\nof the folder can invite new collaborators to the folder."
+            },
+            {
+              "nullable": false
+            }
+          ]
+        },
+        "is_externally_owned": {
+          "type": "boolean",
+          "example": true,
+          "nullable": false,
+          "description": "Specifies if this folder is owned by a user outside of the\nauthenticated enterprise."
+        },
+        "metadata": {
+          "allOf": [
+            {
+              "title": "Item metadata instances",
+              "type": "object",
+              "description": "A list of metadata instances, nested within key-value pairs of their `scope`\nand `templateKey`.\n\nTo access the metadata for a file or folder, first use the\nmetadata endpoints to determine the metadata templates available to your\nenterprise.\n\nThen use the `GET /files/:id` or `GET /folder/:id`\nendpoint with the `fields` query parameter to get\nthe metadata by ID.\n\nTo request a metadata instance for a particular `scope` and `templateKey`\nuse the following format for the `fields` parameter:\n`metadata.<scope>.<templateKey>`\n\nFor example, `?fields=metadata.enterprise_27335.marketingCollateral`.",
+              "example": {
+                "enterprise_27335": {
+                  "marketingCollateral": {
+                    "$canEdit": true,
+                    "$id": "01234500-12f1-1234-aa12-b1d234cb567e",
+                    "$parent": "folder_59449484661",
+                    "$scope": "enterprise_27335",
+                    "$template": "marketingCollateral",
+                    "$type": "properties-6bcba49f-ca6d-4d2a-a758-57fe6edf44d0",
+                    "$typeVersion": 2,
+                    "$version": 1
+                  }
+                }
+              },
+              "additionalProperties": {
+                "type": "object",
+                "description": "A list of metadata instances, nested within key-value pairs of their `scope`\nand `templateKey`.",
+                "example": {
+                  "marketingCollateral": {
+                    "$canEdit": true,
+                    "$id": "01234500-12f1-1234-aa12-b1d234cb567e",
+                    "$parent": "folder_59449484661",
+                    "$scope": "enterprise_27335",
+                    "$template": "marketingCollateral",
+                    "$type": "properties-6bcba49f-ca6d-4d2a-a758-57fe6edf44d0",
+                    "$typeVersion": 2,
+                    "$version": 1
+                  }
+                },
+                "additionalProperties": {
+                  "$ref": "#/components/schemas/Metadata"
+                }
+              }
+            },
+            {
+              "description": "An object containing the metadata instances that have been\nattached to this folder.\n\nEach metadata instance is uniquely identified by its `scope` and\n`templateKey`. There can only be one instance of any metadata\ntemplate attached to each folder. Each metadata instance is nested\nwithin an object with the `templateKey` as the key, which again\nitself is nested in an object with the `scope` as the key."
+            }
+          ]
+        },
+        "is_collaboration_restricted_to_enterprise": {
+          "allOf": [
+            {
+              "type": "boolean",
+              "example": true,
+              "description": "Specifies if new invites to this folder are restricted to users\nwithin the enterprise. This does not affect existing\ncollaborations."
+            },
+            {
+              "nullable": false
+            }
+          ]
+        },
+        "allowed_shared_link_access_levels": {
+          "type": "array",
+          "example": [
+            "open"
+          ],
+          "items": {
+            "type": "string",
+            "enum": [
+              "open",
+              "company",
+              "collaborators"
+            ]
+          },
+          "nullable": false,
+          "description": "A list of access levels that are available\nfor this folder.\n\nFor some folders, like the root folder, this will always\nbe an empty list as sharing is not allowed at that level."
+        },
+        "allowed_invitee_roles": {
+          "type": "array",
+          "example": [
+            "editor"
+          ],
+          "nullable": false,
+          "description": "A list of the types of roles that user can be invited at\nwhen sharing this folder.",
+          "items": {
+            "type": "string",
+            "enum": [
+              "editor",
+              "viewer",
+              "previewer",
+              "uploader",
+              "previewer uploader",
+              "viewer uploader",
+              "co-owner"
+            ]
+          }
+        },
+        "watermark_info": {
+          "allOf": [
+            {
+              "type": "object",
+              "description": "Details about the watermark applied to this item",
+              "properties": {
+                "is_watermarked": {
+                  "type": "boolean",
+                  "description": "Specifies if this item has a watermark applied.",
+                  "example": true,
+                  "nullable": false
+                }
+              }
+            },
+            {
+              "description": "Details about the watermark applied to this folder"
+            },
+            {
+              "nullable": false
+            }
+          ]
+        },
+        "is_accessible_via_shared_link": {
+          "type": "boolean",
+          "description": "Specifies if the folder can be accessed\nwith the direct shared link or a shared link\nto a parent folder.",
+          "example": true,
+          "enum": [
+            true,
+            false
+          ]
+        },
+        "can_non_owners_view_collaborators": {
+          "type": "boolean",
+          "example": true,
+          "description": "Specifies if collaborators who are not owners\nof this folder are restricted from viewing other\ncollaborations on this folder.\n\nIt also restricts non-owners from inviting new\ncollaborators."
+        },
+        "classification": {
+          "allOf": [
+            {
+              "type": "object",
+              "description": "The classification applied to an item",
+              "properties": {
+                "name": {
+                  "type": "string",
+                  "example": "Top Secret",
+                  "description": "The name of the classification"
+                },
+                "definition": {
+                  "type": "string",
+                  "example": "Content that should not be shared outside the company.",
+                  "description": "An explanation of the meaning of this classification."
+                },
+                "color": {
+                  "type": "string",
+                  "example": "#FF0000",
+                  "description": "The color that is used to display the\nclassification label in a user-interface. Colors are defined by the admin\nor co-admin who created the classification in the Box web app."
+                }
+              }
+            },
+            {
+              "description": "Details about the classification applied to this folder."
+            },
+            {
+              "nullable": true
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,74 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/Comment",
+  "title": "Comment",
+  "type": "object",
+  "description": "Standard representation of a comment.",
+  "x-box-resource-id": "comment",
+  "x-box-variant": "standard",
+  "allOf": [
+    {
+      "$ref": "#/components/schemas/Comment--Base"
+    },
+    {
+      "properties": {
+        "is_reply_comment": {
+          "type": "boolean",
+          "description": "Whether or not this comment is a reply to another\ncomment",
+          "example": true
+        },
+        "message": {
+          "type": "string",
+          "example": "@Aaron Levie these tigers are cool!",
+          "description": "The text of the comment, as provided by the user"
+        },
+        "created_by": {
+          "allOf": [
+            {
+              "$ref": "#/components/schemas/User--Mini"
+            },
+            {
+              "description": "A mini user object representing the author of the\ncomment"
+            }
+          ]
+        },
+        "created_at": {
+          "type": "string",
+          "format": "date-time",
+          "description": "The time this comment was created",
+          "example": "2012-12-12T10:53:43-08:00"
+        },
+        "modified_at": {
+          "type": "string",
+          "format": "date-time",
+          "description": "The time this comment was last modified",
+          "example": "2012-12-12T10:53:43-08:00"
+        },
+        "item": {
+          "allOf": [
+            {
+              "title": "Reference",
+              "description": "The bare basic reference for an object",
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string",
+                  "description": "The unique identifier for this object",
+                  "example": "11446498"
+                },
+                "type": {
+                  "type": "string",
+                  "description": "The type for this object",
+                  "example": "file"
+                }
+              }
+            },
+            {
+              "description": "The file this comment was placed on"
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

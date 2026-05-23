@@ -1,0 +1,72 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/EventSource",
+  "title": "Event source",
+  "type": "object",
+  "x-box-resource-id": "event_source",
+  "description": "The source file or folder that triggered an event in\nthe event stream.",
+  "required": [
+    "item_type",
+    "item_id",
+    "item_name"
+  ],
+  "properties": {
+    "item_type": {
+      "type": "string",
+      "nullable": false,
+      "enum": [
+        "file",
+        "folder"
+      ],
+      "description": "The type of the item that the event\nrepresents. Can be `file` or `folder`.\n",
+      "example": "file"
+    },
+    "item_id": {
+      "type": "string",
+      "nullable": false,
+      "description": "The unique identifier that represents the\nitem.\n",
+      "example": "560284318361"
+    },
+    "item_name": {
+      "type": "string",
+      "nullable": false,
+      "description": "The name of the item.\n",
+      "example": "report.pdf"
+    },
+    "classification": {
+      "type": "object",
+      "description": "The object containing classification information for the item that\ntriggered the event. This field will not appear if the item does not\nhave a classification set.",
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": "The classification's name",
+          "example": "Top Secret"
+        }
+      }
+    },
+    "parent": {
+      "allOf": [
+        {
+          "$ref": "#/components/schemas/Folder--Mini"
+        },
+        {
+          "description": "The optional folder that this folder is located within.\n\nThis value may be `null` for some folders such as the\nroot folder or the trash folder."
+        }
+      ],
+      "nullable": true
+    },
+    "owned_by": {
+      "allOf": [
+        {
+          "$ref": "#/components/schemas/User--Mini"
+        },
+        {
+          "description": "The user who owns this item."
+        },
+        {
+          "nullable": false
+        }
+      ]
+    }
+  }
+}

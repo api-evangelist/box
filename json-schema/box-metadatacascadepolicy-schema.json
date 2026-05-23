@@ -1,0 +1,76 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/MetadataCascadePolicy",
+  "title": "Metadata cascade policy",
+  "type": "object",
+  "x-box-resource-id": "metadata_cascade_policy",
+  "x-box-tag": "metadata_cascade_policies",
+  "description": "A metadata cascade policy automatically applies a metadata template instance\nto all the files and folders within the targeted folder.",
+  "required": [
+    "id",
+    "type"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "example": "6fd4ff89-8fc1-42cf-8b29-1890dedd26d7",
+      "description": "The ID of the metadata cascade policy object"
+    },
+    "type": {
+      "type": "string",
+      "description": "`metadata_cascade_policy`",
+      "example": "metadata_cascade_policy",
+      "enum": [
+        "metadata_cascade_policy"
+      ]
+    },
+    "owner_enterprise": {
+      "type": "object",
+      "description": "The enterprise that owns this policy.",
+      "properties": {
+        "type": {
+          "type": "string",
+          "example": "enterprise",
+          "description": "`enterprise`",
+          "enum": [
+            "enterprise"
+          ]
+        },
+        "id": {
+          "type": "string",
+          "example": "690678",
+          "description": "The ID of the enterprise that owns the policy."
+        }
+      }
+    },
+    "parent": {
+      "type": "object",
+      "description": "Represent the folder the policy is applied to.",
+      "properties": {
+        "type": {
+          "type": "string",
+          "example": "folder",
+          "description": "`folder`",
+          "enum": [
+            "folder"
+          ]
+        },
+        "id": {
+          "type": "string",
+          "example": "1234567",
+          "description": "The ID of the folder the policy is applied to."
+        }
+      }
+    },
+    "scope": {
+      "type": "string",
+      "description": "The scope of the metadata cascade policy can either be `global` or\n`enterprise_*`. The `global` scope is used for policies that are\navailable to any Box enterprise. The `enterprise_*` scope represents\npolicies that have been created within a specific enterprise, where `*`\nwill be the ID of that enterprise.",
+      "example": "enterprise_123456"
+    },
+    "templateKey": {
+      "type": "string",
+      "example": "productInfo",
+      "description": "The key of the template that is cascaded down to the folder's\nchildren.\n\nIn many cases the template key is automatically derived\nof its display name, for example `Contract Template` would\nbecome `contractTemplate`. In some cases the creator of the\ntemplate will have provided its own template key.\n\nPlease [list the templates for an enterprise][list], or\nget all instances on a [file][file] or [folder][folder]\nto inspect a template's key.\n\n[list]: e://get-metadata-templates-enterprise\n[file]: e://get-files-id-metadata\n[folder]: e://get-folders-id-metadata"
+    }
+  }
+}

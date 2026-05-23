@@ -1,0 +1,44 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/Folder--Base",
+  "title": "Folder (Base)",
+  "type": "object",
+  "x-box-resource-id": "folder--base",
+  "x-box-sanitized": true,
+  "x-box-tag": "folders",
+  "x-box-variants": [
+    "base",
+    "mini",
+    "standard",
+    "full"
+  ],
+  "x-box-variant": "base",
+  "description": "The bare basic representation of a folder, the minimal\namount of fields returned when using the `fields` query\nparameter.",
+  "required": [
+    "id",
+    "type"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "nullable": false,
+      "description": "The unique identifier that represent a folder.\n\nThe ID for any folder can be determined\nby visiting a folder in the web application\nand copying the ID from the URL. For example,\nfor the URL `https://*.app.box.com/folders/123`\nthe `folder_id` is `123`.",
+      "example": "12345"
+    },
+    "etag": {
+      "type": "string",
+      "nullable": true,
+      "example": "1",
+      "description": "The HTTP `etag` of this folder. This can be used within some API\nendpoints in the `If-Match` and `If-None-Match` headers to only\nperform changes on the folder if (no) changes have happened."
+    },
+    "type": {
+      "type": "string",
+      "description": "`folder`",
+      "example": "folder",
+      "enum": [
+        "folder"
+      ],
+      "nullable": false
+    }
+  }
+}

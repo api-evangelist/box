@@ -1,0 +1,100 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/IntegrationMapping",
+  "title": "Integration mapping",
+  "type": "object",
+  "x-box-resource-id": "integration_mapping",
+  "x-box-tag": "integration_mappings",
+  "x-box-variant": "standard",
+  "description": "A standard representation of an integration\nmapping object.",
+  "allOf": [
+    {
+      "$ref": "#/components/schemas/IntegrationMapping--Base"
+    },
+    {
+      "properties": {
+        "type": {
+          "type": "string",
+          "example": "integration_mapping",
+          "enum": [
+            "integration_mapping"
+          ],
+          "description": "Mapping type",
+          "nullable": false
+        },
+        "partner_item": {
+          "oneOf": [
+            {
+              "$ref": "#/components/schemas/IntegrationMappingPartnerItemSlack"
+            }
+          ],
+          "nullable": false,
+          "description": "Mapped item object for Slack"
+        },
+        "box_item": {
+          "allOf": [
+            {
+              "$ref": "#/components/schemas/Folder--Mini"
+            }
+          ],
+          "description": "The Box folder, to which the object from the\npartner app domain (referenced in `partner_item_id`) is mapped",
+          "nullable": false
+        },
+        "is_manually_created": {
+          "type": "boolean",
+          "example": true,
+          "description": "Identifies whether the mapping has\nbeen manually set\n(as opposed to being automatically created)",
+          "nullable": false
+        },
+        "options": {
+          "type": "object",
+          "nullable": false,
+          "example": {},
+          "description": "Integration mapping options for Slack",
+          "anyOf": [
+            {
+              "$ref": "#/components/schemas/IntegrationMappingSlackOptions"
+            }
+          ]
+        },
+        "created_by": {
+          "allOf": [
+            {
+              "$ref": "#/components/schemas/UserIntegrationMappings"
+            }
+          ],
+          "description": "An object representing the user who\ncreated the integration mapping",
+          "nullable": false
+        },
+        "modified_by": {
+          "allOf": [
+            {
+              "$ref": "#/components/schemas/UserIntegrationMappings"
+            }
+          ],
+          "description": "The user who\nlast modified the integration mapping",
+          "nullable": false
+        },
+        "created_at": {
+          "type": "string",
+          "format": "date-time",
+          "description": "When the integration mapping object was created",
+          "example": "2012-12-12T10:53:43-08:00",
+          "nullable": false
+        },
+        "modified_at": {
+          "type": "string",
+          "format": "date-time",
+          "description": "When the integration mapping object was last modified",
+          "example": "2012-12-12T10:53:43-08:00",
+          "nullable": false
+        }
+      }
+    }
+  ],
+  "required": [
+    "type",
+    "partner_item",
+    "box_item"
+  ]
+}
