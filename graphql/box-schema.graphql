@@ -1,0 +1,1661 @@
+"""
+Box Platform GraphQL Schema
+Conceptual schema derived from the Box REST API v2 surface.
+Reference: https://developer.box.com/reference/
+"""
+
+# ──────────────────────────────────────────────
+# Scalars
+# ──────────────────────────────────────────────
+
+scalar DateTime
+scalar JSON
+scalar Upload
+
+# ──────────────────────────────────────────────
+# Enums
+# ──────────────────────────────────────────────
+
+enum AccessLevel {
+  OPEN
+  COLLABORATORS
+  COMPANY
+}
+
+enum CollaborationRole {
+  EDITOR
+  VIEWER
+  PREVIEWER
+  UPLOADER
+  PREVIEWER_UPLOADER
+  VIEWER_UPLOADER
+  CO_OWNER
+  OWNER
+}
+
+enum CollaborationStatus {
+  ACCEPTED
+  PENDING
+  REJECTED
+}
+
+enum TaskAction {
+  REVIEW
+  COMPLETE
+}
+
+enum TaskResolution {
+  COMPLETE
+  INCOMPLETE
+  APPROVED
+  REJECTED
+}
+
+enum TaskAssignmentStatus {
+  COMPLETED
+  INCOMPLETE
+  APPROVED
+  REJECTED
+}
+
+enum RetentionPolicyType {
+  FINITE
+  INDEFINITE
+}
+
+enum RetentionPolicyDispositionAction {
+  PERMANENTLY_DELETE
+  REMOVE_RETENTION
+}
+
+enum SignRequestStatus {
+  CONVERTING
+  CREATED
+  SENT
+  VIEWED
+  SIGNED
+  CANCELLED
+  DECLINED
+  ERROR_CONVERTING
+  ERROR_SENDING
+  EXPIRED
+  DOWNLOADED
+  SIGNED_AND_DOWNLOADED
+}
+
+enum SignRequestSignerRole {
+  SIGNER
+  APPROVER
+  FINAL_COPY_READER
+}
+
+enum WebhookTrigger {
+  FILE_UPLOADED
+  FILE_PREVIEWED
+  FILE_DOWNLOADED
+  FILE_TRASHED
+  FILE_DELETED
+  FILE_RESTORED
+  FILE_COPIED
+  FILE_MOVED
+  FILE_LOCKED
+  FILE_UNLOCKED
+  FILE_RENAMED
+  COMMENT_CREATED
+  COMMENT_UPDATED
+  COMMENT_DELETED
+  TASK_ASSIGNMENT_CREATED
+  TASK_ASSIGNMENT_UPDATED
+  METADATA_INSTANCE_CREATED
+  METADATA_INSTANCE_UPDATED
+  METADATA_INSTANCE_DELETED
+  FOLDER_CREATED
+  FOLDER_RENAMED
+  FOLDER_DOWNLOADED
+  FOLDER_RESTORED
+  FOLDER_DELETED
+  FOLDER_COPIED
+  FOLDER_MOVED
+  FOLDER_TRASHED
+  COLLABORATION_CREATED
+  COLLABORATION_ACCEPTED
+  COLLABORATION_REJECTED
+  COLLABORATION_REMOVED
+  COLLABORATION_UPDATED
+  SHARED_LINK_DELETED
+  SHARED_LINK_CREATED
+  SHARED_LINK_UPDATED
+  SIGN_REQUEST_COMPLETED
+  SIGN_REQUEST_DECLINED
+  SIGN_REQUEST_EXPIRED
+}
+
+enum UserStatus {
+  ACTIVE
+  INACTIVE
+  CANNOT_DELETE_EDIT
+  CANNOT_DELETE_EDIT_UPLOAD
+}
+
+enum GroupRole {
+  ADMIN
+  MEMBER
+}
+
+enum MetadataFieldType {
+  STRING
+  FLOAT
+  DATE
+  ENUM
+  MULTISELECT
+}
+
+enum EventType {
+  ITEM_CREATE
+  ITEM_UPLOAD
+  ITEM_MOVE
+  ITEM_COPY
+  ITEM_TRASH
+  ITEM_DELETE
+  ITEM_RESTORE
+  ITEM_RENAME
+  ITEM_MAKE_CURRENT_VERSION
+  ITEM_DOWNLOAD
+  ITEM_PREVIEW
+  ITEM_LOCK
+  ITEM_UNLOCK
+  ITEM_SHARED_CREATE
+  ITEM_SHARED_UPDATE
+  ITEM_SHARED
+  COLLABORATION_CREATED
+  COLLABORATION_ACCEPTED
+  COLLABORATION_REMOVED
+  LOGIN
+  FAILED_LOGIN
+  CHANGE_LOGIN
+}
+
+enum TermsOfServiceType {
+  MANAGED
+  EXTERNAL
+}
+
+enum TermsOfServiceStatus {
+  ENABLED
+  DISABLED
+}
+
+enum LegalHoldPolicyStatus {
+  ACTIVE
+  APPLYING
+  RELEASING
+  RELEASED
+}
+
+# ──────────────────────────────────────────────
+# Core Content Types
+# ──────────────────────────────────────────────
+
+type File {
+  id: ID!
+  type: String!
+  name: String!
+  description: String
+  size: Int!
+  createdAt: DateTime!
+  modifiedAt: DateTime!
+  contentCreatedAt: DateTime
+  contentModifiedAt: DateTime
+  sha1: String
+  etag: String
+  sequenceId: String
+  parent: Folder
+  createdBy: User
+  modifiedBy: User
+  ownedBy: User
+  sharedLink: SharedLink
+  permissions: Permission
+  tags: [String!]
+  lock: FileLock
+  extension: String
+  isPackage: Boolean
+  versionNumber: String
+  commentCount: Int
+  watermarkInfo: WatermarkInfo
+  hasCollaborations: Boolean
+  isExternallyOwned: Boolean
+  allowedInviteeRoles: [CollaborationRole!]
+  allowedSharedLinkAccessLevels: [AccessLevel!]
+  currentVersion: FileVersion
+  versions: [FileVersion!]
+  comments: [Comment!]
+  tasks: [Task!]
+  metadata: [Metadata!]
+  collaborations: [Collaboration!]
+  classifications: [Classification!]
+}
+
+type FileVersion {
+  id: ID!
+  type: String!
+  sha1: String!
+  name: String!
+  size: Int!
+  createdAt: DateTime!
+  modifiedAt: DateTime!
+  modifiedBy: User
+  trashedAt: DateTime
+  trashedBy: User
+  restoredAt: DateTime
+  restoredBy: User
+  purgedAt: DateTime
+  uploaderDisplayName: String
+  versionNumber: String
+}
+
+type FileRequest {
+  id: ID!
+  type: String!
+  title: String
+  description: String
+  status: String!
+  isDescriptionRequired: Boolean!
+  isEmailRequired: Boolean!
+  folder: Folder!
+  url: String
+  etag: String
+  createdBy: User
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  expiresAt: DateTime
+}
+
+type FileLock {
+  id: ID!
+  type: String!
+  createdBy: User
+  createdAt: DateTime!
+  expiredAt: DateTime
+  isDownloadPrevented: Boolean!
+}
+
+type Folder {
+  id: ID!
+  type: String!
+  name: String!
+  description: String
+  size: Int!
+  createdAt: DateTime!
+  modifiedAt: DateTime!
+  contentCreatedAt: DateTime
+  contentModifiedAt: DateTime
+  etag: String
+  sequenceId: String
+  parent: Folder
+  createdBy: User
+  modifiedBy: User
+  ownedBy: User
+  sharedLink: SharedLink
+  permissions: Permission
+  tags: [String!]
+  hasCollaborations: Boolean
+  isExternallyOwned: Boolean
+  allowedSharedLinkAccessLevels: [AccessLevel!]
+  allowedInviteeRoles: [CollaborationRole!]
+  syncState: String
+  watermarkInfo: WatermarkInfo
+  isCollaborationRestrictedToEnterprise: Boolean
+  metadata: [Metadata!]
+  collaborations: [Collaboration!]
+  items: FolderItemsPage
+  locks: [FolderLock!]
+}
+
+type FolderItemsPage {
+  totalCount: Int!
+  limit: Int!
+  offset: Int!
+  order: [SortOrder!]
+  entries: [FolderItem!]!
+}
+
+union FolderItem = File | Folder | WebLink
+
+type FolderLock {
+  id: ID!
+  type: String!
+  folder: Folder!
+  createdBy: User
+  createdAt: DateTime!
+  lockedOperations: LockedOperations!
+  lockType: String!
+}
+
+type LockedOperations {
+  move: Boolean!
+  delete: Boolean!
+}
+
+type SortOrder {
+  by: String!
+  direction: String!
+}
+
+type WatermarkInfo {
+  isWatermarked: Boolean!
+}
+
+type Watermark {
+  watermark: WatermarkDetails!
+}
+
+type WatermarkDetails {
+  createdAt: DateTime!
+  modifiedAt: DateTime!
+}
+
+type WebLink {
+  id: ID!
+  type: String!
+  name: String!
+  description: String
+  url: String!
+  createdAt: DateTime!
+  modifiedAt: DateTime!
+  etag: String
+  sequenceId: String
+  parent: Folder
+  createdBy: User
+  modifiedBy: User
+  ownedBy: User
+  sharedLink: SharedLink
+  permissions: Permission
+  pathCollection: PathCollection
+  trashedAt: DateTime
+  purgedAt: DateTime
+  itemStatus: String
+}
+
+type PathCollection {
+  totalCount: Int!
+  entries: [Folder!]!
+}
+
+# ──────────────────────────────────────────────
+# Collaboration & Permissions
+# ──────────────────────────────────────────────
+
+type Collaboration {
+  id: ID!
+  type: String!
+  item: CollaborationItem
+  accessibleBy: CollaborationAccessible
+  inviteEmail: String
+  role: CollaborationRole!
+  expiresAt: DateTime
+  status: CollaborationStatus!
+  acknowledgedAt: DateTime
+  createdBy: User
+  createdAt: DateTime!
+  modifiedAt: DateTime!
+  acceptanceRequirementsStatus: AcceptanceRequirementsStatus
+}
+
+union CollaborationItem = File | Folder | WebLink
+union CollaborationAccessible = User | Group
+
+type AcceptanceRequirementsStatus {
+  termsOfServiceRequired: TermsOfServiceAcceptanceStatus
+  strongPasswordRequired: StrongPasswordStatus
+  twoFactorAuthRequired: TwoFactorAuthStatus
+}
+
+type TermsOfServiceAcceptanceStatus {
+  isAccepted: Boolean
+}
+
+type StrongPasswordStatus {
+  isRequired: Boolean
+}
+
+type TwoFactorAuthStatus {
+  isRequired: Boolean
+}
+
+type CollaborationAllowlistEntry {
+  id: ID!
+  type: String!
+  domain: String!
+  direction: String!
+  enterprise: Enterprise
+  createdAt: DateTime!
+  modifiedAt: DateTime!
+}
+
+type CollaborationAllowlistExemptTarget {
+  id: ID!
+  type: String!
+  enterprise: Enterprise
+  user: User!
+  createdAt: DateTime!
+  modifiedAt: DateTime!
+}
+
+type Permission {
+  canDelete: Boolean!
+  canDownload: Boolean!
+  canInviteCollaborator: Boolean!
+  canRename: Boolean!
+  canSetShareAccess: Boolean!
+  canShare: Boolean!
+  canUpload: Boolean
+  canAnnotate: Boolean
+  canComment: Boolean
+  canPreview: Boolean
+  canViewAnnotationsAll: Boolean
+  canViewAnnotationsResolved: Boolean
+}
+
+# ──────────────────────────────────────────────
+# Users & Identity
+# ──────────────────────────────────────────────
+
+type User {
+  id: ID!
+  type: String!
+  name: String!
+  login: String!
+  createdAt: DateTime!
+  modifiedAt: DateTime!
+  role: String
+  language: String
+  timezone: String
+  spaceAmount: Float
+  spaceUsed: Float
+  maxUploadSize: Float
+  status: UserStatus
+  jobTitle: String
+  phone: String
+  address: String
+  avatarUrl: String
+  isExternalCollabRestricted: Boolean
+  isExemptFromDeviceLimits: Boolean
+  isExemptFromLoginVerification: Boolean
+  isPlatformAccessOnly: Boolean
+  isSyncEnabled: Boolean
+  enterprise: Enterprise
+  myTags: [String!]
+  hostname: String
+  trackingCodes: [TrackingCode!]
+  emailAliases: [EmailAlias!]
+  groups: [GroupMembership!]
+  avatar: Avatar
+  devicePins: [DevicePin!]
+}
+
+type UserProfile {
+  id: ID!
+  name: String!
+  login: String!
+  avatarUrl: String
+  jobTitle: String
+  phone: String
+  address: String
+  spaceUsed: Float
+  spaceAmount: Float
+  status: UserStatus
+}
+
+type TrackingCode {
+  type: String!
+  name: String!
+  value: String!
+}
+
+type EmailAlias {
+  id: ID!
+  type: String!
+  email: String!
+  isConfirmed: Boolean!
+}
+
+type Avatar {
+  picUrls: AvatarUrls!
+}
+
+type AvatarUrls {
+  small: String
+  large: String
+  preview: String
+}
+
+type Enterprise {
+  id: ID!
+  type: String!
+  name: String!
+}
+
+type Invite {
+  id: ID!
+  type: String!
+  invitedTo: Enterprise
+  actionedByUser: User
+  invitedEmail: String!
+  createdAt: DateTime!
+  modifiedAt: DateTime!
+  status: String!
+}
+
+# ──────────────────────────────────────────────
+# Groups
+# ──────────────────────────────────────────────
+
+type Group {
+  id: ID!
+  type: String!
+  name: String!
+  groupType: String
+  createdAt: DateTime!
+  modifiedAt: DateTime!
+  description: String
+  externalSyncIdentifier: String
+  provenance: String
+  invitabilityLevel: String
+  memberViewabilityLevel: String
+  permissions: GroupPermissions
+  memberships: [GroupMembership!]
+  collaborations: [Collaboration!]
+}
+
+type GroupPermissions {
+  canInviteAsCollaborator: Boolean!
+}
+
+type GroupMembership {
+  id: ID!
+  type: String!
+  user: User!
+  group: Group!
+  role: GroupRole!
+  createdAt: DateTime!
+  modifiedAt: DateTime!
+}
+
+# ──────────────────────────────────────────────
+# Metadata
+# ──────────────────────────────────────────────
+
+type Metadata {
+  id: ID
+  type: String
+  scope: String!
+  templateKey: String!
+  parent: MetadataParent
+  fields: JSON
+  createdAt: DateTime
+  modifiedAt: DateTime
+  version: Int
+}
+
+type MetadataParent {
+  id: ID!
+  type: String!
+}
+
+type MetadataTemplate {
+  id: ID!
+  type: String!
+  scope: String!
+  templateKey: String!
+  displayName: String!
+  hidden: Boolean!
+  copyInstanceOnItemCopy: Boolean!
+  fields: [MetadataField!]!
+  createdAt: DateTime
+  modifiedAt: DateTime
+}
+
+type MetadataField {
+  id: ID
+  type: MetadataFieldType!
+  key: String!
+  displayName: String!
+  hidden: Boolean
+  description: String
+  options: [MetadataFieldOption!]
+}
+
+type MetadataFieldOption {
+  key: String!
+  id: ID
+}
+
+type MetadataQuery {
+  from: String!
+  query: String
+  queryParams: JSON
+  ancestorFolderId: String!
+  orderBy: [MetadataQueryOrderBy!]
+  limit: Int
+  marker: String
+  fields: [String!]
+}
+
+type MetadataQueryOrderBy {
+  fieldKey: String!
+  direction: String!
+}
+
+type MetadataCascadePolicy {
+  id: ID!
+  type: String!
+  ownerEnterprise: Enterprise
+  parent: Folder
+  scope: String!
+  templateKey: String!
+  createdAt: DateTime
+  modifiedAt: DateTime
+}
+
+type FileMetadataUpdate {
+  op: String!
+  path: String!
+  value: JSON
+  from: String
+}
+
+# ──────────────────────────────────────────────
+# Shared Links
+# ──────────────────────────────────────────────
+
+type SharedLink {
+  url: String!
+  downloadUrl: String
+  vanityUrl: String
+  vanityName: String
+  access: AccessLevel!
+  effectiveAccess: AccessLevel!
+  effectivePermission: String!
+  unsharedAt: DateTime
+  isPasswordEnabled: Boolean!
+  permissions: SharedLinkPermissions!
+  downloadCount: Int!
+  previewCount: Int!
+}
+
+type SharedLinkPermissions {
+  canDownload: Boolean!
+  canPreview: Boolean!
+  canEdit: Boolean!
+}
+
+type SharedLinkSettings {
+  access: AccessLevel
+  password: String
+  unsharedAt: DateTime
+  vanityName: String
+  permissions: SharedLinkPermissionsInput
+}
+
+type SharedLinkPermissionsInput {
+  canDownload: Boolean
+  canPreview: Boolean
+  canEdit: Boolean
+}
+
+# ──────────────────────────────────────────────
+# Comments & Tasks
+# ──────────────────────────────────────────────
+
+type Comment {
+  id: ID!
+  type: String!
+  message: String!
+  taggedMessage: String
+  isReplyComment: Boolean!
+  item: CommentItem
+  createdBy: User
+  createdAt: DateTime!
+  modifiedAt: DateTime!
+}
+
+union CommentItem = File | Folder
+
+type Task {
+  id: ID!
+  type: String!
+  item: File!
+  action: TaskAction!
+  message: String
+  dueAt: DateTime
+  completionRule: String
+  createdBy: User
+  createdAt: DateTime!
+  modifiedAt: DateTime!
+  taskAssignmentCollection: TaskAssignmentPage
+}
+
+type TaskAssignmentPage {
+  totalCount: Int!
+  entries: [TaskAssignment!]!
+}
+
+type TaskAssignment {
+  id: ID!
+  type: String!
+  item: File!
+  assignedTo: User
+  message: String
+  remindedAt: DateTime
+  resolutionState: TaskAssignmentStatus!
+  completedAt: DateTime
+  assignedAt: DateTime!
+  assignedBy: User
+}
+
+# ──────────────────────────────────────────────
+# Events
+# ──────────────────────────────────────────────
+
+type Event {
+  eventId: ID!
+  type: String!
+  eventType: EventType!
+  createdBy: User
+  createdAt: DateTime!
+  sessionId: String
+  source: EventSource
+  additionalDetails: JSON
+}
+
+type EventSource {
+  itemType: String!
+  itemId: ID!
+  itemName: String!
+  parent: Folder
+  ownedBy: User
+}
+
+type EventStream {
+  chunkSize: Int!
+  nextStreamPosition: String!
+  entries: [Event!]!
+}
+
+# ──────────────────────────────────────────────
+# Collections
+# ──────────────────────────────────────────────
+
+type Collection {
+  id: ID!
+  type: String!
+  name: String!
+  collectionType: String!
+}
+
+type CollectionItem {
+  totalCount: Int!
+  limit: Int!
+  offset: Int!
+  entries: [FolderItem!]!
+}
+
+# ──────────────────────────────────────────────
+# Search
+# ──────────────────────────────────────────────
+
+type Search {
+  query: String!
+  scope: String
+  fileExtensions: [String!]
+  createdAtRange: DateRange
+  updatedAtRange: DateRange
+  sizeRange: SizeRange
+  ownerUserIds: [ID!]
+  recentUpdaterUserIds: [ID!]
+  ancestorFolderIds: [ID!]
+  contentTypes: [String!]
+  type: String
+  trashContent: String
+  metadataFilters: [MetadataFilter!]
+  sort: String
+  direction: String
+  limit: Int
+  offset: Int
+  fields: [String!]
+}
+
+type SearchResult {
+  totalCount: Int!
+  limit: Int!
+  offset: Int!
+  entries: [SearchResultItem!]!
+}
+
+union SearchResultItem = File | Folder | WebLink
+
+type DateRange {
+  from: DateTime
+  to: DateTime
+}
+
+type SizeRange {
+  lowerBoundBytes: Int
+  upperBoundBytes: Int
+}
+
+type MetadataFilter {
+  scope: String!
+  templateKey: String!
+  filters: JSON!
+}
+
+# ──────────────────────────────────────────────
+# Classification
+# ──────────────────────────────────────────────
+
+type Classification {
+  id: ID!
+  type: String!
+  name: String!
+  color: String
+  description: String
+  definition: String
+}
+
+# ──────────────────────────────────────────────
+# Legal Hold
+# ──────────────────────────────────────────────
+
+type LegalHoldPolicy {
+  id: ID!
+  type: String!
+  policyName: String!
+  description: String
+  status: LegalHoldPolicyStatus!
+  assignmentCounts: LegalHoldAssignmentCounts!
+  createdBy: User
+  createdAt: DateTime!
+  modifiedAt: DateTime!
+  deletedAt: DateTime
+  filterStartedAt: DateTime
+  filterEndedAt: DateTime
+  releaseNotes: String
+}
+
+type LegalHoldAssignmentCounts {
+  user: Int!
+  folder: Int!
+  file: Int!
+  fileVersion: Int!
+}
+
+type LegalHoldAssignment {
+  id: ID!
+  type: String!
+  legalHoldPolicy: LegalHoldPolicy!
+  assignedTo: LegalHoldTarget
+  assignedBy: User
+  assignedAt: DateTime!
+  deletedAt: DateTime
+}
+
+union LegalHoldTarget = File | Folder | FileVersion | User
+
+type LegalHold {
+  id: ID!
+  type: String!
+  fileVersion: FileVersion!
+  file: File!
+  legalHoldPolicyAssignments: [LegalHoldAssignment!]!
+  deletedAt: DateTime
+}
+
+# ──────────────────────────────────────────────
+# Retention Policy
+# ──────────────────────────────────────────────
+
+type RetentionPolicy {
+  id: ID!
+  type: String!
+  policyName: String!
+  policyType: RetentionPolicyType!
+  retentionLength: Int
+  dispositionAction: RetentionPolicyDispositionAction!
+  status: String!
+  createdBy: User
+  createdAt: DateTime!
+  modifiedAt: DateTime!
+  canOwnerExtendRetention: Boolean!
+  areOwnersNotified: Boolean!
+  customNotificationRecipients: [User!]
+  assignmentCounts: RetentionAssignmentCounts!
+  description: String
+}
+
+type RetentionAssignmentCounts {
+  enterprise: Int!
+  folder: Int!
+  metadataTemplate: Int!
+}
+
+type RetentionPolicyAssignment {
+  id: ID!
+  type: String!
+  retentionPolicy: RetentionPolicy!
+  assignedTo: RetentionTarget
+  filterFields: [MetadataFilter!]
+  assignedBy: User
+  assignedAt: DateTime!
+  startDateField: String
+}
+
+union RetentionTarget = Folder | Enterprise | MetadataTemplate
+
+type MetadataTemplate {
+  id: ID!
+  type: String!
+  scope: String!
+  templateKey: String!
+  displayName: String!
+}
+
+# ──────────────────────────────────────────────
+# Sign Requests
+# ──────────────────────────────────────────────
+
+type SignRequest {
+  id: ID!
+  type: String!
+  status: SignRequestStatus!
+  signers: [SignRequestSigner!]!
+  sourceFiles: [File!]
+  signFiles: SignFiles
+  parentFolder: Folder
+  prepareUrl: String
+  signingLog: File
+  templateId: String
+  redirectUrl: String
+  declinedRedirectUrl: String
+  isDocumentPreparationNeeded: Boolean!
+  emailSubject: String
+  emailMessage: String
+  reminderInterval: Int
+  daysValid: Int
+  externalId: String
+  isPhoneVerificationRequired: Boolean
+  prefillTags: [SignPrefillTag!]
+  createdAt: DateTime!
+  createdBy: User
+}
+
+type SignRequestSigner {
+  email: String!
+  role: SignRequestSignerRole!
+  isInPerson: Boolean
+  order: Int
+  embedUrlExternalUserId: String
+  hasViewedDocument: Boolean
+  signerDecision: SignerDecision
+  inputs: [SignInput!]
+  embedUrl: String
+  iframeableEmbedUrl: String
+  redirectUrl: String
+  declinedRedirectUrl: String
+  loginRequired: Boolean
+  verificationPhoneNumber: String
+  suppressNotifications: Boolean
+}
+
+type SignerDecision {
+  type: String
+  finalizedAt: DateTime
+  additionalInfo: String
+}
+
+type SignInput {
+  type: String!
+  checkboxValue: Boolean
+  contentType: String
+  dateValue: String
+  documentTagId: String
+  isRequired: Boolean
+  pageIndex: Int!
+  signerIndex: Int!
+  text: String
+  textValue: String
+}
+
+type SignPrefillTag {
+  documentTagId: String!
+  checkboxValue: Boolean
+  dateValue: String
+  textValue: String
+}
+
+type SignFiles {
+  files: [File!]
+  isReadyForDownload: Boolean
+}
+
+type SignFile {
+  id: ID!
+  type: String!
+  name: String!
+  signRequest: SignRequest
+}
+
+type Template {
+  id: ID!
+  type: String!
+  name: String
+  email: String
+  daysValid: Int
+  parentFolder: Folder
+  sourceFiles: [File!]
+  signers: [TemplateSigner!]
+  readySignLink: ReadySignLink
+  customBranding: CustomBranding
+  additionalInfo: [String!]
+  areEmailSettingsLocked: Boolean
+  areFilesLocked: Boolean
+  areRecipientsLocked: Boolean
+}
+
+type TemplateSigner {
+  email: String
+  label: String
+  publicName: String
+  role: SignRequestSignerRole
+  isInPerson: Boolean
+  order: Int
+  inputs: [SignInput!]
+}
+
+type ReadySignLink {
+  url: String
+  name: String
+  instructions: String
+  folderId: String
+  isNotificationDisabled: Boolean
+  isActive: Boolean
+}
+
+type CustomBranding {
+  companyName: String
+  logoUri: String
+  brandingColor: String
+  emailFooterText: String
+}
+
+# ──────────────────────────────────────────────
+# Auth / Tokens
+# ──────────────────────────────────────────────
+
+type OAuth2Token {
+  accessToken: String!
+  expiresIn: Int!
+  tokenType: String!
+  scope: String
+  refreshToken: String
+}
+
+type AccessToken {
+  accessToken: String!
+  expiresIn: Int!
+  tokenType: String!
+  restrictedTo: [FileScope!]
+  issuedTokenType: String
+}
+
+type FileScope {
+  scope: String!
+  objectType: String
+  objectId: ID
+}
+
+type RefreshToken {
+  token: String!
+  createdAt: DateTime!
+  expiresAt: DateTime!
+}
+
+type Session {
+  id: ID!
+  type: String!
+  uploadSessionId: String!
+  expiresAt: DateTime!
+  partSize: Int!
+  numPartsProcessed: Int!
+  totalParts: Int!
+  fileId: ID
+  fileName: String
+}
+
+type DevicePin {
+  id: ID!
+  type: String!
+  ownedBy: User
+  productName: String
+  createdAt: DateTime!
+  modifiedAt: DateTime!
+}
+
+# ──────────────────────────────────────────────
+# Terms of Service
+# ──────────────────────────────────────────────
+
+type TermsOfService {
+  id: ID!
+  type: String!
+  status: TermsOfServiceStatus!
+  enterprise: Enterprise
+  tosType: TermsOfServiceType!
+  text: String!
+  createdAt: DateTime!
+  modifiedAt: DateTime!
+}
+
+type Term {
+  id: ID!
+  type: String!
+  text: String!
+  status: TermsOfServiceStatus!
+  enterprise: Enterprise
+}
+
+type TermsOfServiceAcceptance {
+  id: ID!
+  type: String!
+  isAccepted: Boolean!
+  user: User!
+  termsOfService: TermsOfService!
+  createdAt: DateTime!
+  modifiedAt: DateTime!
+}
+
+# ──────────────────────────────────────────────
+# Storage Policies
+# ──────────────────────────────────────────────
+
+type StoragePolicy {
+  id: ID!
+  type: String!
+  name: String!
+}
+
+type StoragePolicyAssignment {
+  id: ID!
+  type: String!
+  storagePolicy: StoragePolicy!
+  assignedTo: StoragePolicyTarget!
+}
+
+union StoragePolicyTarget = User | Enterprise
+
+# ──────────────────────────────────────────────
+# Webhooks
+# ──────────────────────────────────────────────
+
+type Webhook {
+  id: ID!
+  type: String!
+  target: WebhookTarget!
+  createdBy: User
+  createdAt: DateTime!
+  address: String!
+  triggers: [WebhookTrigger!]!
+}
+
+union WebhookTarget = File | Folder
+
+type Trigger {
+  id: ID!
+  type: WebhookTrigger!
+  description: String
+}
+
+# ──────────────────────────────────────────────
+# SKU / Capabilities
+# ──────────────────────────────────────────────
+
+type SKU {
+  id: ID!
+  name: String!
+  description: String
+  features: [String!]
+  apiCallsPerMonth: Int
+  aiUnitsPerMonth: Int
+  price: Float
+  currency: String
+}
+
+# ──────────────────────────────────────────────
+# Shield / Information Barriers
+# ──────────────────────────────────────────────
+
+type InformationBarrier {
+  id: ID!
+  type: String!
+  enterprise: Enterprise!
+  status: String!
+  segments: [InformationBarrierSegment!]
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+type InformationBarrierSegment {
+  id: ID!
+  type: String!
+  name: String!
+  description: String
+  enterprise: Enterprise
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  createdBy: User
+  updatedBy: User
+}
+
+type InformationBarrierSegmentMember {
+  id: ID!
+  type: String!
+  informationBarrier: InformationBarrier
+  informationBarrierSegment: InformationBarrierSegment!
+  user: User!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  createdBy: User
+  updatedBy: User
+}
+
+type InformationBarrierSegmentRestriction {
+  id: ID!
+  type: String!
+  informationBarrier: InformationBarrier
+  restrictedSegment: InformationBarrierSegment!
+  restrictedToSegment: InformationBarrierSegment!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  createdBy: User
+  updatedBy: User
+}
+
+type InformationBarrierReport {
+  id: ID!
+  type: String!
+  status: String!
+  details: InformationBarrierReportDetails
+  createdAt: DateTime!
+  createdBy: User
+}
+
+type InformationBarrierReportDetails {
+  details: JSON
+}
+
+# ──────────────────────────────────────────────
+# Root Query Type
+# ──────────────────────────────────────────────
+
+type Query {
+  # Files
+  file(id: ID!): File
+  fileVersions(fileId: ID!): [FileVersion!]
+  fileVersion(fileId: ID!, versionId: ID!): FileVersion
+  fileRequest(id: ID!): FileRequest
+  downloadFile(fileId: ID!): String
+
+  # Folders
+  folder(id: ID!): Folder
+  folderItems(id: ID!, limit: Int, offset: Int): FolderItemsPage
+  folderLocks(folderId: ID!): [FolderLock!]
+  rootFolder: Folder
+  trashedFolder(id: ID!): Folder
+  trashedFolderItems(limit: Int, offset: Int): FolderItemsPage
+
+  # Web Links
+  webLink(id: ID!): WebLink
+  trashedWebLink(id: ID!): WebLink
+
+  # Users
+  currentUser: User
+  user(id: ID!): User
+  users(filterTerm: String, userType: String, externalAppUserId: String, limit: Int, offset: Int): [User!]
+  userEmailAliases(userId: ID!): [EmailAlias!]
+  userAvatar(userId: ID!): Avatar
+
+  # Groups
+  group(id: ID!): Group
+  groups(limit: Int, offset: Int): [Group!]
+  groupMemberships(groupId: ID!, limit: Int, offset: Int): [GroupMembership!]
+  userGroupMemberships(userId: ID!, limit: Int, offset: Int): [GroupMembership!]
+  groupCollaborations(groupId: ID!, limit: Int, offset: Int): [Collaboration!]
+
+  # Collaborations
+  collaboration(id: ID!): Collaboration
+  fileCollaborations(fileId: ID!, limit: Int, offset: Int): [Collaboration!]
+  folderCollaborations(folderId: ID!, limit: Int, offset: Int): [Collaboration!]
+  pendingCollaborations(limit: Int, offset: Int): [Collaboration!]
+  collaborationAllowlistEntries(limit: Int, marker: String): [CollaborationAllowlistEntry!]
+  collaborationAllowlistExemptTargets(limit: Int, marker: String): [CollaborationAllowlistExemptTarget!]
+
+  # Metadata
+  fileMetadata(fileId: ID!, scope: String!, templateKey: String!): Metadata
+  folderMetadata(folderId: ID!, scope: String!, templateKey: String!): Metadata
+  metadataTemplate(scope: String!, templateKey: String!): MetadataTemplate
+  metadataTemplates(scope: String!, limit: Int, marker: String): [MetadataTemplate!]
+  enterpriseMetadataTemplates(limit: Int, marker: String): [MetadataTemplate!]
+  metadataCascadePolicies(folderId: ID!, limit: Int, marker: String): [MetadataCascadePolicy!]
+
+  # Shared Links
+  sharedItemByLink(sharedLinkUrl: String!): FolderItem
+  fileSharedLink(fileId: ID!): File
+  folderSharedLink(folderId: ID!): Folder
+  webLinkSharedLink(webLinkId: ID!): WebLink
+
+  # Comments
+  comment(id: ID!): Comment
+  fileComments(fileId: ID!, limit: Int, offset: Int): [Comment!]
+
+  # Tasks
+  task(id: ID!): Task
+  fileTasks(fileId: ID!): [Task!]
+  taskAssignment(id: ID!): TaskAssignment
+  taskAssignments(taskId: ID!): [TaskAssignment!]
+
+  # Events
+  events(streamType: String, streamPosition: String, limit: Int): EventStream
+  enterpriseEvents(streamType: String, createdAfter: DateTime, createdBefore: DateTime, limit: Int, nextStreamPosition: String): EventStream
+
+  # Collections
+  collections: [Collection!]
+  collectionItems(collectionId: ID!, limit: Int, offset: Int): CollectionItem
+
+  # Recent Items
+  recentItems(limit: Int, fields: [String!]): [FolderItem!]
+
+  # Search
+  search(query: String!, options: SearchOptions): SearchResult
+
+  # Retention Policies
+  retentionPolicy(id: ID!): RetentionPolicy
+  retentionPolicies(policyName: String, policyType: String, createdByUserId: ID, limit: Int, marker: String): [RetentionPolicy!]
+  retentionPolicyAssignment(id: ID!): RetentionPolicyAssignment
+  retentionPolicyAssignments(retentionPolicyId: ID!, type: String, limit: Int, marker: String): [RetentionPolicyAssignment!]
+
+  # Legal Holds
+  legalHoldPolicy(id: ID!): LegalHoldPolicy
+  legalHoldPolicies(policyName: String, limit: Int, marker: String): [LegalHoldPolicy!]
+  legalHoldAssignment(id: ID!): LegalHoldAssignment
+  legalHoldAssignments(legalHoldPolicyId: ID!, type: String, limit: Int, marker: String): [LegalHoldAssignment!]
+  fileVersionLegalHold(id: ID!): LegalHold
+  fileVersionLegalHolds(policyId: ID!, limit: Int, marker: String): [LegalHold!]
+  fileVersionRetentions(limit: Int, marker: String, fileId: ID, fileVersionId: ID, policyId: ID): [FileVersion!]
+
+  # Sign Requests
+  signRequest(id: ID!): SignRequest
+  signRequests(limit: Int, marker: String): [SignRequest!]
+  signTemplate(id: ID!): Template
+  signTemplates(limit: Int, marker: String): [Template!]
+
+  # Webhooks
+  webhook(id: ID!): Webhook
+  webhooks(limit: Int, marker: String): [Webhook!]
+
+  # Storage Policies
+  storagePolicy(id: ID!): StoragePolicy
+  storagePolicies(limit: Int, marker: String): [StoragePolicy!]
+  storagePolicyAssignment(id: ID!): StoragePolicyAssignment
+  storagePolicyAssignments(resolvedForType: String!, resolvedForId: ID!): [StoragePolicyAssignment!]
+
+  # Terms of Service
+  termsOfService(id: ID!): TermsOfService
+  enterpriseTermsOfServices(tosType: String): [TermsOfService!]
+  termsOfServiceUserStatus(tosId: ID!, userId: ID): TermsOfServiceAcceptance
+
+  # Device Pins
+  devicePin(id: ID!): DevicePin
+  enterpriseDevicePins(limit: Int, marker: String, direction: String): [DevicePin!]
+
+  # Shield / Info Barriers
+  informationBarrier(id: ID!): InformationBarrier
+  informationBarriers(limit: Int, marker: String): [InformationBarrier!]
+  informationBarrierSegment(id: ID!): InformationBarrierSegment
+  informationBarrierSegments(informationBarrierId: ID!, limit: Int, marker: String): [InformationBarrierSegment!]
+
+  # Invites
+  invite(id: ID!): Invite
+
+  # Skills / Classifications
+  classifications(scope: String): [Classification!]
+}
+
+input SearchOptions {
+  scope: String
+  fileExtensions: [String!]
+  ancestorFolderIds: [ID!]
+  ownerUserIds: [ID!]
+  recentUpdaterUserIds: [ID!]
+  contentTypes: [String!]
+  type: String
+  trashContent: String
+  sort: String
+  direction: String
+  limit: Int
+  offset: Int
+  fields: [String!]
+}
+
+# ──────────────────────────────────────────────
+# Root Mutation Type
+# ──────────────────────────────────────────────
+
+type Mutation {
+  # Files
+  copyFile(fileId: ID!, parentId: ID!, name: String, version: String): File
+  updateFile(id: ID!, name: String, description: String, tags: [String!], parentId: ID!): File
+  deleteFile(id: ID!, etag: String): Boolean
+  lockFile(fileId: ID!, expiredAt: DateTime, isDownloadPrevented: Boolean): FileLock
+  unlockFile(fileId: ID!): Boolean
+  createFileRequest(folderId: ID!, title: String, description: String, isDescriptionRequired: Boolean, isEmailRequired: Boolean, expiresAt: DateTime): FileRequest
+  updateFileRequest(id: ID!, title: String, description: String, status: String, isDescriptionRequired: Boolean, isEmailRequired: Boolean, expiresAt: DateTime): FileRequest
+  deleteFileRequest(id: ID!): Boolean
+  applyWatermarkToFile(fileId: ID!): Watermark
+  removeWatermarkFromFile(fileId: ID!): Boolean
+  addFileToCollection(fileId: ID!, collectionId: ID!): File
+  removeFileFromCollection(fileId: ID!, collectionId: ID!): File
+  createFileSharedLink(fileId: ID!, settings: SharedLinkSettingsInput): File
+  removeFileSharedLink(fileId: ID!): File
+
+  # Folders
+  createFolder(name: String!, parentId: ID!): Folder
+  copyFolder(folderId: ID!, parentId: ID!, name: String): Folder
+  updateFolder(id: ID!, name: String, description: String, parentId: ID!, tags: [String!]): Folder
+  deleteFolder(id: ID!, recursive: Boolean): Boolean
+  createFolderLock(folderId: ID!): FolderLock
+  deleteFolderLock(id: ID!): Boolean
+  applyWatermarkToFolder(folderId: ID!): Watermark
+  removeWatermarkFromFolder(folderId: ID!): Boolean
+  createFolderSharedLink(folderId: ID!, settings: SharedLinkSettingsInput): Folder
+  removeFolderSharedLink(folderId: ID!): Folder
+
+  # Web Links
+  createWebLink(url: String!, parentId: ID!, name: String, description: String): WebLink
+  updateWebLink(id: ID!, url: String, parentId: ID!, name: String, description: String): WebLink
+  deleteWebLink(id: ID!): Boolean
+  createWebLinkSharedLink(webLinkId: ID!, settings: SharedLinkSettingsInput): WebLink
+  removeWebLinkSharedLink(webLinkId: ID!): WebLink
+
+  # Metadata
+  createFileMetadata(fileId: ID!, scope: String!, templateKey: String!, fields: JSON!): Metadata
+  updateFileMetadata(fileId: ID!, scope: String!, templateKey: String!, updates: [FileMetadataUpdateInput!]!): Metadata
+  deleteFileMetadata(fileId: ID!, scope: String!, templateKey: String!): Boolean
+  createFolderMetadata(folderId: ID!, scope: String!, templateKey: String!, fields: JSON!): Metadata
+  updateFolderMetadata(folderId: ID!, scope: String!, templateKey: String!, updates: [FileMetadataUpdateInput!]!): Metadata
+  deleteFolderMetadata(folderId: ID!, scope: String!, templateKey: String!): Boolean
+  createMetadataTemplate(scope: String!, templateKey: String!, displayName: String!, hidden: Boolean, fields: [MetadataFieldInput!]!): MetadataTemplate
+  updateMetadataTemplate(scope: String!, templateKey: String!, updates: [JSON!]!): MetadataTemplate
+  deleteMetadataTemplate(scope: String!, templateKey: String!): Boolean
+  createMetadataCascadePolicy(folderId: ID!, scope: String!, templateKey: String!): MetadataCascadePolicy
+  deleteMetadataCascadePolicy(id: ID!): Boolean
+  applyMetadataCascadePolicy(id: ID!, conflictResolution: String!): Boolean
+
+  # Collaborations
+  createCollaboration(itemId: ID!, itemType: String!, accessibleById: ID, accessibleByType: String, inviteEmail: String, role: CollaborationRole!, expiresAt: DateTime): Collaboration
+  updateCollaboration(id: ID!, role: CollaborationRole!, status: CollaborationStatus, expiresAt: DateTime): Collaboration
+  deleteCollaboration(id: ID!): Boolean
+  acceptCollaboration(id: ID!): Collaboration
+  addCollaborationAllowlistEntry(domain: String!, direction: String!): CollaborationAllowlistEntry
+  deleteCollaborationAllowlistEntry(id: ID!): Boolean
+  addCollaborationAllowlistExemptTarget(userId: ID!): CollaborationAllowlistExemptTarget
+  deleteCollaborationAllowlistExemptTarget(id: ID!): Boolean
+
+  # Users
+  createUser(name: String!, login: String, isPlatformAccessOnly: Boolean, role: String, language: String, timezone: String, spaceAmount: Float, trackingCodes: [TrackingCodeInput!], canSeeManagedUsers: Boolean, isSyncEnabled: Boolean, isExternalCollabRestricted: Boolean, isExemptFromDeviceLimits: Boolean, isExemptFromLoginVerification: Boolean, jobTitle: String, phone: String, address: String, status: UserStatus): User
+  updateUser(id: ID!, name: String, role: String, language: String, timezone: String, spaceAmount: Float, trackingCodes: [TrackingCodeInput!], isSyncEnabled: Boolean, isExternalCollabRestricted: Boolean, isExemptFromDeviceLimits: Boolean, isExemptFromLoginVerification: Boolean, jobTitle: String, phone: String, address: String, status: UserStatus, login: String): User
+  deleteUser(id: ID!, notify: Boolean, force: Boolean): Boolean
+  addEmailAlias(userId: ID!, email: String!): EmailAlias
+  removeEmailAlias(userId: ID!, aliasId: ID!): Boolean
+  transferUserContent(sourceUserId: ID!, destUserId: ID!): Folder
+  deleteUserAvatar(userId: ID!): Boolean
+
+  # Groups
+  createGroup(name: String!, provenance: String, externalSyncIdentifier: String, description: String, invitabilityLevel: String, memberViewabilityLevel: String): Group
+  updateGroup(id: ID!, name: String, provenance: String, externalSyncIdentifier: String, description: String, invitabilityLevel: String, memberViewabilityLevel: String): Group
+  deleteGroup(id: ID!): Boolean
+  addGroupMembership(userId: ID!, groupId: ID!, role: GroupRole): GroupMembership
+  updateGroupMembership(id: ID!, role: GroupRole!): GroupMembership
+  deleteGroupMembership(id: ID!): Boolean
+
+  # Invites
+  inviteUser(enterpriseId: ID!, login: String!): Invite
+
+  # Comments
+  createComment(fileId: ID!, message: String!, taggedMessage: String): Comment
+  updateComment(id: ID!, message: String!): Comment
+  deleteComment(id: ID!): Boolean
+
+  # Tasks
+  createTask(fileId: ID!, action: TaskAction!, message: String, dueAt: DateTime, completionRule: String): Task
+  updateTask(id: ID!, action: TaskAction, message: String, dueAt: DateTime, completionRule: String): Task
+  deleteTask(id: ID!): Boolean
+  createTaskAssignment(taskId: ID!, userId: ID): TaskAssignment
+  updateTaskAssignment(id: ID!, resolutionState: TaskAssignmentStatus!, message: String): TaskAssignment
+  deleteTaskAssignment(id: ID!): Boolean
+
+  # Webhooks
+  createWebhook(targetId: ID!, targetType: String!, address: String!, triggers: [WebhookTrigger!]!): Webhook
+  updateWebhook(id: ID!, address: String, triggers: [WebhookTrigger!]): Webhook
+  deleteWebhook(id: ID!): Boolean
+
+  # Sign Requests
+  createSignRequest(signers: [SignRequestSignerInput!]!, sourceFiles: [SignFileInput!]!, parentFolderId: ID!, isDocumentPreparationNeeded: Boolean, emailSubject: String, emailMessage: String, redirectUrl: String, declinedRedirectUrl: String, daysValid: Int, externalId: String, prefillTags: [SignPrefillTagInput!]): SignRequest
+  cancelSignRequest(id: ID!): SignRequest
+  resendSignRequest(id: ID!): Boolean
+
+  # Retention Policies
+  createRetentionPolicy(policyName: String!, policyType: RetentionPolicyType!, dispositionAction: RetentionPolicyDispositionAction!, retentionLength: Int, canOwnerExtendRetention: Boolean, areOwnersNotified: Boolean, description: String): RetentionPolicy
+  updateRetentionPolicy(id: ID!, policyName: String, status: String, dispositionAction: RetentionPolicyDispositionAction, retentionLength: Int, description: String): RetentionPolicy
+  deleteRetentionPolicy(id: ID!): Boolean
+  createRetentionPolicyAssignment(policyId: ID!, assignToId: ID!, assignToType: String!, filterFields: [MetadataFilterInput!], startDateField: String): RetentionPolicyAssignment
+  deleteRetentionPolicyAssignment(id: ID!): Boolean
+
+  # Legal Holds
+  createLegalHoldPolicy(policyName: String!, description: String, filterStartedAt: DateTime, filterEndedAt: DateTime, isOngoing: Boolean): LegalHoldPolicy
+  updateLegalHoldPolicy(id: ID!, policyName: String, description: String, releaseNotes: String): LegalHoldPolicy
+  deleteLegalHoldPolicy(id: ID!): Boolean
+  createLegalHoldAssignment(policyId: ID!, assignToId: ID!, assignToType: String!): LegalHoldAssignment
+  deleteLegalHoldAssignment(id: ID!): Boolean
+
+  # Terms of Service
+  createTermsOfService(status: TermsOfServiceStatus!, tosType: TermsOfServiceType!, text: String!): TermsOfService
+  updateTermsOfService(id: ID!, status: TermsOfServiceStatus!, text: String!): TermsOfService
+  createTermsOfServiceAcceptance(tosId: ID!, userId: ID!, isAccepted: Boolean!): TermsOfServiceAcceptance
+  updateTermsOfServiceAcceptance(id: ID!, isAccepted: Boolean!): TermsOfServiceAcceptance
+
+  # Storage Policies
+  createStoragePolicyAssignment(policyId: ID!, userId: ID!): StoragePolicyAssignment
+  updateStoragePolicyAssignment(id: ID!, policyId: ID!): StoragePolicyAssignment
+
+  # Device Pins
+  deleteDevicePin(id: ID!): Boolean
+
+  # Classifications
+  addClassificationToFile(fileId: ID!, name: String!): Metadata
+  updateClassificationOnFile(fileId: ID!, name: String!): Metadata
+  deleteClassificationFromFile(fileId: ID!): Boolean
+  addClassificationToFolder(folderId: ID!, name: String!): Metadata
+  updateClassificationOnFolder(folderId: ID!, name: String!): Metadata
+  deleteClassificationFromFolder(folderId: ID!): Boolean
+}
+
+# ──────────────────────────────────────────────
+# Input Types
+# ──────────────────────────────────────────────
+
+input SharedLinkSettingsInput {
+  access: AccessLevel
+  password: String
+  unsharedAt: DateTime
+  vanityName: String
+  canDownload: Boolean
+  canPreview: Boolean
+  canEdit: Boolean
+}
+
+input FileMetadataUpdateInput {
+  op: String!
+  path: String!
+  value: JSON
+  from: String
+}
+
+input MetadataFieldInput {
+  type: MetadataFieldType!
+  key: String!
+  displayName: String!
+  hidden: Boolean
+  description: String
+  options: [MetadataFieldOptionInput!]
+}
+
+input MetadataFieldOptionInput {
+  key: String!
+}
+
+input TrackingCodeInput {
+  type: String!
+  name: String!
+  value: String!
+}
+
+input SignRequestSignerInput {
+  email: String!
+  role: SignRequestSignerRole!
+  isInPerson: Boolean
+  order: Int
+  embedUrlExternalUserId: String
+  redirectUrl: String
+  declinedRedirectUrl: String
+  loginRequired: Boolean
+  verificationPhoneNumber: String
+  suppressNotifications: Boolean
+}
+
+input SignFileInput {
+  id: ID!
+  type: String!
+}
+
+input SignPrefillTagInput {
+  documentTagId: String!
+  checkboxValue: Boolean
+  dateValue: String
+  textValue: String
+}
+
+input MetadataFilterInput {
+  scope: String!
+  templateKey: String!
+  filters: JSON!
+}
