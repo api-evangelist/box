@@ -1,0 +1,1076 @@
+openapi: 3.1.0
+info:
+  title: Box Authorize Authorization Skills API
+  description: Needs a description.
+tags:
+- name: Skills
+  description: 'Box Skills are designed to allow custom processing
+
+    of files uploaded to Box, with the
+
+    intent of enhancing the underlying metadata of the file.'
+  x-box-tag: skills
+paths:
+  /files/{file_id}/metadata/global/boxSkillsCards:
+    get:
+      operationId: get_files_id_metadata_global_boxSkillsCards
+      summary: List Box Skill cards on file
+      tags:
+      - Skills
+      x-box-tag: skills
+      description: List the Box Skills metadata cards that are attached to a file.
+      parameters:
+      - name: file_id
+        description: 'The unique identifier that represents a file.
+
+
+          The ID for any file can be determined
+
+          by visiting a file in the web application
+
+          and copying the ID from the URL. For example,
+
+          for the URL `https://*.app.box.com/files/123`
+
+          the `file_id` is `123`.'
+        example: '12345'
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: 'Returns all the metadata associated with a file.
+
+
+            This API does not support pagination and will therefore always return
+
+            all of the metadata associated to the file.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SkillCardsMetadata'
+        default:
+          description: An unexpected client error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ClientError'
+    post:
+      operationId: post_files_id_metadata_global_boxSkillsCards
+      summary: Create Box Skill cards on file
+      tags:
+      - Skills
+      x-box-tag: skills
+      description: Applies one or more Box Skills metadata cards to a file.
+      parameters:
+      - name: file_id
+        description: 'The unique identifier that represents a file.
+
+
+          The ID for any file can be determined
+
+          by visiting a file in the web application
+
+          and copying the ID from the URL. For example,
+
+          for the URL `https://*.app.box.com/files/123`
+
+          the `file_id` is `123`.'
+        example: '12345'
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - cards
+              properties:
+                cards:
+                  type: array
+                  description: A list of Box Skill cards to apply to this file.
+                  items:
+                    oneOf:
+                    - $ref: '#/components/schemas/KeywordSkillCard'
+                    - $ref: '#/components/schemas/TimelineSkillCard'
+                    - $ref: '#/components/schemas/TranscriptSkillCard'
+                    - $ref: '#/components/schemas/StatusSkillCard'
+      responses:
+        '201':
+          description: 'Returns the instance of the template that was applied to the file,
+
+            including the data that was applied to the template.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SkillCardsMetadata'
+        '400':
+          description: 'Returns an error when the request body is not valid.
+
+
+            * `schema_validation_failed` - The request body contains a value for a for
+
+            a field that either does not exist, or for which the value or type does
+
+            not match the expected field type. An example might be an unknown option
+
+            for an `enum` or `multiSelect` field.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ClientError'
+        '404':
+          description: 'Returns an error when the file or metadata template was not found.
+
+
+            * `not_found` - The file could not be found, or the user does not have
+
+            access to the file.
+
+            * `instance_tuple_not_found` - The metadata template was not found.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ClientError'
+        '409':
+          description: 'Returns an error when an instance of this metadata template is already
+
+            present on the file.
+
+
+            * `tuple_already_exists` - An instance of them metadata template already
+
+            exists on the file.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ClientError'
+        default:
+          description: An unexpected client error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ClientError'
+    put:
+      operationId: put_files_id_metadata_global_boxSkillsCards
+      summary: Update Box Skill cards on file
+      tags:
+      - Skills
+      x-box-tag: skills
+      description: Updates one or more Box Skills metadata cards to a file.
+      parameters:
+      - name: file_id
+        description: 'The unique identifier that represents a file.
+
+
+          The ID for any file can be determined
+
+          by visiting a file in the web application
+
+          and copying the ID from the URL. For example,
+
+          for the URL `https://*.app.box.com/files/123`
+
+          the `file_id` is `123`.'
+        example: '12345'
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json-patch+json:
+            schema:
+              description: 'A [JSON-Patch](https://tools.ietf.org/html/rfc6902)
+
+                specification for the changes to make to the metadata
+
+                template.
+
+
+                The changes are represented as a JSON array of
+
+                operation objects.'
+              type: array
+              items:
+                type: object
+                description: An operation that replaces an existing card.
+                properties:
+                  op:
+                    type: string
+                    description: '`replace`'
+                    example: replace
+                    enum:
+                    - replace
+                  path:
+                    type: string
+                    description: 'The JSON Path that represents the card to replace. In most cases
+
+                      this will be in the format `/cards/{index}` where `index` is the
+
+                      zero-indexed position of the card in the list of cards.'
+                    example: /cards/0
+                  value:
+                    allOf:
+                    - oneOf:
+                      - $ref: '#/components/schemas/KeywordSkillCard'
+                      - $ref: '#/components/schemas/TimelineSkillCard'
+                      - $ref: '#/components/schemas/TranscriptSkillCard'
+                      - $ref: '#/components/schemas/StatusSkillCard'
+                    - description: 'The card to insert into the list of cards at the
+
+                        position defined by `path`.'
+      responses:
+        '200':
+          description: 'Returns the updated metadata template, with the
+
+            custom template data included.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SkillCardsMetadata'
+        '404':
+          description: The requested file could not be found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ClientError'
+        default:
+          description: An unexpected client error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ClientError'
+    delete:
+      operationId: delete_files_id_metadata_global_boxSkillsCards
+      summary: Remove Box Skill cards from file
+      tags:
+      - Skills
+      x-box-tag: skills
+      x-box-sanitized: true
+      description: Removes any Box Skills cards metadata from a file.
+      parameters:
+      - name: file_id
+        description: 'The unique identifier that represents a file.
+
+
+          The ID for any file can be determined
+
+          by visiting a file in the web application
+
+          and copying the ID from the URL. For example,
+
+          for the URL `https://*.app.box.com/files/123`
+
+          the `file_id` is `123`.'
+        example: '12345'
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '204':
+          description: 'Returns an empty response when the cards are
+
+            successfully deleted.'
+        '404':
+          description: 'Returns an error when the file does not have an instance of the Box Skill
+
+            cards applied to it, or when the user does not have access to the file.
+
+
+            * `instance_not_found` - An instance of the metadata template for Box
+
+            Skill cards was not found on this file.
+
+            * `not_found` - The file was not found, or the user does not have access
+
+            to the file.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ClientError'
+        '405':
+          description: Returned when the method was not allowed.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ClientError'
+        default:
+          description: An unexpected client error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ClientError'
+  /skill_invocations/{skill_id}:
+    put:
+      operationId: put_skill_invocations_id
+      summary: Update all Box Skill cards on file
+      tags:
+      - Skills
+      x-box-tag: skills
+      description: 'An alternative method that can be used to overwrite and update all Box Skill
+
+        metadata cards on a file.'
+      parameters:
+      - name: skill_id
+        description: The ID of the skill to apply this metadata for.
+        example: '33243242'
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - status
+              - metadata
+              - file
+              properties:
+                status:
+                  type: string
+                  description: Defines the status of this invocation. Set this to `success` when setting Skill cards.
+                  example: success
+                  enum:
+                  - invoked
+                  - processing
+                  - success
+                  - transient_failure
+                  - permanent_failure
+                metadata:
+                  type: object
+                  description: 'The metadata to set for this skill. This is a list of
+
+                    Box Skills cards. These cards will overwrite any existing Box
+
+                    skill cards on the file.'
+                  properties:
+                    cards:
+                      type: array
+                      description: A list of Box Skill cards to apply to this file.
+                      items:
+                        oneOf:
+                        - $ref: '#/components/schemas/KeywordSkillCard'
+                        - $ref: '#/components/schemas/TimelineSkillCard'
+                        - $ref: '#/components/schemas/TranscriptSkillCard'
+                        - $ref: '#/components/schemas/StatusSkillCard'
+                file:
+                  type: object
+                  description: The file to assign the cards to.
+                  properties:
+                    type:
+                      type: string
+                      description: '`file`'
+                      example: file
+                      enum:
+                      - file
+                    id:
+                      type: string
+                      description: The ID of the file
+                      example: '3243244'
+                file_version:
+                  type: object
+                  description: The optional file version to assign the cards to.
+                  properties:
+                    type:
+                      type: string
+                      description: '`file_version`'
+                      example: file_version
+                      enum:
+                      - file_version
+                    id:
+                      type: string
+                      description: The ID of the file version
+                      example: '731381601045'
+                usage:
+                  type: object
+                  description: 'A descriptor that defines what items are affected by this call.
+
+
+                    Set this to the default values when setting a card to a `success`
+
+                    state, and leave it out in most other situations.'
+                  properties:
+                    unit:
+                      type: string
+                      example: file
+                      description: '`file`'
+                    value:
+                      type: number
+                      example: 1
+                      description: '`1`'
+      responses:
+        '200':
+          description: Returns an empty response when the card has been successfully updated.
+        '400':
+          description: 'Returns an error when the request body is not valid.
+
+
+            * `schema_validation_failed` - The request body contains a value for a for
+
+            a field that either does not exist, or for which the value or type does
+
+            not match the expected field type. An example might be an unknown option
+
+            for an `enum` or `multiSelect` field.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ClientError'
+        '404':
+          description: 'Returns an error when the file could not be found or the user does not
+
+            have access.
+
+
+            * `not_found` - The file could not be found, or the user does not have
+
+            access to the file.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ClientError'
+        default:
+          description: An unexpected client error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ClientError'
+components:
+  schemas:
+    TranscriptSkillCard:
+      type: object
+      x-box-resource-id: transcript_skill_card
+      x-box-tag: skills
+      title: Transcript Skill Card
+      description: A Box Skill metadata card that adds a transcript to a file.
+      required:
+      - type
+      - skill_card_type
+      - skill
+      - invocation
+      - entries
+      properties:
+        created_at:
+          type: string
+          format: date-time
+          example: '2018-04-13T13:53:23-07:00'
+          description: The optional date and time this card was created at.
+        type:
+          type: string
+          description: '`skill_card`'
+          example: skill_card
+          enum:
+          - skill_card
+        skill_card_type:
+          type: string
+          description: '`transcript`'
+          example: transcript
+          enum:
+          - transcript
+        skill_card_title:
+          type: object
+          description: The title of the card.
+          required:
+          - message
+          properties:
+            code:
+              type: string
+              example: my_transcripts
+              description: An optional identifier for the title.
+            message:
+              type: string
+              example: My Transcripts
+              description: The actual title to show in the UI.
+        skill:
+          type: object
+          description: The service that applied this metadata.
+          required:
+          - type
+          - id
+          properties:
+            type:
+              type: string
+              example: service
+              description: '`service`'
+              enum:
+              - service
+            id:
+              type: string
+              example: transciption-service
+              description: 'A custom identifier that represent the service that
+
+                applied this metadata.'
+        invocation:
+          type: object
+          description: 'The invocation of this service, used to track
+
+            which instance of a service applied the metadata.'
+          required:
+          - type
+          - id
+          properties:
+            type:
+              type: string
+              example: skill_invocation
+              description: '`skill_invocation`'
+              enum:
+              - skill_invocation
+            id:
+              type: string
+              example: transciption-service-123
+              description: 'A custom identifier that represent the instance of
+
+                the service that applied this metadata. For example,
+
+                if your `image-recognition-service` runs on multiple
+
+                nodes, this field can be used to identify the ID of
+
+                the node that was used to apply the metadata.'
+        duration:
+          type: integer
+          example: 1000
+          description: 'An optional total duration in seconds.
+
+
+            Used with a `skill_card_type` of `transcript` or
+
+            `timeline`.'
+        entries:
+          type: array
+          description: 'An list of entries for the card. This represents the individual entries of
+
+            the transcription.'
+          items:
+            type: object
+            description: An entry in the `entries` attribute of a metadata card
+            properties:
+              text:
+                type: string
+                example: Hi, and welcome to this video...
+                description: 'The text of the entry. This would be the transcribed text assigned
+
+                  to the entry on the timeline.'
+              appears:
+                type: array
+                description: 'Defines when a transcribed bit of text appears. This only includes a
+
+                  start time and no end time.'
+                required:
+                - start
+                items:
+                  type: object
+                  description: The timestamp for an entry.
+                  properties:
+                    start:
+                      type: integer
+                      example: 1
+                      description: 'The time in seconds when an
+
+                        entry should start appearing on a timeline.'
+    TimelineSkillCard:
+      type: object
+      x-box-resource-id: timeline_skill_card
+      x-box-tag: skills
+      title: Timeline Skill Card
+      description: 'A Box Skill metadata card that places a list of images on a
+
+        timeline.'
+      required:
+      - type
+      - skill_card_type
+      - skill
+      - invocation
+      - entries
+      properties:
+        created_at:
+          type: string
+          format: date-time
+          example: '2018-04-13T13:53:23-07:00'
+          description: The optional date and time this card was created at.
+        type:
+          type: string
+          description: '`skill_card`'
+          example: skill_card
+          enum:
+          - skill_card
+        skill_card_type:
+          type: string
+          description: '`timeline`'
+          example: timeline
+          enum:
+          - timeline
+        skill_card_title:
+          type: object
+          description: The title of the card.
+          required:
+          - message
+          properties:
+            code:
+              type: string
+              example: Faces
+              description: An optional identifier for the title.
+            message:
+              type: string
+              example: Faces
+              description: The actual title to show in the UI.
+        skill:
+          type: object
+          description: The service that applied this metadata.
+          required:
+          - type
+          - id
+          properties:
+            type:
+              type: string
+              example: service
+              description: '`service`'
+              enum:
+              - service
+            id:
+              type: string
+              example: image-recognition-service
+              description: 'A custom identifier that represent the service that
+
+                applied this metadata.'
+        invocation:
+          type: object
+          description: 'The invocation of this service, used to track
+
+            which instance of a service applied the metadata.'
+          required:
+          - type
+          - id
+          properties:
+            type:
+              type: string
+              example: skill_invocation
+              description: '`skill_invocation`'
+              enum:
+              - skill_invocation
+            id:
+              type: string
+              example: image-recognition-service-123
+              description: 'A custom identifier that represent the instance of
+
+                the service that applied this metadata. For example,
+
+                if your `image-recognition-service` runs on multiple
+
+                nodes, this field can be used to identify the ID of
+
+                the node that was used to apply the metadata.'
+        duration:
+          type: integer
+          example: 1000
+          description: An total duration in seconds of the timeline.
+        entries:
+          type: array
+          description: A list of entries on the timeline.
+          items:
+            type: object
+            description: An single item that's placed on multiple items on the timeline.
+            properties:
+              text:
+                type: string
+                example: John
+                description: 'The text of the entry. This would be the display
+
+                  name for an item being placed on the timeline, for example the name
+
+                  of the person who was detected in a video.'
+              appears:
+                type: array
+                description: 'Defines a list of timestamps for when this item should appear on the
+
+                  timeline.'
+                required:
+                - start
+                - end
+                items:
+                  type: object
+                  description: The timestamp for an entry.
+                  properties:
+                    start:
+                      type: integer
+                      example: 1
+                      description: 'The time in seconds when an
+
+                        entry should start appearing on a timeline.'
+                    end:
+                      type: integer
+                      example: 20
+                      description: 'The time in seconds when an
+
+                        entry should stop appearing on a timeline.'
+              image_url:
+                type: string
+                description: 'The image to show on a for an entry that appears
+
+                  on a timeline. This image URL is required for every entry.
+
+
+                  The image will be shown in a
+
+                  list of items (for example faces), and clicking
+
+                  the image will show the user where that entry
+
+                  appears during the duration of this entry.'
+                example: https://example.com/image1.jpg
+    SkillCardsMetadata:
+      title: Skills metadata instance
+      type: object
+      x-box-resource-id: skill_cards_metadata
+      x-box-tag: skills
+      description: The metadata assigned to a using for Box skills.
+      properties:
+        $canEdit:
+          type: boolean
+          example: true
+          description: Whether the user can edit this metadata
+        $id:
+          type: string
+          format: uuid
+          example: 01234500-12f1-1234-aa12-b1d234cb567e
+          maxLength: 36
+          description: A UUID to identify the metadata object
+        $parent:
+          type: string
+          example: folder_59449484661,
+          description: An ID for the parent folder
+        $scope:
+          type: string
+          example: enterprise_27335
+          description: 'An ID for the scope in which this template
+
+            has been applied'
+        $template:
+          type: string
+          example: properties
+          description: The name of the template
+        $type:
+          type: string
+          example: properties-6bcba49f-ca6d-4d2a-a758-57fe6edf44d0
+          description: 'A unique identifier for the "type" of this instance. This is an internal
+
+            system property and should not be used by a client application.'
+        $typeVersion:
+          type: integer
+          example: 2
+          description: 'The last-known version of the template of the object. This is an internal
+
+            system property and should not be used by a client application.'
+        $version:
+          type: integer
+          example: 1
+          description: 'The version of the metadata object. Starts at 0 and increases every time
+
+            a user-defined property is modified.'
+        cards:
+          type: array
+          description: A list of Box Skill cards that have been applied to this file.
+          items:
+            oneOf:
+            - $ref: '#/components/schemas/KeywordSkillCard'
+            - $ref: '#/components/schemas/TimelineSkillCard'
+            - $ref: '#/components/schemas/TranscriptSkillCard'
+            - $ref: '#/components/schemas/StatusSkillCard'
+    KeywordSkillCard:
+      type: object
+      x-box-resource-id: keyword_skill_card
+      x-box-tag: skills
+      title: Keyword Skill Card
+      description: A skill card that contains a set of keywords
+      required:
+      - type
+      - skill_card_type
+      - skill
+      - invocation
+      - entries
+      properties:
+        created_at:
+          type: string
+          format: date-time
+          example: '2018-04-13T13:53:23-07:00'
+          description: The optional date and time this card was created at.
+        type:
+          type: string
+          description: '`skill_card`'
+          example: skill_card
+          enum:
+          - skill_card
+        skill_card_type:
+          type: string
+          description: '`keyword`'
+          example: keyword
+          enum:
+          - keyword
+        skill_card_title:
+          type: object
+          description: The title of the card.
+          required:
+          - message
+          properties:
+            code:
+              type: string
+              example: labels
+              description: An optional identifier for the title.
+            message:
+              type: string
+              example: Labels
+              description: The actual title to show in the UI.
+        skill:
+          type: object
+          description: The service that applied this metadata.
+          required:
+          - type
+          - id
+          properties:
+            type:
+              type: string
+              example: service
+              description: '`service`'
+              enum:
+              - service
+            id:
+              type: string
+              example: image-recognition-service
+              description: 'A custom identifier that represent the service that
+
+                applied this metadata.'
+        invocation:
+          type: object
+          description: 'The invocation of this service, used to track
+
+            which instance of a service applied the metadata.'
+          required:
+          - type
+          - id
+          properties:
+            type:
+              type: string
+              example: skill_invocation
+              description: '`skill_invocation`'
+              enum:
+              - skill_invocation
+            id:
+              type: string
+              example: image-recognition-service-123
+              description: 'A custom identifier that represent the instance of
+
+                the service that applied this metadata. For example,
+
+                if your `image-recognition-service` runs on multiple
+
+                nodes, this field can be used to identify the ID of
+
+                the node that was used to apply the metadata.'
+        entries:
+          type: array
+          description: An list of entries in the metadata card.
+          items:
+            type: object
+            description: An entry in the `entries` attribute of a metadata card
+            properties:
+              text:
+                type: string
+                example: keyword1
+                description: The text of the keyword.
+    StatusSkillCard:
+      type: object
+      x-box-resource-id: status_skill_card
+      x-box-tag: skills
+      title: Status Skill Card
+      description: A Box Skill metadata card that puts a status message in the metadata sidebar.
+      required:
+      - type
+      - skill_card_type
+      - skill
+      - invocation
+      - status
+      properties:
+        created_at:
+          type: string
+          format: date-time
+          example: '2018-04-13T13:53:23-07:00'
+          description: The optional date and time this card was created at.
+        type:
+          type: string
+          description: '`skill_card`'
+          example: skill_card
+          enum:
+          - skill_card
+        skill_card_type:
+          type: string
+          description: '`status`'
+          example: status
+          enum:
+          - status
+        skill_card_title:
+          type: object
+          description: The title of the card.
+          required:
+          - message
+          properties:
+            code:
+              type: string
+              example: status
+              description: An optional identifier for the title.
+            message:
+              type: string
+              example: Status
+              description: The actual title to show in the UI.
+        status:
+          type: object
+          description: Sets the status of the skill. This can be used to show a message to the user while the Skill is processing the data, or if it was not able to process the file.
+          required:
+          - code
+          properties:
+            code:
+              type: string
+              description: 'A code for the status of this Skill invocation. By
+
+                default each of these will have their own accompanied
+
+                messages. These can be adjusted by setting the `message`
+
+                value on this object.'
+              example: success
+              enum:
+              - invoked
+              - processing
+              - success
+              - transient_failure
+              - permanent_failure
+            message:
+              type: string
+              description: 'A custom message that can be provided with this status.
+
+                This will be shown in the web app to the end user.'
+              example: We're preparing to process your file. Please hold on!
+        skill:
+          type: object
+          description: The service that applied this metadata.
+          required:
+          - type
+          - id
+          properties:
+            type:
+              type: string
+              example: service
+              description: '`service`'
+              enum:
+              - service
+            id:
+              type: string
+              example: image-recognition-service
+              description: 'A custom identifier that represent the service that
+
+                applied this metadata.'
+        invocation:
+          type: object
+          description: 'The invocation of this service, used to track
+
+            which instance of a service applied the metadata.'
+          required:
+          - type
+          - id
+          properties:
+            type:
+              type: string
+              example: skill_invocation
+              description: '`skill_invocation`'
+              enum:
+              - skill_invocation
+            id:
+              type: string
+              example: image-recognition-service-123
+              description: 'A custom identifier that represent the instance of
+
+                the service that applied this metadata. For example,
+
+                if your `image-recognition-service` runs on multiple
+
+                nodes, this field can be used to identify the ID of
+
+                the node that was used to apply the metadata.'
+    ClientError:
+      title: Client error
+      type: object
+      x-box-resource-id: client_error
+      description: A generic error
+      properties:
+        type:
+          description: error
+          example: error
+          type: string
+          enum:
+          - error
+          nullable: false
+        status:
+          description: The HTTP status of the response.
+          example: 400
+          type: integer
+          format: int32
+          nullable: false
+        code:
+          description: A Box-specific error code
+          example: item_name_invalid
+          type: string
+          enum:
+          - created
+          - accepted
+          - no_content
+          - redirect
+          - not_modified
+          - bad_request
+          - unauthorized
+          - forbidden
+          - not_found
+          - method_not_allowed
+          - conflict
+          - precondition_failed
+          - too_many_requests
+          - internal_server_error
+          - unavailable
+          - item_name_invalid
+          - insufficient_scope
+        message:
+          description: A short message describing the error.
+          example: Method Not Allowed
+          type: string
+          nullable: false
+        context_info:
+          description: 'A free-form object that contains additional context
+
+            about the error. The possible fields are defined on
+
+            a per-endpoint basis. `message` is only one example.'
+          type: object
+          nullable: true
+          properties:
+            message:
+              type: string
+              description: More details on the error.
+              example: Something went wrong.
+        help_url:
+          description: A URL that links to more information about why this error occurred.
+          example: https://developer.box.com/guides/api-calls/permissions-and-errors/common-errors/
+          type: string
+          nullable: false
+        request_id:
+          description: 'A unique identifier for this response, which can be used
+
+            when contacting Box support.'
+          type: string
+          example: abcdef123456
+          nullable: false

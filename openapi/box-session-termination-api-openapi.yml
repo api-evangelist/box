@@ -1,0 +1,281 @@
+openapi: 3.1.0
+info:
+  title: Box Authorize Authorization Session Termination API
+  description: Needs a description.
+tags:
+- name: Session Termination
+  description: 'Session termination API is used to
+
+    validate the roles and permissions of the group,
+
+    and creates asynchronous jobs to terminate the group''s sessions.'
+  x-box-tag: session_termination
+paths:
+  /users/terminate_sessions:
+    post:
+      operationId: post_users_terminate_sessions
+      summary: Box Create jobs to terminate users session
+      tags:
+      - Session Termination
+      x-box-tag: session_termination
+      description: 'Validates the roles and permissions of the user,
+
+        and creates asynchronous jobs
+
+        to terminate the user''s sessions.
+
+        Returns the status for the POST request.'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - user_ids
+              - user_logins
+              properties:
+                user_ids:
+                  example:
+                  - '123456'
+                  - '456789'
+                  type: array
+                  description: A list of user IDs
+                  items:
+                    type: string
+                user_logins:
+                  example:
+                  - user@sample.com
+                  - user2@sample.com
+                  type: array
+                  description: A list of user logins
+                  items:
+                    type: string
+      responses:
+        '202':
+          description: Returns a message about the request status.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SessionTerminationMessage'
+        '400':
+          description: "Returns an error if some of the parameters are\n not valid.\n\n * `Users can not be NULL or EMPTY` when no value is provided\n * `User id format is string` when the provided user id format\n is incorrect\n * `Supported payload format is JSON` when the provided payload\n format is incorrect"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ClientError'
+        '403':
+          description: Returns an error if there are insufficient permissions.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ClientError'
+        '404':
+          description: Returns an error if the resource could not be found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ClientError'
+        '429':
+          description: Returns an error if the rate limit is exceeded.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ClientError'
+        '500':
+          description: Returns an error if there is an internal server issue.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ClientError'
+        '503':
+          description: Returns an error if the request timed out.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ClientError'
+        default:
+          description: An unexpected client error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ClientError'
+  /groups/terminate_sessions:
+    post:
+      operationId: post_groups_terminate_sessions
+      summary: Box Create jobs to terminate user group session
+      tags:
+      - Session Termination
+      x-box-tag: session_termination
+      description: 'Validates the roles and permissions of the group,
+
+        and creates asynchronous jobs
+
+        to terminate the group''s sessions.
+
+        Returns the status for the POST request.'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - group_ids
+              properties:
+                group_ids:
+                  example:
+                  - '123456'
+                  - '456789'
+                  type: array
+                  description: A list of group IDs
+                  items:
+                    type: string
+      responses:
+        '202':
+          description: Returns a message about the request status.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SessionTerminationMessage'
+        '400':
+          description: 'Returns an error if some of the parameters are
+
+            not valid.
+
+
+            * `Groups can not be NULL or EMPTY` when no value is provided
+
+            * `group id format is string` when the provided group id format
+
+            is incorrect
+
+            * `Supported payload format is JSON` when the provided payload
+
+            format is incorrect'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ClientError'
+        '403':
+          description: Returns an error if there are insufficient permissions.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ClientError'
+        '404':
+          description: Returns an error if the resource could not be found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ClientError'
+        '429':
+          description: Returns an error if the request limit is exceeded.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ClientError'
+        '500':
+          description: Returns an error if there is an internal server issue.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ClientError'
+        '503':
+          description: Returns an error if the request timed out.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ClientError'
+        default:
+          description: An unexpected client error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ClientError'
+components:
+  schemas:
+    SessionTerminationMessage:
+      title: Session termination message
+      type: object
+      x-box-resource-id: session_termination
+      x-box-tag: session_termination
+      description: 'A message informing about the
+
+        termination job status'
+      properties:
+        message:
+          type: string
+          description: The unique identifier for the termination job status
+          example: 'Request is successful, please check the admin
+
+            events for the status of the job'
+    ClientError:
+      title: Client error
+      type: object
+      x-box-resource-id: client_error
+      description: A generic error
+      properties:
+        type:
+          description: error
+          example: error
+          type: string
+          enum:
+          - error
+          nullable: false
+        status:
+          description: The HTTP status of the response.
+          example: 400
+          type: integer
+          format: int32
+          nullable: false
+        code:
+          description: A Box-specific error code
+          example: item_name_invalid
+          type: string
+          enum:
+          - created
+          - accepted
+          - no_content
+          - redirect
+          - not_modified
+          - bad_request
+          - unauthorized
+          - forbidden
+          - not_found
+          - method_not_allowed
+          - conflict
+          - precondition_failed
+          - too_many_requests
+          - internal_server_error
+          - unavailable
+          - item_name_invalid
+          - insufficient_scope
+        message:
+          description: A short message describing the error.
+          example: Method Not Allowed
+          type: string
+          nullable: false
+        context_info:
+          description: 'A free-form object that contains additional context
+
+            about the error. The possible fields are defined on
+
+            a per-endpoint basis. `message` is only one example.'
+          type: object
+          nullable: true
+          properties:
+            message:
+              type: string
+              description: More details on the error.
+              example: Something went wrong.
+        help_url:
+          description: A URL that links to more information about why this error occurred.
+          example: https://developer.box.com/guides/api-calls/permissions-and-errors/common-errors/
+          type: string
+          nullable: false
+        request_id:
+          description: 'A unique identifier for this response, which can be used
+
+            when contacting Box support.'
+          type: string
+          example: abcdef123456
+          nullable: false

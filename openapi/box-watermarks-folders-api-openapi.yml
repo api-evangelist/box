@@ -1,0 +1,295 @@
+openapi: 3.1.0
+info:
+  title: Box Authorize Authorization Watermarks (Folders) API
+  description: Needs a description.
+tags:
+- name: Watermarks (Folders)
+  description: 'A watermark is a semi-transparent overlay on an embedded folder
+
+    preview that displays a viewer''s email address or user ID
+
+    and the time of access over
+
+    the folder content.'
+  x-box-tag: folder_watermarks
+paths:
+  /folders/{folder_id}/watermark:
+    get:
+      operationId: get_folders_id_watermark
+      summary: Box Get watermark for folder
+      tags:
+      - Watermarks (Folders)
+      x-box-tag: folder_watermarks
+      description: Retrieve the watermark for a folder.
+      parameters:
+      - name: folder_id
+        description: 'The unique identifier that represent a folder.
+
+
+          The ID for any folder can be determined
+
+          by visiting this folder in the web application
+
+          and copying the ID from the URL. For example,
+
+          for the URL `https://*.app.box.com/folder/123`
+
+          the `folder_id` is `123`.
+
+
+          The root folder of a Box account is
+
+          always represented by the ID `0`.'
+        example: '12345'
+        in: path
+        required: true
+        schema:
+          type: string
+          nullable: false
+      responses:
+        '200':
+          description: 'Returns an object containing information about the
+
+            watermark associated for to this folder.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Watermark'
+        '404':
+          description: Returns an error if the folder does not have a watermark applied.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ClientError'
+        default:
+          description: An unexpected client error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ClientError'
+    put:
+      operationId: put_folders_id_watermark
+      summary: Box Apply watermark to folder
+      tags:
+      - Watermarks (Folders)
+      x-box-tag: folder_watermarks
+      description: Applies or update a watermark on a folder.
+      parameters:
+      - name: folder_id
+        description: 'The unique identifier that represent a folder.
+
+
+          The ID for any folder can be determined
+
+          by visiting this folder in the web application
+
+          and copying the ID from the URL. For example,
+
+          for the URL `https://*.app.box.com/folder/123`
+
+          the `folder_id` is `123`.
+
+
+          The root folder of a Box account is
+
+          always represented by the ID `0`.'
+        example: '12345'
+        in: path
+        required: true
+        schema:
+          type: string
+          nullable: false
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - watermark
+              properties:
+                watermark:
+                  type: object
+                  description: The watermark to imprint on the folder
+                  required:
+                  - imprint
+                  properties:
+                    imprint:
+                      type: string
+                      example: default
+                      description: 'The type of watermark to apply.
+
+
+                        Currently only supports one option.'
+                      enum:
+                      - default
+      responses:
+        '200':
+          description: 'Returns an updated watermark if a watermark already
+
+            existed on this folder.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Watermark'
+        '201':
+          description: 'Returns a new watermark if no watermark existed on
+
+            this folder yet.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Watermark'
+        default:
+          description: An unexpected client error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ClientError'
+    delete:
+      operationId: delete_folders_id_watermark
+      summary: Box Remove watermark from folder
+      tags:
+      - Watermarks (Folders)
+      x-box-tag: folder_watermarks
+      description: Removes the watermark from a folder.
+      parameters:
+      - name: folder_id
+        description: 'The unique identifier that represent a folder.
+
+
+          The ID for any folder can be determined
+
+          by visiting this folder in the web application
+
+          and copying the ID from the URL. For example,
+
+          for the URL `https://*.app.box.com/folder/123`
+
+          the `folder_id` is `123`.
+
+
+          The root folder of a Box account is
+
+          always represented by the ID `0`.'
+        example: '12345'
+        in: path
+        required: true
+        schema:
+          type: string
+          nullable: false
+      responses:
+        '204':
+          description: 'An empty response will be returned when the watermark
+
+            was successfully deleted.'
+        '404':
+          description: 'Returns an error if the folder did not have
+
+            a watermark applied to it'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ClientError'
+        default:
+          description: An unexpected client error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ClientError'
+components:
+  schemas:
+    ClientError:
+      title: Client error
+      type: object
+      x-box-resource-id: client_error
+      description: A generic error
+      properties:
+        type:
+          description: error
+          example: error
+          type: string
+          enum:
+          - error
+          nullable: false
+        status:
+          description: The HTTP status of the response.
+          example: 400
+          type: integer
+          format: int32
+          nullable: false
+        code:
+          description: A Box-specific error code
+          example: item_name_invalid
+          type: string
+          enum:
+          - created
+          - accepted
+          - no_content
+          - redirect
+          - not_modified
+          - bad_request
+          - unauthorized
+          - forbidden
+          - not_found
+          - method_not_allowed
+          - conflict
+          - precondition_failed
+          - too_many_requests
+          - internal_server_error
+          - unavailable
+          - item_name_invalid
+          - insufficient_scope
+        message:
+          description: A short message describing the error.
+          example: Method Not Allowed
+          type: string
+          nullable: false
+        context_info:
+          description: 'A free-form object that contains additional context
+
+            about the error. The possible fields are defined on
+
+            a per-endpoint basis. `message` is only one example.'
+          type: object
+          nullable: true
+          properties:
+            message:
+              type: string
+              description: More details on the error.
+              example: Something went wrong.
+        help_url:
+          description: A URL that links to more information about why this error occurred.
+          example: https://developer.box.com/guides/api-calls/permissions-and-errors/common-errors/
+          type: string
+          nullable: false
+        request_id:
+          description: 'A unique identifier for this response, which can be used
+
+            when contacting Box support.'
+          type: string
+          example: abcdef123456
+          nullable: false
+    Watermark:
+      title: Watermark
+      type: object
+      x-box-resource-id: watermark
+      x-box-tag: file_watermarks
+      description: 'A watermark is a semi-transparent overlay on an embedded file
+
+        preview that displays a viewer''s email address or user ID
+
+        and the time of access over a file''s content'
+      properties:
+        watermark:
+          type: object
+          properties:
+            created_at:
+              type: string
+              format: date-time
+              description: When this watermark was created
+              example: '2012-12-12T10:53:43-08:00'
+            modified_at:
+              type: string
+              format: date-time
+              description: When this task was modified
+              example: '2012-12-12T10:53:43-08:00'

@@ -1,0 +1,542 @@
+openapi: 3.1.0
+info:
+  title: Box Authorize Authorization File Version Retentions API
+  description: Needs a description.
+tags:
+- name: File Version Retentions
+  description: 'A retention policy blocks permanent
+
+    deletion of content for a specified amount of time.
+
+    A file version retention is a record for a retained file.'
+  x-box-tag: file_version_retentions
+paths:
+  /file_version_retentions:
+    get:
+      operationId: get_file_version_retentions
+      tags:
+      - File Version Retentions
+      x-box-tag: file_version_retentions
+      summary: Box List file version retentions
+      description: Retrieves all file version retentions for the given enterprise.
+      parameters:
+      - name: file_id
+        description: Filters results by files with this ID.
+        in: query
+        example: '43123123'
+        required: false
+        schema:
+          type: string
+      - name: file_version_id
+        description: Filters results by file versions with this ID.
+        in: query
+        example: '1'
+        required: false
+        schema:
+          type: string
+      - name: policy_id
+        description: Filters results by the retention policy with this ID.
+        in: query
+        required: false
+        example: '982312'
+        schema:
+          type: string
+      - name: disposition_action
+        description: 'Filters results by the retention policy with this disposition
+
+          action.'
+        in: query
+        required: false
+        example: permanently_delete
+        schema:
+          type: string
+          enum:
+          - permanently_delete
+          - remove_retention
+      - name: disposition_before
+        description: 'Filters results by files that will have their disposition
+
+          come into effect before this date.'
+        in: query
+        required: false
+        example: '2012-12-12T10:53:43-08:00'
+        schema:
+          type: string
+      - name: disposition_after
+        description: 'Filters results by files that will have their disposition
+
+          come into effect after this date.'
+        in: query
+        required: false
+        example: '2012-12-19T10:34:23-08:00'
+        schema:
+          type: string
+      - name: limit
+        description: The maximum number of items to return per page.
+        in: query
+        required: false
+        example: 1000
+        schema:
+          type: integer
+          format: int64
+          maximum: 1000
+      - name: marker
+        description: 'Defines the position marker at which to begin returning results. This is
+
+          used when paginating using marker-based pagination.
+
+
+          This requires `usemarker` to be set to `true`.'
+        in: query
+        required: false
+        example: JV9IRGZmieiBasejOG9yDCRNgd2ymoZIbjsxbJMjIs3kioVii
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Returns a list of all file version retentions for the enterprise.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FileVersionRetentions'
+        default:
+          description: An unexpected client error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ClientError'
+  /file_version_retentions/{file_version_retention_id}:
+    get:
+      operationId: get_file_version_retentions_id
+      tags:
+      - File Version Retentions
+      x-box-tag: file_version_retentions
+      summary: Box Get retention on file
+      description: Returns information about a file version retention.
+      parameters:
+      - name: file_version_retention_id
+        description: The ID of the file version retention
+        in: path
+        required: true
+        example: '3424234'
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Returns a file version retention object.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FileVersionRetention'
+        default:
+          description: An unexpected client error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ClientError'
+components:
+  schemas:
+    FileVersionRetentions:
+      title: File version retentions
+      type: object
+      x-box-resource-id: file_version_retentions
+      x-box-tag: file_version_retentions
+      description: A list of file version retentions.
+      allOf:
+      - type: object
+        description: 'The part of an API response that describes marker
+
+          based pagination'
+        properties:
+          limit:
+            description: 'The limit that was used for these entries. This will be the same as the
+
+              `limit` query parameter unless that value exceeded the maximum value
+
+              allowed. The maximum value varies by API.'
+            example: 1000
+            type: integer
+            format: int64
+          next_marker:
+            description: The marker for the start of the next page of results.
+            example: JV9IRGZmieiBasejOG9yDCRNgd2ymoZIbjsxbJMjIs3kioVii
+            type: string
+            nullable: true
+          prev_marker:
+            description: The marker for the start of the previous page of results.
+            example: JV9IRGZmieiBasejOG9yDCRNgd2ymoZIbjsxbJMjIs3kioVih
+            type: string
+            nullable: true
+      - properties:
+          entries:
+            type: array
+            description: A list of file version retentions
+            items:
+              $ref: '#/components/schemas/FileVersionRetention'
+    File--Base:
+      title: File (Base)
+      type: object
+      x-box-resource-id: file--base
+      x-box-sanitized: true
+      x-box-tag: files
+      x-box-variants:
+      - base
+      - mini
+      - standard
+      - full
+      x-box-variant: base
+      nullable: true
+      description: 'The bare basic representation of a file, the minimal
+
+        amount of fields returned when using the `fields` query
+
+        parameter.'
+      required:
+      - id
+      - type
+      properties:
+        id:
+          type: string
+          nullable: false
+          description: 'The unique identifier that represent a file.
+
+
+            The ID for any file can be determined
+
+            by visiting a file in the web application
+
+            and copying the ID from the URL. For example,
+
+            for the URL `https://*.app.box.com/files/123`
+
+            the `file_id` is `123`.'
+          example: '12345'
+        etag:
+          type: string
+          example: '1'
+          nullable: true
+          description: 'The HTTP `etag` of this file. This can be used within some API
+
+            endpoints in the `If-Match` and `If-None-Match` headers to only
+
+            perform changes on the file if (no) changes have happened.'
+        type:
+          type: string
+          description: '`file`'
+          example: file
+          enum:
+          - file
+          nullable: false
+    FileVersionRetention:
+      title: File version retention
+      type: object
+      x-box-resource-id: file_version_retention
+      x-box-tag: file_version_retentions
+      description: 'A retention policy blocks permanent deletion of content
+
+        for a specified amount of time. Admins can apply policies to
+
+        specified folders, or an entire enterprise. A file version retention
+
+        is a  record for a retained file version. To use this feature,
+
+        you must  have the manage retention policies scope enabled for your
+
+        API key via  your application management console. For more information
+
+        about retention policies, please visit our help documentation'
+      properties:
+        id:
+          type: string
+          description: The unique identifier for this file version retention.
+          example: '11446498'
+        type:
+          type: string
+          description: '`file_version_retention`'
+          example: file_version_retention
+          enum:
+          - file_version_retention
+        file_version:
+          allOf:
+          - $ref: '#/components/schemas/FileVersion--Mini'
+          - description: 'The file version this file version retention was
+
+              applied to'
+        file:
+          allOf:
+          - $ref: '#/components/schemas/File--Mini'
+          - description: The file this file version retention was applied to
+        applied_at:
+          type: string
+          format: date-time
+          description: 'When this file version retention object was
+
+            created'
+          example: '2012-12-12T10:53:43-08:00'
+        disposition_at:
+          type: string
+          format: date-time
+          description: 'When the retention expires on this file
+
+            version retention'
+          example: '2012-12-12T10:53:43-08:00'
+        winning_retention_policy:
+          allOf:
+          - $ref: '#/components/schemas/RetentionPolicy--Mini'
+          - description: 'The winning retention policy applied to this file
+
+              version retention. A file version can have multiple
+
+              retention policies applied.'
+    FileVersion--Mini:
+      title: File version (Mini)
+      type: object
+      x-box-resource-id: file_version--mini
+      x-box-variant: mini
+      description: 'A mini representation of a file version, used when
+
+        nested within another resource.'
+      allOf:
+      - $ref: '#/components/schemas/FileVersion--Base'
+      - properties:
+          sha1:
+            type: string
+            description: The SHA1 hash of this version of the file.
+            example: 134b65991ed521fcfe4724b7d814ab8ded5185dc
+    File--Mini:
+      title: File (Mini)
+      type: object
+      x-box-resource-id: file--mini
+      x-box-variant: mini
+      description: 'A mini representation of a file, used when
+
+        nested under another resource.'
+      nullable: true
+      allOf:
+      - $ref: '#/components/schemas/File--Base'
+      - properties:
+          sequence_id:
+            allOf:
+            - type: string
+              example: '3'
+              nullable: true
+              description: 'A numeric identifier that represents the most recent user event
+
+                that has been applied to this item.
+
+
+                This can be used in combination with the `GET /events`-endpoint
+
+                to filter out user events that would have occurred before this
+
+                identifier was read.
+
+
+                An example would be where a Box Drive-like application
+
+                would fetch an item via the API, and then listen to incoming
+
+                user events for changes to the item. The application would
+
+                ignore any user events where the `sequence_id` in the event
+
+                is smaller than or equal to the `sequence_id` in the originally
+
+                fetched resource.'
+            - nullable: false
+          name:
+            type: string
+            description: The name of the file
+            example: Contract.pdf
+          sha1:
+            type: string
+            format: digest
+            nullable: false
+            example: 85136C79CBF9FE36BB9D05D0639C70C265C18D37
+            description: 'The SHA1 hash of the file. This can be used to compare the contents
+
+              of a file on Box with a local file.'
+          file_version:
+            allOf:
+            - $ref: '#/components/schemas/FileVersion--Mini'
+            - description: The information about the current version of the file.
+    RetentionPolicy--Base:
+      title: Retention policy (Base)
+      type: object
+      x-box-resource-id: retention_policy--base
+      x-box-tag: retention_policies
+      x-box-variants:
+      - base
+      - mini
+      - standard
+      x-box-variant: base
+      description: A base representation of a retention policy.
+      required:
+      - id
+      - type
+      properties:
+        id:
+          type: string
+          nullable: false
+          description: The unique identifier that represents a retention policy.
+          example: '12345'
+        type:
+          type: string
+          description: '`retention_policy`'
+          example: retention_policy
+          enum:
+          - retention_policy
+          nullable: false
+    FileVersion--Base:
+      title: File version (Base)
+      type: object
+      x-box-resource-id: file_version--base
+      x-box-sanitized: true
+      x-box-variants:
+      - base
+      - mini
+      - standard
+      - full
+      x-box-variant: base
+      description: 'The bare basic representation of a file version, the minimal
+
+        amount of fields returned when using the `fields` query
+
+        parameter.'
+      required:
+      - id
+      - type
+      properties:
+        id:
+          type: string
+          nullable: false
+          description: The unique identifier that represent a file version.
+          example: '12345'
+        type:
+          type: string
+          description: '`file_version`'
+          example: file_version
+          enum:
+          - file_version
+          nullable: false
+    ClientError:
+      title: Client error
+      type: object
+      x-box-resource-id: client_error
+      description: A generic error
+      properties:
+        type:
+          description: error
+          example: error
+          type: string
+          enum:
+          - error
+          nullable: false
+        status:
+          description: The HTTP status of the response.
+          example: 400
+          type: integer
+          format: int32
+          nullable: false
+        code:
+          description: A Box-specific error code
+          example: item_name_invalid
+          type: string
+          enum:
+          - created
+          - accepted
+          - no_content
+          - redirect
+          - not_modified
+          - bad_request
+          - unauthorized
+          - forbidden
+          - not_found
+          - method_not_allowed
+          - conflict
+          - precondition_failed
+          - too_many_requests
+          - internal_server_error
+          - unavailable
+          - item_name_invalid
+          - insufficient_scope
+        message:
+          description: A short message describing the error.
+          example: Method Not Allowed
+          type: string
+          nullable: false
+        context_info:
+          description: 'A free-form object that contains additional context
+
+            about the error. The possible fields are defined on
+
+            a per-endpoint basis. `message` is only one example.'
+          type: object
+          nullable: true
+          properties:
+            message:
+              type: string
+              description: More details on the error.
+              example: Something went wrong.
+        help_url:
+          description: A URL that links to more information about why this error occurred.
+          example: https://developer.box.com/guides/api-calls/permissions-and-errors/common-errors/
+          type: string
+          nullable: false
+        request_id:
+          description: 'A unique identifier for this response, which can be used
+
+            when contacting Box support.'
+          type: string
+          example: abcdef123456
+          nullable: false
+    RetentionPolicy--Mini:
+      title: Retention policy (Mini)
+      type: object
+      x-box-resource-id: retention_policy--mini
+      x-box-variant: mini
+      description: 'A mini representation of a retention policy, used when
+
+        nested within another resource.'
+      allOf:
+      - $ref: '#/components/schemas/RetentionPolicy--Base'
+      - properties:
+          policy_name:
+            type: string
+            description: The name given to the retention policy.
+            example: Some Policy Name
+          retention_length:
+            type: string
+            format: int32
+            example: '365'
+            minimum: 1
+            description: 'The length of the retention policy. This value
+
+              specifies the duration in days that the retention
+
+              policy will be active for after being assigned to
+
+              content.  If the policy has a `policy_type` of
+
+              `indefinite`, the `retention_length` will also be
+
+              `indefinite`.'
+          disposition_action:
+            type: string
+            example: permanently_delete
+            description: 'The disposition action of the retention policy.
+
+              This action can be `permanently_delete`, which
+
+              will cause the content retained by the policy
+
+              to be permanently deleted, or `remove_retention`,
+
+              which will lift the retention policy from the content,
+
+              allowing it to be deleted by users,
+
+              once the retention policy has expired.'
+            enum:
+            - permanently_delete
+            - remove_retention

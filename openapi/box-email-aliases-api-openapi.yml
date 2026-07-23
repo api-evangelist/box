@@ -1,0 +1,229 @@
+openapi: 3.1.0
+info:
+  title: Box Authorize Authorization Email Aliases API
+  description: Needs a description.
+tags:
+- name: Email Aliases
+  description: 'Email aliases provide a list of emails additional
+
+    to the user''s primary login email.'
+  x-box-tag: email_aliases
+paths:
+  /users/{user_id}/email_aliases:
+    get:
+      operationId: get_users_id_email_aliases
+      summary: Box List user's email aliases
+      tags:
+      - Email Aliases
+      x-box-tag: email_aliases
+      description: 'Retrieves all email aliases for a user. The collection
+
+        does not include the primary login for the user.'
+      parameters:
+      - name: user_id
+        description: The ID of the user.
+        example: '12345'
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Returns a collection of email aliases.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EmailAliases'
+        default:
+          description: An unexpected client error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ClientError'
+    post:
+      operationId: post_users_id_email_aliases
+      x-box-tag: email_aliases
+      summary: Box Create email alias
+      tags:
+      - Email Aliases
+      description: Adds a new email alias to a user account..
+      parameters:
+      - name: user_id
+        description: The ID of the user.
+        example: '12345'
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - email
+              properties:
+                email:
+                  type: string
+                  example: alias@example.com
+                  description: "The email address to add to the account as an alias.\n\nNote: The domain of the email alias needs to be registered\n to your enterprise.\nSee the [domain verification guide](\n  https://support.box.com/hc/en-us/articles/4408619650579-Domain-Verification\n  ) for steps to add a new domain."
+      responses:
+        '201':
+          description: Returns the newly created email alias object.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EmailAlias'
+        default:
+          description: An unexpected client error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ClientError'
+  /users/{user_id}/email_aliases/{email_alias_id}:
+    delete:
+      operationId: delete_users_id_email_aliases_id
+      x-box-tag: email_aliases
+      summary: Box Remove email alias
+      tags:
+      - Email Aliases
+      description: Removes an email alias from a user.
+      parameters:
+      - name: user_id
+        description: The ID of the user.
+        example: '12345'
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: email_alias_id
+        description: The ID of the email alias.
+        example: '23432'
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '204':
+          description: Removes the alias and returns an empty response.
+        default:
+          description: An unexpected client error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ClientError'
+components:
+  schemas:
+    ClientError:
+      title: Client error
+      type: object
+      x-box-resource-id: client_error
+      description: A generic error
+      properties:
+        type:
+          description: error
+          example: error
+          type: string
+          enum:
+          - error
+          nullable: false
+        status:
+          description: The HTTP status of the response.
+          example: 400
+          type: integer
+          format: int32
+          nullable: false
+        code:
+          description: A Box-specific error code
+          example: item_name_invalid
+          type: string
+          enum:
+          - created
+          - accepted
+          - no_content
+          - redirect
+          - not_modified
+          - bad_request
+          - unauthorized
+          - forbidden
+          - not_found
+          - method_not_allowed
+          - conflict
+          - precondition_failed
+          - too_many_requests
+          - internal_server_error
+          - unavailable
+          - item_name_invalid
+          - insufficient_scope
+        message:
+          description: A short message describing the error.
+          example: Method Not Allowed
+          type: string
+          nullable: false
+        context_info:
+          description: 'A free-form object that contains additional context
+
+            about the error. The possible fields are defined on
+
+            a per-endpoint basis. `message` is only one example.'
+          type: object
+          nullable: true
+          properties:
+            message:
+              type: string
+              description: More details on the error.
+              example: Something went wrong.
+        help_url:
+          description: A URL that links to more information about why this error occurred.
+          example: https://developer.box.com/guides/api-calls/permissions-and-errors/common-errors/
+          type: string
+          nullable: false
+        request_id:
+          description: 'A unique identifier for this response, which can be used
+
+            when contacting Box support.'
+          type: string
+          example: abcdef123456
+          nullable: false
+    EmailAlias:
+      title: Email alias
+      type: object
+      x-box-resource-id: email_alias
+      x-box-tag: email_aliases
+      description: An email alias for a user.
+      properties:
+        id:
+          type: string
+          description: The unique identifier for this object
+          example: '11446498'
+        type:
+          type: string
+          description: '`email_alias`'
+          example: email_alias
+          enum:
+          - email_alias
+        email:
+          type: string
+          description: The email address
+          example: alias@example.com
+        is_confirmed:
+          type: boolean
+          description: Whether the email address has been confirmed
+          example: true
+    EmailAliases:
+      title: Email aliases
+      type: object
+      x-box-resource-id: email_aliases
+      x-box-tag: email_aliases
+      description: A list of email aliases
+      properties:
+        total_count:
+          description: The number of email aliases.
+          example: 5000
+          type: integer
+          format: int64
+        entries:
+          type: array
+          description: A list of email aliases
+          items:
+            $ref: '#/components/schemas/EmailAlias'
