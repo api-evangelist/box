@@ -1,0 +1,843 @@
+{
+  "info": {
+    "_postman_id": "b4fdc8aa-3d70-4e78-85b8-a8eb0fd322c4",
+    "name": "Box Authorize Authorization Uploads API",
+    "description": "Needs a description.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "createdAt": "2026-07-28T01:17:59.000Z",
+    "updatedAt": "2026-07-28T01:18:00.000Z",
+    "lastUpdatedBy": "35240",
+    "uid": "35240-b4fdc8aa-3d70-4e78-85b8-a8eb0fd322c4"
+  },
+  "item": [
+    {
+      "name": "files",
+      "item": [
+        {
+          "name": "{file_id}",
+          "item": [
+            {
+              "name": "content",
+              "item": [
+                {
+                  "name": "Box Upload file version",
+                  "id": "9393c7e1-bf82-4e34-9a79-899193ae7d4d",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "method": "POST",
+                    "header": [
+                      {
+                        "description": "Ensures this item hasn't recently changed before\nmaking changes.\n\nPass in the item's last observed `etag` value\ninto this header and the endpoint will fail\nwith a `412 Precondition Failed` if it\nhas changed since.",
+                        "key": "if-match",
+                        "value": "<string>"
+                      },
+                      {
+                        "description": "An optional header containing the SHA1 hash of the file to\nensure that the file was not corrupted in transit.",
+                        "key": "content-md5",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "Content-Type",
+                        "value": "multipart/form-data"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "body": {
+                      "mode": "formdata",
+                      "formdata": [
+                        {
+                          "description": "(Required) The additional attributes of the file being uploaded. Mainly the\nname and the parent folder. These attributes are part of the multi\npart request body and are in JSON format.\n\n<Message warning>\n\n  The `attributes` part of the body must come **before** the\n  `file` part. Requests that do not follow this format when\n  uploading the file will receive a HTTP `400` error with a\n  `metadata_after_file_contents` error code.\n\n</Message>",
+                          "key": "attributes",
+                          "value": "[object Object]",
+                          "type": "text"
+                        },
+                        {
+                          "description": "(Required) The content of the file to upload to Box.\n\n<Message warning>\n\n  The `attributes` part of the body must come **before** the\n  `file` part. Requests that do not follow this format when\n  uploading the file will receive a HTTP `400` error with a\n  `metadata_after_file_contents` error code.\n\n</Message>",
+                          "key": "file",
+                          "type": "file",
+                          "value": null
+                        }
+                      ]
+                    },
+                    "url": {
+                      "raw": "https://upload.box.com/api/2.0/files/:file_id/content?fields=<string>,<string>",
+                      "protocol": "https",
+                      "host": [
+                        "upload",
+                        "box",
+                        "com"
+                      ],
+                      "path": [
+                        "api",
+                        "2.0",
+                        "files",
+                        ":file_id",
+                        "content"
+                      ],
+                      "query": [
+                        {
+                          "description": "A comma-separated list of attributes to include in the\nresponse. This can be used to request fields that are\nnot normally returned in a standard response.\n\nBe aware that specifying this parameter will have the\neffect that none of the standard fields are returned in\nthe response unless explicitly specified, instead only\nfields for the mini representation are returned, additional\nto the fields requested.",
+                          "key": "fields",
+                          "value": "<string>,<string>"
+                        }
+                      ],
+                      "variable": [
+                        {
+                          "id": "bb6145d7-83ff-47fc-9fb8-276f3ceefe79",
+                          "key": "file_id",
+                          "value": "<string>",
+                          "description": "(Required) The unique identifier that represents a file.\n\nThe ID for any file can be determined\nby visiting a file in the web application\nand copying the ID from the URL. For example,\nfor the URL `https://*.app.box.com/files/123`\nthe `file_id` is `123`."
+                        }
+                      ]
+                    },
+                    "description": "Update a file's content. For file sizes over 50MB we recommend\nusing the Chunk Upload APIs.\n\n# Request body order\n\nThe `attributes` part of the body must come **before** the\n`file` part. Requests that do not follow this format when\nuploading the file will receive a HTTP `400` error with a\n`metadata_after_file_contents` error code."
+                  },
+                  "response": [
+                    {
+                      "id": "630e9ab5-5d6d-45d4-a0ac-e3e314110974",
+                      "name": "Returns the new file object in a list.",
+                      "originalRequest": {
+                        "method": "POST",
+                        "header": [
+                          {
+                            "description": "Ensures this item hasn't recently changed before\nmaking changes.\n\nPass in the item's last observed `etag` value\ninto this header and the endpoint will fail\nwith a `412 Precondition Failed` if it\nhas changed since.",
+                            "key": "if-match",
+                            "value": "<string>"
+                          },
+                          {
+                            "description": "An optional header containing the SHA1 hash of the file to\nensure that the file was not corrupted in transit.",
+                            "key": "content-md5",
+                            "value": "<string>"
+                          },
+                          {
+                            "key": "Content-Type",
+                            "value": "multipart/form-data"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          }
+                        ],
+                        "body": {
+                          "mode": "formdata",
+                          "formdata": [
+                            {
+                              "description": "(Required) The additional attributes of the file being uploaded. Mainly the\nname and the parent folder. These attributes are part of the multi\npart request body and are in JSON format.\n\n<Message warning>\n\n  The `attributes` part of the body must come **before** the\n  `file` part. Requests that do not follow this format when\n  uploading the file will receive a HTTP `400` error with a\n  `metadata_after_file_contents` error code.\n\n</Message>",
+                              "key": "attributes",
+                              "value": "[object Object]",
+                              "type": "text"
+                            },
+                            {
+                              "description": "(Required) The content of the file to upload to Box.\n\n<Message warning>\n\n  The `attributes` part of the body must come **before** the\n  `file` part. Requests that do not follow this format when\n  uploading the file will receive a HTTP `400` error with a\n  `metadata_after_file_contents` error code.\n\n</Message>",
+                              "key": "file",
+                              "type": "file"
+                            }
+                          ]
+                        },
+                        "url": {
+                          "raw": "https://upload.box.com/api/2.0/files/:file_id/content?fields=<string>,<string>",
+                          "protocol": "https",
+                          "host": [
+                            "upload",
+                            "box",
+                            "com"
+                          ],
+                          "path": [
+                            "api",
+                            "2.0",
+                            "files",
+                            ":file_id",
+                            "content"
+                          ],
+                          "query": [
+                            {
+                              "description": "A comma-separated list of attributes to include in the\nresponse. This can be used to request fields that are\nnot normally returned in a standard response.\n\nBe aware that specifying this parameter will have the\neffect that none of the standard fields are returned in\nthe response unless explicitly specified, instead only\nfields for the mini representation are returned, additional\nto the fields requested.",
+                              "key": "fields",
+                              "value": "<string>,<string>"
+                            }
+                          ],
+                          "variable": [
+                            {
+                              "key": "file_id"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "OK",
+                      "code": 200,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"total_count\": \"<long>\",\n  \"entries\": [\n    {\n      \"id\": \"<string>\",\n      \"type\": \"file\",\n      \"etag\": \"<string>\",\n      \"sequence_id\": \"<string>\",\n      \"name\": \"<string>\",\n      \"sha1\": \"<string>\",\n      \"file_version\": {\n        \"id\": \"<string>\",\n        \"type\": \"file_version\",\n        \"sha1\": \"<string>\"\n      },\n      \"description\": \"<string>\",\n      \"size\": \"<integer>\",\n      \"path_collection\": {\n        \"total_count\": \"<long>\",\n        \"entries\": [\n          {\n            \"id\": \"<string>\",\n            \"type\": \"folder\",\n            \"etag\": \"<string>\",\n            \"sequence_id\": \"<string>\",\n            \"name\": \"<string>\"\n          },\n          {\n            \"id\": \"<string>\",\n            \"type\": \"folder\",\n            \"etag\": \"<string>\",\n            \"sequence_id\": \"<string>\",\n            \"name\": \"<string>\"\n          }\n        ]\n      },\n      \"created_at\": \"<dateTime>\",\n      \"modified_at\": \"<dateTime>\",\n      \"trashed_at\": \"<dateTime>\",\n      \"purged_at\": \"<dateTime>\",\n      \"content_created_at\": \"<dateTime>\",\n      \"content_modified_at\": \"<dateTime>\",\n      \"created_by\": {\n        \"type\": \"user\",\n        \"id\": \"<string>\",\n        \"name\": \"<string>\",\n        \"login\": \"<email>\"\n      },\n      \"modified_by\": {\n        \"type\": \"user\",\n        \"id\": \"<string>\",\n        \"name\": \"<string>\",\n        \"login\": \"<email>\"\n      },\n      \"owned_by\": {\n        \"type\": \"user\",\n        \"id\": \"<string>\",\n        \"name\": \"<string>\",\n        \"login\": \"<email>\"\n      },\n      \"shared_link\": {\n        \"url\": \"<string>\",\n        \"effective_access\": \"open\",\n        \"effective_permission\": \"can_edit\",\n        \"is_password_enabled\": \"<boolean>\",\n        \"download_count\": \"<integer>\",\n        \"preview_count\": \"<integer>\",\n        \"download_url\": \"<string>\",\n        \"vanity_url\": \"<string>\",\n        \"vanity_name\": \"<string>\",\n        \"access\": \"collaborators\",\n        \"unshared_at\": \"<dateTime>\",\n        \"permissions\": {\n          \"can_download\": \"<boolean>\",\n          \"can_preview\": \"<boolean>\",\n          \"can_edit\": \"<boolean>\"\n        }\n      },\n      \"parent\": {\n        \"id\": \"<string>\",\n        \"type\": \"folder\",\n        \"etag\": \"<string>\",\n        \"sequence_id\": \"<string>\",\n        \"name\": \"<string>\"\n      },\n      \"item_status\": \"deleted\",\n      \"version_number\": \"<string>\",\n      \"comment_count\": \"<integer>\",\n      \"permissions\": {\n        \"can_annotate\": \"<boolean>\",\n        \"can_comment\": \"<boolean>\",\n        \"can_delete\": \"<boolean>\",\n        \"can_download\": \"<boolean>\",\n        \"can_invite_collaborator\": \"<boolean>\",\n        \"can_preview\": \"<boolean>\",\n        \"can_rename\": \"<boolean>\",\n        \"can_set_share_access\": \"<boolean>\",\n        \"can_share\": \"<boolean>\",\n        \"can_upload\": \"<boolean>\",\n        \"can_view_annotations_all\": \"<boolean>\",\n        \"can_view_annotations_self\": \"<boolean>\"\n      },\n      \"tags\": [\n        \"<string>\"\n      ],\n      \"lock\": {\n        \"id\": \"<string>\",\n        \"type\": \"lock\",\n        \"created_by\": {\n          \"type\": \"user\",\n          \"id\": \"<string>\",\n          \"name\": \"<string>\",\n          \"login\": \"<email>\"\n        },\n        \"created_at\": \"<dateTime>\",\n        \"expired_at\": \"<dateTime>\",\n        \"is_download_prevented\": \"<boolean>\",\n        \"app_type\": \"office_wopi\"\n      },\n      \"extension\": \"<string>\",\n      \"is_package\": \"<boolean>\",\n      \"expiring_embed_link\": {\n        \"access_token\": \"<string>\",\n        \"expires_in\": \"<long>\",\n        \"token_type\": \"bearer\",\n        \"restricted_to\": [\n          {\n            \"scope\": \"item_preview\",\n            \"object\": {\n              \"id\": \"<string>\",\n              \"type\": \"folder\",\n              \"etag\": \"<string>\",\n              \"sequence_id\": \"<string>\",\n              \"name\": \"<string>\"\n            }\n          },\n          {\n            \"scope\": \"item_delete\",\n            \"object\": {\n              \"id\": \"<string>\",\n              \"type\": \"folder\",\n              \"etag\": \"<string>\",\n              \"sequence_id\": \"<string>\",\n              \"name\": \"<string>\"\n            }\n          }\n        ],\n        \"url\": \"<string>\"\n      },\n      \"watermark_info\": {\n        \"is_watermarked\": \"<boolean>\"\n      },\n      \"is_accessible_via_shared_link\": false,\n      \"allowed_invitee_roles\": [\n        \"previewer uploader\",\n        \"viewer uploader\"\n      ],\n      \"is_externally_owned\": \"<boolean>\",\n      \"has_collaborations\": \"<boolean>\",\n      \"metadata\": {\n        \"pariaturf01\": {\n          \"officiae3\": {\n            \"$parent\": \"<string>\",\n            \"$template\": \"<string>\",\n            \"$scope\": \"<string>\",\n            \"$version\": \"<integer>\"\n          },\n          \"sint_d\": {\n            \"$parent\": \"<string>\",\n            \"$template\": \"<string>\",\n            \"$scope\": \"<string>\",\n            \"$version\": \"<integer>\"\n          },\n          \"in559\": {\n            \"$parent\": \"<string>\",\n            \"$template\": \"<string>\",\n            \"$scope\": \"<string>\",\n            \"$version\": \"<integer>\"\n          }\n        },\n        \"ea95d\": {\n          \"eiusmod_4e\": {\n            \"$parent\": \"<string>\",\n            \"$template\": \"<string>\",\n            \"$scope\": \"<string>\",\n            \"$version\": \"<integer>\"\n          }\n        },\n        \"id3\": {\n          \"ea_8c\": {\n            \"$parent\": \"<string>\",\n            \"$template\": \"<string>\",\n            \"$scope\": \"<string>\",\n            \"$version\": \"<integer>\"\n          },\n          \"et12\": {\n            \"$parent\": \"<string>\",\n            \"$template\": \"<string>\",\n            \"$scope\": \"<string>\",\n            \"$version\": \"<integer>\"\n          }\n        },\n        \"voluptate127\": {\n          \"Ut_a62\": {\n            \"$parent\": \"<string>\",\n            \"$template\": \"<string>\",\n            \"$scope\": \"<string>\",\n            \"$version\": \"<integer>\"\n          },\n          \"laboris_fb\": {\n            \"$parent\": \"<string>\",\n            \"$template\": \"<string>\",\n            \"$scope\": \"<string>\",\n            \"$version\": \"<integer>\"\n          }\n        }\n      },\n      \"expires_at\": \"<dateTime>\",\n      \"representations\": {\n        \"entries\": [\n          {\n            \"content\": {\n              \"url_template\": \"<string>\"\n            },\n            \"info\": {\n              \"url\": \"<string>\"\n            },\n            \"properties\": {\n              \"dimensions\": \"<string>\",\n              \"paged\": \"<boolean>\",\n              \"thumb\": \"<boolean>\"\n            },\n            \"representation\": \"<string>\",\n            \"status\": {\n              \"state\": \"success\"\n            }\n          },\n          {\n            \"content\": {\n              \"url_template\": \"<string>\"\n            },\n            \"info\": {\n              \"url\": \"<string>\"\n            },\n            \"properties\": {\n              \"dimensions\": \"<string>\",\n              \"paged\": \"<boolean>\",\n              \"thumb\": \"<boolean>\"\n            },\n            \"representation\": \"<string>\",\n            \"status\": {\n              \"state\": \"viewable\"\n            }\n          }\n        ]\n      },\n      \"classification\": {\n        \"name\": \"<string>\",\n        \"definition\": \"<string>\",\n        \"color\": \"<string>\"\n      },\n      \"uploader_display_name\": \"<string>\",\n      \"disposition_at\": \"<dateTime>\",\n      \"shared_link_permission_options\": [\n        \"can_edit\",\n        \"can_download\"\n      ]\n    },\n    {\n      \"id\": \"<string>\",\n      \"type\": \"file\",\n      \"etag\": \"<string>\",\n      \"sequence_id\": \"<string>\",\n      \"name\": \"<string>\",\n      \"sha1\": \"<string>\",\n      \"file_version\": {\n        \"id\": \"<string>\",\n        \"type\": \"file_version\",\n        \"sha1\": \"<string>\"\n      },\n      \"description\": \"<string>\",\n      \"size\": \"<integer>\",\n      \"path_collection\": {\n        \"total_count\": \"<long>\",\n        \"entries\": [\n          {\n            \"id\": \"<string>\",\n            \"type\": \"folder\",\n            \"etag\": \"<string>\",\n            \"sequence_id\": \"<string>\",\n            \"name\": \"<string>\"\n          },\n          {\n            \"id\": \"<string>\",\n            \"type\": \"folder\",\n            \"etag\": \"<string>\",\n            \"sequence_id\": \"<string>\",\n            \"name\": \"<string>\"\n          }\n        ]\n      },\n      \"created_at\": \"<dateTime>\",\n      \"modified_at\": \"<dateTime>\",\n      \"trashed_at\": \"<dateTime>\",\n      \"purged_at\": \"<dateTime>\",\n      \"content_created_at\": \"<dateTime>\",\n      \"content_modified_at\": \"<dateTime>\",\n      \"created_by\": {\n        \"type\": \"user\",\n        \"id\": \"<string>\",\n        \"name\": \"<string>\",\n        \"login\": \"<email>\"\n      },\n      \"modified_by\": {\n        \"type\": \"user\",\n        \"id\": \"<string>\",\n        \"name\": \"<string>\",\n        \"login\": \"<email>\"\n      },\n      \"owned_by\": {\n        \"type\": \"user\",\n        \"id\": \"<string>\",\n        \"name\": \"<string>\",\n        \"login\": \"<email>\"\n      },\n      \"shared_link\": {\n        \"url\": \"<string>\",\n        \"effective_access\": \"collaborators\",\n        \"effective_permission\": \"can_edit\",\n        \"is_password_enabled\": \"<boolean>\",\n        \"download_count\": \"<integer>\",\n        \"preview_count\": \"<integer>\",\n        \"download_url\": \"<string>\",\n        \"vanity_url\": \"<string>\",\n        \"vanity_name\": \"<string>\",\n        \"access\": \"open\",\n        \"unshared_at\": \"<dateTime>\",\n        \"permissions\": {\n          \"can_download\": \"<boolean>\",\n          \"can_preview\": \"<boolean>\",\n          \"can_edit\": \"<boolean>\"\n        }\n      },\n      \"parent\": {\n        \"id\": \"<string>\",\n        \"type\": \"folder\",\n        \"etag\": \"<string>\",\n        \"sequence_id\": \"<string>\",\n        \"name\": \"<string>\"\n      },\n      \"item_status\": \"active\",\n      \"version_number\": \"<string>\",\n      \"comment_count\": \"<integer>\",\n      \"permissions\": {\n        \"can_annotate\": \"<boolean>\",\n        \"can_comment\": \"<boolean>\",\n        \"can_delete\": \"<boolean>\",\n        \"can_download\": \"<boolean>\",\n        \"can_invite_collaborator\": \"<boolean>\",\n        \"can_preview\": \"<boolean>\",\n        \"can_rename\": \"<boolean>\",\n        \"can_set_share_access\": \"<boolean>\",\n        \"can_share\": \"<boolean>\",\n        \"can_upload\": \"<boolean>\",\n        \"can_view_annotations_all\": \"<boolean>\",\n        \"can_view_annotations_self\": \"<boolean>\"\n      },\n      \"tags\": [\n        \"<string>\"\n      ],\n      \"lock\": {\n        \"id\": \"<string>\",\n        \"type\": \"lock\",\n        \"created_by\": {\n          \"type\": \"user\",\n          \"id\": \"<string>\",\n          \"name\": \"<string>\",\n          \"login\": \"<email>\"\n        },\n        \"created_at\": \"<dateTime>\",\n        \"expired_at\": \"<dateTime>\",\n        \"is_download_prevented\": \"<boolean>\",\n        \"app_type\": \"office_wopi\"\n      },\n      \"extension\": \"<string>\",\n      \"is_package\": \"<boolean>\",\n      \"expiring_embed_link\": {\n        \"access_token\": \"<string>\",\n        \"expires_in\": \"<long>\",\n        \"token_type\": \"bearer\",\n        \"restricted_to\": [\n          {\n            \"scope\": \"annotation_edit\",\n            \"object\": {\n              \"id\": \"<string>\",\n              \"type\": \"folder\",\n              \"etag\": \"<string>\",\n              \"sequence_id\": \"<string>\",\n              \"name\": \"<string>\"\n            }\n          },\n          {\n            \"scope\": \"base_picker\",\n            \"object\": {\n              \"id\": \"<string>\",\n              \"type\": \"folder\",\n              \"etag\": \"<string>\",\n              \"sequence_id\": \"<string>\",\n              \"name\": \"<string>\"\n            }\n          }\n        ],\n        \"url\": \"<string>\"\n      },\n      \"watermark_info\": {\n        \"is_watermarked\": \"<boolean>\"\n      },\n      \"is_accessible_via_shared_link\": false,\n      \"allowed_invitee_roles\": [\n        \"viewer\",\n        \"uploader\"\n      ],\n      \"is_externally_owned\": \"<boolean>\",\n      \"has_collaborations\": \"<boolean>\",\n      \"metadata\": {\n        \"mollit_5\": {\n          \"pariatur2\": {\n            \"$parent\": \"<string>\",\n            \"$template\": \"<string>\",\n            \"$scope\": \"<string>\",\n            \"$version\": \"<integer>\"\n          },\n          \"eu_2\": {\n            \"$parent\": \"<string>\",\n            \"$template\": \"<string>\",\n            \"$scope\": \"<string>\",\n            \"$version\": \"<integer>\"\n          }\n        },\n        \"reprehenderitcc\": {\n          \"tempor_b51\": {\n            \"$parent\": \"<string>\",\n            \"$template\": \"<string>\",\n            \"$scope\": \"<string>\",\n            \"$version\": \"<integer>\"\n          },\n          \"ut_7\": {\n            \"$parent\": \"<string>\",\n            \"$template\": \"<string>\",\n            \"$scope\": \"<string>\",\n            \"$version\": \"<integer>\"\n          }\n        },\n        \"est_1a\": {\n          \"labore8\": {\n            \"$parent\": \"<string>\",\n            \"$template\": \"<string>\",\n            \"$scope\": \"<string>\",\n            \"$version\": \"<integer>\"\n          },\n          \"pariatur_9_6\": {\n            \"$parent\": \"<string>\",\n            \"$template\": \"<string>\",\n            \"$scope\": \"<string>\",\n            \"$version\": \"<integer>\"\n          }\n        }\n      },\n      \"expires_at\": \"<dateTime>\",\n      \"representations\": {\n        \"entries\": [\n          {\n            \"content\": {\n              \"url_template\": \"<string>\"\n            },\n            \"info\": {\n              \"url\": \"<string>\"\n            },\n            \"properties\": {\n              \"dimensions\": \"<string>\",\n              \"paged\": \"<boolean>\",\n              \"thumb\": \"<boolean>\"\n            },\n            \"representation\": \"<string>\",\n            \"status\": {\n              \"state\": \"viewable\"\n            }\n          },\n          {\n            \"content\": {\n              \"url_template\": \"<string>\"\n            },\n            \"info\": {\n              \"url\": \"<string>\"\n            },\n            \"properties\": {\n              \"dimensions\": \"<string>\",\n              \"paged\": \"<boolean>\",\n              \"thumb\": \"<boolean>\"\n            },\n            \"representation\": \"<string>\",\n            \"status\": {\n              \"state\": \"pending\"\n            }\n          }\n        ]\n      },\n      \"classification\": {\n        \"name\": \"<string>\",\n        \"definition\": \"<string>\",\n        \"color\": \"<string>\"\n      },\n      \"uploader_display_name\": \"<string>\",\n      \"disposition_at\": \"<dateTime>\",\n      \"shared_link_permission_options\": [\n        \"can_download\",\n        \"can_preview\"\n      ]\n    }\n  ]\n}",
+                      "createdAt": "2026-07-28T01:18:00.000Z",
+                      "updatedAt": "2026-07-28T01:18:00.000Z",
+                      "uid": "35240-630e9ab5-5d6d-45d4-a0ac-e3e314110974"
+                    },
+                    {
+                      "id": "5768b700-c861-4a11-ae4e-94d393791f87",
+                      "name": "Returns an error when the `If-Match` header does not match\nthe current `etag` value of the file. This indicates that the file\nhas changed since it was last requested.",
+                      "originalRequest": {
+                        "method": "POST",
+                        "header": [
+                          {
+                            "description": "Ensures this item hasn't recently changed before\nmaking changes.\n\nPass in the item's last observed `etag` value\ninto this header and the endpoint will fail\nwith a `412 Precondition Failed` if it\nhas changed since.",
+                            "key": "if-match",
+                            "value": "<string>"
+                          },
+                          {
+                            "description": "An optional header containing the SHA1 hash of the file to\nensure that the file was not corrupted in transit.",
+                            "key": "content-md5",
+                            "value": "<string>"
+                          },
+                          {
+                            "key": "Content-Type",
+                            "value": "multipart/form-data"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          }
+                        ],
+                        "body": {
+                          "mode": "formdata",
+                          "formdata": [
+                            {
+                              "description": "(Required) The additional attributes of the file being uploaded. Mainly the\nname and the parent folder. These attributes are part of the multi\npart request body and are in JSON format.\n\n<Message warning>\n\n  The `attributes` part of the body must come **before** the\n  `file` part. Requests that do not follow this format when\n  uploading the file will receive a HTTP `400` error with a\n  `metadata_after_file_contents` error code.\n\n</Message>",
+                              "key": "attributes",
+                              "value": "[object Object]",
+                              "type": "text"
+                            },
+                            {
+                              "description": "(Required) The content of the file to upload to Box.\n\n<Message warning>\n\n  The `attributes` part of the body must come **before** the\n  `file` part. Requests that do not follow this format when\n  uploading the file will receive a HTTP `400` error with a\n  `metadata_after_file_contents` error code.\n\n</Message>",
+                              "key": "file",
+                              "type": "file"
+                            }
+                          ]
+                        },
+                        "url": {
+                          "raw": "https://upload.box.com/api/2.0/files/:file_id/content?fields=<string>,<string>",
+                          "protocol": "https",
+                          "host": [
+                            "upload",
+                            "box",
+                            "com"
+                          ],
+                          "path": [
+                            "api",
+                            "2.0",
+                            "files",
+                            ":file_id",
+                            "content"
+                          ],
+                          "query": [
+                            {
+                              "description": "A comma-separated list of attributes to include in the\nresponse. This can be used to request fields that are\nnot normally returned in a standard response.\n\nBe aware that specifying this parameter will have the\neffect that none of the standard fields are returned in\nthe response unless explicitly specified, instead only\nfields for the mini representation are returned, additional\nto the fields requested.",
+                              "key": "fields",
+                              "value": "<string>,<string>"
+                            }
+                          ],
+                          "variable": [
+                            {
+                              "key": "file_id"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Precondition Failed",
+                      "code": 412,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"type\": \"error\",\n  \"status\": \"<integer>\",\n  \"code\": \"precondition_failed\",\n  \"message\": \"<string>\",\n  \"context_info\": {\n    \"message\": \"<string>\"\n  },\n  \"help_url\": \"<string>\",\n  \"request_id\": \"<string>\"\n}",
+                      "createdAt": "2026-07-28T01:18:00.000Z",
+                      "updatedAt": "2026-07-28T01:18:00.000Z",
+                      "uid": "35240-5768b700-c861-4a11-ae4e-94d393791f87"
+                    },
+                    {
+                      "id": "ea844092-1519-452a-a6f3-2891f6d86b44",
+                      "name": "An unexpected client error.",
+                      "originalRequest": {
+                        "method": "POST",
+                        "header": [
+                          {
+                            "description": "Ensures this item hasn't recently changed before\nmaking changes.\n\nPass in the item's last observed `etag` value\ninto this header and the endpoint will fail\nwith a `412 Precondition Failed` if it\nhas changed since.",
+                            "key": "if-match",
+                            "value": "<string>"
+                          },
+                          {
+                            "description": "An optional header containing the SHA1 hash of the file to\nensure that the file was not corrupted in transit.",
+                            "key": "content-md5",
+                            "value": "<string>"
+                          },
+                          {
+                            "key": "Content-Type",
+                            "value": "multipart/form-data"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          }
+                        ],
+                        "body": {
+                          "mode": "formdata",
+                          "formdata": [
+                            {
+                              "description": "(Required) The additional attributes of the file being uploaded. Mainly the\nname and the parent folder. These attributes are part of the multi\npart request body and are in JSON format.\n\n<Message warning>\n\n  The `attributes` part of the body must come **before** the\n  `file` part. Requests that do not follow this format when\n  uploading the file will receive a HTTP `400` error with a\n  `metadata_after_file_contents` error code.\n\n</Message>",
+                              "key": "attributes",
+                              "value": "[object Object]",
+                              "type": "text"
+                            },
+                            {
+                              "description": "(Required) The content of the file to upload to Box.\n\n<Message warning>\n\n  The `attributes` part of the body must come **before** the\n  `file` part. Requests that do not follow this format when\n  uploading the file will receive a HTTP `400` error with a\n  `metadata_after_file_contents` error code.\n\n</Message>",
+                              "key": "file",
+                              "type": "file"
+                            }
+                          ]
+                        },
+                        "url": {
+                          "raw": "https://upload.box.com/api/2.0/files/:file_id/content?fields=<string>,<string>",
+                          "protocol": "https",
+                          "host": [
+                            "upload",
+                            "box",
+                            "com"
+                          ],
+                          "path": [
+                            "api",
+                            "2.0",
+                            "files",
+                            ":file_id",
+                            "content"
+                          ],
+                          "query": [
+                            {
+                              "description": "A comma-separated list of attributes to include in the\nresponse. This can be used to request fields that are\nnot normally returned in a standard response.\n\nBe aware that specifying this parameter will have the\neffect that none of the standard fields are returned in\nthe response unless explicitly specified, instead only\nfields for the mini representation are returned, additional\nto the fields requested.",
+                              "key": "fields",
+                              "value": "<string>,<string>"
+                            }
+                          ],
+                          "variable": [
+                            {
+                              "key": "file_id"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Internal Server Error",
+                      "code": 500,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"type\": \"error\",\n  \"status\": \"<integer>\",\n  \"code\": \"precondition_failed\",\n  \"message\": \"<string>\",\n  \"context_info\": {\n    \"message\": \"<string>\"\n  },\n  \"help_url\": \"<string>\",\n  \"request_id\": \"<string>\"\n}",
+                      "createdAt": "2026-07-28T01:18:00.000Z",
+                      "updatedAt": "2026-07-28T01:18:00.000Z",
+                      "uid": "35240-ea844092-1519-452a-a6f3-2891f6d86b44"
+                    }
+                  ],
+                  "createdAt": "2026-07-28T01:18:00.000Z",
+                  "updatedAt": "2026-07-28T01:18:00.000Z",
+                  "uid": "35240-9393c7e1-bf82-4e34-9a79-899193ae7d4d"
+                }
+              ],
+              "id": "4341cfea-ed83-4de4-a1cc-000f1d75de20",
+              "createdAt": "2026-07-28T01:18:00.000Z",
+              "updatedAt": "2026-07-28T01:18:00.000Z",
+              "uid": "35240-4341cfea-ed83-4de4-a1cc-000f1d75de20"
+            }
+          ],
+          "id": "3347155b-9d90-4ae7-816b-b362ec7116ce",
+          "createdAt": "2026-07-28T01:18:00.000Z",
+          "updatedAt": "2026-07-28T01:18:00.000Z",
+          "uid": "35240-3347155b-9d90-4ae7-816b-b362ec7116ce"
+        },
+        {
+          "name": "content",
+          "item": [
+            {
+              "name": "Box Upload file",
+              "id": "a9278a02-6667-4e55-b745-2edd684b4a86",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "description": "An optional header containing the SHA1 hash of the file to\nensure that the file was not corrupted in transit.",
+                    "key": "content-md5",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "multipart/form-data"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "formdata",
+                  "formdata": [
+                    {
+                      "description": "(Required) The additional attributes of the file being uploaded. Mainly the\nname and the parent folder. These attributes are part of the multi\npart request body and are in JSON format.\n\n<Message warning>\n\n  The `attributes` part of the body must come **before** the\n  `file` part. Requests that do not follow this format when\n  uploading the file will receive a HTTP `400` error with a\n  `metadata_after_file_contents` error code.\n\n</Message>",
+                      "key": "attributes",
+                      "value": "[object Object]",
+                      "type": "text"
+                    },
+                    {
+                      "description": "(Required) The content of the file to upload to Box.\n\n<Message warning>\n\n  The `attributes` part of the body must come **before** the\n  `file` part. Requests that do not follow this format when\n  uploading the file will receive a HTTP `400` error with a\n  `metadata_after_file_contents` error code.\n\n</Message>",
+                      "key": "file",
+                      "type": "file",
+                      "value": null
+                    }
+                  ]
+                },
+                "url": {
+                  "raw": "https://upload.box.com/api/2.0/files/content?fields=<string>,<string>",
+                  "protocol": "https",
+                  "host": [
+                    "upload",
+                    "box",
+                    "com"
+                  ],
+                  "path": [
+                    "api",
+                    "2.0",
+                    "files",
+                    "content"
+                  ],
+                  "query": [
+                    {
+                      "description": "A comma-separated list of attributes to include in the\nresponse. This can be used to request fields that are\nnot normally returned in a standard response.\n\nBe aware that specifying this parameter will have the\neffect that none of the standard fields are returned in\nthe response unless explicitly specified, instead only\nfields for the mini representation are returned, additional\nto the fields requested.",
+                      "key": "fields",
+                      "value": "<string>,<string>"
+                    }
+                  ]
+                },
+                "description": "Uploads a small file to Box. For file sizes over 50MB we recommend\nusing the Chunk Upload APIs.\n\n# Request body order\n\nThe `attributes` part of the body must come **before** the\n`file` part. Requests that do not follow this format when\nuploading the file will receive a HTTP `400` error with a\n`metadata_after_file_contents` error code."
+              },
+              "response": [
+                {
+                  "id": "365103e0-1fe9-4938-9ccc-d2588e9add00",
+                  "name": "Returns the new file object in a list.",
+                  "originalRequest": {
+                    "method": "POST",
+                    "header": [
+                      {
+                        "description": "An optional header containing the SHA1 hash of the file to\nensure that the file was not corrupted in transit.",
+                        "key": "content-md5",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "Content-Type",
+                        "value": "multipart/form-data"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "body": {
+                      "mode": "formdata",
+                      "formdata": [
+                        {
+                          "description": "(Required) The additional attributes of the file being uploaded. Mainly the\nname and the parent folder. These attributes are part of the multi\npart request body and are in JSON format.\n\n<Message warning>\n\n  The `attributes` part of the body must come **before** the\n  `file` part. Requests that do not follow this format when\n  uploading the file will receive a HTTP `400` error with a\n  `metadata_after_file_contents` error code.\n\n</Message>",
+                          "key": "attributes",
+                          "value": "[object Object]",
+                          "type": "text"
+                        },
+                        {
+                          "description": "(Required) The content of the file to upload to Box.\n\n<Message warning>\n\n  The `attributes` part of the body must come **before** the\n  `file` part. Requests that do not follow this format when\n  uploading the file will receive a HTTP `400` error with a\n  `metadata_after_file_contents` error code.\n\n</Message>",
+                          "key": "file",
+                          "type": "file"
+                        }
+                      ]
+                    },
+                    "url": {
+                      "raw": "https://upload.box.com/api/2.0/files/content?fields=<string>,<string>",
+                      "protocol": "https",
+                      "host": [
+                        "upload",
+                        "box",
+                        "com"
+                      ],
+                      "path": [
+                        "api",
+                        "2.0",
+                        "files",
+                        "content"
+                      ],
+                      "query": [
+                        {
+                          "description": "A comma-separated list of attributes to include in the\nresponse. This can be used to request fields that are\nnot normally returned in a standard response.\n\nBe aware that specifying this parameter will have the\neffect that none of the standard fields are returned in\nthe response unless explicitly specified, instead only\nfields for the mini representation are returned, additional\nto the fields requested.",
+                          "key": "fields",
+                          "value": "<string>,<string>"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Created",
+                  "code": 201,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"total_count\": \"<long>\",\n  \"entries\": [\n    {\n      \"id\": \"<string>\",\n      \"type\": \"file\",\n      \"etag\": \"<string>\",\n      \"sequence_id\": \"<string>\",\n      \"name\": \"<string>\",\n      \"sha1\": \"<string>\",\n      \"file_version\": {\n        \"id\": \"<string>\",\n        \"type\": \"file_version\",\n        \"sha1\": \"<string>\"\n      },\n      \"description\": \"<string>\",\n      \"size\": \"<integer>\",\n      \"path_collection\": {\n        \"total_count\": \"<long>\",\n        \"entries\": [\n          {\n            \"id\": \"<string>\",\n            \"type\": \"folder\",\n            \"etag\": \"<string>\",\n            \"sequence_id\": \"<string>\",\n            \"name\": \"<string>\"\n          },\n          {\n            \"id\": \"<string>\",\n            \"type\": \"folder\",\n            \"etag\": \"<string>\",\n            \"sequence_id\": \"<string>\",\n            \"name\": \"<string>\"\n          }\n        ]\n      },\n      \"created_at\": \"<dateTime>\",\n      \"modified_at\": \"<dateTime>\",\n      \"trashed_at\": \"<dateTime>\",\n      \"purged_at\": \"<dateTime>\",\n      \"content_created_at\": \"<dateTime>\",\n      \"content_modified_at\": \"<dateTime>\",\n      \"created_by\": {\n        \"type\": \"user\",\n        \"id\": \"<string>\",\n        \"name\": \"<string>\",\n        \"login\": \"<email>\"\n      },\n      \"modified_by\": {\n        \"type\": \"user\",\n        \"id\": \"<string>\",\n        \"name\": \"<string>\",\n        \"login\": \"<email>\"\n      },\n      \"owned_by\": {\n        \"type\": \"user\",\n        \"id\": \"<string>\",\n        \"name\": \"<string>\",\n        \"login\": \"<email>\"\n      },\n      \"shared_link\": {\n        \"url\": \"<string>\",\n        \"effective_access\": \"open\",\n        \"effective_permission\": \"can_edit\",\n        \"is_password_enabled\": \"<boolean>\",\n        \"download_count\": \"<integer>\",\n        \"preview_count\": \"<integer>\",\n        \"download_url\": \"<string>\",\n        \"vanity_url\": \"<string>\",\n        \"vanity_name\": \"<string>\",\n        \"access\": \"collaborators\",\n        \"unshared_at\": \"<dateTime>\",\n        \"permissions\": {\n          \"can_download\": \"<boolean>\",\n          \"can_preview\": \"<boolean>\",\n          \"can_edit\": \"<boolean>\"\n        }\n      },\n      \"parent\": {\n        \"id\": \"<string>\",\n        \"type\": \"folder\",\n        \"etag\": \"<string>\",\n        \"sequence_id\": \"<string>\",\n        \"name\": \"<string>\"\n      },\n      \"item_status\": \"deleted\",\n      \"version_number\": \"<string>\",\n      \"comment_count\": \"<integer>\",\n      \"permissions\": {\n        \"can_annotate\": \"<boolean>\",\n        \"can_comment\": \"<boolean>\",\n        \"can_delete\": \"<boolean>\",\n        \"can_download\": \"<boolean>\",\n        \"can_invite_collaborator\": \"<boolean>\",\n        \"can_preview\": \"<boolean>\",\n        \"can_rename\": \"<boolean>\",\n        \"can_set_share_access\": \"<boolean>\",\n        \"can_share\": \"<boolean>\",\n        \"can_upload\": \"<boolean>\",\n        \"can_view_annotations_all\": \"<boolean>\",\n        \"can_view_annotations_self\": \"<boolean>\"\n      },\n      \"tags\": [\n        \"<string>\"\n      ],\n      \"lock\": {\n        \"id\": \"<string>\",\n        \"type\": \"lock\",\n        \"created_by\": {\n          \"type\": \"user\",\n          \"id\": \"<string>\",\n          \"name\": \"<string>\",\n          \"login\": \"<email>\"\n        },\n        \"created_at\": \"<dateTime>\",\n        \"expired_at\": \"<dateTime>\",\n        \"is_download_prevented\": \"<boolean>\",\n        \"app_type\": \"office_wopi\"\n      },\n      \"extension\": \"<string>\",\n      \"is_package\": \"<boolean>\",\n      \"expiring_embed_link\": {\n        \"access_token\": \"<string>\",\n        \"expires_in\": \"<long>\",\n        \"token_type\": \"bearer\",\n        \"restricted_to\": [\n          {\n            \"scope\": \"item_preview\",\n            \"object\": {\n              \"id\": \"<string>\",\n              \"type\": \"folder\",\n              \"etag\": \"<string>\",\n              \"sequence_id\": \"<string>\",\n              \"name\": \"<string>\"\n            }\n          },\n          {\n            \"scope\": \"item_delete\",\n            \"object\": {\n              \"id\": \"<string>\",\n              \"type\": \"folder\",\n              \"etag\": \"<string>\",\n              \"sequence_id\": \"<string>\",\n              \"name\": \"<string>\"\n            }\n          }\n        ],\n        \"url\": \"<string>\"\n      },\n      \"watermark_info\": {\n        \"is_watermarked\": \"<boolean>\"\n      },\n      \"is_accessible_via_shared_link\": false,\n      \"allowed_invitee_roles\": [\n        \"previewer uploader\",\n        \"viewer uploader\"\n      ],\n      \"is_externally_owned\": \"<boolean>\",\n      \"has_collaborations\": \"<boolean>\",\n      \"metadata\": {\n        \"pariaturf01\": {\n          \"officiae3\": {\n            \"$parent\": \"<string>\",\n            \"$template\": \"<string>\",\n            \"$scope\": \"<string>\",\n            \"$version\": \"<integer>\"\n          },\n          \"sint_d\": {\n            \"$parent\": \"<string>\",\n            \"$template\": \"<string>\",\n            \"$scope\": \"<string>\",\n            \"$version\": \"<integer>\"\n          },\n          \"in559\": {\n            \"$parent\": \"<string>\",\n            \"$template\": \"<string>\",\n            \"$scope\": \"<string>\",\n            \"$version\": \"<integer>\"\n          }\n        },\n        \"ea95d\": {\n          \"eiusmod_4e\": {\n            \"$parent\": \"<string>\",\n            \"$template\": \"<string>\",\n            \"$scope\": \"<string>\",\n            \"$version\": \"<integer>\"\n          }\n        },\n        \"id3\": {\n          \"ea_8c\": {\n            \"$parent\": \"<string>\",\n            \"$template\": \"<string>\",\n            \"$scope\": \"<string>\",\n            \"$version\": \"<integer>\"\n          },\n          \"et12\": {\n            \"$parent\": \"<string>\",\n            \"$template\": \"<string>\",\n            \"$scope\": \"<string>\",\n            \"$version\": \"<integer>\"\n          }\n        },\n        \"voluptate127\": {\n          \"Ut_a62\": {\n            \"$parent\": \"<string>\",\n            \"$template\": \"<string>\",\n            \"$scope\": \"<string>\",\n            \"$version\": \"<integer>\"\n          },\n          \"laboris_fb\": {\n            \"$parent\": \"<string>\",\n            \"$template\": \"<string>\",\n            \"$scope\": \"<string>\",\n            \"$version\": \"<integer>\"\n          }\n        }\n      },\n      \"expires_at\": \"<dateTime>\",\n      \"representations\": {\n        \"entries\": [\n          {\n            \"content\": {\n              \"url_template\": \"<string>\"\n            },\n            \"info\": {\n              \"url\": \"<string>\"\n            },\n            \"properties\": {\n              \"dimensions\": \"<string>\",\n              \"paged\": \"<boolean>\",\n              \"thumb\": \"<boolean>\"\n            },\n            \"representation\": \"<string>\",\n            \"status\": {\n              \"state\": \"success\"\n            }\n          },\n          {\n            \"content\": {\n              \"url_template\": \"<string>\"\n            },\n            \"info\": {\n              \"url\": \"<string>\"\n            },\n            \"properties\": {\n              \"dimensions\": \"<string>\",\n              \"paged\": \"<boolean>\",\n              \"thumb\": \"<boolean>\"\n            },\n            \"representation\": \"<string>\",\n            \"status\": {\n              \"state\": \"viewable\"\n            }\n          }\n        ]\n      },\n      \"classification\": {\n        \"name\": \"<string>\",\n        \"definition\": \"<string>\",\n        \"color\": \"<string>\"\n      },\n      \"uploader_display_name\": \"<string>\",\n      \"disposition_at\": \"<dateTime>\",\n      \"shared_link_permission_options\": [\n        \"can_edit\",\n        \"can_download\"\n      ]\n    },\n    {\n      \"id\": \"<string>\",\n      \"type\": \"file\",\n      \"etag\": \"<string>\",\n      \"sequence_id\": \"<string>\",\n      \"name\": \"<string>\",\n      \"sha1\": \"<string>\",\n      \"file_version\": {\n        \"id\": \"<string>\",\n        \"type\": \"file_version\",\n        \"sha1\": \"<string>\"\n      },\n      \"description\": \"<string>\",\n      \"size\": \"<integer>\",\n      \"path_collection\": {\n        \"total_count\": \"<long>\",\n        \"entries\": [\n          {\n            \"id\": \"<string>\",\n            \"type\": \"folder\",\n            \"etag\": \"<string>\",\n            \"sequence_id\": \"<string>\",\n            \"name\": \"<string>\"\n          },\n          {\n            \"id\": \"<string>\",\n            \"type\": \"folder\",\n            \"etag\": \"<string>\",\n            \"sequence_id\": \"<string>\",\n            \"name\": \"<string>\"\n          }\n        ]\n      },\n      \"created_at\": \"<dateTime>\",\n      \"modified_at\": \"<dateTime>\",\n      \"trashed_at\": \"<dateTime>\",\n      \"purged_at\": \"<dateTime>\",\n      \"content_created_at\": \"<dateTime>\",\n      \"content_modified_at\": \"<dateTime>\",\n      \"created_by\": {\n        \"type\": \"user\",\n        \"id\": \"<string>\",\n        \"name\": \"<string>\",\n        \"login\": \"<email>\"\n      },\n      \"modified_by\": {\n        \"type\": \"user\",\n        \"id\": \"<string>\",\n        \"name\": \"<string>\",\n        \"login\": \"<email>\"\n      },\n      \"owned_by\": {\n        \"type\": \"user\",\n        \"id\": \"<string>\",\n        \"name\": \"<string>\",\n        \"login\": \"<email>\"\n      },\n      \"shared_link\": {\n        \"url\": \"<string>\",\n        \"effective_access\": \"collaborators\",\n        \"effective_permission\": \"can_edit\",\n        \"is_password_enabled\": \"<boolean>\",\n        \"download_count\": \"<integer>\",\n        \"preview_count\": \"<integer>\",\n        \"download_url\": \"<string>\",\n        \"vanity_url\": \"<string>\",\n        \"vanity_name\": \"<string>\",\n        \"access\": \"open\",\n        \"unshared_at\": \"<dateTime>\",\n        \"permissions\": {\n          \"can_download\": \"<boolean>\",\n          \"can_preview\": \"<boolean>\",\n          \"can_edit\": \"<boolean>\"\n        }\n      },\n      \"parent\": {\n        \"id\": \"<string>\",\n        \"type\": \"folder\",\n        \"etag\": \"<string>\",\n        \"sequence_id\": \"<string>\",\n        \"name\": \"<string>\"\n      },\n      \"item_status\": \"active\",\n      \"version_number\": \"<string>\",\n      \"comment_count\": \"<integer>\",\n      \"permissions\": {\n        \"can_annotate\": \"<boolean>\",\n        \"can_comment\": \"<boolean>\",\n        \"can_delete\": \"<boolean>\",\n        \"can_download\": \"<boolean>\",\n        \"can_invite_collaborator\": \"<boolean>\",\n        \"can_preview\": \"<boolean>\",\n        \"can_rename\": \"<boolean>\",\n        \"can_set_share_access\": \"<boolean>\",\n        \"can_share\": \"<boolean>\",\n        \"can_upload\": \"<boolean>\",\n        \"can_view_annotations_all\": \"<boolean>\",\n        \"can_view_annotations_self\": \"<boolean>\"\n      },\n      \"tags\": [\n        \"<string>\"\n      ],\n      \"lock\": {\n        \"id\": \"<string>\",\n        \"type\": \"lock\",\n        \"created_by\": {\n          \"type\": \"user\",\n          \"id\": \"<string>\",\n          \"name\": \"<string>\",\n          \"login\": \"<email>\"\n        },\n        \"created_at\": \"<dateTime>\",\n        \"expired_at\": \"<dateTime>\",\n        \"is_download_prevented\": \"<boolean>\",\n        \"app_type\": \"office_wopi\"\n      },\n      \"extension\": \"<string>\",\n      \"is_package\": \"<boolean>\",\n      \"expiring_embed_link\": {\n        \"access_token\": \"<string>\",\n        \"expires_in\": \"<long>\",\n        \"token_type\": \"bearer\",\n        \"restricted_to\": [\n          {\n            \"scope\": \"annotation_edit\",\n            \"object\": {\n              \"id\": \"<string>\",\n              \"type\": \"folder\",\n              \"etag\": \"<string>\",\n              \"sequence_id\": \"<string>\",\n              \"name\": \"<string>\"\n            }\n          },\n          {\n            \"scope\": \"base_picker\",\n            \"object\": {\n              \"id\": \"<string>\",\n              \"type\": \"folder\",\n              \"etag\": \"<string>\",\n              \"sequence_id\": \"<string>\",\n              \"name\": \"<string>\"\n            }\n          }\n        ],\n        \"url\": \"<string>\"\n      },\n      \"watermark_info\": {\n        \"is_watermarked\": \"<boolean>\"\n      },\n      \"is_accessible_via_shared_link\": false,\n      \"allowed_invitee_roles\": [\n        \"viewer\",\n        \"uploader\"\n      ],\n      \"is_externally_owned\": \"<boolean>\",\n      \"has_collaborations\": \"<boolean>\",\n      \"metadata\": {\n        \"mollit_5\": {\n          \"pariatur2\": {\n            \"$parent\": \"<string>\",\n            \"$template\": \"<string>\",\n            \"$scope\": \"<string>\",\n            \"$version\": \"<integer>\"\n          },\n          \"eu_2\": {\n            \"$parent\": \"<string>\",\n            \"$template\": \"<string>\",\n            \"$scope\": \"<string>\",\n            \"$version\": \"<integer>\"\n          }\n        },\n        \"reprehenderitcc\": {\n          \"tempor_b51\": {\n            \"$parent\": \"<string>\",\n            \"$template\": \"<string>\",\n            \"$scope\": \"<string>\",\n            \"$version\": \"<integer>\"\n          },\n          \"ut_7\": {\n            \"$parent\": \"<string>\",\n            \"$template\": \"<string>\",\n            \"$scope\": \"<string>\",\n            \"$version\": \"<integer>\"\n          }\n        },\n        \"est_1a\": {\n          \"labore8\": {\n            \"$parent\": \"<string>\",\n            \"$template\": \"<string>\",\n            \"$scope\": \"<string>\",\n            \"$version\": \"<integer>\"\n          },\n          \"pariatur_9_6\": {\n            \"$parent\": \"<string>\",\n            \"$template\": \"<string>\",\n            \"$scope\": \"<string>\",\n            \"$version\": \"<integer>\"\n          }\n        }\n      },\n      \"expires_at\": \"<dateTime>\",\n      \"representations\": {\n        \"entries\": [\n          {\n            \"content\": {\n              \"url_template\": \"<string>\"\n            },\n            \"info\": {\n              \"url\": \"<string>\"\n            },\n            \"properties\": {\n              \"dimensions\": \"<string>\",\n              \"paged\": \"<boolean>\",\n              \"thumb\": \"<boolean>\"\n            },\n            \"representation\": \"<string>\",\n            \"status\": {\n              \"state\": \"viewable\"\n            }\n          },\n          {\n            \"content\": {\n              \"url_template\": \"<string>\"\n            },\n            \"info\": {\n              \"url\": \"<string>\"\n            },\n            \"properties\": {\n              \"dimensions\": \"<string>\",\n              \"paged\": \"<boolean>\",\n              \"thumb\": \"<boolean>\"\n            },\n            \"representation\": \"<string>\",\n            \"status\": {\n              \"state\": \"pending\"\n            }\n          }\n        ]\n      },\n      \"classification\": {\n        \"name\": \"<string>\",\n        \"definition\": \"<string>\",\n        \"color\": \"<string>\"\n      },\n      \"uploader_display_name\": \"<string>\",\n      \"disposition_at\": \"<dateTime>\",\n      \"shared_link_permission_options\": [\n        \"can_download\",\n        \"can_preview\"\n      ]\n    }\n  ]\n}",
+                  "createdAt": "2026-07-28T01:18:00.000Z",
+                  "updatedAt": "2026-07-28T01:18:00.000Z",
+                  "uid": "35240-365103e0-1fe9-4938-9ccc-d2588e9add00"
+                },
+                {
+                  "id": "c830df5f-aa0a-40aa-84cc-d6c4f8186f9c",
+                  "name": "Returns an error if some of the parameters are missing or\nnot valid.\n* `bad_request` when a parameter is missing or incorrect.\n* `item_name_too_long` when the folder name is too long.\n* `item_name_invalid` when the folder name contains\n  non-valid charact",
+                  "originalRequest": {
+                    "method": "POST",
+                    "header": [
+                      {
+                        "description": "An optional header containing the SHA1 hash of the file to\nensure that the file was not corrupted in transit.",
+                        "key": "content-md5",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "Content-Type",
+                        "value": "multipart/form-data"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "body": {
+                      "mode": "formdata",
+                      "formdata": [
+                        {
+                          "description": "(Required) The additional attributes of the file being uploaded. Mainly the\nname and the parent folder. These attributes are part of the multi\npart request body and are in JSON format.\n\n<Message warning>\n\n  The `attributes` part of the body must come **before** the\n  `file` part. Requests that do not follow this format when\n  uploading the file will receive a HTTP `400` error with a\n  `metadata_after_file_contents` error code.\n\n</Message>",
+                          "key": "attributes",
+                          "value": "[object Object]",
+                          "type": "text"
+                        },
+                        {
+                          "description": "(Required) The content of the file to upload to Box.\n\n<Message warning>\n\n  The `attributes` part of the body must come **before** the\n  `file` part. Requests that do not follow this format when\n  uploading the file will receive a HTTP `400` error with a\n  `metadata_after_file_contents` error code.\n\n</Message>",
+                          "key": "file",
+                          "type": "file"
+                        }
+                      ]
+                    },
+                    "url": {
+                      "raw": "https://upload.box.com/api/2.0/files/content?fields=<string>,<string>",
+                      "protocol": "https",
+                      "host": [
+                        "upload",
+                        "box",
+                        "com"
+                      ],
+                      "path": [
+                        "api",
+                        "2.0",
+                        "files",
+                        "content"
+                      ],
+                      "query": [
+                        {
+                          "description": "A comma-separated list of attributes to include in the\nresponse. This can be used to request fields that are\nnot normally returned in a standard response.\n\nBe aware that specifying this parameter will have the\neffect that none of the standard fields are returned in\nthe response unless explicitly specified, instead only\nfields for the mini representation are returned, additional\nto the fields requested.",
+                          "key": "fields",
+                          "value": "<string>,<string>"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Bad Request",
+                  "code": 400,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"type\": \"error\",\n  \"status\": \"<integer>\",\n  \"code\": \"precondition_failed\",\n  \"message\": \"<string>\",\n  \"context_info\": {\n    \"message\": \"<string>\"\n  },\n  \"help_url\": \"<string>\",\n  \"request_id\": \"<string>\"\n}",
+                  "createdAt": "2026-07-28T01:18:00.000Z",
+                  "updatedAt": "2026-07-28T01:18:00.000Z",
+                  "uid": "35240-c830df5f-aa0a-40aa-84cc-d6c4f8186f9c"
+                },
+                {
+                  "id": "93dcdd2a-bc7e-4510-a30f-f4054c7dc4d2",
+                  "name": "Returns an error if the parent folder\ndoes not exist or if the user\nis not authorized to access the parent folder.",
+                  "originalRequest": {
+                    "method": "POST",
+                    "header": [
+                      {
+                        "description": "An optional header containing the SHA1 hash of the file to\nensure that the file was not corrupted in transit.",
+                        "key": "content-md5",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "Content-Type",
+                        "value": "multipart/form-data"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "body": {
+                      "mode": "formdata",
+                      "formdata": [
+                        {
+                          "description": "(Required) The additional attributes of the file being uploaded. Mainly the\nname and the parent folder. These attributes are part of the multi\npart request body and are in JSON format.\n\n<Message warning>\n\n  The `attributes` part of the body must come **before** the\n  `file` part. Requests that do not follow this format when\n  uploading the file will receive a HTTP `400` error with a\n  `metadata_after_file_contents` error code.\n\n</Message>",
+                          "key": "attributes",
+                          "value": "[object Object]",
+                          "type": "text"
+                        },
+                        {
+                          "description": "(Required) The content of the file to upload to Box.\n\n<Message warning>\n\n  The `attributes` part of the body must come **before** the\n  `file` part. Requests that do not follow this format when\n  uploading the file will receive a HTTP `400` error with a\n  `metadata_after_file_contents` error code.\n\n</Message>",
+                          "key": "file",
+                          "type": "file"
+                        }
+                      ]
+                    },
+                    "url": {
+                      "raw": "https://upload.box.com/api/2.0/files/content?fields=<string>,<string>",
+                      "protocol": "https",
+                      "host": [
+                        "upload",
+                        "box",
+                        "com"
+                      ],
+                      "path": [
+                        "api",
+                        "2.0",
+                        "files",
+                        "content"
+                      ],
+                      "query": [
+                        {
+                          "description": "A comma-separated list of attributes to include in the\nresponse. This can be used to request fields that are\nnot normally returned in a standard response.\n\nBe aware that specifying this parameter will have the\neffect that none of the standard fields are returned in\nthe response unless explicitly specified, instead only\nfields for the mini representation are returned, additional\nto the fields requested.",
+                          "key": "fields",
+                          "value": "<string>,<string>"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Not Found",
+                  "code": 404,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"type\": \"error\",\n  \"status\": \"<integer>\",\n  \"code\": \"precondition_failed\",\n  \"message\": \"<string>\",\n  \"context_info\": {\n    \"message\": \"<string>\"\n  },\n  \"help_url\": \"<string>\",\n  \"request_id\": \"<string>\"\n}",
+                  "createdAt": "2026-07-28T01:18:00.000Z",
+                  "updatedAt": "2026-07-28T01:18:00.000Z",
+                  "uid": "35240-93dcdd2a-bc7e-4510-a30f-f4054c7dc4d2"
+                },
+                {
+                  "id": "f91cd83a-6c17-4686-9011-87794d1df0e5",
+                  "name": "Returns an error if the file already exists,\nor the account has run out of disk space.",
+                  "originalRequest": {
+                    "method": "POST",
+                    "header": [
+                      {
+                        "description": "An optional header containing the SHA1 hash of the file to\nensure that the file was not corrupted in transit.",
+                        "key": "content-md5",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "Content-Type",
+                        "value": "multipart/form-data"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "body": {
+                      "mode": "formdata",
+                      "formdata": [
+                        {
+                          "description": "(Required) The additional attributes of the file being uploaded. Mainly the\nname and the parent folder. These attributes are part of the multi\npart request body and are in JSON format.\n\n<Message warning>\n\n  The `attributes` part of the body must come **before** the\n  `file` part. Requests that do not follow this format when\n  uploading the file will receive a HTTP `400` error with a\n  `metadata_after_file_contents` error code.\n\n</Message>",
+                          "key": "attributes",
+                          "value": "[object Object]",
+                          "type": "text"
+                        },
+                        {
+                          "description": "(Required) The content of the file to upload to Box.\n\n<Message warning>\n\n  The `attributes` part of the body must come **before** the\n  `file` part. Requests that do not follow this format when\n  uploading the file will receive a HTTP `400` error with a\n  `metadata_after_file_contents` error code.\n\n</Message>",
+                          "key": "file",
+                          "type": "file"
+                        }
+                      ]
+                    },
+                    "url": {
+                      "raw": "https://upload.box.com/api/2.0/files/content?fields=<string>,<string>",
+                      "protocol": "https",
+                      "host": [
+                        "upload",
+                        "box",
+                        "com"
+                      ],
+                      "path": [
+                        "api",
+                        "2.0",
+                        "files",
+                        "content"
+                      ],
+                      "query": [
+                        {
+                          "description": "A comma-separated list of attributes to include in the\nresponse. This can be used to request fields that are\nnot normally returned in a standard response.\n\nBe aware that specifying this parameter will have the\neffect that none of the standard fields are returned in\nthe response unless explicitly specified, instead only\nfields for the mini representation are returned, additional\nto the fields requested.",
+                          "key": "fields",
+                          "value": "<string>,<string>"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Conflict",
+                  "code": 409,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"type\": \"error\",\n  \"status\": \"<integer>\",\n  \"code\": \"precondition_failed\",\n  \"message\": \"<string>\",\n  \"context_info\": {\n    \"message\": \"<string>\"\n  },\n  \"help_url\": \"<string>\",\n  \"request_id\": \"<string>\"\n}",
+                  "createdAt": "2026-07-28T01:18:00.000Z",
+                  "updatedAt": "2026-07-28T01:18:00.000Z",
+                  "uid": "35240-f91cd83a-6c17-4686-9011-87794d1df0e5"
+                },
+                {
+                  "id": "697a44d8-8c68-4369-a368-42c8e42f9cfc",
+                  "name": "An unexpected client error.",
+                  "originalRequest": {
+                    "method": "POST",
+                    "header": [
+                      {
+                        "description": "An optional header containing the SHA1 hash of the file to\nensure that the file was not corrupted in transit.",
+                        "key": "content-md5",
+                        "value": "<string>"
+                      },
+                      {
+                        "key": "Content-Type",
+                        "value": "multipart/form-data"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "body": {
+                      "mode": "formdata",
+                      "formdata": [
+                        {
+                          "description": "(Required) The additional attributes of the file being uploaded. Mainly the\nname and the parent folder. These attributes are part of the multi\npart request body and are in JSON format.\n\n<Message warning>\n\n  The `attributes` part of the body must come **before** the\n  `file` part. Requests that do not follow this format when\n  uploading the file will receive a HTTP `400` error with a\n  `metadata_after_file_contents` error code.\n\n</Message>",
+                          "key": "attributes",
+                          "value": "[object Object]",
+                          "type": "text"
+                        },
+                        {
+                          "description": "(Required) The content of the file to upload to Box.\n\n<Message warning>\n\n  The `attributes` part of the body must come **before** the\n  `file` part. Requests that do not follow this format when\n  uploading the file will receive a HTTP `400` error with a\n  `metadata_after_file_contents` error code.\n\n</Message>",
+                          "key": "file",
+                          "type": "file"
+                        }
+                      ]
+                    },
+                    "url": {
+                      "raw": "https://upload.box.com/api/2.0/files/content?fields=<string>,<string>",
+                      "protocol": "https",
+                      "host": [
+                        "upload",
+                        "box",
+                        "com"
+                      ],
+                      "path": [
+                        "api",
+                        "2.0",
+                        "files",
+                        "content"
+                      ],
+                      "query": [
+                        {
+                          "description": "A comma-separated list of attributes to include in the\nresponse. This can be used to request fields that are\nnot normally returned in a standard response.\n\nBe aware that specifying this parameter will have the\neffect that none of the standard fields are returned in\nthe response unless explicitly specified, instead only\nfields for the mini representation are returned, additional\nto the fields requested.",
+                          "key": "fields",
+                          "value": "<string>,<string>"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Internal Server Error",
+                  "code": 500,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"type\": \"error\",\n  \"status\": \"<integer>\",\n  \"code\": \"precondition_failed\",\n  \"message\": \"<string>\",\n  \"context_info\": {\n    \"message\": \"<string>\"\n  },\n  \"help_url\": \"<string>\",\n  \"request_id\": \"<string>\"\n}",
+                  "createdAt": "2026-07-28T01:18:00.000Z",
+                  "updatedAt": "2026-07-28T01:18:00.000Z",
+                  "uid": "35240-697a44d8-8c68-4369-a368-42c8e42f9cfc"
+                }
+              ],
+              "createdAt": "2026-07-28T01:18:00.000Z",
+              "updatedAt": "2026-07-28T01:18:00.000Z",
+              "uid": "35240-a9278a02-6667-4e55-b745-2edd684b4a86"
+            }
+          ],
+          "id": "25864bb6-78ac-4d45-97a6-1645b76a76e8",
+          "createdAt": "2026-07-28T01:18:00.000Z",
+          "updatedAt": "2026-07-28T01:18:00.000Z",
+          "uid": "35240-25864bb6-78ac-4d45-97a6-1645b76a76e8"
+        }
+      ],
+      "id": "f1cbefe1-288b-4013-9056-450ece5f96c1",
+      "createdAt": "2026-07-28T01:18:00.000Z",
+      "updatedAt": "2026-07-28T01:18:00.000Z",
+      "uid": "35240-f1cbefe1-288b-4013-9056-450ece5f96c1"
+    }
+  ],
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "/"
+    }
+  ]
+}

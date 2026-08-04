@@ -1,0 +1,337 @@
+{
+  "info": {
+    "_postman_id": "1851b48e-e2c0-4aad-b394-63b1f1921c4c",
+    "name": "Box Authorize Authorization Transfer Folders API",
+    "description": "Needs a description.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "createdAt": "2026-07-28T01:17:53.000Z",
+    "updatedAt": "2026-07-28T01:17:53.000Z",
+    "lastUpdatedBy": "35240",
+    "uid": "35240-1851b48e-e2c0-4aad-b394-63b1f1921c4c"
+  },
+  "item": [
+    {
+      "name": "users",
+      "item": [
+        {
+          "name": "{user_id}",
+          "item": [
+            {
+              "name": "folders",
+              "item": [
+                {
+                  "name": "0",
+                  "item": [
+                    {
+                      "name": "Box Transfer owned folders",
+                      "id": "af9821d9-e241-47e7-8cc8-faffa434dfe3",
+                      "protocolProfileBehavior": {
+                        "disableBodyPruning": true
+                      },
+                      "request": {
+                        "method": "PUT",
+                        "header": [
+                          {
+                            "key": "Content-Type",
+                            "value": "application/json"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          }
+                        ],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"owned_by\": {\n    \"id\": \"<string>\"\n  }\n}",
+                          "options": {
+                            "raw": {
+                              "headerFamily": "json",
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/users/:user_id/folders/0?fields=<string>,<string>&notify=<boolean>",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "users",
+                            ":user_id",
+                            "folders",
+                            "0"
+                          ],
+                          "query": [
+                            {
+                              "description": "A comma-separated list of attributes to include in the\nresponse. This can be used to request fields that are\nnot normally returned in a standard response.\n\nBe aware that specifying this parameter will have the\neffect that none of the standard fields are returned in\nthe response unless explicitly specified, instead only\nfields for the mini representation are returned, additional\nto the fields requested.",
+                              "key": "fields",
+                              "value": "<string>,<string>"
+                            },
+                            {
+                              "description": "Determines if users should receive email notification\nfor the action performed.",
+                              "key": "notify",
+                              "value": "<boolean>"
+                            }
+                          ],
+                          "variable": [
+                            {
+                              "id": "f41cc733-97f8-42c3-b981-3504ab22bb73",
+                              "key": "user_id",
+                              "value": "<string>",
+                              "description": "(Required) The ID of the user."
+                            }
+                          ]
+                        },
+                        "description": "Move all of the items (files, folders and workflows) owned by a user into\nanother user's account\n\nOnly the root folder (`0`) can be transferred.\n\nFolders can only be moved across users by users with administrative\npermissions.\n\nAll existing shared links and folder-level collaborations are transferred\nduring the operation. Please note that while collaborations at the individual\nfile-level are transferred during the operation, the collaborations are\ndeleted when the original user is deleted.\n\nThis call will be performed synchronously which might lead to a slow response\nwhen the source user has a large number of items in all of its folders.\n\nIf the destination path has a metadata cascade policy attached to any of\nthe parent folders, a metadata cascade operation will be kicked off\nasynchronously.\n\nThere is currently no way to check for when this operation is finished.\n\nThe destination folder's name will be in the format `{User}'s Files and\nFolders`, where `{User}` is the display name of the user.\n\nTo make this API call your application will need to have the \"Read and write\nall files and folders stored in Box\" scope enabled.\n\nPlease make sure the destination user has access to `Relay` or `Relay Lite`,\nand has access to the files and folders involved in the workflows being\ntransferred.\n\nAdmins will receive an email when the operation is completed."
+                      },
+                      "response": [
+                        {
+                          "id": "1e3176df-8ca2-4d43-96d6-5a8441d09df2",
+                          "name": "Returns the information for the newly created\ndestination folder.",
+                          "originalRequest": {
+                            "method": "PUT",
+                            "header": [
+                              {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                              },
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              }
+                            ],
+                            "body": {
+                              "mode": "raw",
+                              "raw": "{\n  \"owned_by\": {\n    \"id\": \"<string>\"\n  }\n}",
+                              "options": {
+                                "raw": {
+                                  "headerFamily": "json",
+                                  "language": "json"
+                                }
+                              }
+                            },
+                            "url": {
+                              "raw": "{{baseUrl}}/users/:user_id/folders/0?fields=<string>,<string>&notify=<boolean>",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "users",
+                                ":user_id",
+                                "folders",
+                                "0"
+                              ],
+                              "query": [
+                                {
+                                  "description": "A comma-separated list of attributes to include in the\nresponse. This can be used to request fields that are\nnot normally returned in a standard response.\n\nBe aware that specifying this parameter will have the\neffect that none of the standard fields are returned in\nthe response unless explicitly specified, instead only\nfields for the mini representation are returned, additional\nto the fields requested.",
+                                  "key": "fields",
+                                  "value": "<string>,<string>"
+                                },
+                                {
+                                  "description": "Determines if users should receive email notification\nfor the action performed.",
+                                  "key": "notify",
+                                  "value": "<boolean>"
+                                }
+                              ],
+                              "variable": [
+                                {
+                                  "key": "user_id"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "OK",
+                          "code": 200,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{\n  \"id\": \"<string>\",\n  \"type\": \"folder\",\n  \"etag\": \"<string>\",\n  \"sequence_id\": \"<string>\",\n  \"name\": \"<string>\",\n  \"created_at\": \"<dateTime>\",\n  \"modified_at\": \"<dateTime>\",\n  \"description\": \"<string>\",\n  \"size\": \"<long>\",\n  \"path_collection\": {\n    \"total_count\": \"<long>\",\n    \"entries\": [\n      {\n        \"id\": \"<string>\",\n        \"type\": \"folder\",\n        \"etag\": \"<string>\",\n        \"sequence_id\": \"<string>\",\n        \"name\": \"<string>\"\n      }\n    ]\n  },\n  \"created_by\": {\n    \"type\": \"user\",\n    \"id\": \"<string>\",\n    \"name\": \"<string>\",\n    \"login\": \"<email>\"\n  },\n  \"modified_by\": {\n    \"type\": \"user\",\n    \"id\": \"<string>\",\n    \"name\": \"<string>\",\n    \"login\": \"<email>\"\n  },\n  \"trashed_at\": \"<dateTime>\",\n  \"purged_at\": \"<dateTime>\",\n  \"content_created_at\": \"<dateTime>\",\n  \"content_modified_at\": \"<dateTime>\",\n  \"owned_by\": {\n    \"type\": \"user\",\n    \"id\": \"<string>\",\n    \"name\": \"<string>\",\n    \"login\": \"<email>\"\n  },\n  \"shared_link\": {\n    \"url\": \"<string>\",\n    \"effective_access\": \"collaborators\",\n    \"effective_permission\": \"can_download\",\n    \"is_password_enabled\": \"<boolean>\",\n    \"download_count\": \"<integer>\",\n    \"preview_count\": \"<integer>\",\n    \"download_url\": \"<string>\",\n    \"vanity_url\": \"<string>\",\n    \"vanity_name\": \"<string>\",\n    \"access\": \"company\",\n    \"unshared_at\": \"<dateTime>\",\n    \"permissions\": {\n      \"can_download\": \"<boolean>\",\n      \"can_preview\": \"<boolean>\",\n      \"can_edit\": \"<boolean>\"\n    }\n  },\n  \"folder_upload_email\": {\n    \"access\": \"open\",\n    \"email\": \"<email>\"\n  },\n  \"parent\": {\n    \"id\": \"<string>\",\n    \"type\": \"folder\",\n    \"etag\": \"<string>\",\n    \"sequence_id\": \"<string>\",\n    \"name\": \"<string>\"\n  },\n  \"item_status\": \"deleted\",\n  \"item_collection\": {\n    \"total_count\": \"<long>\",\n    \"limit\": \"<long>\",\n    \"offset\": \"<long>\",\n    \"order\": [\n      {\n        \"by\": \"<string>\",\n        \"direction\": \"DESC\"\n      }\n    ],\n    \"entries\": [\n      {\n        \"id\": \"<string>\",\n        \"type\": \"file\",\n        \"etag\": \"<string>\",\n        \"sequence_id\": \"<string>\",\n        \"name\": \"<string>\",\n        \"sha1\": \"<string>\",\n        \"file_version\": {\n          \"id\": \"<string>\",\n          \"type\": \"file_version\",\n          \"sha1\": \"<string>\"\n        },\n        \"description\": \"<string>\",\n        \"size\": \"<integer>\",\n        \"path_collection\": {\n          \"total_count\": \"<long>\",\n          \"entries\": [\n            {\n              \"id\": \"<string>\",\n              \"type\": \"folder\",\n              \"etag\": \"<string>\",\n              \"sequence_id\": \"<string>\",\n              \"name\": \"<string>\"\n            }\n          ]\n        },\n        \"created_at\": \"<dateTime>\",\n        \"modified_at\": \"<dateTime>\",\n        \"trashed_at\": \"<dateTime>\",\n        \"purged_at\": \"<dateTime>\",\n        \"content_created_at\": \"<dateTime>\",\n        \"content_modified_at\": \"<dateTime>\",\n        \"created_by\": {\n          \"type\": \"user\",\n          \"id\": \"<string>\",\n          \"name\": \"<string>\",\n          \"login\": \"<email>\"\n        },\n        \"modified_by\": {\n          \"type\": \"user\",\n          \"id\": \"<string>\",\n          \"name\": \"<string>\",\n          \"login\": \"<email>\"\n        },\n        \"owned_by\": {\n          \"type\": \"user\",\n          \"id\": \"<string>\",\n          \"name\": \"<string>\",\n          \"login\": \"<email>\"\n        },\n        \"shared_link\": {\n          \"url\": \"<string>\",\n          \"effective_access\": \"company\",\n          \"effective_permission\": \"can_download\",\n          \"is_password_enabled\": \"<boolean>\",\n          \"download_count\": \"<integer>\",\n          \"preview_count\": \"<integer>\",\n          \"download_url\": \"<string>\",\n          \"vanity_url\": \"<string>\",\n          \"vanity_name\": \"<string>\",\n          \"access\": \"collaborators\",\n          \"unshared_at\": \"<dateTime>\",\n          \"permissions\": {\n            \"can_download\": \"<boolean>\",\n            \"can_preview\": \"<boolean>\",\n            \"can_edit\": \"<boolean>\"\n          }\n        },\n        \"parent\": {\n          \"id\": \"<string>\",\n          \"type\": \"folder\",\n          \"etag\": \"<string>\",\n          \"sequence_id\": \"<string>\",\n          \"name\": \"<string>\"\n        },\n        \"item_status\": \"deleted\",\n        \"version_number\": \"<string>\",\n        \"comment_count\": \"<integer>\",\n        \"permissions\": {\n          \"can_annotate\": \"<boolean>\",\n          \"can_comment\": \"<boolean>\",\n          \"can_delete\": \"<boolean>\",\n          \"can_download\": \"<boolean>\",\n          \"can_invite_collaborator\": \"<boolean>\",\n          \"can_preview\": \"<boolean>\",\n          \"can_rename\": \"<boolean>\",\n          \"can_set_share_access\": \"<boolean>\",\n          \"can_share\": \"<boolean>\",\n          \"can_upload\": \"<boolean>\",\n          \"can_view_annotations_all\": \"<boolean>\",\n          \"can_view_annotations_self\": \"<boolean>\"\n        },\n        \"tags\": [\n          \"<string>\"\n        ],\n        \"lock\": {\n          \"id\": \"<string>\",\n          \"type\": \"lock\",\n          \"created_by\": {\n            \"type\": \"user\",\n            \"id\": \"<string>\",\n            \"name\": \"<string>\",\n            \"login\": \"<email>\"\n          },\n          \"created_at\": \"<dateTime>\",\n          \"expired_at\": \"<dateTime>\",\n          \"is_download_prevented\": \"<boolean>\",\n          \"app_type\": \"office_wopi\"\n        },\n        \"extension\": \"<string>\",\n        \"is_package\": \"<boolean>\",\n        \"expiring_embed_link\": {\n          \"access_token\": \"<string>\",\n          \"expires_in\": \"<long>\",\n          \"token_type\": \"bearer\",\n          \"restricted_to\": [\n            {\n              \"scope\": \"annotation_view_self\",\n              \"object\": {\n                \"id\": \"<string>\",\n                \"type\": \"folder\",\n                \"etag\": \"<string>\",\n                \"sequence_id\": \"<string>\",\n                \"name\": \"<string>\"\n              }\n            }\n          ],\n          \"url\": \"<string>\"\n        },\n        \"watermark_info\": {\n          \"is_watermarked\": \"<boolean>\"\n        },\n        \"is_accessible_via_shared_link\": false,\n        \"allowed_invitee_roles\": [\n          \"co-owner\"\n        ],\n        \"is_externally_owned\": \"<boolean>\",\n        \"has_collaborations\": \"<boolean>\",\n        \"metadata\": {\n          \"enim9\": {\n            \"Excepteurc78\": {\n              \"$parent\": \"<string>\",\n              \"$template\": \"<string>\",\n              \"$scope\": \"<string>\",\n              \"$version\": \"<integer>\"\n            },\n            \"fugiat_20b\": {\n              \"$parent\": \"<string>\",\n              \"$template\": \"<string>\",\n              \"$scope\": \"<string>\",\n              \"$version\": \"<integer>\"\n            }\n          }\n        },\n        \"expires_at\": \"<dateTime>\",\n        \"representations\": {\n          \"entries\": [\n            {\n              \"content\": {\n                \"url_template\": \"<string>\"\n              },\n              \"info\": {\n                \"url\": \"<string>\"\n              },\n              \"properties\": {\n                \"dimensions\": \"<string>\",\n                \"paged\": \"<boolean>\",\n                \"thumb\": \"<boolean>\"\n              },\n              \"representation\": \"<string>\",\n              \"status\": {\n                \"state\": \"success\"\n              }\n            }\n          ]\n        },\n        \"classification\": {\n          \"name\": \"<string>\",\n          \"definition\": \"<string>\",\n          \"color\": \"<string>\"\n        },\n        \"uploader_display_name\": \"<string>\",\n        \"disposition_at\": \"<dateTime>\",\n        \"shared_link_permission_options\": [\n          \"can_preview\"\n        ]\n      }\n    ]\n  },\n  \"sync_state\": \"synced\",\n  \"has_collaborations\": \"<boolean>\",\n  \"permissions\": {\n    \"can_delete\": \"<boolean>\",\n    \"can_download\": \"<boolean>\",\n    \"can_invite_collaborator\": \"<boolean>\",\n    \"can_rename\": \"<boolean>\",\n    \"can_set_share_access\": \"<boolean>\",\n    \"can_share\": \"<boolean>\",\n    \"can_upload\": \"<boolean>\"\n  },\n  \"tags\": [\n    \"<string>\"\n  ],\n  \"can_non_owners_invite\": \"<boolean>\",\n  \"is_externally_owned\": \"<boolean>\",\n  \"metadata\": {\n    \"id_4a\": {\n      \"dolore8\": {\n        \"$parent\": \"<string>\",\n        \"$template\": \"<string>\",\n        \"$scope\": \"<string>\",\n        \"$version\": \"<integer>\"\n      }\n    },\n    \"aliqua997\": {\n      \"proident7\": {\n        \"$parent\": \"<string>\",\n        \"$template\": \"<string>\",\n        \"$scope\": \"<string>\",\n        \"$version\": \"<integer>\"\n      }\n    },\n    \"enim3\": {\n      \"dolor_1\": {\n        \"$parent\": \"<string>\",\n        \"$template\": \"<string>\",\n        \"$scope\": \"<string>\",\n        \"$version\": \"<integer>\"\n      },\n      \"magna1\": {\n        \"$parent\": \"<string>\",\n        \"$template\": \"<string>\",\n        \"$scope\": \"<string>\",\n        \"$version\": \"<integer>\"\n      }\n    }\n  },\n  \"is_collaboration_restricted_to_enterprise\": \"<boolean>\",\n  \"allowed_shared_link_access_levels\": [\n    \"collaborators\"\n  ],\n  \"allowed_invitee_roles\": [\n    \"viewer uploader\"\n  ],\n  \"watermark_info\": {\n    \"is_watermarked\": \"<boolean>\"\n  },\n  \"is_accessible_via_shared_link\": true,\n  \"can_non_owners_view_collaborators\": \"<boolean>\",\n  \"classification\": {\n    \"name\": \"<string>\",\n    \"definition\": \"<string>\",\n    \"color\": \"<string>\"\n  }\n}",
+                          "createdAt": "2026-07-28T01:17:53.000Z",
+                          "updatedAt": "2026-07-28T01:17:53.000Z",
+                          "uid": "35240-1e3176df-8ca2-4d43-96d6-5a8441d09df2"
+                        },
+                        {
+                          "id": "fa8cca29-be4f-4c03-bc3e-a80dc16a879b",
+                          "name": "Returns an error when folder ownership cannot be\ntransferred to another user.\n\n* `forbidden_by_policy`: Returned if ownership transfer\n is forbidden due to information barrier restrictions.",
+                          "originalRequest": {
+                            "method": "PUT",
+                            "header": [
+                              {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                              },
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              }
+                            ],
+                            "body": {
+                              "mode": "raw",
+                              "raw": "{\n  \"owned_by\": {\n    \"id\": \"<string>\"\n  }\n}",
+                              "options": {
+                                "raw": {
+                                  "headerFamily": "json",
+                                  "language": "json"
+                                }
+                              }
+                            },
+                            "url": {
+                              "raw": "{{baseUrl}}/users/:user_id/folders/0?fields=<string>,<string>&notify=<boolean>",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "users",
+                                ":user_id",
+                                "folders",
+                                "0"
+                              ],
+                              "query": [
+                                {
+                                  "description": "A comma-separated list of attributes to include in the\nresponse. This can be used to request fields that are\nnot normally returned in a standard response.\n\nBe aware that specifying this parameter will have the\neffect that none of the standard fields are returned in\nthe response unless explicitly specified, instead only\nfields for the mini representation are returned, additional\nto the fields requested.",
+                                  "key": "fields",
+                                  "value": "<string>,<string>"
+                                },
+                                {
+                                  "description": "Determines if users should receive email notification\nfor the action performed.",
+                                  "key": "notify",
+                                  "value": "<boolean>"
+                                }
+                              ],
+                              "variable": [
+                                {
+                                  "key": "user_id"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "Forbidden",
+                          "code": 403,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{\n  \"type\": \"error\",\n  \"status\": \"<integer>\",\n  \"code\": \"unavailable\",\n  \"message\": \"<string>\",\n  \"context_info\": {\n    \"message\": \"<string>\"\n  },\n  \"help_url\": \"<string>\",\n  \"request_id\": \"<string>\"\n}",
+                          "createdAt": "2026-07-28T01:17:53.000Z",
+                          "updatedAt": "2026-07-28T01:17:53.000Z",
+                          "uid": "35240-fa8cca29-be4f-4c03-bc3e-a80dc16a879b"
+                        },
+                        {
+                          "id": "11bd40d5-4aea-4070-affa-2d222cffdc27",
+                          "name": "An unexpected client error.",
+                          "originalRequest": {
+                            "method": "PUT",
+                            "header": [
+                              {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                              },
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              }
+                            ],
+                            "body": {
+                              "mode": "raw",
+                              "raw": "{\n  \"owned_by\": {\n    \"id\": \"<string>\"\n  }\n}",
+                              "options": {
+                                "raw": {
+                                  "headerFamily": "json",
+                                  "language": "json"
+                                }
+                              }
+                            },
+                            "url": {
+                              "raw": "{{baseUrl}}/users/:user_id/folders/0?fields=<string>,<string>&notify=<boolean>",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "users",
+                                ":user_id",
+                                "folders",
+                                "0"
+                              ],
+                              "query": [
+                                {
+                                  "description": "A comma-separated list of attributes to include in the\nresponse. This can be used to request fields that are\nnot normally returned in a standard response.\n\nBe aware that specifying this parameter will have the\neffect that none of the standard fields are returned in\nthe response unless explicitly specified, instead only\nfields for the mini representation are returned, additional\nto the fields requested.",
+                                  "key": "fields",
+                                  "value": "<string>,<string>"
+                                },
+                                {
+                                  "description": "Determines if users should receive email notification\nfor the action performed.",
+                                  "key": "notify",
+                                  "value": "<boolean>"
+                                }
+                              ],
+                              "variable": [
+                                {
+                                  "key": "user_id"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "Internal Server Error",
+                          "code": 500,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{\n  \"type\": \"error\",\n  \"status\": \"<integer>\",\n  \"code\": \"unavailable\",\n  \"message\": \"<string>\",\n  \"context_info\": {\n    \"message\": \"<string>\"\n  },\n  \"help_url\": \"<string>\",\n  \"request_id\": \"<string>\"\n}",
+                          "createdAt": "2026-07-28T01:17:53.000Z",
+                          "updatedAt": "2026-07-28T01:17:53.000Z",
+                          "uid": "35240-11bd40d5-4aea-4070-affa-2d222cffdc27"
+                        }
+                      ],
+                      "createdAt": "2026-07-28T01:17:53.000Z",
+                      "updatedAt": "2026-07-28T01:17:53.000Z",
+                      "uid": "35240-af9821d9-e241-47e7-8cc8-faffa434dfe3"
+                    }
+                  ],
+                  "id": "38d73eda-917e-4da4-9176-1ea253235cca",
+                  "createdAt": "2026-07-28T01:17:53.000Z",
+                  "updatedAt": "2026-07-28T01:17:53.000Z",
+                  "uid": "35240-38d73eda-917e-4da4-9176-1ea253235cca"
+                }
+              ],
+              "id": "16dbbf5f-edad-4746-ab91-86578bf6ba7e",
+              "createdAt": "2026-07-28T01:17:53.000Z",
+              "updatedAt": "2026-07-28T01:17:53.000Z",
+              "uid": "35240-16dbbf5f-edad-4746-ab91-86578bf6ba7e"
+            }
+          ],
+          "id": "db6db740-6954-4940-815f-28f34f204a4c",
+          "createdAt": "2026-07-28T01:17:53.000Z",
+          "updatedAt": "2026-07-28T01:17:53.000Z",
+          "uid": "35240-db6db740-6954-4940-815f-28f34f204a4c"
+        }
+      ],
+      "id": "ccfbca89-2b16-4a7a-b469-d06d42252406",
+      "createdAt": "2026-07-28T01:17:53.000Z",
+      "updatedAt": "2026-07-28T01:17:53.000Z",
+      "uid": "35240-ccfbca89-2b16-4a7a-b469-d06d42252406"
+    }
+  ],
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "/"
+    }
+  ]
+}

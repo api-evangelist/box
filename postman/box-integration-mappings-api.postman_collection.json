@@ -1,0 +1,1120 @@
+{
+  "info": {
+    "_postman_id": "a74c486a-a54a-4240-bd3a-9b0a9982ba4c",
+    "name": "Box Authorize Authorization Integration Mappings API",
+    "description": "Needs a description.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "createdAt": "2026-07-28T01:16:33.000Z",
+    "updatedAt": "2026-07-28T01:16:34.000Z",
+    "lastUpdatedBy": "35240",
+    "uid": "35240-a74c486a-a54a-4240-bd3a-9b0a9982ba4c"
+  },
+  "item": [
+    {
+      "name": "integration_mappings",
+      "item": [
+        {
+          "name": "slack",
+          "item": [
+            {
+              "name": "{integration_mapping_id}",
+              "item": [
+                {
+                  "name": "Box Update Slack integration mapping",
+                  "id": "ae1aace1-72c4-4ae1-97a9-13eb2657552e",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "method": "PUT",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"box_item\": {\n    \"id\": \"<string>\",\n    \"type\": \"folder\"\n  },\n  \"options\": {\n    \"is_access_management_disabled\": \"<boolean>\"\n  }\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/integration_mappings/slack/:integration_mapping_id",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "integration_mappings",
+                        "slack",
+                        ":integration_mapping_id"
+                      ],
+                      "variable": [
+                        {
+                          "id": "0ff42242-777d-4dc5-8938-0099da56149b",
+                          "key": "integration_mapping_id",
+                          "value": "<string>",
+                          "description": "(Required) An ID of an integration mapping"
+                        }
+                      ]
+                    },
+                    "description": "Updates a [Slack integration mapping](https://support.box.com/hc/en-us/articles/4415585987859-Box-as-the-Content-Layer-for-Slack).\nSupports updating the Box folder ID and options.\n\nYou need Admin or Co-Admin role to\nuse this endpoint."
+                  },
+                  "response": [
+                    {
+                      "id": "936c9439-a457-4686-8658-3ee73003bd64",
+                      "name": "Returns the updated integration mapping object.",
+                      "originalRequest": {
+                        "method": "PUT",
+                        "header": [
+                          {
+                            "key": "Content-Type",
+                            "value": "application/json"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          }
+                        ],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"box_item\": {\n    \"id\": \"<string>\",\n    \"type\": \"folder\"\n  },\n  \"options\": {\n    \"is_access_management_disabled\": \"<boolean>\"\n  }\n}",
+                          "options": {
+                            "raw": {
+                              "headerFamily": "json",
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/integration_mappings/slack/:integration_mapping_id",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "integration_mappings",
+                            "slack",
+                            ":integration_mapping_id"
+                          ],
+                          "variable": [
+                            {
+                              "key": "integration_mapping_id"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "OK",
+                      "code": 200,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"type\": \"integration_mapping\",\n  \"partner_item\": {\n    \"id\": \"<string>\",\n    \"type\": \"channel\",\n    \"slack_workspace_id\": \"<string>\",\n    \"slack_org_id\": \"<string>\"\n  },\n  \"box_item\": {\n    \"id\": \"<string>\",\n    \"type\": \"folder\",\n    \"etag\": \"<string>\",\n    \"sequence_id\": \"<string>\",\n    \"name\": \"<string>\"\n  },\n  \"id\": \"<string>\",\n  \"integration_type\": \"slack\",\n  \"is_manually_created\": \"<boolean>\",\n  \"options\": {\n    \"is_access_management_disabled\": \"<boolean>\"\n  },\n  \"created_by\": {\n    \"type\": \"user\",\n    \"id\": \"<string>\",\n    \"name\": \"<string>\",\n    \"login\": \"<email>\"\n  },\n  \"modified_by\": {\n    \"type\": \"user\",\n    \"id\": \"<string>\",\n    \"name\": \"<string>\",\n    \"login\": \"<email>\"\n  },\n  \"created_at\": \"<dateTime>\",\n  \"modified_at\": \"<dateTime>\"\n}",
+                      "createdAt": "2026-07-28T01:16:34.000Z",
+                      "updatedAt": "2026-07-28T01:16:34.000Z",
+                      "uid": "35240-936c9439-a457-4686-8658-3ee73003bd64"
+                    },
+                    {
+                      "id": "2d8e14a7-6413-4b19-9c0a-319f1a881b18",
+                      "name": "Returns a `bad_request` if an incorrect `options` was\nsupplied or the Box folder cannot be mapped to this `partner_item`.\nError codes:\n* `SERVICE_ACCOUNT_IS_NOT_A_COOWNER_OR_OWNER` - service account\n  doesn't have co-owner collaboration or is\n  not an own",
+                      "originalRequest": {
+                        "method": "PUT",
+                        "header": [
+                          {
+                            "key": "Content-Type",
+                            "value": "application/json"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          }
+                        ],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"box_item\": {\n    \"id\": \"<string>\",\n    \"type\": \"folder\"\n  },\n  \"options\": {\n    \"is_access_management_disabled\": \"<boolean>\"\n  }\n}",
+                          "options": {
+                            "raw": {
+                              "headerFamily": "json",
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/integration_mappings/slack/:integration_mapping_id",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "integration_mappings",
+                            "slack",
+                            ":integration_mapping_id"
+                          ],
+                          "variable": [
+                            {
+                              "key": "integration_mapping_id"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Bad Request",
+                      "code": 400,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"type\": \"error\",\n  \"status\": \"<integer>\",\n  \"code\": \"redirect\",\n  \"message\": \"<string>\",\n  \"context_info\": {\n    \"message\": \"<string>\"\n  },\n  \"help_url\": \"<string>\",\n  \"request_id\": \"<string>\"\n}",
+                      "createdAt": "2026-07-28T01:16:34.000Z",
+                      "updatedAt": "2026-07-28T01:16:34.000Z",
+                      "uid": "35240-2d8e14a7-6413-4b19-9c0a-319f1a881b18"
+                    },
+                    {
+                      "id": "aa828080-0836-442b-a310-fc24ebdda4ec",
+                      "name": "Returns `not_found` if integration mapping object was not found.",
+                      "originalRequest": {
+                        "method": "PUT",
+                        "header": [
+                          {
+                            "key": "Content-Type",
+                            "value": "application/json"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          }
+                        ],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"box_item\": {\n    \"id\": \"<string>\",\n    \"type\": \"folder\"\n  },\n  \"options\": {\n    \"is_access_management_disabled\": \"<boolean>\"\n  }\n}",
+                          "options": {
+                            "raw": {
+                              "headerFamily": "json",
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/integration_mappings/slack/:integration_mapping_id",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "integration_mappings",
+                            "slack",
+                            ":integration_mapping_id"
+                          ],
+                          "variable": [
+                            {
+                              "key": "integration_mapping_id"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Not Found",
+                      "code": 404,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"type\": \"error\",\n  \"status\": \"<integer>\",\n  \"code\": \"redirect\",\n  \"message\": \"<string>\",\n  \"context_info\": {\n    \"message\": \"<string>\"\n  },\n  \"help_url\": \"<string>\",\n  \"request_id\": \"<string>\"\n}",
+                      "createdAt": "2026-07-28T01:16:34.000Z",
+                      "updatedAt": "2026-07-28T01:16:34.000Z",
+                      "uid": "35240-aa828080-0836-442b-a310-fc24ebdda4ec"
+                    },
+                    {
+                      "id": "9cd7c110-ee80-4526-b099-eb205a01df23",
+                      "name": "An unexpected client error.",
+                      "originalRequest": {
+                        "method": "PUT",
+                        "header": [
+                          {
+                            "key": "Content-Type",
+                            "value": "application/json"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          }
+                        ],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"box_item\": {\n    \"id\": \"<string>\",\n    \"type\": \"folder\"\n  },\n  \"options\": {\n    \"is_access_management_disabled\": \"<boolean>\"\n  }\n}",
+                          "options": {
+                            "raw": {
+                              "headerFamily": "json",
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/integration_mappings/slack/:integration_mapping_id",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "integration_mappings",
+                            "slack",
+                            ":integration_mapping_id"
+                          ],
+                          "variable": [
+                            {
+                              "key": "integration_mapping_id"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Internal Server Error",
+                      "code": 500,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"type\": \"error\",\n  \"status\": \"<integer>\",\n  \"code\": \"redirect\",\n  \"message\": \"<string>\",\n  \"context_info\": {\n    \"message\": \"<string>\"\n  },\n  \"help_url\": \"<string>\",\n  \"request_id\": \"<string>\"\n}",
+                      "createdAt": "2026-07-28T01:16:34.000Z",
+                      "updatedAt": "2026-07-28T01:16:34.000Z",
+                      "uid": "35240-9cd7c110-ee80-4526-b099-eb205a01df23"
+                    }
+                  ],
+                  "createdAt": "2026-07-28T01:16:34.000Z",
+                  "updatedAt": "2026-07-28T01:16:34.000Z",
+                  "uid": "35240-ae1aace1-72c4-4ae1-97a9-13eb2657552e"
+                },
+                {
+                  "name": "Box Delete Slack integration mapping",
+                  "id": "9362d3c1-abca-4779-89ca-392647149b0d",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "method": "DELETE",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/integration_mappings/slack/:integration_mapping_id",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "integration_mappings",
+                        "slack",
+                        ":integration_mapping_id"
+                      ],
+                      "variable": [
+                        {
+                          "id": "66da2dc7-5b02-4cd6-adad-8ae46c1175fa",
+                          "key": "integration_mapping_id",
+                          "value": "<string>",
+                          "description": "(Required) An ID of an integration mapping"
+                        }
+                      ]
+                    },
+                    "description": "Deletes a [Slack integration mapping](https://support.box.com/hc/en-us/articles/4415585987859-Box-as-the-Content-Layer-for-Slack).\n\n\nYou need Admin or Co-Admin role to\nuse this endpoint."
+                  },
+                  "response": [
+                    {
+                      "id": "37c0ab57-84e3-45ec-9703-050161726473",
+                      "name": "Empty body in response",
+                      "originalRequest": {
+                        "method": "DELETE",
+                        "header": [],
+                        "url": {
+                          "raw": "{{baseUrl}}/integration_mappings/slack/:integration_mapping_id",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "integration_mappings",
+                            "slack",
+                            ":integration_mapping_id"
+                          ],
+                          "variable": [
+                            {
+                              "key": "integration_mapping_id"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "No Content",
+                      "code": 204,
+                      "_postman_previewlanguage": "text",
+                      "header": [],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": null,
+                      "createdAt": "2026-07-28T01:16:34.000Z",
+                      "updatedAt": "2026-07-28T01:16:34.000Z",
+                      "uid": "35240-37c0ab57-84e3-45ec-9703-050161726473"
+                    },
+                    {
+                      "id": "9e5c5b5c-55ff-4e31-8c01-15092e4be776",
+                      "name": "Returns a `not_found` error if the integration mapping could not be found.",
+                      "originalRequest": {
+                        "method": "DELETE",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/integration_mappings/slack/:integration_mapping_id",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "integration_mappings",
+                            "slack",
+                            ":integration_mapping_id"
+                          ],
+                          "variable": [
+                            {
+                              "key": "integration_mapping_id"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Not Found",
+                      "code": 404,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"type\": \"error\",\n  \"status\": \"<integer>\",\n  \"code\": \"redirect\",\n  \"message\": \"<string>\",\n  \"context_info\": {\n    \"message\": \"<string>\"\n  },\n  \"help_url\": \"<string>\",\n  \"request_id\": \"<string>\"\n}",
+                      "createdAt": "2026-07-28T01:16:34.000Z",
+                      "updatedAt": "2026-07-28T01:16:34.000Z",
+                      "uid": "35240-9e5c5b5c-55ff-4e31-8c01-15092e4be776"
+                    },
+                    {
+                      "id": "52ca9750-6281-4be9-9c77-e71068dc3930",
+                      "name": "An unexpected client error.",
+                      "originalRequest": {
+                        "method": "DELETE",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/integration_mappings/slack/:integration_mapping_id",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "integration_mappings",
+                            "slack",
+                            ":integration_mapping_id"
+                          ],
+                          "variable": [
+                            {
+                              "key": "integration_mapping_id"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Internal Server Error",
+                      "code": 500,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"type\": \"error\",\n  \"status\": \"<integer>\",\n  \"code\": \"redirect\",\n  \"message\": \"<string>\",\n  \"context_info\": {\n    \"message\": \"<string>\"\n  },\n  \"help_url\": \"<string>\",\n  \"request_id\": \"<string>\"\n}",
+                      "createdAt": "2026-07-28T01:16:34.000Z",
+                      "updatedAt": "2026-07-28T01:16:34.000Z",
+                      "uid": "35240-52ca9750-6281-4be9-9c77-e71068dc3930"
+                    }
+                  ],
+                  "createdAt": "2026-07-28T01:16:34.000Z",
+                  "updatedAt": "2026-07-28T01:16:34.000Z",
+                  "uid": "35240-9362d3c1-abca-4779-89ca-392647149b0d"
+                }
+              ],
+              "id": "dde23a54-0e38-49e5-89d5-61f53c613046",
+              "createdAt": "2026-07-28T01:16:34.000Z",
+              "updatedAt": "2026-07-28T01:16:34.000Z",
+              "uid": "35240-dde23a54-0e38-49e5-89d5-61f53c613046"
+            },
+            {
+              "name": "Box List Slack integration mappings",
+              "id": "f7f32ec8-f5b8-46fb-a09a-a76709269857",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/integration_mappings/slack?marker=<string>&limit=<long>&partner_item_type=channel&partner_item_id=<string>&box_item_id=<string>&box_item_type=folder&is_manually_created=<boolean>",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "integration_mappings",
+                    "slack"
+                  ],
+                  "query": [
+                    {
+                      "description": "Defines the position marker at which to begin returning results. This is\nused when paginating using marker-based pagination.\n\nThis requires `usemarker` to be set to `true`.",
+                      "key": "marker",
+                      "value": "<string>"
+                    },
+                    {
+                      "description": "The maximum number of items to return per page.",
+                      "key": "limit",
+                      "value": "<long>"
+                    },
+                    {
+                      "description": "Mapped item type, for which the mapping should be returned",
+                      "key": "partner_item_type",
+                      "value": "channel"
+                    },
+                    {
+                      "description": "ID of the mapped item, for which the mapping should be returned",
+                      "key": "partner_item_id",
+                      "value": "<string>"
+                    },
+                    {
+                      "description": "Box item ID, for which the mappings should be returned",
+                      "key": "box_item_id",
+                      "value": "<string>"
+                    },
+                    {
+                      "description": "Box item type, for which the mappings should be returned",
+                      "key": "box_item_type",
+                      "value": "folder"
+                    },
+                    {
+                      "description": "Whether the mapping has been manually created",
+                      "key": "is_manually_created",
+                      "value": "<boolean>"
+                    }
+                  ]
+                },
+                "description": "Lists [Slack integration mappings](https://support.box.com/hc/en-us/articles/4415585987859-Box-as-the-Content-Layer-for-Slack) in a users' enterprise.\n\nYou need Admin or Co-Admin role to\nuse this endpoint."
+              },
+              "response": [
+                {
+                  "id": "19812437-d123-4be5-9d59-15c4c9f32d05",
+                  "name": "Returns a collection of integration mappings",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/integration_mappings/slack?marker=<string>&limit=<long>&partner_item_type=channel&partner_item_id=<string>&box_item_id=<string>&box_item_type=folder&is_manually_created=<boolean>",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "integration_mappings",
+                        "slack"
+                      ],
+                      "query": [
+                        {
+                          "description": "Defines the position marker at which to begin returning results. This is\nused when paginating using marker-based pagination.\n\nThis requires `usemarker` to be set to `true`.",
+                          "key": "marker",
+                          "value": "<string>"
+                        },
+                        {
+                          "description": "The maximum number of items to return per page.",
+                          "key": "limit",
+                          "value": "<long>"
+                        },
+                        {
+                          "description": "Mapped item type, for which the mapping should be returned",
+                          "key": "partner_item_type",
+                          "value": "channel"
+                        },
+                        {
+                          "description": "ID of the mapped item, for which the mapping should be returned",
+                          "key": "partner_item_id",
+                          "value": "<string>"
+                        },
+                        {
+                          "description": "Box item ID, for which the mappings should be returned",
+                          "key": "box_item_id",
+                          "value": "<string>"
+                        },
+                        {
+                          "description": "Box item type, for which the mappings should be returned",
+                          "key": "box_item_type",
+                          "value": "folder"
+                        },
+                        {
+                          "description": "Whether the mapping has been manually created",
+                          "key": "is_manually_created",
+                          "value": "<boolean>"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"limit\": \"<long>\",\n  \"next_marker\": \"<string>\",\n  \"entries\": [\n    {\n      \"type\": \"integration_mapping\",\n      \"partner_item\": {\n        \"id\": \"<string>\",\n        \"type\": \"channel\",\n        \"slack_workspace_id\": \"<string>\",\n        \"slack_org_id\": \"<string>\"\n      },\n      \"box_item\": {\n        \"id\": \"<string>\",\n        \"type\": \"folder\",\n        \"etag\": \"<string>\",\n        \"sequence_id\": \"<string>\",\n        \"name\": \"<string>\"\n      },\n      \"id\": \"<string>\",\n      \"integration_type\": \"slack\",\n      \"is_manually_created\": \"<boolean>\",\n      \"options\": {\n        \"is_access_management_disabled\": \"<boolean>\"\n      },\n      \"created_by\": {\n        \"type\": \"user\",\n        \"id\": \"<string>\",\n        \"name\": \"<string>\",\n        \"login\": \"<email>\"\n      },\n      \"modified_by\": {\n        \"type\": \"user\",\n        \"id\": \"<string>\",\n        \"name\": \"<string>\",\n        \"login\": \"<email>\"\n      },\n      \"created_at\": \"<dateTime>\",\n      \"modified_at\": \"<dateTime>\"\n    },\n    {\n      \"type\": \"integration_mapping\",\n      \"partner_item\": {\n        \"id\": \"<string>\",\n        \"type\": \"channel\",\n        \"slack_workspace_id\": \"<string>\",\n        \"slack_org_id\": \"<string>\"\n      },\n      \"box_item\": {\n        \"id\": \"<string>\",\n        \"type\": \"folder\",\n        \"etag\": \"<string>\",\n        \"sequence_id\": \"<string>\",\n        \"name\": \"<string>\"\n      },\n      \"id\": \"<string>\",\n      \"integration_type\": \"slack\",\n      \"is_manually_created\": \"<boolean>\",\n      \"options\": {\n        \"is_access_management_disabled\": \"<boolean>\"\n      },\n      \"created_by\": {\n        \"type\": \"user\",\n        \"id\": \"<string>\",\n        \"name\": \"<string>\",\n        \"login\": \"<email>\"\n      },\n      \"modified_by\": {\n        \"type\": \"user\",\n        \"id\": \"<string>\",\n        \"name\": \"<string>\",\n        \"login\": \"<email>\"\n      },\n      \"created_at\": \"<dateTime>\",\n      \"modified_at\": \"<dateTime>\"\n    }\n  ]\n}",
+                  "createdAt": "2026-07-28T01:16:34.000Z",
+                  "updatedAt": "2026-07-28T01:16:34.000Z",
+                  "uid": "35240-19812437-d123-4be5-9d59-15c4c9f32d05"
+                },
+                {
+                  "id": "083a905b-b860-4a22-9c36-c72562ec26de",
+                  "name": "The server cannot or will not process the\nrequest due to an apparent client error.",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/integration_mappings/slack?marker=<string>&limit=<long>&partner_item_type=channel&partner_item_id=<string>&box_item_id=<string>&box_item_type=folder&is_manually_created=<boolean>",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "integration_mappings",
+                        "slack"
+                      ],
+                      "query": [
+                        {
+                          "description": "Defines the position marker at which to begin returning results. This is\nused when paginating using marker-based pagination.\n\nThis requires `usemarker` to be set to `true`.",
+                          "key": "marker",
+                          "value": "<string>"
+                        },
+                        {
+                          "description": "The maximum number of items to return per page.",
+                          "key": "limit",
+                          "value": "<long>"
+                        },
+                        {
+                          "description": "Mapped item type, for which the mapping should be returned",
+                          "key": "partner_item_type",
+                          "value": "channel"
+                        },
+                        {
+                          "description": "ID of the mapped item, for which the mapping should be returned",
+                          "key": "partner_item_id",
+                          "value": "<string>"
+                        },
+                        {
+                          "description": "Box item ID, for which the mappings should be returned",
+                          "key": "box_item_id",
+                          "value": "<string>"
+                        },
+                        {
+                          "description": "Box item type, for which the mappings should be returned",
+                          "key": "box_item_type",
+                          "value": "folder"
+                        },
+                        {
+                          "description": "Whether the mapping has been manually created",
+                          "key": "is_manually_created",
+                          "value": "<boolean>"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Bad Request",
+                  "code": 400,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"type\": \"error\",\n  \"status\": \"<integer>\",\n  \"code\": \"redirect\",\n  \"message\": \"<string>\",\n  \"context_info\": {\n    \"message\": \"<string>\"\n  },\n  \"help_url\": \"<string>\",\n  \"request_id\": \"<string>\"\n}",
+                  "createdAt": "2026-07-28T01:16:34.000Z",
+                  "updatedAt": "2026-07-28T01:16:34.000Z",
+                  "uid": "35240-083a905b-b860-4a22-9c36-c72562ec26de"
+                },
+                {
+                  "id": "5ca7c6a5-1ba6-463c-932f-1c8f07a6aed7",
+                  "name": "Returns a `not_found` error if the integration mapping could not be found.",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/integration_mappings/slack?marker=<string>&limit=<long>&partner_item_type=channel&partner_item_id=<string>&box_item_id=<string>&box_item_type=folder&is_manually_created=<boolean>",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "integration_mappings",
+                        "slack"
+                      ],
+                      "query": [
+                        {
+                          "description": "Defines the position marker at which to begin returning results. This is\nused when paginating using marker-based pagination.\n\nThis requires `usemarker` to be set to `true`.",
+                          "key": "marker",
+                          "value": "<string>"
+                        },
+                        {
+                          "description": "The maximum number of items to return per page.",
+                          "key": "limit",
+                          "value": "<long>"
+                        },
+                        {
+                          "description": "Mapped item type, for which the mapping should be returned",
+                          "key": "partner_item_type",
+                          "value": "channel"
+                        },
+                        {
+                          "description": "ID of the mapped item, for which the mapping should be returned",
+                          "key": "partner_item_id",
+                          "value": "<string>"
+                        },
+                        {
+                          "description": "Box item ID, for which the mappings should be returned",
+                          "key": "box_item_id",
+                          "value": "<string>"
+                        },
+                        {
+                          "description": "Box item type, for which the mappings should be returned",
+                          "key": "box_item_type",
+                          "value": "folder"
+                        },
+                        {
+                          "description": "Whether the mapping has been manually created",
+                          "key": "is_manually_created",
+                          "value": "<boolean>"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Not Found",
+                  "code": 404,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"type\": \"error\",\n  \"status\": \"<integer>\",\n  \"code\": \"redirect\",\n  \"message\": \"<string>\",\n  \"context_info\": {\n    \"message\": \"<string>\"\n  },\n  \"help_url\": \"<string>\",\n  \"request_id\": \"<string>\"\n}",
+                  "createdAt": "2026-07-28T01:16:34.000Z",
+                  "updatedAt": "2026-07-28T01:16:34.000Z",
+                  "uid": "35240-5ca7c6a5-1ba6-463c-932f-1c8f07a6aed7"
+                },
+                {
+                  "id": "5e9a4e3a-ce37-418e-8e7a-6155d651ea41",
+                  "name": "An unexpected client error.",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/integration_mappings/slack?marker=<string>&limit=<long>&partner_item_type=channel&partner_item_id=<string>&box_item_id=<string>&box_item_type=folder&is_manually_created=<boolean>",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "integration_mappings",
+                        "slack"
+                      ],
+                      "query": [
+                        {
+                          "description": "Defines the position marker at which to begin returning results. This is\nused when paginating using marker-based pagination.\n\nThis requires `usemarker` to be set to `true`.",
+                          "key": "marker",
+                          "value": "<string>"
+                        },
+                        {
+                          "description": "The maximum number of items to return per page.",
+                          "key": "limit",
+                          "value": "<long>"
+                        },
+                        {
+                          "description": "Mapped item type, for which the mapping should be returned",
+                          "key": "partner_item_type",
+                          "value": "channel"
+                        },
+                        {
+                          "description": "ID of the mapped item, for which the mapping should be returned",
+                          "key": "partner_item_id",
+                          "value": "<string>"
+                        },
+                        {
+                          "description": "Box item ID, for which the mappings should be returned",
+                          "key": "box_item_id",
+                          "value": "<string>"
+                        },
+                        {
+                          "description": "Box item type, for which the mappings should be returned",
+                          "key": "box_item_type",
+                          "value": "folder"
+                        },
+                        {
+                          "description": "Whether the mapping has been manually created",
+                          "key": "is_manually_created",
+                          "value": "<boolean>"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Internal Server Error",
+                  "code": 500,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"type\": \"error\",\n  \"status\": \"<integer>\",\n  \"code\": \"redirect\",\n  \"message\": \"<string>\",\n  \"context_info\": {\n    \"message\": \"<string>\"\n  },\n  \"help_url\": \"<string>\",\n  \"request_id\": \"<string>\"\n}",
+                  "createdAt": "2026-07-28T01:16:34.000Z",
+                  "updatedAt": "2026-07-28T01:16:34.000Z",
+                  "uid": "35240-5e9a4e3a-ce37-418e-8e7a-6155d651ea41"
+                }
+              ],
+              "createdAt": "2026-07-28T01:16:34.000Z",
+              "updatedAt": "2026-07-28T01:16:34.000Z",
+              "uid": "35240-f7f32ec8-f5b8-46fb-a09a-a76709269857"
+            },
+            {
+              "name": "Box Create Slack integration mapping",
+              "id": "7fd55572-c28f-4a99-b340-5144b93c8efd",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"partner_item\": {\n    \"id\": \"<string>\",\n    \"type\": \"channel\",\n    \"slack_workspace_id\": \"<string>\",\n    \"slack_org_id\": \"<string>\"\n  },\n  \"box_item\": {\n    \"id\": \"<string>\",\n    \"type\": \"folder\"\n  },\n  \"options\": {\n    \"is_access_management_disabled\": \"<boolean>\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/integration_mappings/slack",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "integration_mappings",
+                    "slack"
+                  ]
+                },
+                "description": "Creates a [Slack integration mapping](https://support.box.com/hc/en-us/articles/4415585987859-Box-as-the-Content-Layer-for-Slack)\nby mapping a Slack channel to a Box item.\n\nYou need Admin or Co-Admin role to\nuse this endpoint."
+              },
+              "response": [
+                {
+                  "id": "36faf539-8cce-4e8d-94de-0fa21ff7f956",
+                  "name": "Returns the created integration mapping.",
+                  "originalRequest": {
+                    "method": "POST",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"partner_item\": {\n    \"id\": \"<string>\",\n    \"type\": \"channel\",\n    \"slack_workspace_id\": \"<string>\",\n    \"slack_org_id\": \"<string>\"\n  },\n  \"box_item\": {\n    \"id\": \"<string>\",\n    \"type\": \"folder\"\n  },\n  \"options\": {\n    \"is_access_management_disabled\": \"<boolean>\"\n  }\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/integration_mappings/slack",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "integration_mappings",
+                        "slack"
+                      ]
+                    }
+                  },
+                  "status": "Created",
+                  "code": 201,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"type\": \"integration_mapping\",\n  \"partner_item\": {\n    \"id\": \"<string>\",\n    \"type\": \"channel\",\n    \"slack_workspace_id\": \"<string>\",\n    \"slack_org_id\": \"<string>\"\n  },\n  \"box_item\": {\n    \"id\": \"<string>\",\n    \"type\": \"folder\",\n    \"etag\": \"<string>\",\n    \"sequence_id\": \"<string>\",\n    \"name\": \"<string>\"\n  },\n  \"id\": \"<string>\",\n  \"integration_type\": \"slack\",\n  \"is_manually_created\": \"<boolean>\",\n  \"options\": {\n    \"is_access_management_disabled\": \"<boolean>\"\n  },\n  \"created_by\": {\n    \"type\": \"user\",\n    \"id\": \"<string>\",\n    \"name\": \"<string>\",\n    \"login\": \"<email>\"\n  },\n  \"modified_by\": {\n    \"type\": \"user\",\n    \"id\": \"<string>\",\n    \"name\": \"<string>\",\n    \"login\": \"<email>\"\n  },\n  \"created_at\": \"<dateTime>\",\n  \"modified_at\": \"<dateTime>\"\n}",
+                  "createdAt": "2026-07-28T01:16:34.000Z",
+                  "updatedAt": "2026-07-28T01:16:34.000Z",
+                  "uid": "35240-36faf539-8cce-4e8d-94de-0fa21ff7f956"
+                },
+                {
+                  "id": "8b5703f4-1631-4f92-ade5-5fb9b6080f6c",
+                  "name": "Returns a `bad_request` if an incorrect `options`\nwas supplied or the Box folder cannot be\nmapped to this `partner_item_id`.\nError codes:\n* `SERVICE_ACCOUNT_IS_NOT_A_COOWNER_OR_OWNER` - service account\ndoesn't have co-owner collaboration or is\nnot an owne",
+                  "originalRequest": {
+                    "method": "POST",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"partner_item\": {\n    \"id\": \"<string>\",\n    \"type\": \"channel\",\n    \"slack_workspace_id\": \"<string>\",\n    \"slack_org_id\": \"<string>\"\n  },\n  \"box_item\": {\n    \"id\": \"<string>\",\n    \"type\": \"folder\"\n  },\n  \"options\": {\n    \"is_access_management_disabled\": \"<boolean>\"\n  }\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/integration_mappings/slack",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "integration_mappings",
+                        "slack"
+                      ]
+                    }
+                  },
+                  "status": "Bad Request",
+                  "code": 400,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"type\": \"error\",\n  \"status\": \"<integer>\",\n  \"code\": \"redirect\",\n  \"message\": \"<string>\",\n  \"context_info\": {\n    \"message\": \"<string>\"\n  },\n  \"help_url\": \"<string>\",\n  \"request_id\": \"<string>\"\n}",
+                  "createdAt": "2026-07-28T01:16:34.000Z",
+                  "updatedAt": "2026-07-28T01:16:34.000Z",
+                  "uid": "35240-8b5703f4-1631-4f92-ade5-5fb9b6080f6c"
+                },
+                {
+                  "id": "8192c914-ee78-4d46-83eb-2721b0c6f19b",
+                  "name": "Returns a `not_found` error if the integration mapping could not be found.",
+                  "originalRequest": {
+                    "method": "POST",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"partner_item\": {\n    \"id\": \"<string>\",\n    \"type\": \"channel\",\n    \"slack_workspace_id\": \"<string>\",\n    \"slack_org_id\": \"<string>\"\n  },\n  \"box_item\": {\n    \"id\": \"<string>\",\n    \"type\": \"folder\"\n  },\n  \"options\": {\n    \"is_access_management_disabled\": \"<boolean>\"\n  }\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/integration_mappings/slack",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "integration_mappings",
+                        "slack"
+                      ]
+                    }
+                  },
+                  "status": "Not Found",
+                  "code": 404,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"type\": \"error\",\n  \"status\": \"<integer>\",\n  \"code\": \"redirect\",\n  \"message\": \"<string>\",\n  \"context_info\": {\n    \"message\": \"<string>\"\n  },\n  \"help_url\": \"<string>\",\n  \"request_id\": \"<string>\"\n}",
+                  "createdAt": "2026-07-28T01:16:34.000Z",
+                  "updatedAt": "2026-07-28T01:16:34.000Z",
+                  "uid": "35240-8192c914-ee78-4d46-83eb-2721b0c6f19b"
+                },
+                {
+                  "id": "80fdd131-8b1e-4426-8dd3-0a2925f89514",
+                  "name": "An unexpected client error.",
+                  "originalRequest": {
+                    "method": "POST",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"partner_item\": {\n    \"id\": \"<string>\",\n    \"type\": \"channel\",\n    \"slack_workspace_id\": \"<string>\",\n    \"slack_org_id\": \"<string>\"\n  },\n  \"box_item\": {\n    \"id\": \"<string>\",\n    \"type\": \"folder\"\n  },\n  \"options\": {\n    \"is_access_management_disabled\": \"<boolean>\"\n  }\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/integration_mappings/slack",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "integration_mappings",
+                        "slack"
+                      ]
+                    }
+                  },
+                  "status": "Internal Server Error",
+                  "code": 500,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"type\": \"error\",\n  \"status\": \"<integer>\",\n  \"code\": \"redirect\",\n  \"message\": \"<string>\",\n  \"context_info\": {\n    \"message\": \"<string>\"\n  },\n  \"help_url\": \"<string>\",\n  \"request_id\": \"<string>\"\n}",
+                  "createdAt": "2026-07-28T01:16:34.000Z",
+                  "updatedAt": "2026-07-28T01:16:34.000Z",
+                  "uid": "35240-80fdd131-8b1e-4426-8dd3-0a2925f89514"
+                }
+              ],
+              "createdAt": "2026-07-28T01:16:34.000Z",
+              "updatedAt": "2026-07-28T01:16:34.000Z",
+              "uid": "35240-7fd55572-c28f-4a99-b340-5144b93c8efd"
+            }
+          ],
+          "id": "3bca8e9f-97d4-4595-9d62-f39929b49117",
+          "createdAt": "2026-07-28T01:16:34.000Z",
+          "updatedAt": "2026-07-28T01:16:34.000Z",
+          "uid": "35240-3bca8e9f-97d4-4595-9d62-f39929b49117"
+        }
+      ],
+      "id": "16c8fe02-7225-4e5e-a303-fe5b9a75098a",
+      "createdAt": "2026-07-28T01:16:34.000Z",
+      "updatedAt": "2026-07-28T01:16:34.000Z",
+      "uid": "35240-16c8fe02-7225-4e5e-a303-fe5b9a75098a"
+    }
+  ],
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "/"
+    }
+  ]
+}

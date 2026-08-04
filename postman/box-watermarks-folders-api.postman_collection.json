@@ -1,0 +1,612 @@
+{
+  "info": {
+    "_postman_id": "07b48a20-cee0-4fbd-ace2-4c5973b6ad0c",
+    "name": "Box Authorize Authorization Watermarks (Folders) API",
+    "description": "Needs a description.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "createdAt": "2026-07-28T01:18:45.000Z",
+    "updatedAt": "2026-07-28T01:18:46.000Z",
+    "lastUpdatedBy": "35240",
+    "uid": "35240-07b48a20-cee0-4fbd-ace2-4c5973b6ad0c"
+  },
+  "item": [
+    {
+      "name": "folders",
+      "item": [
+        {
+          "name": "{folder_id}",
+          "item": [
+            {
+              "name": "watermark",
+              "item": [
+                {
+                  "name": "Box Get watermark for folder",
+                  "id": "edb93524-5a9e-4f3b-95c0-d09d3ca3e2b4",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/folders/:folder_id/watermark",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "folders",
+                        ":folder_id",
+                        "watermark"
+                      ],
+                      "variable": [
+                        {
+                          "id": "f2a0d8f7-f86e-408f-873b-323cee64acfe",
+                          "key": "folder_id",
+                          "value": "<string>",
+                          "description": "(Required) The unique identifier that represent a folder.\n\nThe ID for any folder can be determined\nby visiting this folder in the web application\nand copying the ID from the URL. For example,\nfor the URL `https://*.app.box.com/folder/123`\nthe `folder_id` is `123`.\n\nThe root folder of a Box account is\nalways represented by the ID `0`."
+                        }
+                      ]
+                    },
+                    "description": "Retrieve the watermark for a folder."
+                  },
+                  "response": [
+                    {
+                      "id": "f6178580-b6ab-4468-8402-ae7b16a5ef3a",
+                      "name": "Returns an object containing information about the\nwatermark associated for to this folder.",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/folders/:folder_id/watermark",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "folders",
+                            ":folder_id",
+                            "watermark"
+                          ],
+                          "variable": [
+                            {
+                              "key": "folder_id"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "OK",
+                      "code": 200,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"watermark\": {\n    \"created_at\": \"<dateTime>\",\n    \"modified_at\": \"<dateTime>\"\n  }\n}",
+                      "createdAt": "2026-07-28T01:18:46.000Z",
+                      "updatedAt": "2026-07-28T01:18:46.000Z",
+                      "uid": "35240-f6178580-b6ab-4468-8402-ae7b16a5ef3a"
+                    },
+                    {
+                      "id": "de5ca5e8-2bca-457b-89d5-64db4cd77fcc",
+                      "name": "Returns an error if the folder does not have a watermark applied.",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/folders/:folder_id/watermark",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "folders",
+                            ":folder_id",
+                            "watermark"
+                          ],
+                          "variable": [
+                            {
+                              "key": "folder_id"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Not Found",
+                      "code": 404,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"type\": \"error\",\n  \"status\": \"<integer>\",\n  \"code\": \"item_name_invalid\",\n  \"message\": \"<string>\",\n  \"context_info\": {\n    \"message\": \"<string>\"\n  },\n  \"help_url\": \"<string>\",\n  \"request_id\": \"<string>\"\n}",
+                      "createdAt": "2026-07-28T01:18:46.000Z",
+                      "updatedAt": "2026-07-28T01:18:46.000Z",
+                      "uid": "35240-de5ca5e8-2bca-457b-89d5-64db4cd77fcc"
+                    },
+                    {
+                      "id": "e69d6c28-43a4-49f5-b474-5a9543043296",
+                      "name": "An unexpected client error.",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/folders/:folder_id/watermark",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "folders",
+                            ":folder_id",
+                            "watermark"
+                          ],
+                          "variable": [
+                            {
+                              "key": "folder_id"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Internal Server Error",
+                      "code": 500,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"type\": \"error\",\n  \"status\": \"<integer>\",\n  \"code\": \"item_name_invalid\",\n  \"message\": \"<string>\",\n  \"context_info\": {\n    \"message\": \"<string>\"\n  },\n  \"help_url\": \"<string>\",\n  \"request_id\": \"<string>\"\n}",
+                      "createdAt": "2026-07-28T01:18:46.000Z",
+                      "updatedAt": "2026-07-28T01:18:46.000Z",
+                      "uid": "35240-e69d6c28-43a4-49f5-b474-5a9543043296"
+                    }
+                  ],
+                  "createdAt": "2026-07-28T01:18:46.000Z",
+                  "updatedAt": "2026-07-28T01:18:46.000Z",
+                  "uid": "35240-edb93524-5a9e-4f3b-95c0-d09d3ca3e2b4"
+                },
+                {
+                  "name": "Box Apply watermark to folder",
+                  "id": "e9cc8cdc-9440-4f25-9389-f812e1750cbe",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "method": "PUT",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"watermark\": {\n    \"imprint\": \"default\"\n  }\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/folders/:folder_id/watermark",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "folders",
+                        ":folder_id",
+                        "watermark"
+                      ],
+                      "variable": [
+                        {
+                          "id": "faca2b66-b850-4183-a47a-62272591b2c3",
+                          "key": "folder_id",
+                          "value": "<string>",
+                          "description": "(Required) The unique identifier that represent a folder.\n\nThe ID for any folder can be determined\nby visiting this folder in the web application\nand copying the ID from the URL. For example,\nfor the URL `https://*.app.box.com/folder/123`\nthe `folder_id` is `123`.\n\nThe root folder of a Box account is\nalways represented by the ID `0`."
+                        }
+                      ]
+                    },
+                    "description": "Applies or update a watermark on a folder."
+                  },
+                  "response": [
+                    {
+                      "id": "f1a956ec-2301-42e4-a268-7da870917ae5",
+                      "name": "Returns an updated watermark if a watermark already\nexisted on this folder.",
+                      "originalRequest": {
+                        "method": "PUT",
+                        "header": [
+                          {
+                            "key": "Content-Type",
+                            "value": "application/json"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          }
+                        ],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"watermark\": {\n    \"imprint\": \"default\"\n  }\n}",
+                          "options": {
+                            "raw": {
+                              "headerFamily": "json",
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/folders/:folder_id/watermark",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "folders",
+                            ":folder_id",
+                            "watermark"
+                          ],
+                          "variable": [
+                            {
+                              "key": "folder_id"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "OK",
+                      "code": 200,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"watermark\": {\n    \"created_at\": \"<dateTime>\",\n    \"modified_at\": \"<dateTime>\"\n  }\n}",
+                      "createdAt": "2026-07-28T01:18:46.000Z",
+                      "updatedAt": "2026-07-28T01:18:46.000Z",
+                      "uid": "35240-f1a956ec-2301-42e4-a268-7da870917ae5"
+                    },
+                    {
+                      "id": "f012daee-0aa4-43ca-b5a0-59bd8bdfd309",
+                      "name": "Returns a new watermark if no watermark existed on\nthis folder yet.",
+                      "originalRequest": {
+                        "method": "PUT",
+                        "header": [
+                          {
+                            "key": "Content-Type",
+                            "value": "application/json"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          }
+                        ],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"watermark\": {\n    \"imprint\": \"default\"\n  }\n}",
+                          "options": {
+                            "raw": {
+                              "headerFamily": "json",
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/folders/:folder_id/watermark",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "folders",
+                            ":folder_id",
+                            "watermark"
+                          ],
+                          "variable": [
+                            {
+                              "key": "folder_id"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Created",
+                      "code": 201,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"watermark\": {\n    \"created_at\": \"<dateTime>\",\n    \"modified_at\": \"<dateTime>\"\n  }\n}",
+                      "createdAt": "2026-07-28T01:18:46.000Z",
+                      "updatedAt": "2026-07-28T01:18:46.000Z",
+                      "uid": "35240-f012daee-0aa4-43ca-b5a0-59bd8bdfd309"
+                    },
+                    {
+                      "id": "1f41fbcf-a347-4f96-90fb-69ad78554601",
+                      "name": "An unexpected client error.",
+                      "originalRequest": {
+                        "method": "PUT",
+                        "header": [
+                          {
+                            "key": "Content-Type",
+                            "value": "application/json"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          }
+                        ],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"watermark\": {\n    \"imprint\": \"default\"\n  }\n}",
+                          "options": {
+                            "raw": {
+                              "headerFamily": "json",
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/folders/:folder_id/watermark",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "folders",
+                            ":folder_id",
+                            "watermark"
+                          ],
+                          "variable": [
+                            {
+                              "key": "folder_id"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Internal Server Error",
+                      "code": 500,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"type\": \"error\",\n  \"status\": \"<integer>\",\n  \"code\": \"item_name_invalid\",\n  \"message\": \"<string>\",\n  \"context_info\": {\n    \"message\": \"<string>\"\n  },\n  \"help_url\": \"<string>\",\n  \"request_id\": \"<string>\"\n}",
+                      "createdAt": "2026-07-28T01:18:46.000Z",
+                      "updatedAt": "2026-07-28T01:18:46.000Z",
+                      "uid": "35240-1f41fbcf-a347-4f96-90fb-69ad78554601"
+                    }
+                  ],
+                  "createdAt": "2026-07-28T01:18:46.000Z",
+                  "updatedAt": "2026-07-28T01:18:46.000Z",
+                  "uid": "35240-e9cc8cdc-9440-4f25-9389-f812e1750cbe"
+                },
+                {
+                  "name": "Box Remove watermark from folder",
+                  "id": "cbdfba17-e21d-4acd-a0e8-6c91e9385619",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "method": "DELETE",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/folders/:folder_id/watermark",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "folders",
+                        ":folder_id",
+                        "watermark"
+                      ],
+                      "variable": [
+                        {
+                          "id": "f56ec985-7ff2-4eba-b0a1-53d475134062",
+                          "key": "folder_id",
+                          "value": "<string>",
+                          "description": "(Required) The unique identifier that represent a folder.\n\nThe ID for any folder can be determined\nby visiting this folder in the web application\nand copying the ID from the URL. For example,\nfor the URL `https://*.app.box.com/folder/123`\nthe `folder_id` is `123`.\n\nThe root folder of a Box account is\nalways represented by the ID `0`."
+                        }
+                      ]
+                    },
+                    "description": "Removes the watermark from a folder."
+                  },
+                  "response": [
+                    {
+                      "id": "99f03520-cf29-45fd-8ec0-790edb98e2f3",
+                      "name": "An empty response will be returned when the watermark\nwas successfully deleted.",
+                      "originalRequest": {
+                        "method": "DELETE",
+                        "header": [],
+                        "url": {
+                          "raw": "{{baseUrl}}/folders/:folder_id/watermark",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "folders",
+                            ":folder_id",
+                            "watermark"
+                          ],
+                          "variable": [
+                            {
+                              "key": "folder_id"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "No Content",
+                      "code": 204,
+                      "_postman_previewlanguage": "text",
+                      "header": [],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": null,
+                      "createdAt": "2026-07-28T01:18:46.000Z",
+                      "updatedAt": "2026-07-28T01:18:46.000Z",
+                      "uid": "35240-99f03520-cf29-45fd-8ec0-790edb98e2f3"
+                    },
+                    {
+                      "id": "a57797f4-9d32-46ee-a24e-eba70b3c8631",
+                      "name": "Returns an error if the folder did not have\na watermark applied to it",
+                      "originalRequest": {
+                        "method": "DELETE",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/folders/:folder_id/watermark",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "folders",
+                            ":folder_id",
+                            "watermark"
+                          ],
+                          "variable": [
+                            {
+                              "key": "folder_id"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Not Found",
+                      "code": 404,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"type\": \"error\",\n  \"status\": \"<integer>\",\n  \"code\": \"item_name_invalid\",\n  \"message\": \"<string>\",\n  \"context_info\": {\n    \"message\": \"<string>\"\n  },\n  \"help_url\": \"<string>\",\n  \"request_id\": \"<string>\"\n}",
+                      "createdAt": "2026-07-28T01:18:46.000Z",
+                      "updatedAt": "2026-07-28T01:18:46.000Z",
+                      "uid": "35240-a57797f4-9d32-46ee-a24e-eba70b3c8631"
+                    },
+                    {
+                      "id": "b95005a3-634b-4612-9477-711fd55129d9",
+                      "name": "An unexpected client error.",
+                      "originalRequest": {
+                        "method": "DELETE",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/folders/:folder_id/watermark",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "folders",
+                            ":folder_id",
+                            "watermark"
+                          ],
+                          "variable": [
+                            {
+                              "key": "folder_id"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Internal Server Error",
+                      "code": 500,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"type\": \"error\",\n  \"status\": \"<integer>\",\n  \"code\": \"item_name_invalid\",\n  \"message\": \"<string>\",\n  \"context_info\": {\n    \"message\": \"<string>\"\n  },\n  \"help_url\": \"<string>\",\n  \"request_id\": \"<string>\"\n}",
+                      "createdAt": "2026-07-28T01:18:46.000Z",
+                      "updatedAt": "2026-07-28T01:18:46.000Z",
+                      "uid": "35240-b95005a3-634b-4612-9477-711fd55129d9"
+                    }
+                  ],
+                  "createdAt": "2026-07-28T01:18:46.000Z",
+                  "updatedAt": "2026-07-28T01:18:46.000Z",
+                  "uid": "35240-cbdfba17-e21d-4acd-a0e8-6c91e9385619"
+                }
+              ],
+              "id": "43f05b5c-31b0-4685-91ba-17d0721945b7",
+              "createdAt": "2026-07-28T01:18:46.000Z",
+              "updatedAt": "2026-07-28T01:18:46.000Z",
+              "uid": "35240-43f05b5c-31b0-4685-91ba-17d0721945b7"
+            }
+          ],
+          "id": "360f6b0e-605f-42f3-b503-f8d69bb3f147",
+          "createdAt": "2026-07-28T01:18:46.000Z",
+          "updatedAt": "2026-07-28T01:18:46.000Z",
+          "uid": "35240-360f6b0e-605f-42f3-b503-f8d69bb3f147"
+        }
+      ],
+      "id": "a9eb069a-d735-49be-a7de-38e0e556a861",
+      "createdAt": "2026-07-28T01:18:46.000Z",
+      "updatedAt": "2026-07-28T01:18:46.000Z",
+      "uid": "35240-a9eb069a-d735-49be-a7de-38e0e556a861"
+    }
+  ],
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "/"
+    }
+  ]
+}

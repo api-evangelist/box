@@ -1,0 +1,792 @@
+{
+  "info": {
+    "_postman_id": "aae1e4c5-b6c9-4169-a667-44d83c78ccac",
+    "name": "Box Authorize Authorization Trashed Folders API",
+    "description": "Needs a description.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "createdAt": "2026-07-28T01:17:55.000Z",
+    "updatedAt": "2026-07-28T01:17:55.000Z",
+    "lastUpdatedBy": "35240",
+    "uid": "35240-aae1e4c5-b6c9-4169-a667-44d83c78ccac"
+  },
+  "item": [
+    {
+      "name": "folders",
+      "item": [
+        {
+          "name": "{folder_id}",
+          "item": [
+            {
+              "name": "trash",
+              "item": [
+                {
+                  "name": "Box Get trashed folder",
+                  "id": "b660789d-4c39-4b21-a45f-7a295782773e",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/folders/:folder_id/trash?fields=<string>,<string>",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "folders",
+                        ":folder_id",
+                        "trash"
+                      ],
+                      "query": [
+                        {
+                          "description": "A comma-separated list of attributes to include in the\nresponse. This can be used to request fields that are\nnot normally returned in a standard response.\n\nBe aware that specifying this parameter will have the\neffect that none of the standard fields are returned in\nthe response unless explicitly specified, instead only\nfields for the mini representation are returned, additional\nto the fields requested.",
+                          "key": "fields",
+                          "value": "<string>,<string>"
+                        }
+                      ],
+                      "variable": [
+                        {
+                          "id": "25f7148c-4b11-4c4d-b011-0f1cd6051980",
+                          "key": "folder_id",
+                          "value": "<string>",
+                          "description": "(Required) The unique identifier that represent a folder.\n\nThe ID for any folder can be determined\nby visiting this folder in the web application\nand copying the ID from the URL. For example,\nfor the URL `https://*.app.box.com/folder/123`\nthe `folder_id` is `123`.\n\nThe root folder of a Box account is\nalways represented by the ID `0`."
+                        }
+                      ]
+                    },
+                    "description": "Retrieves a folder that has been moved to the trash.\n\nPlease note that only if the folder itself has been moved to the\ntrash can it be retrieved with this API call. If instead one of\nits parent folders was moved to the trash, only that folder\ncan be inspected using the\n[`GET /folders/:id/trash`](e://get_folders_id_trash) API.\n\nTo list all items that have been moved to the trash, please\nuse the [`GET /folders/trash/items`](e://get-folders-trash-items/)\nAPI."
+                  },
+                  "response": [
+                    {
+                      "id": "e123ae87-beaf-441a-8b31-53f593474ffe",
+                      "name": "Returns the folder that was trashed,\nincluding information about when the it\nwas moved to the trash.",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/folders/:folder_id/trash?fields=<string>,<string>",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "folders",
+                            ":folder_id",
+                            "trash"
+                          ],
+                          "query": [
+                            {
+                              "description": "A comma-separated list of attributes to include in the\nresponse. This can be used to request fields that are\nnot normally returned in a standard response.\n\nBe aware that specifying this parameter will have the\neffect that none of the standard fields are returned in\nthe response unless explicitly specified, instead only\nfields for the mini representation are returned, additional\nto the fields requested.",
+                              "key": "fields",
+                              "value": "<string>,<string>"
+                            }
+                          ],
+                          "variable": [
+                            {
+                              "key": "folder_id"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "OK",
+                      "code": 200,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"id\": \"<string>\",\n  \"type\": \"folder\",\n  \"name\": \"<string>\",\n  \"description\": \"<string>\",\n  \"size\": \"<long>\",\n  \"path_collection\": {\n    \"total_count\": \"<long>\",\n    \"entries\": [\n      {\n        \"type\": \"folder\",\n        \"id\": \"<string>\",\n        \"sequence_id\": \"<string>\",\n        \"etag\": \"<string>\",\n        \"name\": \"<string>\"\n      },\n      {\n        \"type\": \"folder\",\n        \"id\": \"<string>\",\n        \"sequence_id\": \"<string>\",\n        \"etag\": \"<string>\",\n        \"name\": \"<string>\"\n      }\n    ]\n  },\n  \"created_by\": {\n    \"type\": \"user\",\n    \"id\": \"<string>\",\n    \"name\": \"<string>\",\n    \"login\": \"<email>\"\n  },\n  \"modified_by\": {\n    \"type\": \"user\",\n    \"id\": \"<string>\",\n    \"name\": \"<string>\",\n    \"login\": \"<email>\"\n  },\n  \"owned_by\": {\n    \"type\": \"user\",\n    \"id\": \"<string>\",\n    \"name\": \"<string>\",\n    \"login\": \"<email>\"\n  },\n  \"item_status\": \"deleted\",\n  \"etag\": \"<string>\",\n  \"sequence_id\": \"<string>\",\n  \"created_at\": \"<dateTime>\",\n  \"modified_at\": \"<dateTime>\",\n  \"trashed_at\": \"<dateTime>\",\n  \"purged_at\": \"<dateTime>\",\n  \"content_created_at\": \"<dateTime>\",\n  \"content_modified_at\": \"<dateTime>\",\n  \"shared_link\": \"<string>\",\n  \"folder_upload_email\": \"<string>\",\n  \"parent\": {\n    \"id\": \"<string>\",\n    \"type\": \"folder\",\n    \"etag\": \"<string>\",\n    \"sequence_id\": \"<string>\",\n    \"name\": \"<string>\"\n  }\n}",
+                      "createdAt": "2026-07-28T01:17:55.000Z",
+                      "updatedAt": "2026-07-28T01:17:55.000Z",
+                      "uid": "35240-e123ae87-beaf-441a-8b31-53f593474ffe"
+                    },
+                    {
+                      "id": "19e69b25-d04b-4300-b590-1f5ea6564d54",
+                      "name": "Returns an error if the folder can not be found directly\nin the trash.\n\nPlease note that a `HTTP 404` is also returned if any of\nthe folder's parent folders have been moved to the trash.\n\nIn that case, only that parent folder can be inspected using\nthe [`",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/folders/:folder_id/trash?fields=<string>,<string>",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "folders",
+                            ":folder_id",
+                            "trash"
+                          ],
+                          "query": [
+                            {
+                              "description": "A comma-separated list of attributes to include in the\nresponse. This can be used to request fields that are\nnot normally returned in a standard response.\n\nBe aware that specifying this parameter will have the\neffect that none of the standard fields are returned in\nthe response unless explicitly specified, instead only\nfields for the mini representation are returned, additional\nto the fields requested.",
+                              "key": "fields",
+                              "value": "<string>,<string>"
+                            }
+                          ],
+                          "variable": [
+                            {
+                              "key": "folder_id"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Not Found",
+                      "code": 404,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"type\": \"error\",\n  \"status\": \"<integer>\",\n  \"code\": \"insufficient_scope\",\n  \"message\": \"<string>\",\n  \"context_info\": {\n    \"message\": \"<string>\"\n  },\n  \"help_url\": \"<string>\",\n  \"request_id\": \"<string>\"\n}",
+                      "createdAt": "2026-07-28T01:17:55.000Z",
+                      "updatedAt": "2026-07-28T01:17:55.000Z",
+                      "uid": "35240-19e69b25-d04b-4300-b590-1f5ea6564d54"
+                    },
+                    {
+                      "id": "2acb3d2a-5219-452b-a164-bf92bdb08fb0",
+                      "name": "An unexpected client error.",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/folders/:folder_id/trash?fields=<string>,<string>",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "folders",
+                            ":folder_id",
+                            "trash"
+                          ],
+                          "query": [
+                            {
+                              "description": "A comma-separated list of attributes to include in the\nresponse. This can be used to request fields that are\nnot normally returned in a standard response.\n\nBe aware that specifying this parameter will have the\neffect that none of the standard fields are returned in\nthe response unless explicitly specified, instead only\nfields for the mini representation are returned, additional\nto the fields requested.",
+                              "key": "fields",
+                              "value": "<string>,<string>"
+                            }
+                          ],
+                          "variable": [
+                            {
+                              "key": "folder_id"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Internal Server Error",
+                      "code": 500,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"type\": \"error\",\n  \"status\": \"<integer>\",\n  \"code\": \"insufficient_scope\",\n  \"message\": \"<string>\",\n  \"context_info\": {\n    \"message\": \"<string>\"\n  },\n  \"help_url\": \"<string>\",\n  \"request_id\": \"<string>\"\n}",
+                      "createdAt": "2026-07-28T01:17:55.000Z",
+                      "updatedAt": "2026-07-28T01:17:55.000Z",
+                      "uid": "35240-2acb3d2a-5219-452b-a164-bf92bdb08fb0"
+                    }
+                  ],
+                  "createdAt": "2026-07-28T01:17:55.000Z",
+                  "updatedAt": "2026-07-28T01:17:55.000Z",
+                  "uid": "35240-b660789d-4c39-4b21-a45f-7a295782773e"
+                },
+                {
+                  "name": "Box Permanently remove folder",
+                  "id": "e334dabd-5b01-4ced-93d0-88670b755089",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "method": "DELETE",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/folders/:folder_id/trash",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "folders",
+                        ":folder_id",
+                        "trash"
+                      ],
+                      "variable": [
+                        {
+                          "id": "85014fd6-93a7-4ac8-ae0c-078b1c7efaac",
+                          "key": "folder_id",
+                          "value": "<string>",
+                          "description": "(Required) The unique identifier that represent a folder.\n\nThe ID for any folder can be determined\nby visiting this folder in the web application\nand copying the ID from the URL. For example,\nfor the URL `https://*.app.box.com/folder/123`\nthe `folder_id` is `123`.\n\nThe root folder of a Box account is\nalways represented by the ID `0`."
+                        }
+                      ]
+                    },
+                    "description": "Permanently deletes a folder that is in the trash.\nThis action cannot be undone."
+                  },
+                  "response": [
+                    {
+                      "id": "fe786d5d-f8a1-4744-b116-2f91062121c9",
+                      "name": "Returns an empty response when the folder was\npermanently deleted.",
+                      "originalRequest": {
+                        "method": "DELETE",
+                        "header": [],
+                        "url": {
+                          "raw": "{{baseUrl}}/folders/:folder_id/trash",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "folders",
+                            ":folder_id",
+                            "trash"
+                          ],
+                          "variable": [
+                            {
+                              "key": "folder_id"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "No Content",
+                      "code": 204,
+                      "_postman_previewlanguage": "text",
+                      "header": [],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": null,
+                      "createdAt": "2026-07-28T01:17:55.000Z",
+                      "updatedAt": "2026-07-28T01:17:55.000Z",
+                      "uid": "35240-fe786d5d-f8a1-4744-b116-2f91062121c9"
+                    },
+                    {
+                      "id": "ee060d6b-3b04-4ddb-9620-785fcfa035b8",
+                      "name": "Returns an error if the folder is not in the trash.",
+                      "originalRequest": {
+                        "method": "DELETE",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/folders/:folder_id/trash",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "folders",
+                            ":folder_id",
+                            "trash"
+                          ],
+                          "variable": [
+                            {
+                              "key": "folder_id"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Not Found",
+                      "code": 404,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"type\": \"error\",\n  \"status\": \"<integer>\",\n  \"code\": \"insufficient_scope\",\n  \"message\": \"<string>\",\n  \"context_info\": {\n    \"message\": \"<string>\"\n  },\n  \"help_url\": \"<string>\",\n  \"request_id\": \"<string>\"\n}",
+                      "createdAt": "2026-07-28T01:17:55.000Z",
+                      "updatedAt": "2026-07-28T01:17:55.000Z",
+                      "uid": "35240-ee060d6b-3b04-4ddb-9620-785fcfa035b8"
+                    },
+                    {
+                      "id": "9ad29581-e29a-42cb-b45f-fd385a533a90",
+                      "name": "An unexpected client error.",
+                      "originalRequest": {
+                        "method": "DELETE",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/folders/:folder_id/trash",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "folders",
+                            ":folder_id",
+                            "trash"
+                          ],
+                          "variable": [
+                            {
+                              "key": "folder_id"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Internal Server Error",
+                      "code": 500,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"type\": \"error\",\n  \"status\": \"<integer>\",\n  \"code\": \"insufficient_scope\",\n  \"message\": \"<string>\",\n  \"context_info\": {\n    \"message\": \"<string>\"\n  },\n  \"help_url\": \"<string>\",\n  \"request_id\": \"<string>\"\n}",
+                      "createdAt": "2026-07-28T01:17:55.000Z",
+                      "updatedAt": "2026-07-28T01:17:55.000Z",
+                      "uid": "35240-9ad29581-e29a-42cb-b45f-fd385a533a90"
+                    }
+                  ],
+                  "createdAt": "2026-07-28T01:17:55.000Z",
+                  "updatedAt": "2026-07-28T01:17:55.000Z",
+                  "uid": "35240-e334dabd-5b01-4ced-93d0-88670b755089"
+                }
+              ],
+              "id": "c8145da8-fc17-48f3-88b5-a7fcd37cd9b4",
+              "createdAt": "2026-07-28T01:17:55.000Z",
+              "updatedAt": "2026-07-28T01:17:55.000Z",
+              "uid": "35240-c8145da8-fc17-48f3-88b5-a7fcd37cd9b4"
+            },
+            {
+              "name": "Box Restore folder",
+              "id": "9ce7dd9d-4acc-47bf-a628-26b75d22c4d4",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"<string>\",\n  \"parent\": {\n    \"id\": \"<string>\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/folders/:folder_id?fields=<string>,<string>",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "folders",
+                    ":folder_id"
+                  ],
+                  "query": [
+                    {
+                      "description": "A comma-separated list of attributes to include in the\nresponse. This can be used to request fields that are\nnot normally returned in a standard response.\n\nBe aware that specifying this parameter will have the\neffect that none of the standard fields are returned in\nthe response unless explicitly specified, instead only\nfields for the mini representation are returned, additional\nto the fields requested.",
+                      "key": "fields",
+                      "value": "<string>,<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "id": "35c0a2f8-ec6e-4f33-98c8-130096c40f04",
+                      "key": "folder_id",
+                      "value": "<string>",
+                      "description": "(Required) The unique identifier that represent a folder.\n\nThe ID for any folder can be determined\nby visiting this folder in the web application\nand copying the ID from the URL. For example,\nfor the URL `https://*.app.box.com/folder/123`\nthe `folder_id` is `123`.\n\nThe root folder of a Box account is\nalways represented by the ID `0`."
+                    }
+                  ]
+                },
+                "description": "Restores a folder that has been moved to the trash.\n\nAn optional new parent ID can be provided to restore the folder to in case the\noriginal folder has been deleted.\n\n# Folder locking\n\nDuring this operation, part of the file tree will be locked, mainly\nthe source folder and all of its descendants, as well as the destination\nfolder.\n\nFor the duration of the operation, no other move, copy, delete, or restore\noperation can performed on any of the locked folders."
+              },
+              "response": [
+                {
+                  "id": "42f11f40-3d56-4b35-b505-ffa44bca7af2",
+                  "name": "Returns a folder object when the folder has been restored.",
+                  "originalRequest": {
+                    "method": "POST",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"name\": \"<string>\",\n  \"parent\": {\n    \"id\": \"<string>\"\n  }\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/folders/:folder_id?fields=<string>,<string>",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "folders",
+                        ":folder_id"
+                      ],
+                      "query": [
+                        {
+                          "description": "A comma-separated list of attributes to include in the\nresponse. This can be used to request fields that are\nnot normally returned in a standard response.\n\nBe aware that specifying this parameter will have the\neffect that none of the standard fields are returned in\nthe response unless explicitly specified, instead only\nfields for the mini representation are returned, additional\nto the fields requested.",
+                          "key": "fields",
+                          "value": "<string>,<string>"
+                        }
+                      ],
+                      "variable": [
+                        {
+                          "key": "folder_id"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Created",
+                  "code": 201,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"id\": \"<string>\",\n  \"etag\": \"<string>\",\n  \"type\": \"folder\",\n  \"sequence_id\": \"<string>\",\n  \"name\": \"<string>\",\n  \"created_at\": \"<dateTime>\",\n  \"modified_at\": \"<dateTime>\",\n  \"description\": \"<string>\",\n  \"size\": \"<long>\",\n  \"path_collection\": {\n    \"total_count\": \"<long>\",\n    \"entries\": [\n      {\n        \"id\": \"<string>\",\n        \"type\": \"folder\",\n        \"etag\": \"<string>\",\n        \"sequence_id\": \"<string>\",\n        \"name\": \"<string>\"\n      },\n      {\n        \"id\": \"<string>\",\n        \"type\": \"folder\",\n        \"etag\": \"<string>\",\n        \"sequence_id\": \"<string>\",\n        \"name\": \"<string>\"\n      }\n    ]\n  },\n  \"created_by\": {\n    \"type\": \"user\",\n    \"id\": \"<string>\",\n    \"name\": \"<string>\",\n    \"login\": \"<email>\"\n  },\n  \"modified_by\": {\n    \"type\": \"user\",\n    \"id\": \"<string>\",\n    \"name\": \"<string>\",\n    \"login\": \"<email>\"\n  },\n  \"trashed_at\": \"<string>\",\n  \"purged_at\": \"<string>\",\n  \"content_created_at\": \"<dateTime>\",\n  \"content_modified_at\": \"<dateTime>\",\n  \"owned_by\": {\n    \"type\": \"user\",\n    \"id\": \"<string>\",\n    \"name\": \"<string>\",\n    \"login\": \"<email>\"\n  },\n  \"shared_link\": \"<string>\",\n  \"folder_upload_email\": \"<string>\",\n  \"parent\": {\n    \"id\": \"<string>\",\n    \"type\": \"folder\",\n    \"etag\": \"<string>\",\n    \"sequence_id\": \"<string>\",\n    \"name\": \"<string>\"\n  },\n  \"item_status\": \"active\"\n}",
+                  "createdAt": "2026-07-28T01:17:55.000Z",
+                  "updatedAt": "2026-07-28T01:17:55.000Z",
+                  "uid": "35240-42f11f40-3d56-4b35-b505-ffa44bca7af2"
+                },
+                {
+                  "id": "6ed935b0-20a0-4285-964c-88e533bc4563",
+                  "name": "Returns an error if the user does not have access to the folder\nthe folder is being restored to, or the user does not have permission\nto restore folders from the trash.",
+                  "originalRequest": {
+                    "method": "POST",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"name\": \"<string>\",\n  \"parent\": {\n    \"id\": \"<string>\"\n  }\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/folders/:folder_id?fields=<string>,<string>",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "folders",
+                        ":folder_id"
+                      ],
+                      "query": [
+                        {
+                          "description": "A comma-separated list of attributes to include in the\nresponse. This can be used to request fields that are\nnot normally returned in a standard response.\n\nBe aware that specifying this parameter will have the\neffect that none of the standard fields are returned in\nthe response unless explicitly specified, instead only\nfields for the mini representation are returned, additional\nto the fields requested.",
+                          "key": "fields",
+                          "value": "<string>,<string>"
+                        }
+                      ],
+                      "variable": [
+                        {
+                          "key": "folder_id"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Forbidden",
+                  "code": 403,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"type\": \"error\",\n  \"status\": \"<integer>\",\n  \"code\": \"insufficient_scope\",\n  \"message\": \"<string>\",\n  \"context_info\": {\n    \"message\": \"<string>\"\n  },\n  \"help_url\": \"<string>\",\n  \"request_id\": \"<string>\"\n}",
+                  "createdAt": "2026-07-28T01:17:55.000Z",
+                  "updatedAt": "2026-07-28T01:17:55.000Z",
+                  "uid": "35240-6ed935b0-20a0-4285-964c-88e533bc4563"
+                },
+                {
+                  "id": "795b6a2c-6887-4a3c-a8ed-61fbc3cfa8a1",
+                  "name": "Returns an error if the folder is not in the trash.",
+                  "originalRequest": {
+                    "method": "POST",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"name\": \"<string>\",\n  \"parent\": {\n    \"id\": \"<string>\"\n  }\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/folders/:folder_id?fields=<string>,<string>",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "folders",
+                        ":folder_id"
+                      ],
+                      "query": [
+                        {
+                          "description": "A comma-separated list of attributes to include in the\nresponse. This can be used to request fields that are\nnot normally returned in a standard response.\n\nBe aware that specifying this parameter will have the\neffect that none of the standard fields are returned in\nthe response unless explicitly specified, instead only\nfields for the mini representation are returned, additional\nto the fields requested.",
+                          "key": "fields",
+                          "value": "<string>,<string>"
+                        }
+                      ],
+                      "variable": [
+                        {
+                          "key": "folder_id"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Not Found",
+                  "code": 404,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"type\": \"error\",\n  \"status\": \"<integer>\",\n  \"code\": \"insufficient_scope\",\n  \"message\": \"<string>\",\n  \"context_info\": {\n    \"message\": \"<string>\"\n  },\n  \"help_url\": \"<string>\",\n  \"request_id\": \"<string>\"\n}",
+                  "createdAt": "2026-07-28T01:17:55.000Z",
+                  "updatedAt": "2026-07-28T01:17:55.000Z",
+                  "uid": "35240-795b6a2c-6887-4a3c-a8ed-61fbc3cfa8a1"
+                },
+                {
+                  "id": "5f3ced46-6125-4069-9a96-edc13dbc7a50",
+                  "name": "* Returned an error if there is a folder with the same name\n  in the destination folder.\n\n* `operation_blocked_temporary`: Returned if either of the destination\n  or source folders is locked due to another move, copy, delete or\n  restore operation in proc",
+                  "originalRequest": {
+                    "method": "POST",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"name\": \"<string>\",\n  \"parent\": {\n    \"id\": \"<string>\"\n  }\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/folders/:folder_id?fields=<string>,<string>",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "folders",
+                        ":folder_id"
+                      ],
+                      "query": [
+                        {
+                          "description": "A comma-separated list of attributes to include in the\nresponse. This can be used to request fields that are\nnot normally returned in a standard response.\n\nBe aware that specifying this parameter will have the\neffect that none of the standard fields are returned in\nthe response unless explicitly specified, instead only\nfields for the mini representation are returned, additional\nto the fields requested.",
+                          "key": "fields",
+                          "value": "<string>,<string>"
+                        }
+                      ],
+                      "variable": [
+                        {
+                          "key": "folder_id"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Conflict",
+                  "code": 409,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"type\": \"error\",\n  \"status\": \"<integer>\",\n  \"code\": \"insufficient_scope\",\n  \"message\": \"<string>\",\n  \"context_info\": {\n    \"message\": \"<string>\"\n  },\n  \"help_url\": \"<string>\",\n  \"request_id\": \"<string>\"\n}",
+                  "createdAt": "2026-07-28T01:17:55.000Z",
+                  "updatedAt": "2026-07-28T01:17:55.000Z",
+                  "uid": "35240-5f3ced46-6125-4069-9a96-edc13dbc7a50"
+                },
+                {
+                  "id": "aca217d1-020e-49ed-8164-9e005049fc6f",
+                  "name": "An unexpected client error.",
+                  "originalRequest": {
+                    "method": "POST",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"name\": \"<string>\",\n  \"parent\": {\n    \"id\": \"<string>\"\n  }\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/folders/:folder_id?fields=<string>,<string>",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "folders",
+                        ":folder_id"
+                      ],
+                      "query": [
+                        {
+                          "description": "A comma-separated list of attributes to include in the\nresponse. This can be used to request fields that are\nnot normally returned in a standard response.\n\nBe aware that specifying this parameter will have the\neffect that none of the standard fields are returned in\nthe response unless explicitly specified, instead only\nfields for the mini representation are returned, additional\nto the fields requested.",
+                          "key": "fields",
+                          "value": "<string>,<string>"
+                        }
+                      ],
+                      "variable": [
+                        {
+                          "key": "folder_id"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Internal Server Error",
+                  "code": 500,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"type\": \"error\",\n  \"status\": \"<integer>\",\n  \"code\": \"insufficient_scope\",\n  \"message\": \"<string>\",\n  \"context_info\": {\n    \"message\": \"<string>\"\n  },\n  \"help_url\": \"<string>\",\n  \"request_id\": \"<string>\"\n}",
+                  "createdAt": "2026-07-28T01:17:55.000Z",
+                  "updatedAt": "2026-07-28T01:17:55.000Z",
+                  "uid": "35240-aca217d1-020e-49ed-8164-9e005049fc6f"
+                }
+              ],
+              "createdAt": "2026-07-28T01:17:55.000Z",
+              "updatedAt": "2026-07-28T01:17:55.000Z",
+              "uid": "35240-9ce7dd9d-4acc-47bf-a628-26b75d22c4d4"
+            }
+          ],
+          "id": "f34a87d0-5f3e-4346-bcc4-4719f517fd3e",
+          "createdAt": "2026-07-28T01:17:55.000Z",
+          "updatedAt": "2026-07-28T01:17:55.000Z",
+          "uid": "35240-f34a87d0-5f3e-4346-bcc4-4719f517fd3e"
+        }
+      ],
+      "id": "47c3d08e-c516-44d5-ac41-5c04c93b7d80",
+      "createdAt": "2026-07-28T01:17:55.000Z",
+      "updatedAt": "2026-07-28T01:17:55.000Z",
+      "uid": "35240-47c3d08e-c516-44d5-ac41-5c04c93b7d80"
+    }
+  ],
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "/"
+    }
+  ]
+}

@@ -1,0 +1,1435 @@
+{
+  "info": {
+    "_postman_id": "22e4f32f-245f-4b0c-a072-9f7d0646a9b8",
+    "name": "Box Authorize Authorization Retention Policy Assignments API",
+    "description": "Needs a description.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "createdAt": "2026-07-28T01:16:57.000Z",
+    "updatedAt": "2026-07-28T01:16:57.000Z",
+    "lastUpdatedBy": "35240",
+    "uid": "35240-22e4f32f-245f-4b0c-a072-9f7d0646a9b8"
+  },
+  "item": [
+    {
+      "name": "retention_policies",
+      "item": [
+        {
+          "name": "{retention_policy_id}",
+          "item": [
+            {
+              "name": "assignments",
+              "item": [
+                {
+                  "name": "Box List retention policy assignments",
+                  "id": "2bdfa17c-68ab-42e0-906e-750526a76beb",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/retention_policies/:retention_policy_id/assignments?type=enterprise&fields=<string>,<string>&marker=<string>&limit=<long>",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "retention_policies",
+                        ":retention_policy_id",
+                        "assignments"
+                      ],
+                      "query": [
+                        {
+                          "description": "The type of the retention policy assignment to retrieve.",
+                          "key": "type",
+                          "value": "enterprise"
+                        },
+                        {
+                          "description": "A comma-separated list of attributes to include in the\nresponse. This can be used to request fields that are\nnot normally returned in a standard response.\n\nBe aware that specifying this parameter will have the\neffect that none of the standard fields are returned in\nthe response unless explicitly specified, instead only\nfields for the mini representation are returned, additional\nto the fields requested.",
+                          "key": "fields",
+                          "value": "<string>,<string>"
+                        },
+                        {
+                          "description": "Defines the position marker at which to begin returning results. This is\nused when paginating using marker-based pagination.",
+                          "key": "marker",
+                          "value": "<string>"
+                        },
+                        {
+                          "description": "The maximum number of items to return per page.",
+                          "key": "limit",
+                          "value": "<long>"
+                        }
+                      ],
+                      "variable": [
+                        {
+                          "id": "fab4d469-5211-4b58-8d74-f53ec16c9d8a",
+                          "key": "retention_policy_id",
+                          "value": "<string>",
+                          "description": "(Required) The ID of the retention policy."
+                        }
+                      ]
+                    },
+                    "description": "Returns a list of all retention policy assignments associated with a specified\nretention policy."
+                  },
+                  "response": [
+                    {
+                      "id": "be6463df-204a-4ea4-a1e9-d4ff434e679b",
+                      "name": "Returns a list of the retention policy assignments associated with the\nspecified retention policy.",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/retention_policies/:retention_policy_id/assignments?type=enterprise&fields=<string>,<string>&marker=<string>&limit=<long>",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "retention_policies",
+                            ":retention_policy_id",
+                            "assignments"
+                          ],
+                          "query": [
+                            {
+                              "description": "The type of the retention policy assignment to retrieve.",
+                              "key": "type",
+                              "value": "enterprise"
+                            },
+                            {
+                              "description": "A comma-separated list of attributes to include in the\nresponse. This can be used to request fields that are\nnot normally returned in a standard response.\n\nBe aware that specifying this parameter will have the\neffect that none of the standard fields are returned in\nthe response unless explicitly specified, instead only\nfields for the mini representation are returned, additional\nto the fields requested.",
+                              "key": "fields",
+                              "value": "<string>,<string>"
+                            },
+                            {
+                              "description": "Defines the position marker at which to begin returning results. This is\nused when paginating using marker-based pagination.",
+                              "key": "marker",
+                              "value": "<string>"
+                            },
+                            {
+                              "description": "The maximum number of items to return per page.",
+                              "key": "limit",
+                              "value": "<long>"
+                            }
+                          ],
+                          "variable": [
+                            {
+                              "key": "retention_policy_id"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "OK",
+                      "code": 200,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"entries\": [\n    {\n      \"id\": \"<string>\",\n      \"type\": \"retention_policy_assignment\",\n      \"retention_policy\": {\n        \"id\": \"<string>\",\n        \"type\": \"retention_policy\",\n        \"policy_name\": \"<string>\",\n        \"retention_length\": \"<string>\",\n        \"disposition_action\": \"permanently_delete\"\n      },\n      \"assigned_to\": {\n        \"id\": \"<string>\",\n        \"type\": \"metadata_template\"\n      },\n      \"filter_fields\": [\n        {\n          \"field\": \"<string>\",\n          \"value\": \"<string>\"\n        },\n        {\n          \"field\": \"<string>\",\n          \"value\": \"<string>\"\n        }\n      ],\n      \"assigned_by\": {\n        \"type\": \"user\",\n        \"id\": \"<string>\",\n        \"name\": \"<string>\",\n        \"login\": \"<email>\"\n      },\n      \"assigned_at\": \"<dateTime>\",\n      \"start_date_field\": \"<string>\"\n    },\n    {\n      \"id\": \"<string>\",\n      \"type\": \"retention_policy_assignment\",\n      \"retention_policy\": {\n        \"id\": \"<string>\",\n        \"type\": \"retention_policy\",\n        \"policy_name\": \"<string>\",\n        \"retention_length\": \"<string>\",\n        \"disposition_action\": \"remove_retention\"\n      },\n      \"assigned_to\": {\n        \"id\": \"<string>\",\n        \"type\": \"enterprise\"\n      },\n      \"filter_fields\": [\n        {\n          \"field\": \"<string>\",\n          \"value\": \"<string>\"\n        },\n        {\n          \"field\": \"<string>\",\n          \"value\": \"<string>\"\n        }\n      ],\n      \"assigned_by\": {\n        \"type\": \"user\",\n        \"id\": \"<string>\",\n        \"name\": \"<string>\",\n        \"login\": \"<email>\"\n      },\n      \"assigned_at\": \"<dateTime>\",\n      \"start_date_field\": \"<string>\"\n    }\n  ],\n  \"limit\": \"<long>\",\n  \"next_marker\": \"<string>\"\n}",
+                      "createdAt": "2026-07-28T01:16:57.000Z",
+                      "updatedAt": "2026-07-28T01:16:57.000Z",
+                      "uid": "35240-be6463df-204a-4ea4-a1e9-d4ff434e679b"
+                    },
+                    {
+                      "id": "5ad91805-3ba0-4768-8de2-bcd390618e02",
+                      "name": "Returns an error if an unknown `type` is specified.",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/retention_policies/:retention_policy_id/assignments?type=enterprise&fields=<string>,<string>&marker=<string>&limit=<long>",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "retention_policies",
+                            ":retention_policy_id",
+                            "assignments"
+                          ],
+                          "query": [
+                            {
+                              "description": "The type of the retention policy assignment to retrieve.",
+                              "key": "type",
+                              "value": "enterprise"
+                            },
+                            {
+                              "description": "A comma-separated list of attributes to include in the\nresponse. This can be used to request fields that are\nnot normally returned in a standard response.\n\nBe aware that specifying this parameter will have the\neffect that none of the standard fields are returned in\nthe response unless explicitly specified, instead only\nfields for the mini representation are returned, additional\nto the fields requested.",
+                              "key": "fields",
+                              "value": "<string>,<string>"
+                            },
+                            {
+                              "description": "Defines the position marker at which to begin returning results. This is\nused when paginating using marker-based pagination.",
+                              "key": "marker",
+                              "value": "<string>"
+                            },
+                            {
+                              "description": "The maximum number of items to return per page.",
+                              "key": "limit",
+                              "value": "<long>"
+                            }
+                          ],
+                          "variable": [
+                            {
+                              "key": "retention_policy_id"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Bad Request",
+                      "code": 400,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"type\": \"error\",\n  \"status\": \"<integer>\",\n  \"code\": \"precondition_failed\",\n  \"message\": \"<string>\",\n  \"context_info\": {\n    \"message\": \"<string>\"\n  },\n  \"help_url\": \"<string>\",\n  \"request_id\": \"<string>\"\n}",
+                      "createdAt": "2026-07-28T01:16:57.000Z",
+                      "updatedAt": "2026-07-28T01:16:57.000Z",
+                      "uid": "35240-5ad91805-3ba0-4768-8de2-bcd390618e02"
+                    },
+                    {
+                      "id": "498531c9-6aba-40ed-b69e-7f7142c3e637",
+                      "name": "An unexpected client error.",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/retention_policies/:retention_policy_id/assignments?type=enterprise&fields=<string>,<string>&marker=<string>&limit=<long>",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "retention_policies",
+                            ":retention_policy_id",
+                            "assignments"
+                          ],
+                          "query": [
+                            {
+                              "description": "The type of the retention policy assignment to retrieve.",
+                              "key": "type",
+                              "value": "enterprise"
+                            },
+                            {
+                              "description": "A comma-separated list of attributes to include in the\nresponse. This can be used to request fields that are\nnot normally returned in a standard response.\n\nBe aware that specifying this parameter will have the\neffect that none of the standard fields are returned in\nthe response unless explicitly specified, instead only\nfields for the mini representation are returned, additional\nto the fields requested.",
+                              "key": "fields",
+                              "value": "<string>,<string>"
+                            },
+                            {
+                              "description": "Defines the position marker at which to begin returning results. This is\nused when paginating using marker-based pagination.",
+                              "key": "marker",
+                              "value": "<string>"
+                            },
+                            {
+                              "description": "The maximum number of items to return per page.",
+                              "key": "limit",
+                              "value": "<long>"
+                            }
+                          ],
+                          "variable": [
+                            {
+                              "key": "retention_policy_id"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Internal Server Error",
+                      "code": 500,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"type\": \"error\",\n  \"status\": \"<integer>\",\n  \"code\": \"precondition_failed\",\n  \"message\": \"<string>\",\n  \"context_info\": {\n    \"message\": \"<string>\"\n  },\n  \"help_url\": \"<string>\",\n  \"request_id\": \"<string>\"\n}",
+                      "createdAt": "2026-07-28T01:16:57.000Z",
+                      "updatedAt": "2026-07-28T01:16:57.000Z",
+                      "uid": "35240-498531c9-6aba-40ed-b69e-7f7142c3e637"
+                    }
+                  ],
+                  "createdAt": "2026-07-28T01:16:57.000Z",
+                  "updatedAt": "2026-07-28T01:16:57.000Z",
+                  "uid": "35240-2bdfa17c-68ab-42e0-906e-750526a76beb"
+                }
+              ],
+              "id": "50953b02-963d-4a34-9aca-4b600ff16c76",
+              "createdAt": "2026-07-28T01:16:57.000Z",
+              "updatedAt": "2026-07-28T01:16:57.000Z",
+              "uid": "35240-50953b02-963d-4a34-9aca-4b600ff16c76"
+            }
+          ],
+          "id": "d9e01d7e-97de-4cf6-b8a5-9a22d70403dc",
+          "createdAt": "2026-07-28T01:16:57.000Z",
+          "updatedAt": "2026-07-28T01:16:57.000Z",
+          "uid": "35240-d9e01d7e-97de-4cf6-b8a5-9a22d70403dc"
+        }
+      ],
+      "id": "0a8ae72c-0601-4cc0-9b70-83fe789f5bc6",
+      "createdAt": "2026-07-28T01:16:57.000Z",
+      "updatedAt": "2026-07-28T01:16:57.000Z",
+      "uid": "35240-0a8ae72c-0601-4cc0-9b70-83fe789f5bc6"
+    },
+    {
+      "name": "retention_policy_assignments",
+      "item": [
+        {
+          "name": "{retention_policy_assignment_id}",
+          "item": [
+            {
+              "name": "files_under_retention",
+              "item": [
+                {
+                  "name": "Box Get files under retention",
+                  "id": "d9850698-e81a-4f6d-aa22-efa02b29c53e",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/retention_policy_assignments/:retention_policy_assignment_id/files_under_retention?marker=<string>&limit=<long>",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "retention_policy_assignments",
+                        ":retention_policy_assignment_id",
+                        "files_under_retention"
+                      ],
+                      "query": [
+                        {
+                          "description": "Defines the position marker at which to begin returning results. This is\nused when paginating using marker-based pagination.\n\nThis requires `usemarker` to be set to `true`.",
+                          "key": "marker",
+                          "value": "<string>"
+                        },
+                        {
+                          "description": "The maximum number of items to return per page.",
+                          "key": "limit",
+                          "value": "<long>"
+                        }
+                      ],
+                      "variable": [
+                        {
+                          "id": "368e9e2f-3741-4cb4-9cdb-ee1211b1cb62",
+                          "key": "retention_policy_assignment_id",
+                          "value": "<string>",
+                          "description": "(Required) The ID of the retention policy assignment."
+                        }
+                      ]
+                    },
+                    "description": "Returns a list of files under retention for a retention policy assignment."
+                  },
+                  "response": [
+                    {
+                      "id": "c1481bad-e33b-49b3-b420-1567c5496fbd",
+                      "name": "Returns a list of files under retention that are associated with the\nspecified retention policy assignment.",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/retention_policy_assignments/:retention_policy_assignment_id/files_under_retention?marker=<string>&limit=<long>",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "retention_policy_assignments",
+                            ":retention_policy_assignment_id",
+                            "files_under_retention"
+                          ],
+                          "query": [
+                            {
+                              "description": "Defines the position marker at which to begin returning results. This is\nused when paginating using marker-based pagination.\n\nThis requires `usemarker` to be set to `true`.",
+                              "key": "marker",
+                              "value": "<string>"
+                            },
+                            {
+                              "description": "The maximum number of items to return per page.",
+                              "key": "limit",
+                              "value": "<long>"
+                            }
+                          ],
+                          "variable": [
+                            {
+                              "key": "retention_policy_assignment_id"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "OK",
+                      "code": 200,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"limit\": \"<long>\",\n  \"next_marker\": \"<string>\",\n  \"prev_marker\": \"<string>\",\n  \"entries\": [\n    {\n      \"id\": \"<string>\",\n      \"type\": \"file\",\n      \"etag\": \"<string>\",\n      \"sequence_id\": \"<string>\",\n      \"name\": \"<string>\",\n      \"sha1\": \"<string>\",\n      \"file_version\": {\n        \"id\": \"<string>\",\n        \"type\": \"file_version\",\n        \"sha1\": \"<string>\"\n      }\n    },\n    {\n      \"id\": \"<string>\",\n      \"type\": \"file\",\n      \"etag\": \"<string>\",\n      \"sequence_id\": \"<string>\",\n      \"name\": \"<string>\",\n      \"sha1\": \"<string>\",\n      \"file_version\": {\n        \"id\": \"<string>\",\n        \"type\": \"file_version\",\n        \"sha1\": \"<string>\"\n      }\n    }\n  ]\n}",
+                      "createdAt": "2026-07-28T01:16:57.000Z",
+                      "updatedAt": "2026-07-28T01:16:57.000Z",
+                      "uid": "35240-c1481bad-e33b-49b3-b420-1567c5496fbd"
+                    },
+                    {
+                      "id": "71e6644a-349c-429d-b783-166d6e17d0e2",
+                      "name": "Returns an error if `retention_policy_assignment_id` is not specified.",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/retention_policy_assignments/:retention_policy_assignment_id/files_under_retention?marker=<string>&limit=<long>",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "retention_policy_assignments",
+                            ":retention_policy_assignment_id",
+                            "files_under_retention"
+                          ],
+                          "query": [
+                            {
+                              "description": "Defines the position marker at which to begin returning results. This is\nused when paginating using marker-based pagination.\n\nThis requires `usemarker` to be set to `true`.",
+                              "key": "marker",
+                              "value": "<string>"
+                            },
+                            {
+                              "description": "The maximum number of items to return per page.",
+                              "key": "limit",
+                              "value": "<long>"
+                            }
+                          ],
+                          "variable": [
+                            {
+                              "key": "retention_policy_assignment_id"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Bad Request",
+                      "code": 400,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"type\": \"error\",\n  \"status\": \"<integer>\",\n  \"code\": \"precondition_failed\",\n  \"message\": \"<string>\",\n  \"context_info\": {\n    \"message\": \"<string>\"\n  },\n  \"help_url\": \"<string>\",\n  \"request_id\": \"<string>\"\n}",
+                      "createdAt": "2026-07-28T01:16:57.000Z",
+                      "updatedAt": "2026-07-28T01:16:57.000Z",
+                      "uid": "35240-71e6644a-349c-429d-b783-166d6e17d0e2"
+                    },
+                    {
+                      "id": "7613ceae-00ed-41d5-95c8-a390d819aba5",
+                      "name": "An unexpected client error.",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/retention_policy_assignments/:retention_policy_assignment_id/files_under_retention?marker=<string>&limit=<long>",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "retention_policy_assignments",
+                            ":retention_policy_assignment_id",
+                            "files_under_retention"
+                          ],
+                          "query": [
+                            {
+                              "description": "Defines the position marker at which to begin returning results. This is\nused when paginating using marker-based pagination.\n\nThis requires `usemarker` to be set to `true`.",
+                              "key": "marker",
+                              "value": "<string>"
+                            },
+                            {
+                              "description": "The maximum number of items to return per page.",
+                              "key": "limit",
+                              "value": "<long>"
+                            }
+                          ],
+                          "variable": [
+                            {
+                              "key": "retention_policy_assignment_id"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Internal Server Error",
+                      "code": 500,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"type\": \"error\",\n  \"status\": \"<integer>\",\n  \"code\": \"precondition_failed\",\n  \"message\": \"<string>\",\n  \"context_info\": {\n    \"message\": \"<string>\"\n  },\n  \"help_url\": \"<string>\",\n  \"request_id\": \"<string>\"\n}",
+                      "createdAt": "2026-07-28T01:16:57.000Z",
+                      "updatedAt": "2026-07-28T01:16:57.000Z",
+                      "uid": "35240-7613ceae-00ed-41d5-95c8-a390d819aba5"
+                    }
+                  ],
+                  "createdAt": "2026-07-28T01:16:57.000Z",
+                  "updatedAt": "2026-07-28T01:16:57.000Z",
+                  "uid": "35240-d9850698-e81a-4f6d-aa22-efa02b29c53e"
+                }
+              ],
+              "id": "98b198f0-6674-4504-88b0-864388fb3dd8",
+              "createdAt": "2026-07-28T01:16:57.000Z",
+              "updatedAt": "2026-07-28T01:16:57.000Z",
+              "uid": "35240-98b198f0-6674-4504-88b0-864388fb3dd8"
+            },
+            {
+              "name": "file_versions_under_retention",
+              "item": [
+                {
+                  "name": "Box Get file versions under retention",
+                  "id": "9e6da4cc-b194-424d-bd2b-8dadac9fd7e1",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/retention_policy_assignments/:retention_policy_assignment_id/file_versions_under_retention?marker=<string>&limit=<long>",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "retention_policy_assignments",
+                        ":retention_policy_assignment_id",
+                        "file_versions_under_retention"
+                      ],
+                      "query": [
+                        {
+                          "description": "Defines the position marker at which to begin returning results. This is\nused when paginating using marker-based pagination.\n\nThis requires `usemarker` to be set to `true`.",
+                          "key": "marker",
+                          "value": "<string>"
+                        },
+                        {
+                          "description": "The maximum number of items to return per page.",
+                          "key": "limit",
+                          "value": "<long>"
+                        }
+                      ],
+                      "variable": [
+                        {
+                          "id": "38af02c1-8d59-4da2-9541-69ac7991ce11",
+                          "key": "retention_policy_assignment_id",
+                          "value": "<string>",
+                          "description": "(Required) The ID of the retention policy assignment."
+                        }
+                      ]
+                    },
+                    "description": "Returns a list of file versions under retention for a retention policy\nassignment."
+                  },
+                  "response": [
+                    {
+                      "id": "61d75c6b-a9c6-4068-974b-f919ba7cc5a0",
+                      "name": "Returns a list of file versions under retention that are associated with\nthe specified retention policy assignment.",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/retention_policy_assignments/:retention_policy_assignment_id/file_versions_under_retention?marker=<string>&limit=<long>",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "retention_policy_assignments",
+                            ":retention_policy_assignment_id",
+                            "file_versions_under_retention"
+                          ],
+                          "query": [
+                            {
+                              "description": "Defines the position marker at which to begin returning results. This is\nused when paginating using marker-based pagination.\n\nThis requires `usemarker` to be set to `true`.",
+                              "key": "marker",
+                              "value": "<string>"
+                            },
+                            {
+                              "description": "The maximum number of items to return per page.",
+                              "key": "limit",
+                              "value": "<long>"
+                            }
+                          ],
+                          "variable": [
+                            {
+                              "key": "retention_policy_assignment_id"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "OK",
+                      "code": 200,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"limit\": \"<long>\",\n  \"next_marker\": \"<string>\",\n  \"prev_marker\": \"<string>\",\n  \"entries\": [\n    {\n      \"id\": \"<string>\",\n      \"type\": \"file\",\n      \"etag\": \"<string>\",\n      \"sequence_id\": \"<string>\",\n      \"name\": \"<string>\",\n      \"sha1\": \"<string>\",\n      \"file_version\": {\n        \"id\": \"<string>\",\n        \"type\": \"file_version\",\n        \"sha1\": \"<string>\"\n      }\n    },\n    {\n      \"id\": \"<string>\",\n      \"type\": \"file\",\n      \"etag\": \"<string>\",\n      \"sequence_id\": \"<string>\",\n      \"name\": \"<string>\",\n      \"sha1\": \"<string>\",\n      \"file_version\": {\n        \"id\": \"<string>\",\n        \"type\": \"file_version\",\n        \"sha1\": \"<string>\"\n      }\n    }\n  ]\n}",
+                      "createdAt": "2026-07-28T01:16:57.000Z",
+                      "updatedAt": "2026-07-28T01:16:57.000Z",
+                      "uid": "35240-61d75c6b-a9c6-4068-974b-f919ba7cc5a0"
+                    },
+                    {
+                      "id": "6731f722-b81c-49a6-82c8-e3539a708b02",
+                      "name": "Returns an error if `retention_policy_assignment_id` is not specified.",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/retention_policy_assignments/:retention_policy_assignment_id/file_versions_under_retention?marker=<string>&limit=<long>",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "retention_policy_assignments",
+                            ":retention_policy_assignment_id",
+                            "file_versions_under_retention"
+                          ],
+                          "query": [
+                            {
+                              "description": "Defines the position marker at which to begin returning results. This is\nused when paginating using marker-based pagination.\n\nThis requires `usemarker` to be set to `true`.",
+                              "key": "marker",
+                              "value": "<string>"
+                            },
+                            {
+                              "description": "The maximum number of items to return per page.",
+                              "key": "limit",
+                              "value": "<long>"
+                            }
+                          ],
+                          "variable": [
+                            {
+                              "key": "retention_policy_assignment_id"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Bad Request",
+                      "code": 400,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"type\": \"error\",\n  \"status\": \"<integer>\",\n  \"code\": \"precondition_failed\",\n  \"message\": \"<string>\",\n  \"context_info\": {\n    \"message\": \"<string>\"\n  },\n  \"help_url\": \"<string>\",\n  \"request_id\": \"<string>\"\n}",
+                      "createdAt": "2026-07-28T01:16:57.000Z",
+                      "updatedAt": "2026-07-28T01:16:57.000Z",
+                      "uid": "35240-6731f722-b81c-49a6-82c8-e3539a708b02"
+                    },
+                    {
+                      "id": "69d44413-eba5-4b4b-a164-09f3313e5ffe",
+                      "name": "An unexpected client error.",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/retention_policy_assignments/:retention_policy_assignment_id/file_versions_under_retention?marker=<string>&limit=<long>",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "retention_policy_assignments",
+                            ":retention_policy_assignment_id",
+                            "file_versions_under_retention"
+                          ],
+                          "query": [
+                            {
+                              "description": "Defines the position marker at which to begin returning results. This is\nused when paginating using marker-based pagination.\n\nThis requires `usemarker` to be set to `true`.",
+                              "key": "marker",
+                              "value": "<string>"
+                            },
+                            {
+                              "description": "The maximum number of items to return per page.",
+                              "key": "limit",
+                              "value": "<long>"
+                            }
+                          ],
+                          "variable": [
+                            {
+                              "key": "retention_policy_assignment_id"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Internal Server Error",
+                      "code": 500,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"type\": \"error\",\n  \"status\": \"<integer>\",\n  \"code\": \"precondition_failed\",\n  \"message\": \"<string>\",\n  \"context_info\": {\n    \"message\": \"<string>\"\n  },\n  \"help_url\": \"<string>\",\n  \"request_id\": \"<string>\"\n}",
+                      "createdAt": "2026-07-28T01:16:57.000Z",
+                      "updatedAt": "2026-07-28T01:16:57.000Z",
+                      "uid": "35240-69d44413-eba5-4b4b-a164-09f3313e5ffe"
+                    }
+                  ],
+                  "createdAt": "2026-07-28T01:16:57.000Z",
+                  "updatedAt": "2026-07-28T01:16:57.000Z",
+                  "uid": "35240-9e6da4cc-b194-424d-bd2b-8dadac9fd7e1"
+                }
+              ],
+              "id": "5148bec0-6c2f-4cce-b391-083e11f4c82e",
+              "createdAt": "2026-07-28T01:16:57.000Z",
+              "updatedAt": "2026-07-28T01:16:57.000Z",
+              "uid": "35240-5148bec0-6c2f-4cce-b391-083e11f4c82e"
+            },
+            {
+              "name": "Box Get retention policy assignment",
+              "id": "f1df826c-4a3e-41c0-9b7d-aed081dad5b0",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/retention_policy_assignments/:retention_policy_assignment_id?fields=<string>,<string>",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "retention_policy_assignments",
+                    ":retention_policy_assignment_id"
+                  ],
+                  "query": [
+                    {
+                      "description": "A comma-separated list of attributes to include in the\nresponse. This can be used to request fields that are\nnot normally returned in a standard response.\n\nBe aware that specifying this parameter will have the\neffect that none of the standard fields are returned in\nthe response unless explicitly specified, instead only\nfields for the mini representation are returned, additional\nto the fields requested.",
+                      "key": "fields",
+                      "value": "<string>,<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "id": "d6e0728f-8511-4ee1-bd36-7cb5a34210cf",
+                      "key": "retention_policy_assignment_id",
+                      "value": "<string>",
+                      "description": "(Required) The ID of the retention policy assignment."
+                    }
+                  ]
+                },
+                "description": "Retrieves a retention policy assignment"
+              },
+              "response": [
+                {
+                  "id": "aa19786f-6439-4149-a160-a56f68c2047c",
+                  "name": "Returns the retention policy assignment object.",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/retention_policy_assignments/:retention_policy_assignment_id?fields=<string>,<string>",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "retention_policy_assignments",
+                        ":retention_policy_assignment_id"
+                      ],
+                      "query": [
+                        {
+                          "description": "A comma-separated list of attributes to include in the\nresponse. This can be used to request fields that are\nnot normally returned in a standard response.\n\nBe aware that specifying this parameter will have the\neffect that none of the standard fields are returned in\nthe response unless explicitly specified, instead only\nfields for the mini representation are returned, additional\nto the fields requested.",
+                          "key": "fields",
+                          "value": "<string>,<string>"
+                        }
+                      ],
+                      "variable": [
+                        {
+                          "key": "retention_policy_assignment_id"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"id\": \"<string>\",\n  \"type\": \"retention_policy_assignment\",\n  \"retention_policy\": {\n    \"id\": \"<string>\",\n    \"type\": \"retention_policy\",\n    \"policy_name\": \"<string>\",\n    \"retention_length\": \"<string>\",\n    \"disposition_action\": \"remove_retention\"\n  },\n  \"assigned_to\": {\n    \"id\": \"<string>\",\n    \"type\": \"folder\"\n  },\n  \"filter_fields\": [\n    {\n      \"field\": \"<string>\",\n      \"value\": \"<string>\"\n    },\n    {\n      \"field\": \"<string>\",\n      \"value\": \"<string>\"\n    }\n  ],\n  \"assigned_by\": {\n    \"type\": \"user\",\n    \"id\": \"<string>\",\n    \"name\": \"<string>\",\n    \"login\": \"<email>\"\n  },\n  \"assigned_at\": \"<dateTime>\",\n  \"start_date_field\": \"<string>\"\n}",
+                  "createdAt": "2026-07-28T01:16:57.000Z",
+                  "updatedAt": "2026-07-28T01:16:57.000Z",
+                  "uid": "35240-aa19786f-6439-4149-a160-a56f68c2047c"
+                },
+                {
+                  "id": "d23f9699-1495-48cb-b201-ec4ff533c561",
+                  "name": "An unexpected client error.",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/retention_policy_assignments/:retention_policy_assignment_id?fields=<string>,<string>",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "retention_policy_assignments",
+                        ":retention_policy_assignment_id"
+                      ],
+                      "query": [
+                        {
+                          "description": "A comma-separated list of attributes to include in the\nresponse. This can be used to request fields that are\nnot normally returned in a standard response.\n\nBe aware that specifying this parameter will have the\neffect that none of the standard fields are returned in\nthe response unless explicitly specified, instead only\nfields for the mini representation are returned, additional\nto the fields requested.",
+                          "key": "fields",
+                          "value": "<string>,<string>"
+                        }
+                      ],
+                      "variable": [
+                        {
+                          "key": "retention_policy_assignment_id"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Internal Server Error",
+                  "code": 500,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"type\": \"error\",\n  \"status\": \"<integer>\",\n  \"code\": \"precondition_failed\",\n  \"message\": \"<string>\",\n  \"context_info\": {\n    \"message\": \"<string>\"\n  },\n  \"help_url\": \"<string>\",\n  \"request_id\": \"<string>\"\n}",
+                  "createdAt": "2026-07-28T01:16:57.000Z",
+                  "updatedAt": "2026-07-28T01:16:57.000Z",
+                  "uid": "35240-d23f9699-1495-48cb-b201-ec4ff533c561"
+                }
+              ],
+              "createdAt": "2026-07-28T01:16:57.000Z",
+              "updatedAt": "2026-07-28T01:16:57.000Z",
+              "uid": "35240-f1df826c-4a3e-41c0-9b7d-aed081dad5b0"
+            },
+            {
+              "name": "Box Remove retention policy assignment",
+              "id": "4ae3e05d-400d-4d75-95c5-66494135e19e",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "DELETE",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/retention_policy_assignments/:retention_policy_assignment_id",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "retention_policy_assignments",
+                    ":retention_policy_assignment_id"
+                  ],
+                  "variable": [
+                    {
+                      "id": "e9c5447f-026f-4426-98ab-b5b89beb4144",
+                      "key": "retention_policy_assignment_id",
+                      "value": "<string>",
+                      "description": "(Required) The ID of the retention policy assignment."
+                    }
+                  ]
+                },
+                "description": "Removes a retention policy assignment\napplied to content."
+              },
+              "response": [
+                {
+                  "id": "138cbd4e-1a4e-4a0f-a67f-13cf517d667f",
+                  "name": "Returns an empty response when the policy assignment\nis successfully deleted.",
+                  "originalRequest": {
+                    "method": "DELETE",
+                    "header": [],
+                    "url": {
+                      "raw": "{{baseUrl}}/retention_policy_assignments/:retention_policy_assignment_id",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "retention_policy_assignments",
+                        ":retention_policy_assignment_id"
+                      ],
+                      "variable": [
+                        {
+                          "key": "retention_policy_assignment_id"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "No Content",
+                  "code": 204,
+                  "_postman_previewlanguage": "text",
+                  "header": [],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": null,
+                  "createdAt": "2026-07-28T01:16:57.000Z",
+                  "updatedAt": "2026-07-28T01:16:57.000Z",
+                  "uid": "35240-138cbd4e-1a4e-4a0f-a67f-13cf517d667f"
+                },
+                {
+                  "id": "63bd1410-cc76-4838-8e9c-8ef1d48b9274",
+                  "name": "Returns an error when the assignment relates to\na retention policy that cannot be modified.",
+                  "originalRequest": {
+                    "method": "DELETE",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/retention_policy_assignments/:retention_policy_assignment_id",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "retention_policy_assignments",
+                        ":retention_policy_assignment_id"
+                      ],
+                      "variable": [
+                        {
+                          "key": "retention_policy_assignment_id"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Forbidden",
+                  "code": 403,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"type\": \"error\",\n  \"status\": \"<integer>\",\n  \"code\": \"precondition_failed\",\n  \"message\": \"<string>\",\n  \"context_info\": {\n    \"message\": \"<string>\"\n  },\n  \"help_url\": \"<string>\",\n  \"request_id\": \"<string>\"\n}",
+                  "createdAt": "2026-07-28T01:16:57.000Z",
+                  "updatedAt": "2026-07-28T01:16:57.000Z",
+                  "uid": "35240-63bd1410-cc76-4838-8e9c-8ef1d48b9274"
+                },
+                {
+                  "id": "0369ec6b-cc11-4f15-a31e-7f44df20afd2",
+                  "name": "Returns an error when the retention policy\nassignment does not exist.",
+                  "originalRequest": {
+                    "method": "DELETE",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/retention_policy_assignments/:retention_policy_assignment_id",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "retention_policy_assignments",
+                        ":retention_policy_assignment_id"
+                      ],
+                      "variable": [
+                        {
+                          "key": "retention_policy_assignment_id"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Not Found",
+                  "code": 404,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"type\": \"error\",\n  \"status\": \"<integer>\",\n  \"code\": \"precondition_failed\",\n  \"message\": \"<string>\",\n  \"context_info\": {\n    \"message\": \"<string>\"\n  },\n  \"help_url\": \"<string>\",\n  \"request_id\": \"<string>\"\n}",
+                  "createdAt": "2026-07-28T01:16:57.000Z",
+                  "updatedAt": "2026-07-28T01:16:57.000Z",
+                  "uid": "35240-0369ec6b-cc11-4f15-a31e-7f44df20afd2"
+                },
+                {
+                  "id": "bef90102-ce92-4139-b6a2-53234defc5b9",
+                  "name": "An unexpected client error.",
+                  "originalRequest": {
+                    "method": "DELETE",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/retention_policy_assignments/:retention_policy_assignment_id",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "retention_policy_assignments",
+                        ":retention_policy_assignment_id"
+                      ],
+                      "variable": [
+                        {
+                          "key": "retention_policy_assignment_id"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Internal Server Error",
+                  "code": 500,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"type\": \"error\",\n  \"status\": \"<integer>\",\n  \"code\": \"precondition_failed\",\n  \"message\": \"<string>\",\n  \"context_info\": {\n    \"message\": \"<string>\"\n  },\n  \"help_url\": \"<string>\",\n  \"request_id\": \"<string>\"\n}",
+                  "createdAt": "2026-07-28T01:16:57.000Z",
+                  "updatedAt": "2026-07-28T01:16:57.000Z",
+                  "uid": "35240-bef90102-ce92-4139-b6a2-53234defc5b9"
+                }
+              ],
+              "createdAt": "2026-07-28T01:16:57.000Z",
+              "updatedAt": "2026-07-28T01:16:57.000Z",
+              "uid": "35240-4ae3e05d-400d-4d75-95c5-66494135e19e"
+            }
+          ],
+          "id": "ff570731-0f3d-4348-9c9c-335ac36350a5",
+          "createdAt": "2026-07-28T01:16:57.000Z",
+          "updatedAt": "2026-07-28T01:16:57.000Z",
+          "uid": "35240-ff570731-0f3d-4348-9c9c-335ac36350a5"
+        },
+        {
+          "name": "Box Assign retention policy",
+          "id": "be0a2501-cc79-4358-b2b0-6709a6d4d017",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"policy_id\": \"<string>\",\n  \"assign_to\": {\n    \"type\": \"folder\",\n    \"id\": \"<string>\"\n  },\n  \"filter_fields\": [\n    {\n      \"field\": \"<string>\",\n      \"value\": \"<string>\"\n    },\n    {\n      \"field\": \"<string>\",\n      \"value\": \"<string>\"\n    }\n  ],\n  \"start_date_field\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "headerFamily": "json",
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/retention_policy_assignments",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "retention_policy_assignments"
+              ]
+            },
+            "description": "Assigns a retention policy to an item."
+          },
+          "response": [
+            {
+              "id": "52d6e4d4-e43f-4856-b8ec-7c1286969e6a",
+              "name": "Returns a new retention policy assignment object.",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"policy_id\": \"<string>\",\n  \"assign_to\": {\n    \"type\": \"folder\",\n    \"id\": \"<string>\"\n  },\n  \"filter_fields\": [\n    {\n      \"field\": \"<string>\",\n      \"value\": \"<string>\"\n    },\n    {\n      \"field\": \"<string>\",\n      \"value\": \"<string>\"\n    }\n  ],\n  \"start_date_field\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/retention_policy_assignments",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "retention_policy_assignments"
+                  ]
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "responseTime": null,
+              "body": "{\n  \"id\": \"<string>\",\n  \"type\": \"retention_policy_assignment\",\n  \"retention_policy\": {\n    \"id\": \"<string>\",\n    \"type\": \"retention_policy\",\n    \"policy_name\": \"<string>\",\n    \"retention_length\": \"<string>\",\n    \"disposition_action\": \"remove_retention\"\n  },\n  \"assigned_to\": {\n    \"id\": \"<string>\",\n    \"type\": \"folder\"\n  },\n  \"filter_fields\": [\n    {\n      \"field\": \"<string>\",\n      \"value\": \"<string>\"\n    },\n    {\n      \"field\": \"<string>\",\n      \"value\": \"<string>\"\n    }\n  ],\n  \"assigned_by\": {\n    \"type\": \"user\",\n    \"id\": \"<string>\",\n    \"name\": \"<string>\",\n    \"login\": \"<email>\"\n  },\n  \"assigned_at\": \"<dateTime>\",\n  \"start_date_field\": \"<string>\"\n}",
+              "createdAt": "2026-07-28T01:16:57.000Z",
+              "updatedAt": "2026-07-28T01:16:57.000Z",
+              "uid": "35240-52d6e4d4-e43f-4856-b8ec-7c1286969e6a"
+            },
+            {
+              "id": "625cb156-5180-46d5-999f-407228e2e25e",
+              "name": "Returns an error if an `id` is specified while assigning the\nretention policy to an enterprise.\n\nReturns an error if `start_date_field` is present but `assign_to.type`\nis not `metadata_template`\n\nReturns an error if `start_date_field` is present, but belo",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"policy_id\": \"<string>\",\n  \"assign_to\": {\n    \"type\": \"folder\",\n    \"id\": \"<string>\"\n  },\n  \"filter_fields\": [\n    {\n      \"field\": \"<string>\",\n      \"value\": \"<string>\"\n    },\n    {\n      \"field\": \"<string>\",\n      \"value\": \"<string>\"\n    }\n  ],\n  \"start_date_field\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/retention_policy_assignments",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "retention_policy_assignments"
+                  ]
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "responseTime": null,
+              "body": "{\n  \"type\": \"error\",\n  \"status\": \"<integer>\",\n  \"code\": \"precondition_failed\",\n  \"message\": \"<string>\",\n  \"context_info\": {\n    \"message\": \"<string>\"\n  },\n  \"help_url\": \"<string>\",\n  \"request_id\": \"<string>\"\n}",
+              "createdAt": "2026-07-28T01:16:57.000Z",
+              "updatedAt": "2026-07-28T01:16:57.000Z",
+              "uid": "35240-625cb156-5180-46d5-999f-407228e2e25e"
+            },
+            {
+              "id": "47d1747f-07f7-4e71-92dd-2fe2f3aea7af",
+              "name": "Returns an error if no retention policy with the given `policy_id` exists.",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"policy_id\": \"<string>\",\n  \"assign_to\": {\n    \"type\": \"folder\",\n    \"id\": \"<string>\"\n  },\n  \"filter_fields\": [\n    {\n      \"field\": \"<string>\",\n      \"value\": \"<string>\"\n    },\n    {\n      \"field\": \"<string>\",\n      \"value\": \"<string>\"\n    }\n  ],\n  \"start_date_field\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/retention_policy_assignments",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "retention_policy_assignments"
+                  ]
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "responseTime": null,
+              "body": "{\n  \"type\": \"error\",\n  \"status\": \"<integer>\",\n  \"code\": \"precondition_failed\",\n  \"message\": \"<string>\",\n  \"context_info\": {\n    \"message\": \"<string>\"\n  },\n  \"help_url\": \"<string>\",\n  \"request_id\": \"<string>\"\n}",
+              "createdAt": "2026-07-28T01:16:57.000Z",
+              "updatedAt": "2026-07-28T01:16:57.000Z",
+              "uid": "35240-47d1747f-07f7-4e71-92dd-2fe2f3aea7af"
+            },
+            {
+              "id": "86500057-524f-4aa1-a716-914b48d0a217",
+              "name": "Returns an error if a retention policy of equal or greater length has\nalready been assigned to this item.",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"policy_id\": \"<string>\",\n  \"assign_to\": {\n    \"type\": \"folder\",\n    \"id\": \"<string>\"\n  },\n  \"filter_fields\": [\n    {\n      \"field\": \"<string>\",\n      \"value\": \"<string>\"\n    },\n    {\n      \"field\": \"<string>\",\n      \"value\": \"<string>\"\n    }\n  ],\n  \"start_date_field\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/retention_policy_assignments",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "retention_policy_assignments"
+                  ]
+                }
+              },
+              "status": "Conflict",
+              "code": 409,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "responseTime": null,
+              "body": "{\n  \"type\": \"error\",\n  \"status\": \"<integer>\",\n  \"code\": \"precondition_failed\",\n  \"message\": \"<string>\",\n  \"context_info\": {\n    \"message\": \"<string>\"\n  },\n  \"help_url\": \"<string>\",\n  \"request_id\": \"<string>\"\n}",
+              "createdAt": "2026-07-28T01:16:57.000Z",
+              "updatedAt": "2026-07-28T01:16:57.000Z",
+              "uid": "35240-86500057-524f-4aa1-a716-914b48d0a217"
+            },
+            {
+              "id": "c8fd1e8a-1ff7-4954-b926-6e0c03966500",
+              "name": "An unexpected client error.",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"policy_id\": \"<string>\",\n  \"assign_to\": {\n    \"type\": \"folder\",\n    \"id\": \"<string>\"\n  },\n  \"filter_fields\": [\n    {\n      \"field\": \"<string>\",\n      \"value\": \"<string>\"\n    },\n    {\n      \"field\": \"<string>\",\n      \"value\": \"<string>\"\n    }\n  ],\n  \"start_date_field\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/retention_policy_assignments",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "retention_policy_assignments"
+                  ]
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "responseTime": null,
+              "body": "{\n  \"type\": \"error\",\n  \"status\": \"<integer>\",\n  \"code\": \"precondition_failed\",\n  \"message\": \"<string>\",\n  \"context_info\": {\n    \"message\": \"<string>\"\n  },\n  \"help_url\": \"<string>\",\n  \"request_id\": \"<string>\"\n}",
+              "createdAt": "2026-07-28T01:16:57.000Z",
+              "updatedAt": "2026-07-28T01:16:57.000Z",
+              "uid": "35240-c8fd1e8a-1ff7-4954-b926-6e0c03966500"
+            }
+          ],
+          "createdAt": "2026-07-28T01:16:57.000Z",
+          "updatedAt": "2026-07-28T01:16:57.000Z",
+          "uid": "35240-be0a2501-cc79-4358-b2b0-6709a6d4d017"
+        }
+      ],
+      "id": "7690b2fc-8065-4d7c-92d7-755cd4a7eb3d",
+      "createdAt": "2026-07-28T01:16:57.000Z",
+      "updatedAt": "2026-07-28T01:16:57.000Z",
+      "uid": "35240-7690b2fc-8065-4d7c-92d7-755cd4a7eb3d"
+    }
+  ],
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "/"
+    }
+  ]
+}

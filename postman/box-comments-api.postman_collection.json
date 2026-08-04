@@ -1,0 +1,865 @@
+{
+  "info": {
+    "_postman_id": "8dea4b24-c88d-4c1e-9c0d-c77aa9022c79",
+    "name": "Box Authorize Authorization Comments API",
+    "description": "Needs a description.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "createdAt": "2026-07-28T01:15:50.000Z",
+    "updatedAt": "2026-07-28T01:15:50.000Z",
+    "lastUpdatedBy": "35240",
+    "uid": "35240-8dea4b24-c88d-4c1e-9c0d-c77aa9022c79"
+  },
+  "item": [
+    {
+      "name": "files",
+      "item": [
+        {
+          "name": "{file_id}",
+          "item": [
+            {
+              "name": "comments",
+              "item": [
+                {
+                  "name": "Box List file comments",
+                  "id": "f4370929-f737-484d-8717-b1da5919c525",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/files/:file_id/comments?fields=<string>,<string>&limit=<long>&offset=0",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "files",
+                        ":file_id",
+                        "comments"
+                      ],
+                      "query": [
+                        {
+                          "description": "A comma-separated list of attributes to include in the\nresponse. This can be used to request fields that are\nnot normally returned in a standard response.\n\nBe aware that specifying this parameter will have the\neffect that none of the standard fields are returned in\nthe response unless explicitly specified, instead only\nfields for the mini representation are returned, additional\nto the fields requested.",
+                          "key": "fields",
+                          "value": "<string>,<string>"
+                        },
+                        {
+                          "description": "The maximum number of items to return per page.",
+                          "key": "limit",
+                          "value": "<long>"
+                        },
+                        {
+                          "description": "The offset of the item at which to begin the response.\n\nQueries with offset parameter value\nexceeding 10000 will be rejected\nwith a 400 response.",
+                          "key": "offset",
+                          "value": "0"
+                        }
+                      ],
+                      "variable": [
+                        {
+                          "id": "56064079-c89e-43d8-87fa-2446e40050ef",
+                          "key": "file_id",
+                          "value": "<string>",
+                          "description": "(Required) The unique identifier that represents a file.\n\nThe ID for any file can be determined\nby visiting a file in the web application\nand copying the ID from the URL. For example,\nfor the URL `https://*.app.box.com/files/123`\nthe `file_id` is `123`."
+                        }
+                      ]
+                    },
+                    "description": "Retrieves a list of comments for a file."
+                  },
+                  "response": [
+                    {
+                      "id": "256a3081-2c8f-40a4-b6a5-d90176763ace",
+                      "name": "Returns a collection of comment objects. If there are no\ncomments on this file an empty collection will be returned.",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/files/:file_id/comments?fields=<string>,<string>&limit=<long>&offset=0",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "files",
+                            ":file_id",
+                            "comments"
+                          ],
+                          "query": [
+                            {
+                              "description": "A comma-separated list of attributes to include in the\nresponse. This can be used to request fields that are\nnot normally returned in a standard response.\n\nBe aware that specifying this parameter will have the\neffect that none of the standard fields are returned in\nthe response unless explicitly specified, instead only\nfields for the mini representation are returned, additional\nto the fields requested.",
+                              "key": "fields",
+                              "value": "<string>,<string>"
+                            },
+                            {
+                              "description": "The maximum number of items to return per page.",
+                              "key": "limit",
+                              "value": "<long>"
+                            },
+                            {
+                              "description": "The offset of the item at which to begin the response.\n\nQueries with offset parameter value\nexceeding 10000 will be rejected\nwith a 400 response.",
+                              "key": "offset",
+                              "value": "0"
+                            }
+                          ],
+                          "variable": [
+                            {
+                              "key": "file_id"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "OK",
+                      "code": 200,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"total_count\": \"<long>\",\n  \"limit\": \"<long>\",\n  \"offset\": \"<long>\",\n  \"order\": [\n    {\n      \"by\": \"<string>\",\n      \"direction\": \"DESC\"\n    },\n    {\n      \"by\": \"<string>\",\n      \"direction\": \"DESC\"\n    }\n  ],\n  \"entries\": [\n    {\n      \"id\": \"<string>\",\n      \"type\": \"comment\",\n      \"is_reply_comment\": \"<boolean>\",\n      \"message\": \"<string>\",\n      \"created_by\": {\n        \"type\": \"user\",\n        \"id\": \"<string>\",\n        \"name\": \"<string>\",\n        \"login\": \"<email>\"\n      },\n      \"created_at\": \"<dateTime>\",\n      \"modified_at\": \"<dateTime>\",\n      \"item\": {\n        \"id\": \"<string>\",\n        \"type\": \"<string>\"\n      },\n      \"tagged_message\": \"<string>\"\n    },\n    {\n      \"id\": \"<string>\",\n      \"type\": \"comment\",\n      \"is_reply_comment\": \"<boolean>\",\n      \"message\": \"<string>\",\n      \"created_by\": {\n        \"type\": \"user\",\n        \"id\": \"<string>\",\n        \"name\": \"<string>\",\n        \"login\": \"<email>\"\n      },\n      \"created_at\": \"<dateTime>\",\n      \"modified_at\": \"<dateTime>\",\n      \"item\": {\n        \"id\": \"<string>\",\n        \"type\": \"<string>\"\n      },\n      \"tagged_message\": \"<string>\"\n    }\n  ]\n}",
+                      "createdAt": "2026-07-28T01:15:51.000Z",
+                      "updatedAt": "2026-07-28T01:15:51.000Z",
+                      "uid": "35240-256a3081-2c8f-40a4-b6a5-d90176763ace"
+                    },
+                    {
+                      "id": "0d8d2328-f9a9-4925-9074-9cb3169e3e6a",
+                      "name": "An unexpected client error.",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/files/:file_id/comments?fields=<string>,<string>&limit=<long>&offset=0",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "files",
+                            ":file_id",
+                            "comments"
+                          ],
+                          "query": [
+                            {
+                              "description": "A comma-separated list of attributes to include in the\nresponse. This can be used to request fields that are\nnot normally returned in a standard response.\n\nBe aware that specifying this parameter will have the\neffect that none of the standard fields are returned in\nthe response unless explicitly specified, instead only\nfields for the mini representation are returned, additional\nto the fields requested.",
+                              "key": "fields",
+                              "value": "<string>,<string>"
+                            },
+                            {
+                              "description": "The maximum number of items to return per page.",
+                              "key": "limit",
+                              "value": "<long>"
+                            },
+                            {
+                              "description": "The offset of the item at which to begin the response.\n\nQueries with offset parameter value\nexceeding 10000 will be rejected\nwith a 400 response.",
+                              "key": "offset",
+                              "value": "0"
+                            }
+                          ],
+                          "variable": [
+                            {
+                              "key": "file_id"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Internal Server Error",
+                      "code": 500,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"type\": \"error\",\n  \"status\": \"<integer>\",\n  \"code\": \"unauthorized\",\n  \"message\": \"<string>\",\n  \"context_info\": {\n    \"message\": \"<string>\"\n  },\n  \"help_url\": \"<string>\",\n  \"request_id\": \"<string>\"\n}",
+                      "createdAt": "2026-07-28T01:15:51.000Z",
+                      "updatedAt": "2026-07-28T01:15:51.000Z",
+                      "uid": "35240-0d8d2328-f9a9-4925-9074-9cb3169e3e6a"
+                    }
+                  ],
+                  "createdAt": "2026-07-28T01:15:51.000Z",
+                  "updatedAt": "2026-07-28T01:15:51.000Z",
+                  "uid": "35240-f4370929-f737-484d-8717-b1da5919c525"
+                }
+              ],
+              "id": "bbfcd8c2-b59f-4ee7-9a3f-3d91d148ed53",
+              "createdAt": "2026-07-28T01:15:51.000Z",
+              "updatedAt": "2026-07-28T01:15:51.000Z",
+              "uid": "35240-bbfcd8c2-b59f-4ee7-9a3f-3d91d148ed53"
+            }
+          ],
+          "id": "3a229937-f279-4d6d-9c18-9698668ad9d4",
+          "createdAt": "2026-07-28T01:15:51.000Z",
+          "updatedAt": "2026-07-28T01:15:51.000Z",
+          "uid": "35240-3a229937-f279-4d6d-9c18-9698668ad9d4"
+        }
+      ],
+      "id": "a2745db3-5e90-492e-8de1-cb71143f2cb5",
+      "createdAt": "2026-07-28T01:15:51.000Z",
+      "updatedAt": "2026-07-28T01:15:51.000Z",
+      "uid": "35240-a2745db3-5e90-492e-8de1-cb71143f2cb5"
+    },
+    {
+      "name": "comments",
+      "item": [
+        {
+          "name": "{comment_id}",
+          "item": [
+            {
+              "name": "Box Get comment",
+              "id": "e13e5649-bbe0-4596-8f2a-67be27590b39",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/comments/:comment_id?fields=<string>,<string>",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "comments",
+                    ":comment_id"
+                  ],
+                  "query": [
+                    {
+                      "description": "A comma-separated list of attributes to include in the\nresponse. This can be used to request fields that are\nnot normally returned in a standard response.\n\nBe aware that specifying this parameter will have the\neffect that none of the standard fields are returned in\nthe response unless explicitly specified, instead only\nfields for the mini representation are returned, additional\nto the fields requested.",
+                      "key": "fields",
+                      "value": "<string>,<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "id": "66482591-1bab-4926-8ac5-3ac3d6c2ca42",
+                      "key": "comment_id",
+                      "value": "<string>",
+                      "description": "(Required) The ID of the comment."
+                    }
+                  ]
+                },
+                "description": "Retrieves the message and metadata for a specific comment, as well\nas information on the user who created the comment."
+              },
+              "response": [
+                {
+                  "id": "c5a2cdaf-d7f2-48c5-989f-23a825ac8bac",
+                  "name": "Returns a full comment object.",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/comments/:comment_id?fields=<string>,<string>",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "comments",
+                        ":comment_id"
+                      ],
+                      "query": [
+                        {
+                          "description": "A comma-separated list of attributes to include in the\nresponse. This can be used to request fields that are\nnot normally returned in a standard response.\n\nBe aware that specifying this parameter will have the\neffect that none of the standard fields are returned in\nthe response unless explicitly specified, instead only\nfields for the mini representation are returned, additional\nto the fields requested.",
+                          "key": "fields",
+                          "value": "<string>,<string>"
+                        }
+                      ],
+                      "variable": [
+                        {
+                          "key": "comment_id"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"id\": \"<string>\",\n  \"type\": \"comment\",\n  \"is_reply_comment\": \"<boolean>\",\n  \"message\": \"<string>\",\n  \"created_by\": {\n    \"type\": \"user\",\n    \"id\": \"<string>\",\n    \"name\": \"<string>\",\n    \"login\": \"<email>\"\n  },\n  \"created_at\": \"<dateTime>\",\n  \"modified_at\": \"<dateTime>\",\n  \"item\": {\n    \"id\": \"<string>\",\n    \"type\": \"<string>\"\n  },\n  \"tagged_message\": \"<string>\"\n}",
+                  "createdAt": "2026-07-28T01:15:51.000Z",
+                  "updatedAt": "2026-07-28T01:15:51.000Z",
+                  "uid": "35240-c5a2cdaf-d7f2-48c5-989f-23a825ac8bac"
+                },
+                {
+                  "id": "310d80ea-0754-4408-84aa-6c99d64275c6",
+                  "name": "An unexpected client error.",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/comments/:comment_id?fields=<string>,<string>",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "comments",
+                        ":comment_id"
+                      ],
+                      "query": [
+                        {
+                          "description": "A comma-separated list of attributes to include in the\nresponse. This can be used to request fields that are\nnot normally returned in a standard response.\n\nBe aware that specifying this parameter will have the\neffect that none of the standard fields are returned in\nthe response unless explicitly specified, instead only\nfields for the mini representation are returned, additional\nto the fields requested.",
+                          "key": "fields",
+                          "value": "<string>,<string>"
+                        }
+                      ],
+                      "variable": [
+                        {
+                          "key": "comment_id"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Internal Server Error",
+                  "code": 500,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"type\": \"error\",\n  \"status\": \"<integer>\",\n  \"code\": \"unauthorized\",\n  \"message\": \"<string>\",\n  \"context_info\": {\n    \"message\": \"<string>\"\n  },\n  \"help_url\": \"<string>\",\n  \"request_id\": \"<string>\"\n}",
+                  "createdAt": "2026-07-28T01:15:51.000Z",
+                  "updatedAt": "2026-07-28T01:15:51.000Z",
+                  "uid": "35240-310d80ea-0754-4408-84aa-6c99d64275c6"
+                }
+              ],
+              "createdAt": "2026-07-28T01:15:51.000Z",
+              "updatedAt": "2026-07-28T01:15:51.000Z",
+              "uid": "35240-e13e5649-bbe0-4596-8f2a-67be27590b39"
+            },
+            {
+              "name": "Box Update comment",
+              "id": "9ebd89dc-d6a7-419e-91e5-0ef9199a0ba0",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "PUT",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"message\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/comments/:comment_id?fields=<string>,<string>",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "comments",
+                    ":comment_id"
+                  ],
+                  "query": [
+                    {
+                      "description": "A comma-separated list of attributes to include in the\nresponse. This can be used to request fields that are\nnot normally returned in a standard response.\n\nBe aware that specifying this parameter will have the\neffect that none of the standard fields are returned in\nthe response unless explicitly specified, instead only\nfields for the mini representation are returned, additional\nto the fields requested.",
+                      "key": "fields",
+                      "value": "<string>,<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "id": "ca4437e5-fa91-48ae-bbbc-cbe1c49568bb",
+                      "key": "comment_id",
+                      "value": "<string>",
+                      "description": "(Required) The ID of the comment."
+                    }
+                  ]
+                },
+                "description": "Update the message of a comment."
+              },
+              "response": [
+                {
+                  "id": "fda95fea-0ab4-413a-87fa-5c45f15eec3e",
+                  "name": "Returns the updated comment object.",
+                  "originalRequest": {
+                    "method": "PUT",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"message\": \"<string>\"\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/comments/:comment_id?fields=<string>,<string>",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "comments",
+                        ":comment_id"
+                      ],
+                      "query": [
+                        {
+                          "description": "A comma-separated list of attributes to include in the\nresponse. This can be used to request fields that are\nnot normally returned in a standard response.\n\nBe aware that specifying this parameter will have the\neffect that none of the standard fields are returned in\nthe response unless explicitly specified, instead only\nfields for the mini representation are returned, additional\nto the fields requested.",
+                          "key": "fields",
+                          "value": "<string>,<string>"
+                        }
+                      ],
+                      "variable": [
+                        {
+                          "key": "comment_id"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"id\": \"<string>\",\n  \"type\": \"comment\",\n  \"is_reply_comment\": \"<boolean>\",\n  \"message\": \"<string>\",\n  \"created_by\": {\n    \"type\": \"user\",\n    \"id\": \"<string>\",\n    \"name\": \"<string>\",\n    \"login\": \"<email>\"\n  },\n  \"created_at\": \"<dateTime>\",\n  \"modified_at\": \"<dateTime>\",\n  \"item\": {\n    \"id\": \"<string>\",\n    \"type\": \"<string>\"\n  },\n  \"tagged_message\": \"<string>\"\n}",
+                  "createdAt": "2026-07-28T01:15:51.000Z",
+                  "updatedAt": "2026-07-28T01:15:51.000Z",
+                  "uid": "35240-fda95fea-0ab4-413a-87fa-5c45f15eec3e"
+                },
+                {
+                  "id": "48e1e487-414c-4c50-9e46-9025134432ed",
+                  "name": "An unexpected client error.",
+                  "originalRequest": {
+                    "method": "PUT",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"message\": \"<string>\"\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/comments/:comment_id?fields=<string>,<string>",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "comments",
+                        ":comment_id"
+                      ],
+                      "query": [
+                        {
+                          "description": "A comma-separated list of attributes to include in the\nresponse. This can be used to request fields that are\nnot normally returned in a standard response.\n\nBe aware that specifying this parameter will have the\neffect that none of the standard fields are returned in\nthe response unless explicitly specified, instead only\nfields for the mini representation are returned, additional\nto the fields requested.",
+                          "key": "fields",
+                          "value": "<string>,<string>"
+                        }
+                      ],
+                      "variable": [
+                        {
+                          "key": "comment_id"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Internal Server Error",
+                  "code": 500,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"type\": \"error\",\n  \"status\": \"<integer>\",\n  \"code\": \"unauthorized\",\n  \"message\": \"<string>\",\n  \"context_info\": {\n    \"message\": \"<string>\"\n  },\n  \"help_url\": \"<string>\",\n  \"request_id\": \"<string>\"\n}",
+                  "createdAt": "2026-07-28T01:15:51.000Z",
+                  "updatedAt": "2026-07-28T01:15:51.000Z",
+                  "uid": "35240-48e1e487-414c-4c50-9e46-9025134432ed"
+                }
+              ],
+              "createdAt": "2026-07-28T01:15:51.000Z",
+              "updatedAt": "2026-07-28T01:15:51.000Z",
+              "uid": "35240-9ebd89dc-d6a7-419e-91e5-0ef9199a0ba0"
+            },
+            {
+              "name": "Box Remove comment",
+              "id": "98dc0431-c88d-47ff-b690-c9fc146de08d",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "DELETE",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/comments/:comment_id",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "comments",
+                    ":comment_id"
+                  ],
+                  "variable": [
+                    {
+                      "id": "d92c0c46-43aa-4c26-954f-bf8d7cc95c86",
+                      "key": "comment_id",
+                      "value": "<string>",
+                      "description": "(Required) The ID of the comment."
+                    }
+                  ]
+                },
+                "description": "Permanently deletes a comment."
+              },
+              "response": [
+                {
+                  "id": "24c32d11-84b2-4d5c-8650-5bb5f5ce61a1",
+                  "name": "Returns an empty response when the comment has been deleted.",
+                  "originalRequest": {
+                    "method": "DELETE",
+                    "header": [],
+                    "url": {
+                      "raw": "{{baseUrl}}/comments/:comment_id",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "comments",
+                        ":comment_id"
+                      ],
+                      "variable": [
+                        {
+                          "key": "comment_id"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "No Content",
+                  "code": 204,
+                  "_postman_previewlanguage": "text",
+                  "header": [],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": null,
+                  "createdAt": "2026-07-28T01:15:51.000Z",
+                  "updatedAt": "2026-07-28T01:15:51.000Z",
+                  "uid": "35240-24c32d11-84b2-4d5c-8650-5bb5f5ce61a1"
+                },
+                {
+                  "id": "a3ed588f-c5f3-41a7-b196-43d76285106f",
+                  "name": "An unexpected client error.",
+                  "originalRequest": {
+                    "method": "DELETE",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/comments/:comment_id",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "comments",
+                        ":comment_id"
+                      ],
+                      "variable": [
+                        {
+                          "key": "comment_id"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Internal Server Error",
+                  "code": 500,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"type\": \"error\",\n  \"status\": \"<integer>\",\n  \"code\": \"unauthorized\",\n  \"message\": \"<string>\",\n  \"context_info\": {\n    \"message\": \"<string>\"\n  },\n  \"help_url\": \"<string>\",\n  \"request_id\": \"<string>\"\n}",
+                  "createdAt": "2026-07-28T01:15:51.000Z",
+                  "updatedAt": "2026-07-28T01:15:51.000Z",
+                  "uid": "35240-a3ed588f-c5f3-41a7-b196-43d76285106f"
+                }
+              ],
+              "createdAt": "2026-07-28T01:15:51.000Z",
+              "updatedAt": "2026-07-28T01:15:51.000Z",
+              "uid": "35240-98dc0431-c88d-47ff-b690-c9fc146de08d"
+            }
+          ],
+          "id": "a64b8ced-45ee-4080-b6e3-bbf0e801b32b",
+          "createdAt": "2026-07-28T01:15:51.000Z",
+          "updatedAt": "2026-07-28T01:15:51.000Z",
+          "uid": "35240-a64b8ced-45ee-4080-b6e3-bbf0e801b32b"
+        },
+        {
+          "name": "Box Create comment",
+          "id": "bf6edd65-ed25-495f-8922-82c81fac1335",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"message\": \"<string>\",\n  \"item\": {\n    \"id\": \"<string>\",\n    \"type\": \"file\"\n  },\n  \"tagged_message\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "headerFamily": "json",
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/comments?fields=<string>,<string>",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "comments"
+              ],
+              "query": [
+                {
+                  "description": "A comma-separated list of attributes to include in the\nresponse. This can be used to request fields that are\nnot normally returned in a standard response.\n\nBe aware that specifying this parameter will have the\neffect that none of the standard fields are returned in\nthe response unless explicitly specified, instead only\nfields for the mini representation are returned, additional\nto the fields requested.",
+                  "key": "fields",
+                  "value": "<string>,<string>"
+                }
+              ]
+            },
+            "description": "Adds a comment by the user to a specific file, or\nas a reply to an other comment."
+          },
+          "response": [
+            {
+              "id": "551afd01-19e6-44ad-a577-c9520e8f92eb",
+              "name": "Returns the newly created comment object.\n\nNot all available fields are returned by default. Use the\n[fields](#param-fields) query parameter to explicitly request\nany specific fields.",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"message\": \"<string>\",\n  \"item\": {\n    \"id\": \"<string>\",\n    \"type\": \"file\"\n  },\n  \"tagged_message\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/comments?fields=<string>,<string>",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "comments"
+                  ],
+                  "query": [
+                    {
+                      "description": "A comma-separated list of attributes to include in the\nresponse. This can be used to request fields that are\nnot normally returned in a standard response.\n\nBe aware that specifying this parameter will have the\neffect that none of the standard fields are returned in\nthe response unless explicitly specified, instead only\nfields for the mini representation are returned, additional\nto the fields requested.",
+                      "key": "fields",
+                      "value": "<string>,<string>"
+                    }
+                  ]
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "responseTime": null,
+              "body": "{\n  \"id\": \"<string>\",\n  \"type\": \"comment\",\n  \"is_reply_comment\": \"<boolean>\",\n  \"message\": \"<string>\",\n  \"created_by\": {\n    \"type\": \"user\",\n    \"id\": \"<string>\",\n    \"name\": \"<string>\",\n    \"login\": \"<email>\"\n  },\n  \"created_at\": \"<dateTime>\",\n  \"modified_at\": \"<dateTime>\",\n  \"item\": {\n    \"id\": \"<string>\",\n    \"type\": \"<string>\"\n  },\n  \"tagged_message\": \"<string>\"\n}",
+              "createdAt": "2026-07-28T01:15:51.000Z",
+              "updatedAt": "2026-07-28T01:15:51.000Z",
+              "uid": "35240-551afd01-19e6-44ad-a577-c9520e8f92eb"
+            },
+            {
+              "id": "a4154cbb-06f8-43bc-9717-26a4449f9efe",
+              "name": "An unexpected client error.",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"message\": \"<string>\",\n  \"item\": {\n    \"id\": \"<string>\",\n    \"type\": \"file\"\n  },\n  \"tagged_message\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/comments?fields=<string>,<string>",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "comments"
+                  ],
+                  "query": [
+                    {
+                      "description": "A comma-separated list of attributes to include in the\nresponse. This can be used to request fields that are\nnot normally returned in a standard response.\n\nBe aware that specifying this parameter will have the\neffect that none of the standard fields are returned in\nthe response unless explicitly specified, instead only\nfields for the mini representation are returned, additional\nto the fields requested.",
+                      "key": "fields",
+                      "value": "<string>,<string>"
+                    }
+                  ]
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "responseTime": null,
+              "body": "{\n  \"type\": \"error\",\n  \"status\": \"<integer>\",\n  \"code\": \"unauthorized\",\n  \"message\": \"<string>\",\n  \"context_info\": {\n    \"message\": \"<string>\"\n  },\n  \"help_url\": \"<string>\",\n  \"request_id\": \"<string>\"\n}",
+              "createdAt": "2026-07-28T01:15:51.000Z",
+              "updatedAt": "2026-07-28T01:15:51.000Z",
+              "uid": "35240-a4154cbb-06f8-43bc-9717-26a4449f9efe"
+            }
+          ],
+          "createdAt": "2026-07-28T01:15:51.000Z",
+          "updatedAt": "2026-07-28T01:15:51.000Z",
+          "uid": "35240-bf6edd65-ed25-495f-8922-82c81fac1335"
+        }
+      ],
+      "id": "3d096955-e5e1-4948-8270-a9a975f861d5",
+      "createdAt": "2026-07-28T01:15:51.000Z",
+      "updatedAt": "2026-07-28T01:15:51.000Z",
+      "uid": "35240-3d096955-e5e1-4948-8270-a9a975f861d5"
+    }
+  ],
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "/"
+    }
+  ]
+}

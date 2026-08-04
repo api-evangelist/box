@@ -1,0 +1,1192 @@
+{
+  "info": {
+    "_postman_id": "0a25e0cd-da36-45a3-bee3-9728321c695c",
+    "name": "Box Authorize Authorization Task Assignments API",
+    "description": "Needs a description.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "createdAt": "2026-07-28T01:17:23.000Z",
+    "updatedAt": "2026-07-28T01:17:24.000Z",
+    "lastUpdatedBy": "35240",
+    "uid": "35240-0a25e0cd-da36-45a3-bee3-9728321c695c"
+  },
+  "item": [
+    {
+      "name": "tasks",
+      "item": [
+        {
+          "name": "{task_id}",
+          "item": [
+            {
+              "name": "assignments",
+              "item": [
+                {
+                  "name": "Box List task assignments",
+                  "id": "09527725-b6c7-4e19-ae75-e8f28e290652",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/tasks/:task_id/assignments",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "tasks",
+                        ":task_id",
+                        "assignments"
+                      ],
+                      "variable": [
+                        {
+                          "id": "28b3f65e-2fdf-4d50-bddd-5822019ff5b4",
+                          "key": "task_id",
+                          "value": "<string>",
+                          "description": "(Required) The ID of the task."
+                        }
+                      ]
+                    },
+                    "description": "Lists all of the assignments for a given task."
+                  },
+                  "response": [
+                    {
+                      "id": "2808b495-5d08-44ea-9c50-06e2552afc40",
+                      "name": "Returns a collection of task assignment defining what task on\na file has been assigned to which users and by who.",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/tasks/:task_id/assignments",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "tasks",
+                            ":task_id",
+                            "assignments"
+                          ],
+                          "variable": [
+                            {
+                              "key": "task_id"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "OK",
+                      "code": 200,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"total_count\": \"<long>\",\n  \"entries\": [\n    {\n      \"id\": \"<string>\",\n      \"type\": \"task_assignment\",\n      \"item\": {\n        \"id\": \"<string>\",\n        \"type\": \"file\",\n        \"etag\": \"<string>\",\n        \"sequence_id\": \"<string>\",\n        \"name\": \"<string>\",\n        \"sha1\": \"<string>\",\n        \"file_version\": {\n          \"id\": \"<string>\",\n          \"type\": \"file_version\",\n          \"sha1\": \"<string>\"\n        }\n      },\n      \"assigned_to\": {\n        \"type\": \"user\",\n        \"id\": \"<string>\",\n        \"name\": \"<string>\",\n        \"login\": \"<email>\"\n      },\n      \"message\": \"<string>\",\n      \"completed_at\": \"<dateTime>\",\n      \"assigned_at\": \"<dateTime>\",\n      \"reminded_at\": \"<dateTime>\",\n      \"resolution_state\": \"rejected\",\n      \"assigned_by\": {\n        \"type\": \"user\",\n        \"id\": \"<string>\",\n        \"name\": \"<string>\",\n        \"login\": \"<email>\"\n      }\n    },\n    {\n      \"id\": \"<string>\",\n      \"type\": \"task_assignment\",\n      \"item\": {\n        \"id\": \"<string>\",\n        \"type\": \"file\",\n        \"etag\": \"<string>\",\n        \"sequence_id\": \"<string>\",\n        \"name\": \"<string>\",\n        \"sha1\": \"<string>\",\n        \"file_version\": {\n          \"id\": \"<string>\",\n          \"type\": \"file_version\",\n          \"sha1\": \"<string>\"\n        }\n      },\n      \"assigned_to\": {\n        \"type\": \"user\",\n        \"id\": \"<string>\",\n        \"name\": \"<string>\",\n        \"login\": \"<email>\"\n      },\n      \"message\": \"<string>\",\n      \"completed_at\": \"<dateTime>\",\n      \"assigned_at\": \"<dateTime>\",\n      \"reminded_at\": \"<dateTime>\",\n      \"resolution_state\": \"incomplete\",\n      \"assigned_by\": {\n        \"type\": \"user\",\n        \"id\": \"<string>\",\n        \"name\": \"<string>\",\n        \"login\": \"<email>\"\n      }\n    }\n  ]\n}",
+                      "createdAt": "2026-07-28T01:17:24.000Z",
+                      "updatedAt": "2026-07-28T01:17:24.000Z",
+                      "uid": "35240-2808b495-5d08-44ea-9c50-06e2552afc40"
+                    },
+                    {
+                      "id": "f01e2dda-9147-4592-9cd9-0d3ec0f44f8d",
+                      "name": "Returns an error when the task could not be found or the user does not\nhave access to the file the task is assigned to.",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/tasks/:task_id/assignments",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "tasks",
+                            ":task_id",
+                            "assignments"
+                          ],
+                          "variable": [
+                            {
+                              "key": "task_id"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Not Found",
+                      "code": 404,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"type\": \"error\",\n  \"status\": \"<integer>\",\n  \"code\": \"forbidden\",\n  \"message\": \"<string>\",\n  \"context_info\": {\n    \"message\": \"<string>\"\n  },\n  \"help_url\": \"<string>\",\n  \"request_id\": \"<string>\"\n}",
+                      "createdAt": "2026-07-28T01:17:24.000Z",
+                      "updatedAt": "2026-07-28T01:17:24.000Z",
+                      "uid": "35240-f01e2dda-9147-4592-9cd9-0d3ec0f44f8d"
+                    },
+                    {
+                      "id": "87856a2f-f179-43f5-b495-5094a539d793",
+                      "name": "Returns an error if the task assignment ID was omitted in\nthe request.",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/tasks/:task_id/assignments",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "tasks",
+                            ":task_id",
+                            "assignments"
+                          ],
+                          "variable": [
+                            {
+                              "key": "task_id"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Internal Server Error",
+                      "code": 500,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"type\": \"error\",\n  \"status\": \"<integer>\",\n  \"code\": \"forbidden\",\n  \"message\": \"<string>\",\n  \"context_info\": {\n    \"message\": \"<string>\"\n  },\n  \"help_url\": \"<string>\",\n  \"request_id\": \"<string>\"\n}",
+                      "createdAt": "2026-07-28T01:17:24.000Z",
+                      "updatedAt": "2026-07-28T01:17:24.000Z",
+                      "uid": "35240-87856a2f-f179-43f5-b495-5094a539d793"
+                    },
+                    {
+                      "id": "e24f64c6-d331-4478-9cc9-69ca15d8feeb",
+                      "name": "An unexpected client error.",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/tasks/:task_id/assignments",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "tasks",
+                            ":task_id",
+                            "assignments"
+                          ],
+                          "variable": [
+                            {
+                              "key": "task_id"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Internal Server Error",
+                      "code": 500,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"type\": \"error\",\n  \"status\": \"<integer>\",\n  \"code\": \"forbidden\",\n  \"message\": \"<string>\",\n  \"context_info\": {\n    \"message\": \"<string>\"\n  },\n  \"help_url\": \"<string>\",\n  \"request_id\": \"<string>\"\n}",
+                      "createdAt": "2026-07-28T01:17:24.000Z",
+                      "updatedAt": "2026-07-28T01:17:24.000Z",
+                      "uid": "35240-e24f64c6-d331-4478-9cc9-69ca15d8feeb"
+                    }
+                  ],
+                  "createdAt": "2026-07-28T01:17:24.000Z",
+                  "updatedAt": "2026-07-28T01:17:24.000Z",
+                  "uid": "35240-09527725-b6c7-4e19-ae75-e8f28e290652"
+                }
+              ],
+              "id": "5d888779-2f13-45f9-b5c3-57efb6f6a326",
+              "createdAt": "2026-07-28T01:17:24.000Z",
+              "updatedAt": "2026-07-28T01:17:24.000Z",
+              "uid": "35240-5d888779-2f13-45f9-b5c3-57efb6f6a326"
+            }
+          ],
+          "id": "6b2bfb07-7076-4ba0-bf71-df60b18ee338",
+          "createdAt": "2026-07-28T01:17:24.000Z",
+          "updatedAt": "2026-07-28T01:17:24.000Z",
+          "uid": "35240-6b2bfb07-7076-4ba0-bf71-df60b18ee338"
+        }
+      ],
+      "id": "e90abb24-ce86-48af-9c8b-f3e61b5f8ad8",
+      "createdAt": "2026-07-28T01:17:24.000Z",
+      "updatedAt": "2026-07-28T01:17:24.000Z",
+      "uid": "35240-e90abb24-ce86-48af-9c8b-f3e61b5f8ad8"
+    },
+    {
+      "name": "task_assignments",
+      "item": [
+        {
+          "name": "{task_assignment_id}",
+          "item": [
+            {
+              "name": "Box Get task assignment",
+              "id": "bf679d61-0ce6-49f2-9bb0-dd8a733b616a",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/task_assignments/:task_assignment_id",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "task_assignments",
+                    ":task_assignment_id"
+                  ],
+                  "variable": [
+                    {
+                      "id": "5b5c2af3-b51b-4aa1-a04c-b3bbae436949",
+                      "key": "task_assignment_id",
+                      "value": "<string>",
+                      "description": "(Required) The ID of the task assignment."
+                    }
+                  ]
+                },
+                "description": "Retrieves information about a task assignment."
+              },
+              "response": [
+                {
+                  "id": "33b1951d-029c-4336-a07b-1a3d5271d75f",
+                  "name": "Returns a task assignment, specifying who the task has been assigned to\nand by whom.",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/task_assignments/:task_assignment_id",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "task_assignments",
+                        ":task_assignment_id"
+                      ],
+                      "variable": [
+                        {
+                          "key": "task_assignment_id"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"id\": \"<string>\",\n  \"type\": \"task_assignment\",\n  \"item\": {\n    \"id\": \"<string>\",\n    \"type\": \"file\",\n    \"etag\": \"<string>\",\n    \"sequence_id\": \"<string>\",\n    \"name\": \"<string>\",\n    \"sha1\": \"<string>\",\n    \"file_version\": {\n      \"id\": \"<string>\",\n      \"type\": \"file_version\",\n      \"sha1\": \"<string>\"\n    }\n  },\n  \"assigned_to\": {\n    \"type\": \"user\",\n    \"id\": \"<string>\",\n    \"name\": \"<string>\",\n    \"login\": \"<email>\"\n  },\n  \"message\": \"<string>\",\n  \"completed_at\": \"<dateTime>\",\n  \"assigned_at\": \"<dateTime>\",\n  \"reminded_at\": \"<dateTime>\",\n  \"resolution_state\": \"rejected\",\n  \"assigned_by\": {\n    \"type\": \"user\",\n    \"id\": \"<string>\",\n    \"name\": \"<string>\",\n    \"login\": \"<email>\"\n  }\n}",
+                  "createdAt": "2026-07-28T01:17:24.000Z",
+                  "updatedAt": "2026-07-28T01:17:24.000Z",
+                  "uid": "35240-33b1951d-029c-4336-a07b-1a3d5271d75f"
+                },
+                {
+                  "id": "3771b76c-8848-41d8-a4cd-0e6150115dd7",
+                  "name": "Returns an error when the task assignment could not be found or the user\ndoes not have access to the file the task is assigned to.",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/task_assignments/:task_assignment_id",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "task_assignments",
+                        ":task_assignment_id"
+                      ],
+                      "variable": [
+                        {
+                          "key": "task_assignment_id"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Not Found",
+                  "code": 404,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"type\": \"error\",\n  \"status\": \"<integer>\",\n  \"code\": \"forbidden\",\n  \"message\": \"<string>\",\n  \"context_info\": {\n    \"message\": \"<string>\"\n  },\n  \"help_url\": \"<string>\",\n  \"request_id\": \"<string>\"\n}",
+                  "createdAt": "2026-07-28T01:17:24.000Z",
+                  "updatedAt": "2026-07-28T01:17:24.000Z",
+                  "uid": "35240-3771b76c-8848-41d8-a4cd-0e6150115dd7"
+                },
+                {
+                  "id": "09e88c6b-93b4-4115-ab96-a179cca9d5e9",
+                  "name": "An unexpected client error.",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/task_assignments/:task_assignment_id",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "task_assignments",
+                        ":task_assignment_id"
+                      ],
+                      "variable": [
+                        {
+                          "key": "task_assignment_id"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Internal Server Error",
+                  "code": 500,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"type\": \"error\",\n  \"status\": \"<integer>\",\n  \"code\": \"forbidden\",\n  \"message\": \"<string>\",\n  \"context_info\": {\n    \"message\": \"<string>\"\n  },\n  \"help_url\": \"<string>\",\n  \"request_id\": \"<string>\"\n}",
+                  "createdAt": "2026-07-28T01:17:24.000Z",
+                  "updatedAt": "2026-07-28T01:17:24.000Z",
+                  "uid": "35240-09e88c6b-93b4-4115-ab96-a179cca9d5e9"
+                }
+              ],
+              "createdAt": "2026-07-28T01:17:24.000Z",
+              "updatedAt": "2026-07-28T01:17:24.000Z",
+              "uid": "35240-bf679d61-0ce6-49f2-9bb0-dd8a733b616a"
+            },
+            {
+              "name": "Box Update task assignment",
+              "id": "59bcceb1-271d-48fd-add1-8b785da701b5",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "PUT",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"message\": \"<string>\",\n  \"resolution_state\": \"rejected\"\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/task_assignments/:task_assignment_id",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "task_assignments",
+                    ":task_assignment_id"
+                  ],
+                  "variable": [
+                    {
+                      "id": "b74cca93-4fa0-409c-8c60-6076a1818d07",
+                      "key": "task_assignment_id",
+                      "value": "<string>",
+                      "description": "(Required) The ID of the task assignment."
+                    }
+                  ]
+                },
+                "description": "Updates a task assignment. This endpoint can be\nused to update the state of a task assigned to a user."
+              },
+              "response": [
+                {
+                  "id": "a74e81dc-7332-4ae8-b45b-2565aa6b9724",
+                  "name": "Returns the updated task assignment object.",
+                  "originalRequest": {
+                    "method": "PUT",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"message\": \"<string>\",\n  \"resolution_state\": \"rejected\"\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/task_assignments/:task_assignment_id",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "task_assignments",
+                        ":task_assignment_id"
+                      ],
+                      "variable": [
+                        {
+                          "key": "task_assignment_id"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"id\": \"<string>\",\n  \"type\": \"task_assignment\",\n  \"item\": {\n    \"id\": \"<string>\",\n    \"type\": \"file\",\n    \"etag\": \"<string>\",\n    \"sequence_id\": \"<string>\",\n    \"name\": \"<string>\",\n    \"sha1\": \"<string>\",\n    \"file_version\": {\n      \"id\": \"<string>\",\n      \"type\": \"file_version\",\n      \"sha1\": \"<string>\"\n    }\n  },\n  \"assigned_to\": {\n    \"type\": \"user\",\n    \"id\": \"<string>\",\n    \"name\": \"<string>\",\n    \"login\": \"<email>\"\n  },\n  \"message\": \"<string>\",\n  \"completed_at\": \"<dateTime>\",\n  \"assigned_at\": \"<dateTime>\",\n  \"reminded_at\": \"<dateTime>\",\n  \"resolution_state\": \"rejected\",\n  \"assigned_by\": {\n    \"type\": \"user\",\n    \"id\": \"<string>\",\n    \"name\": \"<string>\",\n    \"login\": \"<email>\"\n  }\n}",
+                  "createdAt": "2026-07-28T01:17:24.000Z",
+                  "updatedAt": "2026-07-28T01:17:24.000Z",
+                  "uid": "35240-a74e81dc-7332-4ae8-b45b-2565aa6b9724"
+                },
+                {
+                  "id": "dd6e0d0d-a9c5-4545-99c4-674161419f13",
+                  "name": "Returns an error if a resolution state is incompatible with the action\ntype of the task.",
+                  "originalRequest": {
+                    "method": "PUT",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"message\": \"<string>\",\n  \"resolution_state\": \"rejected\"\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/task_assignments/:task_assignment_id",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "task_assignments",
+                        ":task_assignment_id"
+                      ],
+                      "variable": [
+                        {
+                          "key": "task_assignment_id"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Bad Request",
+                  "code": 400,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"type\": \"error\",\n  \"status\": \"<integer>\",\n  \"code\": \"forbidden\",\n  \"message\": \"<string>\",\n  \"context_info\": {\n    \"message\": \"<string>\"\n  },\n  \"help_url\": \"<string>\",\n  \"request_id\": \"<string>\"\n}",
+                  "createdAt": "2026-07-28T01:17:24.000Z",
+                  "updatedAt": "2026-07-28T01:17:24.000Z",
+                  "uid": "35240-dd6e0d0d-a9c5-4545-99c4-674161419f13"
+                },
+                {
+                  "id": "55bbf445-f2be-4375-b2f8-0adee5319a74",
+                  "name": "Returns an error when the task assignment could not be found or the user\ndoes not have access to the file the task is assigned to.",
+                  "originalRequest": {
+                    "method": "PUT",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"message\": \"<string>\",\n  \"resolution_state\": \"rejected\"\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/task_assignments/:task_assignment_id",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "task_assignments",
+                        ":task_assignment_id"
+                      ],
+                      "variable": [
+                        {
+                          "key": "task_assignment_id"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Not Found",
+                  "code": 404,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"type\": \"error\",\n  \"status\": \"<integer>\",\n  \"code\": \"forbidden\",\n  \"message\": \"<string>\",\n  \"context_info\": {\n    \"message\": \"<string>\"\n  },\n  \"help_url\": \"<string>\",\n  \"request_id\": \"<string>\"\n}",
+                  "createdAt": "2026-07-28T01:17:24.000Z",
+                  "updatedAt": "2026-07-28T01:17:24.000Z",
+                  "uid": "35240-55bbf445-f2be-4375-b2f8-0adee5319a74"
+                },
+                {
+                  "id": "195018c5-ac6e-4611-a8f4-b91f7680b730",
+                  "name": "An unexpected client error.",
+                  "originalRequest": {
+                    "method": "PUT",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"message\": \"<string>\",\n  \"resolution_state\": \"rejected\"\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/task_assignments/:task_assignment_id",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "task_assignments",
+                        ":task_assignment_id"
+                      ],
+                      "variable": [
+                        {
+                          "key": "task_assignment_id"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Internal Server Error",
+                  "code": 500,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"type\": \"error\",\n  \"status\": \"<integer>\",\n  \"code\": \"forbidden\",\n  \"message\": \"<string>\",\n  \"context_info\": {\n    \"message\": \"<string>\"\n  },\n  \"help_url\": \"<string>\",\n  \"request_id\": \"<string>\"\n}",
+                  "createdAt": "2026-07-28T01:17:24.000Z",
+                  "updatedAt": "2026-07-28T01:17:24.000Z",
+                  "uid": "35240-195018c5-ac6e-4611-a8f4-b91f7680b730"
+                }
+              ],
+              "createdAt": "2026-07-28T01:17:24.000Z",
+              "updatedAt": "2026-07-28T01:17:24.000Z",
+              "uid": "35240-59bcceb1-271d-48fd-add1-8b785da701b5"
+            },
+            {
+              "name": "Box Unassign task",
+              "id": "f71f8804-44ab-4d31-b879-caee72082ff2",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "DELETE",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/task_assignments/:task_assignment_id",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "task_assignments",
+                    ":task_assignment_id"
+                  ],
+                  "variable": [
+                    {
+                      "id": "66a6cf6a-ecdf-4713-98d2-49c896271384",
+                      "key": "task_assignment_id",
+                      "value": "<string>",
+                      "description": "(Required) The ID of the task assignment."
+                    }
+                  ]
+                },
+                "description": "Deletes a specific task assignment."
+              },
+              "response": [
+                {
+                  "id": "a04146db-faf3-41f7-af30-0e1d0e157203",
+                  "name": "Returns an empty response when the task\nassignment was successfully deleted.",
+                  "originalRequest": {
+                    "method": "DELETE",
+                    "header": [],
+                    "url": {
+                      "raw": "{{baseUrl}}/task_assignments/:task_assignment_id",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "task_assignments",
+                        ":task_assignment_id"
+                      ],
+                      "variable": [
+                        {
+                          "key": "task_assignment_id"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "No Content",
+                  "code": 204,
+                  "_postman_previewlanguage": "text",
+                  "header": [],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": null,
+                  "createdAt": "2026-07-28T01:17:24.000Z",
+                  "updatedAt": "2026-07-28T01:17:24.000Z",
+                  "uid": "35240-a04146db-faf3-41f7-af30-0e1d0e157203"
+                },
+                {
+                  "id": "5f0e7fa0-24b8-4ba0-982b-657af008f914",
+                  "name": "Returns an error if the task assignment for the given ID does not exist\nor is inaccessible to your account.",
+                  "originalRequest": {
+                    "method": "DELETE",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/task_assignments/:task_assignment_id",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "task_assignments",
+                        ":task_assignment_id"
+                      ],
+                      "variable": [
+                        {
+                          "key": "task_assignment_id"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Not Found",
+                  "code": 404,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"type\": \"error\",\n  \"status\": \"<integer>\",\n  \"code\": \"forbidden\",\n  \"message\": \"<string>\",\n  \"context_info\": {\n    \"message\": \"<string>\"\n  },\n  \"help_url\": \"<string>\",\n  \"request_id\": \"<string>\"\n}",
+                  "createdAt": "2026-07-28T01:17:24.000Z",
+                  "updatedAt": "2026-07-28T01:17:24.000Z",
+                  "uid": "35240-5f0e7fa0-24b8-4ba0-982b-657af008f914"
+                },
+                {
+                  "id": "dcdcf62a-d3bb-48fd-8065-bf0a7efc2606",
+                  "name": "An unexpected client error.",
+                  "originalRequest": {
+                    "method": "DELETE",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/task_assignments/:task_assignment_id",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "task_assignments",
+                        ":task_assignment_id"
+                      ],
+                      "variable": [
+                        {
+                          "key": "task_assignment_id"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Internal Server Error",
+                  "code": 500,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"type\": \"error\",\n  \"status\": \"<integer>\",\n  \"code\": \"forbidden\",\n  \"message\": \"<string>\",\n  \"context_info\": {\n    \"message\": \"<string>\"\n  },\n  \"help_url\": \"<string>\",\n  \"request_id\": \"<string>\"\n}",
+                  "createdAt": "2026-07-28T01:17:24.000Z",
+                  "updatedAt": "2026-07-28T01:17:24.000Z",
+                  "uid": "35240-dcdcf62a-d3bb-48fd-8065-bf0a7efc2606"
+                }
+              ],
+              "createdAt": "2026-07-28T01:17:24.000Z",
+              "updatedAt": "2026-07-28T01:17:24.000Z",
+              "uid": "35240-f71f8804-44ab-4d31-b879-caee72082ff2"
+            }
+          ],
+          "id": "54ac4fe9-15e3-444a-8c99-2511dffa3936",
+          "createdAt": "2026-07-28T01:17:24.000Z",
+          "updatedAt": "2026-07-28T01:17:24.000Z",
+          "uid": "35240-54ac4fe9-15e3-444a-8c99-2511dffa3936"
+        },
+        {
+          "name": "Box Assign task",
+          "id": "3f9a39d9-116b-4799-9a13-59035d508a39",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"task\": {\n    \"id\": \"<string>\",\n    \"type\": \"task\"\n  },\n  \"assign_to\": {\n    \"id\": \"<string>\",\n    \"login\": \"<string>\"\n  }\n}",
+              "options": {
+                "raw": {
+                  "headerFamily": "json",
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/task_assignments",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "task_assignments"
+              ]
+            },
+            "description": "Assigns a task to a user.\n\nA task can be assigned to more than one user by creating multiple\nassignments."
+          },
+          "response": [
+            {
+              "id": "eb5af8b4-7203-49d8-b6a8-aaf698d16ffe",
+              "name": "Returns a new task assignment object.",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"task\": {\n    \"id\": \"<string>\",\n    \"type\": \"task\"\n  },\n  \"assign_to\": {\n    \"id\": \"<string>\",\n    \"login\": \"<string>\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/task_assignments",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "task_assignments"
+                  ]
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "responseTime": null,
+              "body": "{\n  \"id\": \"<string>\",\n  \"type\": \"task_assignment\",\n  \"item\": {\n    \"id\": \"<string>\",\n    \"type\": \"file\",\n    \"etag\": \"<string>\",\n    \"sequence_id\": \"<string>\",\n    \"name\": \"<string>\",\n    \"sha1\": \"<string>\",\n    \"file_version\": {\n      \"id\": \"<string>\",\n      \"type\": \"file_version\",\n      \"sha1\": \"<string>\"\n    }\n  },\n  \"assigned_to\": {\n    \"type\": \"user\",\n    \"id\": \"<string>\",\n    \"name\": \"<string>\",\n    \"login\": \"<email>\"\n  },\n  \"message\": \"<string>\",\n  \"completed_at\": \"<dateTime>\",\n  \"assigned_at\": \"<dateTime>\",\n  \"reminded_at\": \"<dateTime>\",\n  \"resolution_state\": \"rejected\",\n  \"assigned_by\": {\n    \"type\": \"user\",\n    \"id\": \"<string>\",\n    \"name\": \"<string>\",\n    \"login\": \"<email>\"\n  }\n}",
+              "createdAt": "2026-07-28T01:17:24.000Z",
+              "updatedAt": "2026-07-28T01:17:24.000Z",
+              "uid": "35240-eb5af8b4-7203-49d8-b6a8-aaf698d16ffe"
+            },
+            {
+              "id": "159d6c7f-909b-4ff7-8503-d090a8fef7a1",
+              "name": "Returns an error if a change is attempted for a completed task or the user\ndoes not have access to the item linked to the task for the given task\nassignment.",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"task\": {\n    \"id\": \"<string>\",\n    \"type\": \"task\"\n  },\n  \"assign_to\": {\n    \"id\": \"<string>\",\n    \"login\": \"<string>\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/task_assignments",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "task_assignments"
+                  ]
+                }
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "responseTime": null,
+              "body": "{\n  \"type\": \"error\",\n  \"status\": \"<integer>\",\n  \"code\": \"forbidden\",\n  \"message\": \"<string>\",\n  \"context_info\": {\n    \"message\": \"<string>\"\n  },\n  \"help_url\": \"<string>\",\n  \"request_id\": \"<string>\"\n}",
+              "createdAt": "2026-07-28T01:17:24.000Z",
+              "updatedAt": "2026-07-28T01:17:24.000Z",
+              "uid": "35240-159d6c7f-909b-4ff7-8503-d090a8fef7a1"
+            },
+            {
+              "id": "64428e29-bce1-4d35-a1d9-53f6c4096554",
+              "name": "Returns an error when the task cannot be found.",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"task\": {\n    \"id\": \"<string>\",\n    \"type\": \"task\"\n  },\n  \"assign_to\": {\n    \"id\": \"<string>\",\n    \"login\": \"<string>\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/task_assignments",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "task_assignments"
+                  ]
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "responseTime": null,
+              "body": "{\n  \"type\": \"error\",\n  \"status\": \"<integer>\",\n  \"code\": \"forbidden\",\n  \"message\": \"<string>\",\n  \"context_info\": {\n    \"message\": \"<string>\"\n  },\n  \"help_url\": \"<string>\",\n  \"request_id\": \"<string>\"\n}",
+              "createdAt": "2026-07-28T01:17:24.000Z",
+              "updatedAt": "2026-07-28T01:17:24.000Z",
+              "uid": "35240-64428e29-bce1-4d35-a1d9-53f6c4096554"
+            },
+            {
+              "id": "a7ab008a-55cd-49fd-b234-cb3c994b9561",
+              "name": "Returns an error if any of the IDs for this request were not valid, or if\nthe targeted user does not have access to the file.",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"task\": {\n    \"id\": \"<string>\",\n    \"type\": \"task\"\n  },\n  \"assign_to\": {\n    \"id\": \"<string>\",\n    \"login\": \"<string>\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/task_assignments",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "task_assignments"
+                  ]
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "responseTime": null,
+              "body": "{\n  \"type\": \"error\",\n  \"status\": \"<integer>\",\n  \"code\": \"forbidden\",\n  \"message\": \"<string>\",\n  \"context_info\": {\n    \"message\": \"<string>\"\n  },\n  \"help_url\": \"<string>\",\n  \"request_id\": \"<string>\"\n}",
+              "createdAt": "2026-07-28T01:17:24.000Z",
+              "updatedAt": "2026-07-28T01:17:24.000Z",
+              "uid": "35240-a7ab008a-55cd-49fd-b234-cb3c994b9561"
+            },
+            {
+              "id": "dcb143e2-835c-473e-b42e-7e8a527428c6",
+              "name": "An unexpected client error.",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"task\": {\n    \"id\": \"<string>\",\n    \"type\": \"task\"\n  },\n  \"assign_to\": {\n    \"id\": \"<string>\",\n    \"login\": \"<string>\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/task_assignments",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "task_assignments"
+                  ]
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "responseTime": null,
+              "body": "{\n  \"type\": \"error\",\n  \"status\": \"<integer>\",\n  \"code\": \"forbidden\",\n  \"message\": \"<string>\",\n  \"context_info\": {\n    \"message\": \"<string>\"\n  },\n  \"help_url\": \"<string>\",\n  \"request_id\": \"<string>\"\n}",
+              "createdAt": "2026-07-28T01:17:24.000Z",
+              "updatedAt": "2026-07-28T01:17:24.000Z",
+              "uid": "35240-dcb143e2-835c-473e-b42e-7e8a527428c6"
+            }
+          ],
+          "createdAt": "2026-07-28T01:17:24.000Z",
+          "updatedAt": "2026-07-28T01:17:24.000Z",
+          "uid": "35240-3f9a39d9-116b-4799-9a13-59035d508a39"
+        }
+      ],
+      "id": "06816991-c554-492d-a5d5-004c5978b613",
+      "createdAt": "2026-07-28T01:17:24.000Z",
+      "updatedAt": "2026-07-28T01:17:24.000Z",
+      "uid": "35240-06816991-c554-492d-a5d5-004c5978b613"
+    }
+  ],
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "/"
+    }
+  ]
+}

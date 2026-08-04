@@ -1,0 +1,1100 @@
+{
+  "info": {
+    "_postman_id": "fbe6dffc-5663-48d7-baaa-3aff7009b055",
+    "name": "Box Authorize Authorization Group Memberships API",
+    "description": "Needs a description.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "createdAt": "2026-07-28T01:16:15.000Z",
+    "updatedAt": "2026-07-28T01:16:15.000Z",
+    "lastUpdatedBy": "35240",
+    "uid": "35240-fbe6dffc-5663-48d7-baaa-3aff7009b055"
+  },
+  "item": [
+    {
+      "name": "users",
+      "item": [
+        {
+          "name": "{user_id}",
+          "item": [
+            {
+              "name": "memberships",
+              "item": [
+                {
+                  "name": "Box List user's groups",
+                  "id": "5b5978c8-c4c9-4ed0-80b3-e0af779fd446",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/users/:user_id/memberships?limit=<long>&offset=0",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "users",
+                        ":user_id",
+                        "memberships"
+                      ],
+                      "query": [
+                        {
+                          "description": "The maximum number of items to return per page.",
+                          "key": "limit",
+                          "value": "<long>"
+                        },
+                        {
+                          "description": "The offset of the item at which to begin the response.\n\nQueries with offset parameter value\nexceeding 10000 will be rejected\nwith a 400 response.",
+                          "key": "offset",
+                          "value": "0"
+                        }
+                      ],
+                      "variable": [
+                        {
+                          "id": "2cd5aba3-c6a4-4e55-b28a-ed0a5ddecac3",
+                          "key": "user_id",
+                          "value": "<string>",
+                          "description": "(Required) The ID of the user."
+                        }
+                      ]
+                    },
+                    "description": "Retrieves all the groups for a user. Only members of this\ngroup or users with admin-level permissions will be able to\nuse this API."
+                  },
+                  "response": [
+                    {
+                      "id": "9884e9d3-35fe-4ea8-a1c5-f4ef69122001",
+                      "name": "Returns a collection of membership objects. If there are no\nmemberships, an empty collection will be returned.",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/users/:user_id/memberships?limit=<long>&offset=0",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "users",
+                            ":user_id",
+                            "memberships"
+                          ],
+                          "query": [
+                            {
+                              "description": "The maximum number of items to return per page.",
+                              "key": "limit",
+                              "value": "<long>"
+                            },
+                            {
+                              "description": "The offset of the item at which to begin the response.\n\nQueries with offset parameter value\nexceeding 10000 will be rejected\nwith a 400 response.",
+                              "key": "offset",
+                              "value": "0"
+                            }
+                          ],
+                          "variable": [
+                            {
+                              "key": "user_id"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "OK",
+                      "code": 200,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"total_count\": \"<long>\",\n  \"limit\": \"<long>\",\n  \"offset\": \"<long>\",\n  \"order\": [\n    {\n      \"by\": \"<string>\",\n      \"direction\": \"ASC\"\n    },\n    {\n      \"by\": \"<string>\",\n      \"direction\": \"ASC\"\n    }\n  ],\n  \"entries\": [\n    {\n      \"id\": \"<string>\",\n      \"type\": \"group_membership\",\n      \"user\": {\n        \"type\": \"user\",\n        \"id\": \"<string>\",\n        \"name\": \"<string>\",\n        \"login\": \"<email>\"\n      },\n      \"group\": {\n        \"id\": \"<string>\",\n        \"type\": \"group\",\n        \"name\": \"<string>\",\n        \"group_type\": \"all_users_group\"\n      },\n      \"role\": \"admin\",\n      \"created_at\": \"<dateTime>\",\n      \"modified_at\": \"<dateTime>\"\n    },\n    {\n      \"id\": \"<string>\",\n      \"type\": \"group_membership\",\n      \"user\": {\n        \"type\": \"user\",\n        \"id\": \"<string>\",\n        \"name\": \"<string>\",\n        \"login\": \"<email>\"\n      },\n      \"group\": {\n        \"id\": \"<string>\",\n        \"type\": \"group\",\n        \"name\": \"<string>\",\n        \"group_type\": \"managed_group\"\n      },\n      \"role\": \"member\",\n      \"created_at\": \"<dateTime>\",\n      \"modified_at\": \"<dateTime>\"\n    }\n  ]\n}",
+                      "createdAt": "2026-07-28T01:16:16.000Z",
+                      "updatedAt": "2026-07-28T01:16:16.000Z",
+                      "uid": "35240-9884e9d3-35fe-4ea8-a1c5-f4ef69122001"
+                    },
+                    {
+                      "id": "9568d127-4761-4b8a-aab6-f67dffa44b6d",
+                      "name": "An unexpected client error.",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/users/:user_id/memberships?limit=<long>&offset=0",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "users",
+                            ":user_id",
+                            "memberships"
+                          ],
+                          "query": [
+                            {
+                              "description": "The maximum number of items to return per page.",
+                              "key": "limit",
+                              "value": "<long>"
+                            },
+                            {
+                              "description": "The offset of the item at which to begin the response.\n\nQueries with offset parameter value\nexceeding 10000 will be rejected\nwith a 400 response.",
+                              "key": "offset",
+                              "value": "0"
+                            }
+                          ],
+                          "variable": [
+                            {
+                              "key": "user_id"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Internal Server Error",
+                      "code": 500,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"type\": \"error\",\n  \"status\": \"<integer>\",\n  \"code\": \"created\",\n  \"message\": \"<string>\",\n  \"context_info\": {\n    \"message\": \"<string>\"\n  },\n  \"help_url\": \"<string>\",\n  \"request_id\": \"<string>\"\n}",
+                      "createdAt": "2026-07-28T01:16:16.000Z",
+                      "updatedAt": "2026-07-28T01:16:16.000Z",
+                      "uid": "35240-9568d127-4761-4b8a-aab6-f67dffa44b6d"
+                    }
+                  ],
+                  "createdAt": "2026-07-28T01:16:16.000Z",
+                  "updatedAt": "2026-07-28T01:16:16.000Z",
+                  "uid": "35240-5b5978c8-c4c9-4ed0-80b3-e0af779fd446"
+                }
+              ],
+              "id": "b0024e32-3479-4b86-a8dd-7ca79f936608",
+              "createdAt": "2026-07-28T01:16:16.000Z",
+              "updatedAt": "2026-07-28T01:16:16.000Z",
+              "uid": "35240-b0024e32-3479-4b86-a8dd-7ca79f936608"
+            }
+          ],
+          "id": "8f031cbd-8696-4237-b221-aafd16857562",
+          "createdAt": "2026-07-28T01:16:16.000Z",
+          "updatedAt": "2026-07-28T01:16:16.000Z",
+          "uid": "35240-8f031cbd-8696-4237-b221-aafd16857562"
+        }
+      ],
+      "id": "953504ee-b57e-4aa1-8d54-18dcf6a64f02",
+      "createdAt": "2026-07-28T01:16:16.000Z",
+      "updatedAt": "2026-07-28T01:16:16.000Z",
+      "uid": "35240-953504ee-b57e-4aa1-8d54-18dcf6a64f02"
+    },
+    {
+      "name": "groups",
+      "item": [
+        {
+          "name": "{group_id}",
+          "item": [
+            {
+              "name": "memberships",
+              "item": [
+                {
+                  "name": "Box List members of group",
+                  "id": "d712e78a-7753-4e28-8b90-4177a3265311",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/groups/:group_id/memberships?limit=<long>&offset=0",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "groups",
+                        ":group_id",
+                        "memberships"
+                      ],
+                      "query": [
+                        {
+                          "description": "The maximum number of items to return per page.",
+                          "key": "limit",
+                          "value": "<long>"
+                        },
+                        {
+                          "description": "The offset of the item at which to begin the response.\n\nQueries with offset parameter value\nexceeding 10000 will be rejected\nwith a 400 response.",
+                          "key": "offset",
+                          "value": "0"
+                        }
+                      ],
+                      "variable": [
+                        {
+                          "id": "0e37a21e-4771-4a88-a1b8-1fe388969848",
+                          "key": "group_id",
+                          "value": "<string>",
+                          "description": "(Required) The ID of the group."
+                        }
+                      ]
+                    },
+                    "description": "Retrieves all the members for a group. Only members of this\ngroup or users with admin-level permissions will be able to\nuse this API."
+                  },
+                  "response": [
+                    {
+                      "id": "aa55c28f-fcaf-4ea7-931e-5af4c52db9d3",
+                      "name": "Returns a collection of membership objects. If there are no\nmemberships, an empty collection will be returned.",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/groups/:group_id/memberships?limit=<long>&offset=0",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "groups",
+                            ":group_id",
+                            "memberships"
+                          ],
+                          "query": [
+                            {
+                              "description": "The maximum number of items to return per page.",
+                              "key": "limit",
+                              "value": "<long>"
+                            },
+                            {
+                              "description": "The offset of the item at which to begin the response.\n\nQueries with offset parameter value\nexceeding 10000 will be rejected\nwith a 400 response.",
+                              "key": "offset",
+                              "value": "0"
+                            }
+                          ],
+                          "variable": [
+                            {
+                              "key": "group_id"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "OK",
+                      "code": 200,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"total_count\": \"<long>\",\n  \"limit\": \"<long>\",\n  \"offset\": \"<long>\",\n  \"order\": [\n    {\n      \"by\": \"<string>\",\n      \"direction\": \"ASC\"\n    },\n    {\n      \"by\": \"<string>\",\n      \"direction\": \"ASC\"\n    }\n  ],\n  \"entries\": [\n    {\n      \"id\": \"<string>\",\n      \"type\": \"group_membership\",\n      \"user\": {\n        \"type\": \"user\",\n        \"id\": \"<string>\",\n        \"name\": \"<string>\",\n        \"login\": \"<email>\"\n      },\n      \"group\": {\n        \"id\": \"<string>\",\n        \"type\": \"group\",\n        \"name\": \"<string>\",\n        \"group_type\": \"all_users_group\"\n      },\n      \"role\": \"admin\",\n      \"created_at\": \"<dateTime>\",\n      \"modified_at\": \"<dateTime>\"\n    },\n    {\n      \"id\": \"<string>\",\n      \"type\": \"group_membership\",\n      \"user\": {\n        \"type\": \"user\",\n        \"id\": \"<string>\",\n        \"name\": \"<string>\",\n        \"login\": \"<email>\"\n      },\n      \"group\": {\n        \"id\": \"<string>\",\n        \"type\": \"group\",\n        \"name\": \"<string>\",\n        \"group_type\": \"managed_group\"\n      },\n      \"role\": \"member\",\n      \"created_at\": \"<dateTime>\",\n      \"modified_at\": \"<dateTime>\"\n    }\n  ]\n}",
+                      "createdAt": "2026-07-28T01:16:16.000Z",
+                      "updatedAt": "2026-07-28T01:16:16.000Z",
+                      "uid": "35240-aa55c28f-fcaf-4ea7-931e-5af4c52db9d3"
+                    },
+                    {
+                      "id": "fc97e300-f239-4079-ac9d-8b7ac39b826e",
+                      "name": "An unexpected client error.",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/groups/:group_id/memberships?limit=<long>&offset=0",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "groups",
+                            ":group_id",
+                            "memberships"
+                          ],
+                          "query": [
+                            {
+                              "description": "The maximum number of items to return per page.",
+                              "key": "limit",
+                              "value": "<long>"
+                            },
+                            {
+                              "description": "The offset of the item at which to begin the response.\n\nQueries with offset parameter value\nexceeding 10000 will be rejected\nwith a 400 response.",
+                              "key": "offset",
+                              "value": "0"
+                            }
+                          ],
+                          "variable": [
+                            {
+                              "key": "group_id"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Internal Server Error",
+                      "code": 500,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"type\": \"error\",\n  \"status\": \"<integer>\",\n  \"code\": \"created\",\n  \"message\": \"<string>\",\n  \"context_info\": {\n    \"message\": \"<string>\"\n  },\n  \"help_url\": \"<string>\",\n  \"request_id\": \"<string>\"\n}",
+                      "createdAt": "2026-07-28T01:16:16.000Z",
+                      "updatedAt": "2026-07-28T01:16:16.000Z",
+                      "uid": "35240-fc97e300-f239-4079-ac9d-8b7ac39b826e"
+                    }
+                  ],
+                  "createdAt": "2026-07-28T01:16:16.000Z",
+                  "updatedAt": "2026-07-28T01:16:16.000Z",
+                  "uid": "35240-d712e78a-7753-4e28-8b90-4177a3265311"
+                }
+              ],
+              "id": "63c05d15-0ca9-4ded-b011-5f9ef98d5b16",
+              "createdAt": "2026-07-28T01:16:16.000Z",
+              "updatedAt": "2026-07-28T01:16:16.000Z",
+              "uid": "35240-63c05d15-0ca9-4ded-b011-5f9ef98d5b16"
+            }
+          ],
+          "id": "727a56ea-7ed0-491f-9a0f-f0569ccd4b8a",
+          "createdAt": "2026-07-28T01:16:16.000Z",
+          "updatedAt": "2026-07-28T01:16:16.000Z",
+          "uid": "35240-727a56ea-7ed0-491f-9a0f-f0569ccd4b8a"
+        }
+      ],
+      "id": "ea36ac88-4d06-4f5a-a0ca-b1eeb6ce49c7",
+      "createdAt": "2026-07-28T01:16:16.000Z",
+      "updatedAt": "2026-07-28T01:16:16.000Z",
+      "uid": "35240-ea36ac88-4d06-4f5a-a0ca-b1eeb6ce49c7"
+    },
+    {
+      "name": "group_memberships",
+      "item": [
+        {
+          "name": "{group_membership_id}",
+          "item": [
+            {
+              "name": "Box Get group membership",
+              "id": "a74db78b-5803-4439-8e87-73acb104df82",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/group_memberships/:group_membership_id?fields=<string>,<string>",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "group_memberships",
+                    ":group_membership_id"
+                  ],
+                  "query": [
+                    {
+                      "description": "A comma-separated list of attributes to include in the\nresponse. This can be used to request fields that are\nnot normally returned in a standard response.\n\nBe aware that specifying this parameter will have the\neffect that none of the standard fields are returned in\nthe response unless explicitly specified, instead only\nfields for the mini representation are returned, additional\nto the fields requested.",
+                      "key": "fields",
+                      "value": "<string>,<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "id": "de036cf3-ca9d-4ae4-970b-789cd78a808b",
+                      "key": "group_membership_id",
+                      "value": "<string>",
+                      "description": "(Required) The ID of the group membership."
+                    }
+                  ]
+                },
+                "description": "Retrieves a specific group membership. Only admins of this\ngroup or users with admin-level permissions will be able to\nuse this API."
+              },
+              "response": [
+                {
+                  "id": "ba905796-d063-4386-94cd-267568e7ea0a",
+                  "name": "Returns the group membership object.",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/group_memberships/:group_membership_id?fields=<string>,<string>",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "group_memberships",
+                        ":group_membership_id"
+                      ],
+                      "query": [
+                        {
+                          "description": "A comma-separated list of attributes to include in the\nresponse. This can be used to request fields that are\nnot normally returned in a standard response.\n\nBe aware that specifying this parameter will have the\neffect that none of the standard fields are returned in\nthe response unless explicitly specified, instead only\nfields for the mini representation are returned, additional\nto the fields requested.",
+                          "key": "fields",
+                          "value": "<string>,<string>"
+                        }
+                      ],
+                      "variable": [
+                        {
+                          "key": "group_membership_id"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"id\": \"<string>\",\n  \"type\": \"group_membership\",\n  \"user\": {\n    \"type\": \"user\",\n    \"id\": \"<string>\",\n    \"name\": \"<string>\",\n    \"login\": \"<email>\"\n  },\n  \"group\": {\n    \"id\": \"<string>\",\n    \"type\": \"group\",\n    \"name\": \"<string>\",\n    \"group_type\": \"managed_group\"\n  },\n  \"role\": \"admin\",\n  \"created_at\": \"<dateTime>\",\n  \"modified_at\": \"<dateTime>\"\n}",
+                  "createdAt": "2026-07-28T01:16:16.000Z",
+                  "updatedAt": "2026-07-28T01:16:16.000Z",
+                  "uid": "35240-ba905796-d063-4386-94cd-267568e7ea0a"
+                },
+                {
+                  "id": "92e21f90-5167-42c8-9181-c31f6e43b67b",
+                  "name": "An unexpected client error.",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/group_memberships/:group_membership_id?fields=<string>,<string>",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "group_memberships",
+                        ":group_membership_id"
+                      ],
+                      "query": [
+                        {
+                          "description": "A comma-separated list of attributes to include in the\nresponse. This can be used to request fields that are\nnot normally returned in a standard response.\n\nBe aware that specifying this parameter will have the\neffect that none of the standard fields are returned in\nthe response unless explicitly specified, instead only\nfields for the mini representation are returned, additional\nto the fields requested.",
+                          "key": "fields",
+                          "value": "<string>,<string>"
+                        }
+                      ],
+                      "variable": [
+                        {
+                          "key": "group_membership_id"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Internal Server Error",
+                  "code": 500,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"type\": \"error\",\n  \"status\": \"<integer>\",\n  \"code\": \"created\",\n  \"message\": \"<string>\",\n  \"context_info\": {\n    \"message\": \"<string>\"\n  },\n  \"help_url\": \"<string>\",\n  \"request_id\": \"<string>\"\n}",
+                  "createdAt": "2026-07-28T01:16:16.000Z",
+                  "updatedAt": "2026-07-28T01:16:16.000Z",
+                  "uid": "35240-92e21f90-5167-42c8-9181-c31f6e43b67b"
+                }
+              ],
+              "createdAt": "2026-07-28T01:16:16.000Z",
+              "updatedAt": "2026-07-28T01:16:16.000Z",
+              "uid": "35240-a74db78b-5803-4439-8e87-73acb104df82"
+            },
+            {
+              "name": "Box Update group membership",
+              "id": "fa408370-bec9-4bb9-9413-cc685809e652",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "PUT",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"role\": \"member\",\n  \"configurable_permissions\": {\n    \"sit725\": \"<boolean>\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/group_memberships/:group_membership_id?fields=<string>,<string>",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "group_memberships",
+                    ":group_membership_id"
+                  ],
+                  "query": [
+                    {
+                      "description": "A comma-separated list of attributes to include in the\nresponse. This can be used to request fields that are\nnot normally returned in a standard response.\n\nBe aware that specifying this parameter will have the\neffect that none of the standard fields are returned in\nthe response unless explicitly specified, instead only\nfields for the mini representation are returned, additional\nto the fields requested.",
+                      "key": "fields",
+                      "value": "<string>,<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "id": "bd788cbf-fa93-476d-a250-f4f67c267efb",
+                      "key": "group_membership_id",
+                      "value": "<string>",
+                      "description": "(Required) The ID of the group membership."
+                    }
+                  ]
+                },
+                "description": "Updates a user's group membership. Only admins of this\ngroup or users with admin-level permissions will be able to\nuse this API."
+              },
+              "response": [
+                {
+                  "id": "d98f119f-7078-4c80-b969-48be274c74a3",
+                  "name": "Returns a new group membership object.",
+                  "originalRequest": {
+                    "method": "PUT",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"role\": \"member\",\n  \"configurable_permissions\": {\n    \"sit725\": \"<boolean>\"\n  }\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/group_memberships/:group_membership_id?fields=<string>,<string>",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "group_memberships",
+                        ":group_membership_id"
+                      ],
+                      "query": [
+                        {
+                          "description": "A comma-separated list of attributes to include in the\nresponse. This can be used to request fields that are\nnot normally returned in a standard response.\n\nBe aware that specifying this parameter will have the\neffect that none of the standard fields are returned in\nthe response unless explicitly specified, instead only\nfields for the mini representation are returned, additional\nto the fields requested.",
+                          "key": "fields",
+                          "value": "<string>,<string>"
+                        }
+                      ],
+                      "variable": [
+                        {
+                          "key": "group_membership_id"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"id\": \"<string>\",\n  \"type\": \"group_membership\",\n  \"user\": {\n    \"type\": \"user\",\n    \"id\": \"<string>\",\n    \"name\": \"<string>\",\n    \"login\": \"<email>\"\n  },\n  \"group\": {\n    \"id\": \"<string>\",\n    \"type\": \"group\",\n    \"name\": \"<string>\",\n    \"group_type\": \"managed_group\"\n  },\n  \"role\": \"admin\",\n  \"created_at\": \"<dateTime>\",\n  \"modified_at\": \"<dateTime>\"\n}",
+                  "createdAt": "2026-07-28T01:16:16.000Z",
+                  "updatedAt": "2026-07-28T01:16:16.000Z",
+                  "uid": "35240-d98f119f-7078-4c80-b969-48be274c74a3"
+                },
+                {
+                  "id": "cf06b9e8-f4b1-485e-97e1-b95ceed3f2b2",
+                  "name": "An unexpected client error.",
+                  "originalRequest": {
+                    "method": "PUT",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"role\": \"member\",\n  \"configurable_permissions\": {\n    \"sit725\": \"<boolean>\"\n  }\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/group_memberships/:group_membership_id?fields=<string>,<string>",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "group_memberships",
+                        ":group_membership_id"
+                      ],
+                      "query": [
+                        {
+                          "description": "A comma-separated list of attributes to include in the\nresponse. This can be used to request fields that are\nnot normally returned in a standard response.\n\nBe aware that specifying this parameter will have the\neffect that none of the standard fields are returned in\nthe response unless explicitly specified, instead only\nfields for the mini representation are returned, additional\nto the fields requested.",
+                          "key": "fields",
+                          "value": "<string>,<string>"
+                        }
+                      ],
+                      "variable": [
+                        {
+                          "key": "group_membership_id"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Internal Server Error",
+                  "code": 500,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"type\": \"error\",\n  \"status\": \"<integer>\",\n  \"code\": \"created\",\n  \"message\": \"<string>\",\n  \"context_info\": {\n    \"message\": \"<string>\"\n  },\n  \"help_url\": \"<string>\",\n  \"request_id\": \"<string>\"\n}",
+                  "createdAt": "2026-07-28T01:16:16.000Z",
+                  "updatedAt": "2026-07-28T01:16:16.000Z",
+                  "uid": "35240-cf06b9e8-f4b1-485e-97e1-b95ceed3f2b2"
+                }
+              ],
+              "createdAt": "2026-07-28T01:16:16.000Z",
+              "updatedAt": "2026-07-28T01:16:16.000Z",
+              "uid": "35240-fa408370-bec9-4bb9-9413-cc685809e652"
+            },
+            {
+              "name": "Box Remove user from group",
+              "id": "240523e6-047b-4a67-8b93-1adcd1e108b1",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "DELETE",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/group_memberships/:group_membership_id",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "group_memberships",
+                    ":group_membership_id"
+                  ],
+                  "variable": [
+                    {
+                      "id": "e91503c2-9b36-4d0a-a8af-00e650278f3a",
+                      "key": "group_membership_id",
+                      "value": "<string>",
+                      "description": "(Required) The ID of the group membership."
+                    }
+                  ]
+                },
+                "description": "Deletes a specific group membership. Only admins of this\ngroup or users with admin-level permissions will be able to\nuse this API."
+              },
+              "response": [
+                {
+                  "id": "3d58bea5-29bf-44c9-a5db-8fbebb4fa1de",
+                  "name": "A blank response is returned if the membership was\nsuccessfully deleted.",
+                  "originalRequest": {
+                    "method": "DELETE",
+                    "header": [],
+                    "url": {
+                      "raw": "{{baseUrl}}/group_memberships/:group_membership_id",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "group_memberships",
+                        ":group_membership_id"
+                      ],
+                      "variable": [
+                        {
+                          "key": "group_membership_id"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "No Content",
+                  "code": 204,
+                  "_postman_previewlanguage": "text",
+                  "header": [],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": null,
+                  "createdAt": "2026-07-28T01:16:16.000Z",
+                  "updatedAt": "2026-07-28T01:16:16.000Z",
+                  "uid": "35240-3d58bea5-29bf-44c9-a5db-8fbebb4fa1de"
+                },
+                {
+                  "id": "5d5d1620-f0a9-4343-a3e0-7b9bfa1c2543",
+                  "name": "An unexpected client error.",
+                  "originalRequest": {
+                    "method": "DELETE",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/group_memberships/:group_membership_id",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "group_memberships",
+                        ":group_membership_id"
+                      ],
+                      "variable": [
+                        {
+                          "key": "group_membership_id"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Internal Server Error",
+                  "code": 500,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"type\": \"error\",\n  \"status\": \"<integer>\",\n  \"code\": \"created\",\n  \"message\": \"<string>\",\n  \"context_info\": {\n    \"message\": \"<string>\"\n  },\n  \"help_url\": \"<string>\",\n  \"request_id\": \"<string>\"\n}",
+                  "createdAt": "2026-07-28T01:16:16.000Z",
+                  "updatedAt": "2026-07-28T01:16:16.000Z",
+                  "uid": "35240-5d5d1620-f0a9-4343-a3e0-7b9bfa1c2543"
+                }
+              ],
+              "createdAt": "2026-07-28T01:16:16.000Z",
+              "updatedAt": "2026-07-28T01:16:16.000Z",
+              "uid": "35240-240523e6-047b-4a67-8b93-1adcd1e108b1"
+            }
+          ],
+          "id": "3630dd2c-de53-4ebf-9ca4-fbe7755aaf8a",
+          "createdAt": "2026-07-28T01:16:16.000Z",
+          "updatedAt": "2026-07-28T01:16:16.000Z",
+          "uid": "35240-3630dd2c-de53-4ebf-9ca4-fbe7755aaf8a"
+        },
+        {
+          "name": "Box Add user to group",
+          "id": "35752007-2051-41e2-ba04-03b5491fccfa",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"user\": {\n    \"id\": \"<string>\"\n  },\n  \"group\": {\n    \"id\": \"<string>\"\n  },\n  \"role\": \"member\",\n  \"configurable_permissions\": {\n    \"adb0a\": \"<boolean>\",\n    \"ut0d\": \"<boolean>\",\n    \"sit_b\": \"<boolean>\"\n  }\n}",
+              "options": {
+                "raw": {
+                  "headerFamily": "json",
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/group_memberships?fields=<string>,<string>",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "group_memberships"
+              ],
+              "query": [
+                {
+                  "description": "A comma-separated list of attributes to include in the\nresponse. This can be used to request fields that are\nnot normally returned in a standard response.\n\nBe aware that specifying this parameter will have the\neffect that none of the standard fields are returned in\nthe response unless explicitly specified, instead only\nfields for the mini representation are returned, additional\nto the fields requested.",
+                  "key": "fields",
+                  "value": "<string>,<string>"
+                }
+              ]
+            },
+            "description": "Creates a group membership. Only users with\nadmin-level permissions will be able to use this API."
+          },
+          "response": [
+            {
+              "id": "bedd809d-ad58-44e4-964f-9aa50764f998",
+              "name": "Returns a new group membership object.",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"user\": {\n    \"id\": \"<string>\"\n  },\n  \"group\": {\n    \"id\": \"<string>\"\n  },\n  \"role\": \"member\",\n  \"configurable_permissions\": {\n    \"adb0a\": \"<boolean>\",\n    \"ut0d\": \"<boolean>\",\n    \"sit_b\": \"<boolean>\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/group_memberships?fields=<string>,<string>",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "group_memberships"
+                  ],
+                  "query": [
+                    {
+                      "description": "A comma-separated list of attributes to include in the\nresponse. This can be used to request fields that are\nnot normally returned in a standard response.\n\nBe aware that specifying this parameter will have the\neffect that none of the standard fields are returned in\nthe response unless explicitly specified, instead only\nfields for the mini representation are returned, additional\nto the fields requested.",
+                      "key": "fields",
+                      "value": "<string>,<string>"
+                    }
+                  ]
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "responseTime": null,
+              "body": "{\n  \"id\": \"<string>\",\n  \"type\": \"group_membership\",\n  \"user\": {\n    \"type\": \"user\",\n    \"id\": \"<string>\",\n    \"name\": \"<string>\",\n    \"login\": \"<email>\"\n  },\n  \"group\": {\n    \"id\": \"<string>\",\n    \"type\": \"group\",\n    \"name\": \"<string>\",\n    \"group_type\": \"managed_group\"\n  },\n  \"role\": \"admin\",\n  \"created_at\": \"<dateTime>\",\n  \"modified_at\": \"<dateTime>\"\n}",
+              "createdAt": "2026-07-28T01:16:16.000Z",
+              "updatedAt": "2026-07-28T01:16:16.000Z",
+              "uid": "35240-bedd809d-ad58-44e4-964f-9aa50764f998"
+            },
+            {
+              "id": "b1367794-e976-4be6-acac-f24a883ee52a",
+              "name": "Returns an error when the user cannot be added\nto a group.\n\n* `forbidden_by_policy`: Adding a user\nto a group is forbidden due to information\nbarrier restrictions.",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"user\": {\n    \"id\": \"<string>\"\n  },\n  \"group\": {\n    \"id\": \"<string>\"\n  },\n  \"role\": \"member\",\n  \"configurable_permissions\": {\n    \"adb0a\": \"<boolean>\",\n    \"ut0d\": \"<boolean>\",\n    \"sit_b\": \"<boolean>\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/group_memberships?fields=<string>,<string>",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "group_memberships"
+                  ],
+                  "query": [
+                    {
+                      "description": "A comma-separated list of attributes to include in the\nresponse. This can be used to request fields that are\nnot normally returned in a standard response.\n\nBe aware that specifying this parameter will have the\neffect that none of the standard fields are returned in\nthe response unless explicitly specified, instead only\nfields for the mini representation are returned, additional\nto the fields requested.",
+                      "key": "fields",
+                      "value": "<string>,<string>"
+                    }
+                  ]
+                }
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "responseTime": null,
+              "body": "{\n  \"type\": \"error\",\n  \"status\": \"<integer>\",\n  \"code\": \"created\",\n  \"message\": \"<string>\",\n  \"context_info\": {\n    \"message\": \"<string>\"\n  },\n  \"help_url\": \"<string>\",\n  \"request_id\": \"<string>\"\n}",
+              "createdAt": "2026-07-28T01:16:16.000Z",
+              "updatedAt": "2026-07-28T01:16:16.000Z",
+              "uid": "35240-b1367794-e976-4be6-acac-f24a883ee52a"
+            },
+            {
+              "id": "3079045b-5da6-406c-8b73-0e967e64ffbd",
+              "name": "An unexpected client error.",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"user\": {\n    \"id\": \"<string>\"\n  },\n  \"group\": {\n    \"id\": \"<string>\"\n  },\n  \"role\": \"member\",\n  \"configurable_permissions\": {\n    \"adb0a\": \"<boolean>\",\n    \"ut0d\": \"<boolean>\",\n    \"sit_b\": \"<boolean>\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/group_memberships?fields=<string>,<string>",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "group_memberships"
+                  ],
+                  "query": [
+                    {
+                      "description": "A comma-separated list of attributes to include in the\nresponse. This can be used to request fields that are\nnot normally returned in a standard response.\n\nBe aware that specifying this parameter will have the\neffect that none of the standard fields are returned in\nthe response unless explicitly specified, instead only\nfields for the mini representation are returned, additional\nto the fields requested.",
+                      "key": "fields",
+                      "value": "<string>,<string>"
+                    }
+                  ]
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "responseTime": null,
+              "body": "{\n  \"type\": \"error\",\n  \"status\": \"<integer>\",\n  \"code\": \"created\",\n  \"message\": \"<string>\",\n  \"context_info\": {\n    \"message\": \"<string>\"\n  },\n  \"help_url\": \"<string>\",\n  \"request_id\": \"<string>\"\n}",
+              "createdAt": "2026-07-28T01:16:16.000Z",
+              "updatedAt": "2026-07-28T01:16:16.000Z",
+              "uid": "35240-3079045b-5da6-406c-8b73-0e967e64ffbd"
+            }
+          ],
+          "createdAt": "2026-07-28T01:16:16.000Z",
+          "updatedAt": "2026-07-28T01:16:16.000Z",
+          "uid": "35240-35752007-2051-41e2-ba04-03b5491fccfa"
+        }
+      ],
+      "id": "c7268ec1-e751-45a9-9596-3f43432cc941",
+      "createdAt": "2026-07-28T01:16:16.000Z",
+      "updatedAt": "2026-07-28T01:16:16.000Z",
+      "uid": "35240-c7268ec1-e751-45a9-9596-3f43432cc941"
+    }
+  ],
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "/"
+    }
+  ]
+}

@@ -1,0 +1,776 @@
+{
+  "info": {
+    "_postman_id": "f59fe0ec-b902-4239-9853-90fcddc49d5a",
+    "name": "Box Authorize Authorization Collaborations (List) API",
+    "description": "Needs a description.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "createdAt": "2026-07-28T01:15:48.000Z",
+    "updatedAt": "2026-07-28T01:15:48.000Z",
+    "lastUpdatedBy": "35240",
+    "uid": "35240-f59fe0ec-b902-4239-9853-90fcddc49d5a"
+  },
+  "item": [
+    {
+      "name": "files",
+      "item": [
+        {
+          "name": "{file_id}",
+          "item": [
+            {
+              "name": "collaborations",
+              "item": [
+                {
+                  "name": "Box List file collaborations",
+                  "id": "c096dfb8-48ec-4825-a551-afb5d4f4b2b8",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/files/:file_id/collaborations?fields=<string>,<string>&limit=<long>&marker=<string>",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "files",
+                        ":file_id",
+                        "collaborations"
+                      ],
+                      "query": [
+                        {
+                          "description": "A comma-separated list of attributes to include in the\nresponse. This can be used to request fields that are\nnot normally returned in a standard response.\n\nBe aware that specifying this parameter will have the\neffect that none of the standard fields are returned in\nthe response unless explicitly specified, instead only\nfields for the mini representation are returned, additional\nto the fields requested.",
+                          "key": "fields",
+                          "value": "<string>,<string>"
+                        },
+                        {
+                          "description": "The maximum number of items to return per page.",
+                          "key": "limit",
+                          "value": "<long>"
+                        },
+                        {
+                          "description": "Defines the position marker at which to begin returning results. This is\nused when paginating using marker-based pagination.\n\nThis requires `usemarker` to be set to `true`.",
+                          "key": "marker",
+                          "value": "<string>"
+                        }
+                      ],
+                      "variable": [
+                        {
+                          "id": "5a27b261-83d6-4da8-93af-6b06136e6ceb",
+                          "key": "file_id",
+                          "value": "<string>",
+                          "description": "(Required) The unique identifier that represents a file.\n\nThe ID for any file can be determined\nby visiting a file in the web application\nand copying the ID from the URL. For example,\nfor the URL `https://*.app.box.com/files/123`\nthe `file_id` is `123`."
+                        }
+                      ]
+                    },
+                    "description": "Retrieves a list of pending and active collaborations for a\nfile. This returns all the users that have access to the file\nor have been invited to the file."
+                  },
+                  "response": [
+                    {
+                      "id": "0be39e96-5ba5-4734-a11c-7dfe5a2b9241",
+                      "name": "Returns a collection of collaboration objects. If there are no\ncollaborations on this file an empty collection will be returned.\n\nThis list includes pending collaborations, for which the `status`\nis set to `pending`, indicating invitations that have been ",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/files/:file_id/collaborations?fields=<string>,<string>&limit=<long>&marker=<string>",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "files",
+                            ":file_id",
+                            "collaborations"
+                          ],
+                          "query": [
+                            {
+                              "description": "A comma-separated list of attributes to include in the\nresponse. This can be used to request fields that are\nnot normally returned in a standard response.\n\nBe aware that specifying this parameter will have the\neffect that none of the standard fields are returned in\nthe response unless explicitly specified, instead only\nfields for the mini representation are returned, additional\nto the fields requested.",
+                              "key": "fields",
+                              "value": "<string>,<string>"
+                            },
+                            {
+                              "description": "The maximum number of items to return per page.",
+                              "key": "limit",
+                              "value": "<long>"
+                            },
+                            {
+                              "description": "Defines the position marker at which to begin returning results. This is\nused when paginating using marker-based pagination.\n\nThis requires `usemarker` to be set to `true`.",
+                              "key": "marker",
+                              "value": "<string>"
+                            }
+                          ],
+                          "variable": [
+                            {
+                              "key": "file_id"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "OK",
+                      "code": 200,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"total_count\": \"<long>\",\n  \"limit\": \"<long>\",\n  \"offset\": \"<long>\",\n  \"order\": [\n    {\n      \"by\": \"<string>\",\n      \"direction\": \"ASC\"\n    },\n    {\n      \"by\": \"<string>\",\n      \"direction\": \"ASC\"\n    }\n  ],\n  \"entries\": [\n    {\n      \"id\": \"<string>\",\n      \"type\": \"collaboration\",\n      \"item\": {\n        \"id\": \"<string>\",\n        \"type\": \"file\",\n        \"etag\": \"<string>\",\n        \"sequence_id\": \"<string>\",\n        \"name\": \"<string>\",\n        \"sha1\": \"<string>\",\n        \"file_version\": {\n          \"id\": \"<string>\",\n          \"type\": \"file_version\",\n          \"sha1\": \"<string>\"\n        },\n        \"description\": \"<string>\",\n        \"size\": \"<integer>\",\n        \"path_collection\": {\n          \"total_count\": \"<long>\",\n          \"entries\": [\n            {\n              \"id\": \"<string>\",\n              \"type\": \"folder\",\n              \"etag\": \"<string>\",\n              \"sequence_id\": \"<string>\",\n              \"name\": \"<string>\"\n            },\n            {\n              \"id\": \"<string>\",\n              \"type\": \"folder\",\n              \"etag\": \"<string>\",\n              \"sequence_id\": \"<string>\",\n              \"name\": \"<string>\"\n            }\n          ]\n        },\n        \"created_at\": \"<dateTime>\",\n        \"modified_at\": \"<dateTime>\",\n        \"trashed_at\": \"<dateTime>\",\n        \"purged_at\": \"<dateTime>\",\n        \"content_created_at\": \"<dateTime>\",\n        \"content_modified_at\": \"<dateTime>\",\n        \"created_by\": {\n          \"type\": \"user\",\n          \"id\": \"<string>\",\n          \"name\": \"<string>\",\n          \"login\": \"<email>\"\n        },\n        \"modified_by\": {\n          \"type\": \"user\",\n          \"id\": \"<string>\",\n          \"name\": \"<string>\",\n          \"login\": \"<email>\"\n        },\n        \"owned_by\": {\n          \"type\": \"user\",\n          \"id\": \"<string>\",\n          \"name\": \"<string>\",\n          \"login\": \"<email>\"\n        },\n        \"shared_link\": {\n          \"url\": \"<string>\",\n          \"effective_access\": \"collaborators\",\n          \"effective_permission\": \"no_access\",\n          \"is_password_enabled\": \"<boolean>\",\n          \"download_count\": \"<integer>\",\n          \"preview_count\": \"<integer>\",\n          \"download_url\": \"<string>\",\n          \"vanity_url\": \"<string>\",\n          \"vanity_name\": \"<string>\",\n          \"access\": \"company\",\n          \"unshared_at\": \"<dateTime>\",\n          \"permissions\": {\n            \"can_download\": \"<boolean>\",\n            \"can_preview\": \"<boolean>\",\n            \"can_edit\": \"<boolean>\"\n          }\n        },\n        \"parent\": {\n          \"id\": \"<string>\",\n          \"type\": \"folder\",\n          \"etag\": \"<string>\",\n          \"sequence_id\": \"<string>\",\n          \"name\": \"<string>\"\n        },\n        \"item_status\": \"deleted\"\n      },\n      \"accessible_by\": {\n        \"type\": \"user\",\n        \"id\": \"<string>\",\n        \"name\": \"<string>\",\n        \"login\": \"<email>\"\n      },\n      \"invite_email\": \"<string>\",\n      \"role\": \"editor\",\n      \"expires_at\": \"<dateTime>\",\n      \"is_access_only\": \"<boolean>\",\n      \"status\": \"rejected\",\n      \"acknowledged_at\": \"<dateTime>\",\n      \"created_by\": {\n        \"type\": \"user\",\n        \"id\": \"<string>\",\n        \"name\": \"<string>\",\n        \"login\": \"<email>\"\n      },\n      \"created_at\": \"<dateTime>\",\n      \"modified_at\": \"<dateTime>\",\n      \"acceptance_requirements_status\": {\n        \"terms_of_service_requirement\": {\n          \"is_accepted\": \"<boolean>\",\n          \"terms_of_service\": {\n            \"id\": \"<string>\",\n            \"type\": \"terms_of_service\"\n          }\n        },\n        \"strong_password_requirement\": {\n          \"enterprise_has_strong_password_required_for_external_users\": \"<boolean>\",\n          \"user_has_strong_password\": \"<boolean>\"\n        },\n        \"two_factor_authentication_requirement\": {\n          \"enterprise_has_two_factor_auth_enabled\": \"<boolean>\",\n          \"user_has_two_factor_authentication_enabled\": \"<boolean>\"\n        }\n      }\n    },\n    {\n      \"id\": \"<string>\",\n      \"type\": \"collaboration\",\n      \"item\": {\n        \"id\": \"<string>\",\n        \"type\": \"file\",\n        \"etag\": \"<string>\",\n        \"sequence_id\": \"<string>\",\n        \"name\": \"<string>\",\n        \"sha1\": \"<string>\",\n        \"file_version\": {\n          \"id\": \"<string>\",\n          \"type\": \"file_version\",\n          \"sha1\": \"<string>\"\n        },\n        \"description\": \"<string>\",\n        \"size\": \"<integer>\",\n        \"path_collection\": {\n          \"total_count\": \"<long>\",\n          \"entries\": [\n            {\n              \"id\": \"<string>\",\n              \"type\": \"folder\",\n              \"etag\": \"<string>\",\n              \"sequence_id\": \"<string>\",\n              \"name\": \"<string>\"\n            },\n            {\n              \"id\": \"<string>\",\n              \"type\": \"folder\",\n              \"etag\": \"<string>\",\n              \"sequence_id\": \"<string>\",\n              \"name\": \"<string>\"\n            }\n          ]\n        },\n        \"created_at\": \"<dateTime>\",\n        \"modified_at\": \"<dateTime>\",\n        \"trashed_at\": \"<dateTime>\",\n        \"purged_at\": \"<dateTime>\",\n        \"content_created_at\": \"<dateTime>\",\n        \"content_modified_at\": \"<dateTime>\",\n        \"created_by\": {\n          \"type\": \"user\",\n          \"id\": \"<string>\",\n          \"name\": \"<string>\",\n          \"login\": \"<email>\"\n        },\n        \"modified_by\": {\n          \"type\": \"user\",\n          \"id\": \"<string>\",\n          \"name\": \"<string>\",\n          \"login\": \"<email>\"\n        },\n        \"owned_by\": {\n          \"type\": \"user\",\n          \"id\": \"<string>\",\n          \"name\": \"<string>\",\n          \"login\": \"<email>\"\n        },\n        \"shared_link\": {\n          \"url\": \"<string>\",\n          \"effective_access\": \"company\",\n          \"effective_permission\": \"no_access\",\n          \"is_password_enabled\": \"<boolean>\",\n          \"download_count\": \"<integer>\",\n          \"preview_count\": \"<integer>\",\n          \"download_url\": \"<string>\",\n          \"vanity_url\": \"<string>\",\n          \"vanity_name\": \"<string>\",\n          \"access\": \"company\",\n          \"unshared_at\": \"<dateTime>\",\n          \"permissions\": {\n            \"can_download\": \"<boolean>\",\n            \"can_preview\": \"<boolean>\",\n            \"can_edit\": \"<boolean>\"\n          }\n        },\n        \"parent\": {\n          \"id\": \"<string>\",\n          \"type\": \"folder\",\n          \"etag\": \"<string>\",\n          \"sequence_id\": \"<string>\",\n          \"name\": \"<string>\"\n        },\n        \"item_status\": \"trashed\"\n      },\n      \"accessible_by\": {\n        \"type\": \"user\",\n        \"id\": \"<string>\",\n        \"name\": \"<string>\",\n        \"login\": \"<email>\"\n      },\n      \"invite_email\": \"<string>\",\n      \"role\": \"owner\",\n      \"expires_at\": \"<dateTime>\",\n      \"is_access_only\": \"<boolean>\",\n      \"status\": \"rejected\",\n      \"acknowledged_at\": \"<dateTime>\",\n      \"created_by\": {\n        \"type\": \"user\",\n        \"id\": \"<string>\",\n        \"name\": \"<string>\",\n        \"login\": \"<email>\"\n      },\n      \"created_at\": \"<dateTime>\",\n      \"modified_at\": \"<dateTime>\",\n      \"acceptance_requirements_status\": {\n        \"terms_of_service_requirement\": {\n          \"is_accepted\": \"<boolean>\",\n          \"terms_of_service\": {\n            \"id\": \"<string>\",\n            \"type\": \"terms_of_service\"\n          }\n        },\n        \"strong_password_requirement\": {\n          \"enterprise_has_strong_password_required_for_external_users\": \"<boolean>\",\n          \"user_has_strong_password\": \"<boolean>\"\n        },\n        \"two_factor_authentication_requirement\": {\n          \"enterprise_has_two_factor_auth_enabled\": \"<boolean>\",\n          \"user_has_two_factor_authentication_enabled\": \"<boolean>\"\n        }\n      }\n    }\n  ]\n}",
+                      "createdAt": "2026-07-28T01:15:48.000Z",
+                      "updatedAt": "2026-07-28T01:15:48.000Z",
+                      "uid": "35240-0be39e96-5ba5-4734-a11c-7dfe5a2b9241"
+                    },
+                    {
+                      "id": "c5543235-bb12-431f-a100-44f95098dc89",
+                      "name": "An unexpected client error.",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/files/:file_id/collaborations?fields=<string>,<string>&limit=<long>&marker=<string>",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "files",
+                            ":file_id",
+                            "collaborations"
+                          ],
+                          "query": [
+                            {
+                              "description": "A comma-separated list of attributes to include in the\nresponse. This can be used to request fields that are\nnot normally returned in a standard response.\n\nBe aware that specifying this parameter will have the\neffect that none of the standard fields are returned in\nthe response unless explicitly specified, instead only\nfields for the mini representation are returned, additional\nto the fields requested.",
+                              "key": "fields",
+                              "value": "<string>,<string>"
+                            },
+                            {
+                              "description": "The maximum number of items to return per page.",
+                              "key": "limit",
+                              "value": "<long>"
+                            },
+                            {
+                              "description": "Defines the position marker at which to begin returning results. This is\nused when paginating using marker-based pagination.\n\nThis requires `usemarker` to be set to `true`.",
+                              "key": "marker",
+                              "value": "<string>"
+                            }
+                          ],
+                          "variable": [
+                            {
+                              "key": "file_id"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Internal Server Error",
+                      "code": 500,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"type\": \"error\",\n  \"status\": \"<integer>\",\n  \"code\": \"redirect\",\n  \"message\": \"<string>\",\n  \"context_info\": {\n    \"message\": \"<string>\"\n  },\n  \"help_url\": \"<string>\",\n  \"request_id\": \"<string>\"\n}",
+                      "createdAt": "2026-07-28T01:15:48.000Z",
+                      "updatedAt": "2026-07-28T01:15:48.000Z",
+                      "uid": "35240-c5543235-bb12-431f-a100-44f95098dc89"
+                    }
+                  ],
+                  "createdAt": "2026-07-28T01:15:48.000Z",
+                  "updatedAt": "2026-07-28T01:15:48.000Z",
+                  "uid": "35240-c096dfb8-48ec-4825-a551-afb5d4f4b2b8"
+                }
+              ],
+              "id": "f5508133-dd85-46c5-bc14-ecba5fef757d",
+              "createdAt": "2026-07-28T01:15:48.000Z",
+              "updatedAt": "2026-07-28T01:15:48.000Z",
+              "uid": "35240-f5508133-dd85-46c5-bc14-ecba5fef757d"
+            }
+          ],
+          "id": "636984bf-eb50-468a-a2e6-1ee6f89655fb",
+          "createdAt": "2026-07-28T01:15:48.000Z",
+          "updatedAt": "2026-07-28T01:15:48.000Z",
+          "uid": "35240-636984bf-eb50-468a-a2e6-1ee6f89655fb"
+        }
+      ],
+      "id": "2ccaa65f-ad08-4669-842d-3145f336ff34",
+      "createdAt": "2026-07-28T01:15:48.000Z",
+      "updatedAt": "2026-07-28T01:15:48.000Z",
+      "uid": "35240-2ccaa65f-ad08-4669-842d-3145f336ff34"
+    },
+    {
+      "name": "folders",
+      "item": [
+        {
+          "name": "{folder_id}",
+          "item": [
+            {
+              "name": "collaborations",
+              "item": [
+                {
+                  "name": "Box List folder collaborations",
+                  "id": "fe62422c-23ad-4770-bd90-81ea4c7b69ce",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/folders/:folder_id/collaborations?fields=<string>,<string>",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "folders",
+                        ":folder_id",
+                        "collaborations"
+                      ],
+                      "query": [
+                        {
+                          "description": "A comma-separated list of attributes to include in the\nresponse. This can be used to request fields that are\nnot normally returned in a standard response.\n\nBe aware that specifying this parameter will have the\neffect that none of the standard fields are returned in\nthe response unless explicitly specified, instead only\nfields for the mini representation are returned, additional\nto the fields requested.",
+                          "key": "fields",
+                          "value": "<string>,<string>"
+                        }
+                      ],
+                      "variable": [
+                        {
+                          "id": "d5323617-d6e8-484a-b2ad-5d5efb7b3bb8",
+                          "key": "folder_id",
+                          "value": "<string>",
+                          "description": "(Required) The unique identifier that represent a folder.\n\nThe ID for any folder can be determined\nby visiting this folder in the web application\nand copying the ID from the URL. For example,\nfor the URL `https://*.app.box.com/folder/123`\nthe `folder_id` is `123`."
+                        }
+                      ]
+                    },
+                    "description": "Retrieves a list of pending and active collaborations for a\nfolder. This returns all the users that have access to the folder\nor have been invited to the folder."
+                  },
+                  "response": [
+                    {
+                      "id": "3c031fce-a9cd-462f-b31b-1914c9dd89c2",
+                      "name": "Returns a collection of collaboration objects. If there are no\ncollaborations on this folder an empty collection will be returned.\n\nThis list includes pending collaborations, for which the `status`\nis set to `pending`, indicating invitations that have bee",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/folders/:folder_id/collaborations?fields=<string>,<string>",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "folders",
+                            ":folder_id",
+                            "collaborations"
+                          ],
+                          "query": [
+                            {
+                              "description": "A comma-separated list of attributes to include in the\nresponse. This can be used to request fields that are\nnot normally returned in a standard response.\n\nBe aware that specifying this parameter will have the\neffect that none of the standard fields are returned in\nthe response unless explicitly specified, instead only\nfields for the mini representation are returned, additional\nto the fields requested.",
+                              "key": "fields",
+                              "value": "<string>,<string>"
+                            }
+                          ],
+                          "variable": [
+                            {
+                              "key": "folder_id"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "OK",
+                      "code": 200,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"total_count\": \"<long>\",\n  \"limit\": \"<long>\",\n  \"offset\": \"<long>\",\n  \"order\": [\n    {\n      \"by\": \"<string>\",\n      \"direction\": \"ASC\"\n    },\n    {\n      \"by\": \"<string>\",\n      \"direction\": \"ASC\"\n    }\n  ],\n  \"entries\": [\n    {\n      \"id\": \"<string>\",\n      \"type\": \"collaboration\",\n      \"item\": {\n        \"id\": \"<string>\",\n        \"type\": \"file\",\n        \"etag\": \"<string>\",\n        \"sequence_id\": \"<string>\",\n        \"name\": \"<string>\",\n        \"sha1\": \"<string>\",\n        \"file_version\": {\n          \"id\": \"<string>\",\n          \"type\": \"file_version\",\n          \"sha1\": \"<string>\"\n        },\n        \"description\": \"<string>\",\n        \"size\": \"<integer>\",\n        \"path_collection\": {\n          \"total_count\": \"<long>\",\n          \"entries\": [\n            {\n              \"id\": \"<string>\",\n              \"type\": \"folder\",\n              \"etag\": \"<string>\",\n              \"sequence_id\": \"<string>\",\n              \"name\": \"<string>\"\n            },\n            {\n              \"id\": \"<string>\",\n              \"type\": \"folder\",\n              \"etag\": \"<string>\",\n              \"sequence_id\": \"<string>\",\n              \"name\": \"<string>\"\n            }\n          ]\n        },\n        \"created_at\": \"<dateTime>\",\n        \"modified_at\": \"<dateTime>\",\n        \"trashed_at\": \"<dateTime>\",\n        \"purged_at\": \"<dateTime>\",\n        \"content_created_at\": \"<dateTime>\",\n        \"content_modified_at\": \"<dateTime>\",\n        \"created_by\": {\n          \"type\": \"user\",\n          \"id\": \"<string>\",\n          \"name\": \"<string>\",\n          \"login\": \"<email>\"\n        },\n        \"modified_by\": {\n          \"type\": \"user\",\n          \"id\": \"<string>\",\n          \"name\": \"<string>\",\n          \"login\": \"<email>\"\n        },\n        \"owned_by\": {\n          \"type\": \"user\",\n          \"id\": \"<string>\",\n          \"name\": \"<string>\",\n          \"login\": \"<email>\"\n        },\n        \"shared_link\": {\n          \"url\": \"<string>\",\n          \"effective_access\": \"collaborators\",\n          \"effective_permission\": \"no_access\",\n          \"is_password_enabled\": \"<boolean>\",\n          \"download_count\": \"<integer>\",\n          \"preview_count\": \"<integer>\",\n          \"download_url\": \"<string>\",\n          \"vanity_url\": \"<string>\",\n          \"vanity_name\": \"<string>\",\n          \"access\": \"company\",\n          \"unshared_at\": \"<dateTime>\",\n          \"permissions\": {\n            \"can_download\": \"<boolean>\",\n            \"can_preview\": \"<boolean>\",\n            \"can_edit\": \"<boolean>\"\n          }\n        },\n        \"parent\": {\n          \"id\": \"<string>\",\n          \"type\": \"folder\",\n          \"etag\": \"<string>\",\n          \"sequence_id\": \"<string>\",\n          \"name\": \"<string>\"\n        },\n        \"item_status\": \"deleted\"\n      },\n      \"accessible_by\": {\n        \"type\": \"user\",\n        \"id\": \"<string>\",\n        \"name\": \"<string>\",\n        \"login\": \"<email>\"\n      },\n      \"invite_email\": \"<string>\",\n      \"role\": \"editor\",\n      \"expires_at\": \"<dateTime>\",\n      \"is_access_only\": \"<boolean>\",\n      \"status\": \"rejected\",\n      \"acknowledged_at\": \"<dateTime>\",\n      \"created_by\": {\n        \"type\": \"user\",\n        \"id\": \"<string>\",\n        \"name\": \"<string>\",\n        \"login\": \"<email>\"\n      },\n      \"created_at\": \"<dateTime>\",\n      \"modified_at\": \"<dateTime>\",\n      \"acceptance_requirements_status\": {\n        \"terms_of_service_requirement\": {\n          \"is_accepted\": \"<boolean>\",\n          \"terms_of_service\": {\n            \"id\": \"<string>\",\n            \"type\": \"terms_of_service\"\n          }\n        },\n        \"strong_password_requirement\": {\n          \"enterprise_has_strong_password_required_for_external_users\": \"<boolean>\",\n          \"user_has_strong_password\": \"<boolean>\"\n        },\n        \"two_factor_authentication_requirement\": {\n          \"enterprise_has_two_factor_auth_enabled\": \"<boolean>\",\n          \"user_has_two_factor_authentication_enabled\": \"<boolean>\"\n        }\n      }\n    },\n    {\n      \"id\": \"<string>\",\n      \"type\": \"collaboration\",\n      \"item\": {\n        \"id\": \"<string>\",\n        \"type\": \"file\",\n        \"etag\": \"<string>\",\n        \"sequence_id\": \"<string>\",\n        \"name\": \"<string>\",\n        \"sha1\": \"<string>\",\n        \"file_version\": {\n          \"id\": \"<string>\",\n          \"type\": \"file_version\",\n          \"sha1\": \"<string>\"\n        },\n        \"description\": \"<string>\",\n        \"size\": \"<integer>\",\n        \"path_collection\": {\n          \"total_count\": \"<long>\",\n          \"entries\": [\n            {\n              \"id\": \"<string>\",\n              \"type\": \"folder\",\n              \"etag\": \"<string>\",\n              \"sequence_id\": \"<string>\",\n              \"name\": \"<string>\"\n            },\n            {\n              \"id\": \"<string>\",\n              \"type\": \"folder\",\n              \"etag\": \"<string>\",\n              \"sequence_id\": \"<string>\",\n              \"name\": \"<string>\"\n            }\n          ]\n        },\n        \"created_at\": \"<dateTime>\",\n        \"modified_at\": \"<dateTime>\",\n        \"trashed_at\": \"<dateTime>\",\n        \"purged_at\": \"<dateTime>\",\n        \"content_created_at\": \"<dateTime>\",\n        \"content_modified_at\": \"<dateTime>\",\n        \"created_by\": {\n          \"type\": \"user\",\n          \"id\": \"<string>\",\n          \"name\": \"<string>\",\n          \"login\": \"<email>\"\n        },\n        \"modified_by\": {\n          \"type\": \"user\",\n          \"id\": \"<string>\",\n          \"name\": \"<string>\",\n          \"login\": \"<email>\"\n        },\n        \"owned_by\": {\n          \"type\": \"user\",\n          \"id\": \"<string>\",\n          \"name\": \"<string>\",\n          \"login\": \"<email>\"\n        },\n        \"shared_link\": {\n          \"url\": \"<string>\",\n          \"effective_access\": \"company\",\n          \"effective_permission\": \"no_access\",\n          \"is_password_enabled\": \"<boolean>\",\n          \"download_count\": \"<integer>\",\n          \"preview_count\": \"<integer>\",\n          \"download_url\": \"<string>\",\n          \"vanity_url\": \"<string>\",\n          \"vanity_name\": \"<string>\",\n          \"access\": \"company\",\n          \"unshared_at\": \"<dateTime>\",\n          \"permissions\": {\n            \"can_download\": \"<boolean>\",\n            \"can_preview\": \"<boolean>\",\n            \"can_edit\": \"<boolean>\"\n          }\n        },\n        \"parent\": {\n          \"id\": \"<string>\",\n          \"type\": \"folder\",\n          \"etag\": \"<string>\",\n          \"sequence_id\": \"<string>\",\n          \"name\": \"<string>\"\n        },\n        \"item_status\": \"trashed\"\n      },\n      \"accessible_by\": {\n        \"type\": \"user\",\n        \"id\": \"<string>\",\n        \"name\": \"<string>\",\n        \"login\": \"<email>\"\n      },\n      \"invite_email\": \"<string>\",\n      \"role\": \"owner\",\n      \"expires_at\": \"<dateTime>\",\n      \"is_access_only\": \"<boolean>\",\n      \"status\": \"rejected\",\n      \"acknowledged_at\": \"<dateTime>\",\n      \"created_by\": {\n        \"type\": \"user\",\n        \"id\": \"<string>\",\n        \"name\": \"<string>\",\n        \"login\": \"<email>\"\n      },\n      \"created_at\": \"<dateTime>\",\n      \"modified_at\": \"<dateTime>\",\n      \"acceptance_requirements_status\": {\n        \"terms_of_service_requirement\": {\n          \"is_accepted\": \"<boolean>\",\n          \"terms_of_service\": {\n            \"id\": \"<string>\",\n            \"type\": \"terms_of_service\"\n          }\n        },\n        \"strong_password_requirement\": {\n          \"enterprise_has_strong_password_required_for_external_users\": \"<boolean>\",\n          \"user_has_strong_password\": \"<boolean>\"\n        },\n        \"two_factor_authentication_requirement\": {\n          \"enterprise_has_two_factor_auth_enabled\": \"<boolean>\",\n          \"user_has_two_factor_authentication_enabled\": \"<boolean>\"\n        }\n      }\n    }\n  ]\n}",
+                      "createdAt": "2026-07-28T01:15:48.000Z",
+                      "updatedAt": "2026-07-28T01:15:48.000Z",
+                      "uid": "35240-3c031fce-a9cd-462f-b31b-1914c9dd89c2"
+                    },
+                    {
+                      "id": "bd39ae4d-e9f9-4b4c-a7eb-5450120299bf",
+                      "name": "An unexpected client error.",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/folders/:folder_id/collaborations?fields=<string>,<string>",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "folders",
+                            ":folder_id",
+                            "collaborations"
+                          ],
+                          "query": [
+                            {
+                              "description": "A comma-separated list of attributes to include in the\nresponse. This can be used to request fields that are\nnot normally returned in a standard response.\n\nBe aware that specifying this parameter will have the\neffect that none of the standard fields are returned in\nthe response unless explicitly specified, instead only\nfields for the mini representation are returned, additional\nto the fields requested.",
+                              "key": "fields",
+                              "value": "<string>,<string>"
+                            }
+                          ],
+                          "variable": [
+                            {
+                              "key": "folder_id"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Internal Server Error",
+                      "code": 500,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"type\": \"error\",\n  \"status\": \"<integer>\",\n  \"code\": \"redirect\",\n  \"message\": \"<string>\",\n  \"context_info\": {\n    \"message\": \"<string>\"\n  },\n  \"help_url\": \"<string>\",\n  \"request_id\": \"<string>\"\n}",
+                      "createdAt": "2026-07-28T01:15:48.000Z",
+                      "updatedAt": "2026-07-28T01:15:48.000Z",
+                      "uid": "35240-bd39ae4d-e9f9-4b4c-a7eb-5450120299bf"
+                    }
+                  ],
+                  "createdAt": "2026-07-28T01:15:48.000Z",
+                  "updatedAt": "2026-07-28T01:15:48.000Z",
+                  "uid": "35240-fe62422c-23ad-4770-bd90-81ea4c7b69ce"
+                }
+              ],
+              "id": "817891e8-1e89-4507-82f3-c20aeb3359de",
+              "createdAt": "2026-07-28T01:15:48.000Z",
+              "updatedAt": "2026-07-28T01:15:48.000Z",
+              "uid": "35240-817891e8-1e89-4507-82f3-c20aeb3359de"
+            }
+          ],
+          "id": "79d4eb55-a7b4-4ac1-93ee-545aff1f7e78",
+          "createdAt": "2026-07-28T01:15:48.000Z",
+          "updatedAt": "2026-07-28T01:15:48.000Z",
+          "uid": "35240-79d4eb55-a7b4-4ac1-93ee-545aff1f7e78"
+        }
+      ],
+      "id": "605ea5c8-f979-42fb-8070-1f455f8d6afb",
+      "createdAt": "2026-07-28T01:15:48.000Z",
+      "updatedAt": "2026-07-28T01:15:48.000Z",
+      "uid": "35240-605ea5c8-f979-42fb-8070-1f455f8d6afb"
+    },
+    {
+      "name": "collaborations",
+      "item": [
+        {
+          "name": "Box List pending collaborations",
+          "id": "31270db1-5fb2-44bc-b58d-23d511a60aea",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/collaborations?status=pending&fields=<string>,<string>&offset=0&limit=<long>",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "collaborations"
+              ],
+              "query": [
+                {
+                  "description": "(Required) The status of the collaborations to retrieve",
+                  "key": "status",
+                  "value": "pending"
+                },
+                {
+                  "description": "A comma-separated list of attributes to include in the\nresponse. This can be used to request fields that are\nnot normally returned in a standard response.\n\nBe aware that specifying this parameter will have the\neffect that none of the standard fields are returned in\nthe response unless explicitly specified, instead only\nfields for the mini representation are returned, additional\nto the fields requested.",
+                  "key": "fields",
+                  "value": "<string>,<string>"
+                },
+                {
+                  "description": "The offset of the item at which to begin the response.\n\nQueries with offset parameter value\nexceeding 10000 will be rejected\nwith a 400 response.",
+                  "key": "offset",
+                  "value": "0"
+                },
+                {
+                  "description": "The maximum number of items to return per page.",
+                  "key": "limit",
+                  "value": "<long>"
+                }
+              ]
+            },
+            "description": "Retrieves all pending collaboration invites for this user."
+          },
+          "response": [
+            {
+              "id": "6e54f5dc-c4c1-413d-99f1-f10796848cfd",
+              "name": "Returns a collection of pending collaboration objects.\n\nIf the user has no pending collaborations, the collection\nwill be empty.",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/collaborations?status=pending&fields=<string>,<string>&offset=0&limit=<long>",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "collaborations"
+                  ],
+                  "query": [
+                    {
+                      "description": "(Required) The status of the collaborations to retrieve",
+                      "key": "status",
+                      "value": "pending"
+                    },
+                    {
+                      "description": "A comma-separated list of attributes to include in the\nresponse. This can be used to request fields that are\nnot normally returned in a standard response.\n\nBe aware that specifying this parameter will have the\neffect that none of the standard fields are returned in\nthe response unless explicitly specified, instead only\nfields for the mini representation are returned, additional\nto the fields requested.",
+                      "key": "fields",
+                      "value": "<string>,<string>"
+                    },
+                    {
+                      "description": "The offset of the item at which to begin the response.\n\nQueries with offset parameter value\nexceeding 10000 will be rejected\nwith a 400 response.",
+                      "key": "offset",
+                      "value": "0"
+                    },
+                    {
+                      "description": "The maximum number of items to return per page.",
+                      "key": "limit",
+                      "value": "<long>"
+                    }
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "responseTime": null,
+              "body": "{\n  \"total_count\": \"<long>\",\n  \"limit\": \"<long>\",\n  \"offset\": \"<long>\",\n  \"order\": [\n    {\n      \"by\": \"<string>\",\n      \"direction\": \"ASC\"\n    },\n    {\n      \"by\": \"<string>\",\n      \"direction\": \"ASC\"\n    }\n  ],\n  \"entries\": [\n    {\n      \"id\": \"<string>\",\n      \"type\": \"collaboration\",\n      \"item\": {\n        \"id\": \"<string>\",\n        \"type\": \"file\",\n        \"etag\": \"<string>\",\n        \"sequence_id\": \"<string>\",\n        \"name\": \"<string>\",\n        \"sha1\": \"<string>\",\n        \"file_version\": {\n          \"id\": \"<string>\",\n          \"type\": \"file_version\",\n          \"sha1\": \"<string>\"\n        },\n        \"description\": \"<string>\",\n        \"size\": \"<integer>\",\n        \"path_collection\": {\n          \"total_count\": \"<long>\",\n          \"entries\": [\n            {\n              \"id\": \"<string>\",\n              \"type\": \"folder\",\n              \"etag\": \"<string>\",\n              \"sequence_id\": \"<string>\",\n              \"name\": \"<string>\"\n            },\n            {\n              \"id\": \"<string>\",\n              \"type\": \"folder\",\n              \"etag\": \"<string>\",\n              \"sequence_id\": \"<string>\",\n              \"name\": \"<string>\"\n            }\n          ]\n        },\n        \"created_at\": \"<dateTime>\",\n        \"modified_at\": \"<dateTime>\",\n        \"trashed_at\": \"<dateTime>\",\n        \"purged_at\": \"<dateTime>\",\n        \"content_created_at\": \"<dateTime>\",\n        \"content_modified_at\": \"<dateTime>\",\n        \"created_by\": {\n          \"type\": \"user\",\n          \"id\": \"<string>\",\n          \"name\": \"<string>\",\n          \"login\": \"<email>\"\n        },\n        \"modified_by\": {\n          \"type\": \"user\",\n          \"id\": \"<string>\",\n          \"name\": \"<string>\",\n          \"login\": \"<email>\"\n        },\n        \"owned_by\": {\n          \"type\": \"user\",\n          \"id\": \"<string>\",\n          \"name\": \"<string>\",\n          \"login\": \"<email>\"\n        },\n        \"shared_link\": {\n          \"url\": \"<string>\",\n          \"effective_access\": \"collaborators\",\n          \"effective_permission\": \"no_access\",\n          \"is_password_enabled\": \"<boolean>\",\n          \"download_count\": \"<integer>\",\n          \"preview_count\": \"<integer>\",\n          \"download_url\": \"<string>\",\n          \"vanity_url\": \"<string>\",\n          \"vanity_name\": \"<string>\",\n          \"access\": \"company\",\n          \"unshared_at\": \"<dateTime>\",\n          \"permissions\": {\n            \"can_download\": \"<boolean>\",\n            \"can_preview\": \"<boolean>\",\n            \"can_edit\": \"<boolean>\"\n          }\n        },\n        \"parent\": {\n          \"id\": \"<string>\",\n          \"type\": \"folder\",\n          \"etag\": \"<string>\",\n          \"sequence_id\": \"<string>\",\n          \"name\": \"<string>\"\n        },\n        \"item_status\": \"deleted\"\n      },\n      \"accessible_by\": {\n        \"type\": \"user\",\n        \"id\": \"<string>\",\n        \"name\": \"<string>\",\n        \"login\": \"<email>\"\n      },\n      \"invite_email\": \"<string>\",\n      \"role\": \"editor\",\n      \"expires_at\": \"<dateTime>\",\n      \"is_access_only\": \"<boolean>\",\n      \"status\": \"rejected\",\n      \"acknowledged_at\": \"<dateTime>\",\n      \"created_by\": {\n        \"type\": \"user\",\n        \"id\": \"<string>\",\n        \"name\": \"<string>\",\n        \"login\": \"<email>\"\n      },\n      \"created_at\": \"<dateTime>\",\n      \"modified_at\": \"<dateTime>\",\n      \"acceptance_requirements_status\": {\n        \"terms_of_service_requirement\": {\n          \"is_accepted\": \"<boolean>\",\n          \"terms_of_service\": {\n            \"id\": \"<string>\",\n            \"type\": \"terms_of_service\"\n          }\n        },\n        \"strong_password_requirement\": {\n          \"enterprise_has_strong_password_required_for_external_users\": \"<boolean>\",\n          \"user_has_strong_password\": \"<boolean>\"\n        },\n        \"two_factor_authentication_requirement\": {\n          \"enterprise_has_two_factor_auth_enabled\": \"<boolean>\",\n          \"user_has_two_factor_authentication_enabled\": \"<boolean>\"\n        }\n      }\n    },\n    {\n      \"id\": \"<string>\",\n      \"type\": \"collaboration\",\n      \"item\": {\n        \"id\": \"<string>\",\n        \"type\": \"file\",\n        \"etag\": \"<string>\",\n        \"sequence_id\": \"<string>\",\n        \"name\": \"<string>\",\n        \"sha1\": \"<string>\",\n        \"file_version\": {\n          \"id\": \"<string>\",\n          \"type\": \"file_version\",\n          \"sha1\": \"<string>\"\n        },\n        \"description\": \"<string>\",\n        \"size\": \"<integer>\",\n        \"path_collection\": {\n          \"total_count\": \"<long>\",\n          \"entries\": [\n            {\n              \"id\": \"<string>\",\n              \"type\": \"folder\",\n              \"etag\": \"<string>\",\n              \"sequence_id\": \"<string>\",\n              \"name\": \"<string>\"\n            },\n            {\n              \"id\": \"<string>\",\n              \"type\": \"folder\",\n              \"etag\": \"<string>\",\n              \"sequence_id\": \"<string>\",\n              \"name\": \"<string>\"\n            }\n          ]\n        },\n        \"created_at\": \"<dateTime>\",\n        \"modified_at\": \"<dateTime>\",\n        \"trashed_at\": \"<dateTime>\",\n        \"purged_at\": \"<dateTime>\",\n        \"content_created_at\": \"<dateTime>\",\n        \"content_modified_at\": \"<dateTime>\",\n        \"created_by\": {\n          \"type\": \"user\",\n          \"id\": \"<string>\",\n          \"name\": \"<string>\",\n          \"login\": \"<email>\"\n        },\n        \"modified_by\": {\n          \"type\": \"user\",\n          \"id\": \"<string>\",\n          \"name\": \"<string>\",\n          \"login\": \"<email>\"\n        },\n        \"owned_by\": {\n          \"type\": \"user\",\n          \"id\": \"<string>\",\n          \"name\": \"<string>\",\n          \"login\": \"<email>\"\n        },\n        \"shared_link\": {\n          \"url\": \"<string>\",\n          \"effective_access\": \"company\",\n          \"effective_permission\": \"no_access\",\n          \"is_password_enabled\": \"<boolean>\",\n          \"download_count\": \"<integer>\",\n          \"preview_count\": \"<integer>\",\n          \"download_url\": \"<string>\",\n          \"vanity_url\": \"<string>\",\n          \"vanity_name\": \"<string>\",\n          \"access\": \"company\",\n          \"unshared_at\": \"<dateTime>\",\n          \"permissions\": {\n            \"can_download\": \"<boolean>\",\n            \"can_preview\": \"<boolean>\",\n            \"can_edit\": \"<boolean>\"\n          }\n        },\n        \"parent\": {\n          \"id\": \"<string>\",\n          \"type\": \"folder\",\n          \"etag\": \"<string>\",\n          \"sequence_id\": \"<string>\",\n          \"name\": \"<string>\"\n        },\n        \"item_status\": \"trashed\"\n      },\n      \"accessible_by\": {\n        \"type\": \"user\",\n        \"id\": \"<string>\",\n        \"name\": \"<string>\",\n        \"login\": \"<email>\"\n      },\n      \"invite_email\": \"<string>\",\n      \"role\": \"owner\",\n      \"expires_at\": \"<dateTime>\",\n      \"is_access_only\": \"<boolean>\",\n      \"status\": \"rejected\",\n      \"acknowledged_at\": \"<dateTime>\",\n      \"created_by\": {\n        \"type\": \"user\",\n        \"id\": \"<string>\",\n        \"name\": \"<string>\",\n        \"login\": \"<email>\"\n      },\n      \"created_at\": \"<dateTime>\",\n      \"modified_at\": \"<dateTime>\",\n      \"acceptance_requirements_status\": {\n        \"terms_of_service_requirement\": {\n          \"is_accepted\": \"<boolean>\",\n          \"terms_of_service\": {\n            \"id\": \"<string>\",\n            \"type\": \"terms_of_service\"\n          }\n        },\n        \"strong_password_requirement\": {\n          \"enterprise_has_strong_password_required_for_external_users\": \"<boolean>\",\n          \"user_has_strong_password\": \"<boolean>\"\n        },\n        \"two_factor_authentication_requirement\": {\n          \"enterprise_has_two_factor_auth_enabled\": \"<boolean>\",\n          \"user_has_two_factor_authentication_enabled\": \"<boolean>\"\n        }\n      }\n    }\n  ]\n}",
+              "createdAt": "2026-07-28T01:15:48.000Z",
+              "updatedAt": "2026-07-28T01:15:48.000Z",
+              "uid": "35240-6e54f5dc-c4c1-413d-99f1-f10796848cfd"
+            },
+            {
+              "id": "54e7779f-93f1-4791-9550-958cd08cec66",
+              "name": "An unexpected client error.",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/collaborations?status=pending&fields=<string>,<string>&offset=0&limit=<long>",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "collaborations"
+                  ],
+                  "query": [
+                    {
+                      "description": "(Required) The status of the collaborations to retrieve",
+                      "key": "status",
+                      "value": "pending"
+                    },
+                    {
+                      "description": "A comma-separated list of attributes to include in the\nresponse. This can be used to request fields that are\nnot normally returned in a standard response.\n\nBe aware that specifying this parameter will have the\neffect that none of the standard fields are returned in\nthe response unless explicitly specified, instead only\nfields for the mini representation are returned, additional\nto the fields requested.",
+                      "key": "fields",
+                      "value": "<string>,<string>"
+                    },
+                    {
+                      "description": "The offset of the item at which to begin the response.\n\nQueries with offset parameter value\nexceeding 10000 will be rejected\nwith a 400 response.",
+                      "key": "offset",
+                      "value": "0"
+                    },
+                    {
+                      "description": "The maximum number of items to return per page.",
+                      "key": "limit",
+                      "value": "<long>"
+                    }
+                  ]
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "responseTime": null,
+              "body": "{\n  \"type\": \"error\",\n  \"status\": \"<integer>\",\n  \"code\": \"redirect\",\n  \"message\": \"<string>\",\n  \"context_info\": {\n    \"message\": \"<string>\"\n  },\n  \"help_url\": \"<string>\",\n  \"request_id\": \"<string>\"\n}",
+              "createdAt": "2026-07-28T01:15:48.000Z",
+              "updatedAt": "2026-07-28T01:15:48.000Z",
+              "uid": "35240-54e7779f-93f1-4791-9550-958cd08cec66"
+            }
+          ],
+          "createdAt": "2026-07-28T01:15:48.000Z",
+          "updatedAt": "2026-07-28T01:15:48.000Z",
+          "uid": "35240-31270db1-5fb2-44bc-b58d-23d511a60aea"
+        }
+      ],
+      "id": "cc22d3db-27b6-4437-bcf9-df156b6a481e",
+      "createdAt": "2026-07-28T01:15:48.000Z",
+      "updatedAt": "2026-07-28T01:15:48.000Z",
+      "uid": "35240-cc22d3db-27b6-4437-bcf9-df156b6a481e"
+    },
+    {
+      "name": "groups",
+      "item": [
+        {
+          "name": "{group_id}",
+          "item": [
+            {
+              "name": "collaborations",
+              "item": [
+                {
+                  "name": "Box List group collaborations",
+                  "id": "9dd5c30b-3d11-4769-8059-58468d30fa47",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/groups/:group_id/collaborations?limit=<long>&offset=0",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "groups",
+                        ":group_id",
+                        "collaborations"
+                      ],
+                      "query": [
+                        {
+                          "description": "The maximum number of items to return per page.",
+                          "key": "limit",
+                          "value": "<long>"
+                        },
+                        {
+                          "description": "The offset of the item at which to begin the response.\n\nQueries with offset parameter value\nexceeding 10000 will be rejected\nwith a 400 response.",
+                          "key": "offset",
+                          "value": "0"
+                        }
+                      ],
+                      "variable": [
+                        {
+                          "id": "dd4eb824-0e95-4c52-8466-1a3b7bdb3795",
+                          "key": "group_id",
+                          "value": "<string>",
+                          "description": "(Required) The ID of the group."
+                        }
+                      ]
+                    },
+                    "description": "Retrieves all the collaborations for a group. The user\nmust have admin permissions to inspect enterprise's groups.\n\nEach collaboration object has details on which files or\nfolders the group has access to and with what role."
+                  },
+                  "response": [
+                    {
+                      "id": "e286d778-2177-4cc3-ad45-fd4668a603e3",
+                      "name": "Returns a collection of collaboration objects. If there are no\ncollaborations, an empty collection will be returned.",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/groups/:group_id/collaborations?limit=<long>&offset=0",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "groups",
+                            ":group_id",
+                            "collaborations"
+                          ],
+                          "query": [
+                            {
+                              "description": "The maximum number of items to return per page.",
+                              "key": "limit",
+                              "value": "<long>"
+                            },
+                            {
+                              "description": "The offset of the item at which to begin the response.\n\nQueries with offset parameter value\nexceeding 10000 will be rejected\nwith a 400 response.",
+                              "key": "offset",
+                              "value": "0"
+                            }
+                          ],
+                          "variable": [
+                            {
+                              "key": "group_id"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "OK",
+                      "code": 200,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"total_count\": \"<long>\",\n  \"limit\": \"<long>\",\n  \"offset\": \"<long>\",\n  \"order\": [\n    {\n      \"by\": \"<string>\",\n      \"direction\": \"ASC\"\n    },\n    {\n      \"by\": \"<string>\",\n      \"direction\": \"ASC\"\n    }\n  ],\n  \"entries\": [\n    {\n      \"id\": \"<string>\",\n      \"type\": \"collaboration\",\n      \"item\": {\n        \"id\": \"<string>\",\n        \"type\": \"file\",\n        \"etag\": \"<string>\",\n        \"sequence_id\": \"<string>\",\n        \"name\": \"<string>\",\n        \"sha1\": \"<string>\",\n        \"file_version\": {\n          \"id\": \"<string>\",\n          \"type\": \"file_version\",\n          \"sha1\": \"<string>\"\n        },\n        \"description\": \"<string>\",\n        \"size\": \"<integer>\",\n        \"path_collection\": {\n          \"total_count\": \"<long>\",\n          \"entries\": [\n            {\n              \"id\": \"<string>\",\n              \"type\": \"folder\",\n              \"etag\": \"<string>\",\n              \"sequence_id\": \"<string>\",\n              \"name\": \"<string>\"\n            },\n            {\n              \"id\": \"<string>\",\n              \"type\": \"folder\",\n              \"etag\": \"<string>\",\n              \"sequence_id\": \"<string>\",\n              \"name\": \"<string>\"\n            }\n          ]\n        },\n        \"created_at\": \"<dateTime>\",\n        \"modified_at\": \"<dateTime>\",\n        \"trashed_at\": \"<dateTime>\",\n        \"purged_at\": \"<dateTime>\",\n        \"content_created_at\": \"<dateTime>\",\n        \"content_modified_at\": \"<dateTime>\",\n        \"created_by\": {\n          \"type\": \"user\",\n          \"id\": \"<string>\",\n          \"name\": \"<string>\",\n          \"login\": \"<email>\"\n        },\n        \"modified_by\": {\n          \"type\": \"user\",\n          \"id\": \"<string>\",\n          \"name\": \"<string>\",\n          \"login\": \"<email>\"\n        },\n        \"owned_by\": {\n          \"type\": \"user\",\n          \"id\": \"<string>\",\n          \"name\": \"<string>\",\n          \"login\": \"<email>\"\n        },\n        \"shared_link\": {\n          \"url\": \"<string>\",\n          \"effective_access\": \"collaborators\",\n          \"effective_permission\": \"no_access\",\n          \"is_password_enabled\": \"<boolean>\",\n          \"download_count\": \"<integer>\",\n          \"preview_count\": \"<integer>\",\n          \"download_url\": \"<string>\",\n          \"vanity_url\": \"<string>\",\n          \"vanity_name\": \"<string>\",\n          \"access\": \"company\",\n          \"unshared_at\": \"<dateTime>\",\n          \"permissions\": {\n            \"can_download\": \"<boolean>\",\n            \"can_preview\": \"<boolean>\",\n            \"can_edit\": \"<boolean>\"\n          }\n        },\n        \"parent\": {\n          \"id\": \"<string>\",\n          \"type\": \"folder\",\n          \"etag\": \"<string>\",\n          \"sequence_id\": \"<string>\",\n          \"name\": \"<string>\"\n        },\n        \"item_status\": \"deleted\"\n      },\n      \"accessible_by\": {\n        \"type\": \"user\",\n        \"id\": \"<string>\",\n        \"name\": \"<string>\",\n        \"login\": \"<email>\"\n      },\n      \"invite_email\": \"<string>\",\n      \"role\": \"editor\",\n      \"expires_at\": \"<dateTime>\",\n      \"is_access_only\": \"<boolean>\",\n      \"status\": \"rejected\",\n      \"acknowledged_at\": \"<dateTime>\",\n      \"created_by\": {\n        \"type\": \"user\",\n        \"id\": \"<string>\",\n        \"name\": \"<string>\",\n        \"login\": \"<email>\"\n      },\n      \"created_at\": \"<dateTime>\",\n      \"modified_at\": \"<dateTime>\",\n      \"acceptance_requirements_status\": {\n        \"terms_of_service_requirement\": {\n          \"is_accepted\": \"<boolean>\",\n          \"terms_of_service\": {\n            \"id\": \"<string>\",\n            \"type\": \"terms_of_service\"\n          }\n        },\n        \"strong_password_requirement\": {\n          \"enterprise_has_strong_password_required_for_external_users\": \"<boolean>\",\n          \"user_has_strong_password\": \"<boolean>\"\n        },\n        \"two_factor_authentication_requirement\": {\n          \"enterprise_has_two_factor_auth_enabled\": \"<boolean>\",\n          \"user_has_two_factor_authentication_enabled\": \"<boolean>\"\n        }\n      }\n    },\n    {\n      \"id\": \"<string>\",\n      \"type\": \"collaboration\",\n      \"item\": {\n        \"id\": \"<string>\",\n        \"type\": \"file\",\n        \"etag\": \"<string>\",\n        \"sequence_id\": \"<string>\",\n        \"name\": \"<string>\",\n        \"sha1\": \"<string>\",\n        \"file_version\": {\n          \"id\": \"<string>\",\n          \"type\": \"file_version\",\n          \"sha1\": \"<string>\"\n        },\n        \"description\": \"<string>\",\n        \"size\": \"<integer>\",\n        \"path_collection\": {\n          \"total_count\": \"<long>\",\n          \"entries\": [\n            {\n              \"id\": \"<string>\",\n              \"type\": \"folder\",\n              \"etag\": \"<string>\",\n              \"sequence_id\": \"<string>\",\n              \"name\": \"<string>\"\n            },\n            {\n              \"id\": \"<string>\",\n              \"type\": \"folder\",\n              \"etag\": \"<string>\",\n              \"sequence_id\": \"<string>\",\n              \"name\": \"<string>\"\n            }\n          ]\n        },\n        \"created_at\": \"<dateTime>\",\n        \"modified_at\": \"<dateTime>\",\n        \"trashed_at\": \"<dateTime>\",\n        \"purged_at\": \"<dateTime>\",\n        \"content_created_at\": \"<dateTime>\",\n        \"content_modified_at\": \"<dateTime>\",\n        \"created_by\": {\n          \"type\": \"user\",\n          \"id\": \"<string>\",\n          \"name\": \"<string>\",\n          \"login\": \"<email>\"\n        },\n        \"modified_by\": {\n          \"type\": \"user\",\n          \"id\": \"<string>\",\n          \"name\": \"<string>\",\n          \"login\": \"<email>\"\n        },\n        \"owned_by\": {\n          \"type\": \"user\",\n          \"id\": \"<string>\",\n          \"name\": \"<string>\",\n          \"login\": \"<email>\"\n        },\n        \"shared_link\": {\n          \"url\": \"<string>\",\n          \"effective_access\": \"company\",\n          \"effective_permission\": \"no_access\",\n          \"is_password_enabled\": \"<boolean>\",\n          \"download_count\": \"<integer>\",\n          \"preview_count\": \"<integer>\",\n          \"download_url\": \"<string>\",\n          \"vanity_url\": \"<string>\",\n          \"vanity_name\": \"<string>\",\n          \"access\": \"company\",\n          \"unshared_at\": \"<dateTime>\",\n          \"permissions\": {\n            \"can_download\": \"<boolean>\",\n            \"can_preview\": \"<boolean>\",\n            \"can_edit\": \"<boolean>\"\n          }\n        },\n        \"parent\": {\n          \"id\": \"<string>\",\n          \"type\": \"folder\",\n          \"etag\": \"<string>\",\n          \"sequence_id\": \"<string>\",\n          \"name\": \"<string>\"\n        },\n        \"item_status\": \"trashed\"\n      },\n      \"accessible_by\": {\n        \"type\": \"user\",\n        \"id\": \"<string>\",\n        \"name\": \"<string>\",\n        \"login\": \"<email>\"\n      },\n      \"invite_email\": \"<string>\",\n      \"role\": \"owner\",\n      \"expires_at\": \"<dateTime>\",\n      \"is_access_only\": \"<boolean>\",\n      \"status\": \"rejected\",\n      \"acknowledged_at\": \"<dateTime>\",\n      \"created_by\": {\n        \"type\": \"user\",\n        \"id\": \"<string>\",\n        \"name\": \"<string>\",\n        \"login\": \"<email>\"\n      },\n      \"created_at\": \"<dateTime>\",\n      \"modified_at\": \"<dateTime>\",\n      \"acceptance_requirements_status\": {\n        \"terms_of_service_requirement\": {\n          \"is_accepted\": \"<boolean>\",\n          \"terms_of_service\": {\n            \"id\": \"<string>\",\n            \"type\": \"terms_of_service\"\n          }\n        },\n        \"strong_password_requirement\": {\n          \"enterprise_has_strong_password_required_for_external_users\": \"<boolean>\",\n          \"user_has_strong_password\": \"<boolean>\"\n        },\n        \"two_factor_authentication_requirement\": {\n          \"enterprise_has_two_factor_auth_enabled\": \"<boolean>\",\n          \"user_has_two_factor_authentication_enabled\": \"<boolean>\"\n        }\n      }\n    }\n  ]\n}",
+                      "createdAt": "2026-07-28T01:15:48.000Z",
+                      "updatedAt": "2026-07-28T01:15:48.000Z",
+                      "uid": "35240-e286d778-2177-4cc3-ad45-fd4668a603e3"
+                    },
+                    {
+                      "id": "fbebdd89-f0fb-40c0-9f2c-50f9e03d5efb",
+                      "name": "An unexpected client error.",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/groups/:group_id/collaborations?limit=<long>&offset=0",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "groups",
+                            ":group_id",
+                            "collaborations"
+                          ],
+                          "query": [
+                            {
+                              "description": "The maximum number of items to return per page.",
+                              "key": "limit",
+                              "value": "<long>"
+                            },
+                            {
+                              "description": "The offset of the item at which to begin the response.\n\nQueries with offset parameter value\nexceeding 10000 will be rejected\nwith a 400 response.",
+                              "key": "offset",
+                              "value": "0"
+                            }
+                          ],
+                          "variable": [
+                            {
+                              "key": "group_id"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Internal Server Error",
+                      "code": 500,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"type\": \"error\",\n  \"status\": \"<integer>\",\n  \"code\": \"redirect\",\n  \"message\": \"<string>\",\n  \"context_info\": {\n    \"message\": \"<string>\"\n  },\n  \"help_url\": \"<string>\",\n  \"request_id\": \"<string>\"\n}",
+                      "createdAt": "2026-07-28T01:15:48.000Z",
+                      "updatedAt": "2026-07-28T01:15:48.000Z",
+                      "uid": "35240-fbebdd89-f0fb-40c0-9f2c-50f9e03d5efb"
+                    }
+                  ],
+                  "createdAt": "2026-07-28T01:15:48.000Z",
+                  "updatedAt": "2026-07-28T01:15:48.000Z",
+                  "uid": "35240-9dd5c30b-3d11-4769-8059-58468d30fa47"
+                }
+              ],
+              "id": "e61792aa-a56c-4ab7-82ba-9bb837c55be9",
+              "createdAt": "2026-07-28T01:15:48.000Z",
+              "updatedAt": "2026-07-28T01:15:48.000Z",
+              "uid": "35240-e61792aa-a56c-4ab7-82ba-9bb837c55be9"
+            }
+          ],
+          "id": "76deabdc-498a-4909-94c5-754ec6f8b20c",
+          "createdAt": "2026-07-28T01:15:48.000Z",
+          "updatedAt": "2026-07-28T01:15:48.000Z",
+          "uid": "35240-76deabdc-498a-4909-94c5-754ec6f8b20c"
+        }
+      ],
+      "id": "6b5bb7f2-2900-4d5b-9b67-464298fe819f",
+      "createdAt": "2026-07-28T01:15:48.000Z",
+      "updatedAt": "2026-07-28T01:15:48.000Z",
+      "uid": "35240-6b5bb7f2-2900-4d5b-9b67-464298fe819f"
+    }
+  ],
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "/"
+    }
+  ]
+}

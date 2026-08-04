@@ -1,0 +1,185 @@
+{
+  "info": {
+    "_postman_id": "da7666a7-cf00-4415-8ff0-c01c6f12e2f8",
+    "name": "Box Authorize Authorization Recent Items API",
+    "description": "Needs a description.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "createdAt": "2026-07-28T01:16:51.000Z",
+    "updatedAt": "2026-07-28T01:16:51.000Z",
+    "lastUpdatedBy": "35240",
+    "uid": "35240-da7666a7-cf00-4415-8ff0-c01c6f12e2f8"
+  },
+  "item": [
+    {
+      "name": "recent_items",
+      "item": [
+        {
+          "name": "Box List recently accessed items",
+          "id": "8b3edb83-3c98-4cf3-838b-70e0bea6f948",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/recent_items?fields=<string>,<string>&limit=<long>&marker=<string>",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "recent_items"
+              ],
+              "query": [
+                {
+                  "description": "A comma-separated list of attributes to include in the\nresponse. This can be used to request fields that are\nnot normally returned in a standard response.\n\nBe aware that specifying this parameter will have the\neffect that none of the standard fields are returned in\nthe response unless explicitly specified, instead only\nfields for the mini representation are returned, additional\nto the fields requested.",
+                  "key": "fields",
+                  "value": "<string>,<string>"
+                },
+                {
+                  "description": "The maximum number of items to return per page.",
+                  "key": "limit",
+                  "value": "<long>"
+                },
+                {
+                  "description": "Defines the position marker at which to begin returning results. This is\nused when paginating using marker-based pagination.\n\nThis requires `usemarker` to be set to `true`.",
+                  "key": "marker",
+                  "value": "<string>"
+                }
+              ]
+            },
+            "description": "Returns information about the recent items accessed\nby a user, either in the last 90 days or up to the last\n1000 items accessed."
+          },
+          "response": [
+            {
+              "id": "e4f8eef1-de82-4f0e-bce1-13a61a5ac2b1",
+              "name": "Returns a list recent items access by a user.",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/recent_items?fields=<string>,<string>&limit=<long>&marker=<string>",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "recent_items"
+                  ],
+                  "query": [
+                    {
+                      "description": "A comma-separated list of attributes to include in the\nresponse. This can be used to request fields that are\nnot normally returned in a standard response.\n\nBe aware that specifying this parameter will have the\neffect that none of the standard fields are returned in\nthe response unless explicitly specified, instead only\nfields for the mini representation are returned, additional\nto the fields requested.",
+                      "key": "fields",
+                      "value": "<string>,<string>"
+                    },
+                    {
+                      "description": "The maximum number of items to return per page.",
+                      "key": "limit",
+                      "value": "<long>"
+                    },
+                    {
+                      "description": "Defines the position marker at which to begin returning results. This is\nused when paginating using marker-based pagination.\n\nThis requires `usemarker` to be set to `true`.",
+                      "key": "marker",
+                      "value": "<string>"
+                    }
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "responseTime": null,
+              "body": "{\n  \"limit\": \"<long>\",\n  \"next_marker\": \"<string>\",\n  \"prev_marker\": \"<string>\",\n  \"entries\": [\n    {\n      \"type\": \"<string>\",\n      \"item\": {\n        \"id\": \"<string>\",\n        \"type\": \"file\",\n        \"etag\": \"<string>\",\n        \"sequence_id\": \"<string>\",\n        \"name\": \"<string>\",\n        \"sha1\": \"<string>\",\n        \"file_version\": {\n          \"id\": \"<string>\",\n          \"type\": \"file_version\",\n          \"sha1\": \"<string>\"\n        },\n        \"description\": \"<string>\",\n        \"size\": \"<integer>\",\n        \"path_collection\": {\n          \"total_count\": \"<long>\",\n          \"entries\": [\n            {\n              \"id\": \"<string>\",\n              \"type\": \"folder\",\n              \"etag\": \"<string>\",\n              \"sequence_id\": \"<string>\",\n              \"name\": \"<string>\"\n            },\n            {\n              \"id\": \"<string>\",\n              \"type\": \"folder\",\n              \"etag\": \"<string>\",\n              \"sequence_id\": \"<string>\",\n              \"name\": \"<string>\"\n            }\n          ]\n        },\n        \"created_at\": \"<dateTime>\",\n        \"modified_at\": \"<dateTime>\",\n        \"trashed_at\": \"<dateTime>\",\n        \"purged_at\": \"<dateTime>\",\n        \"content_created_at\": \"<dateTime>\",\n        \"content_modified_at\": \"<dateTime>\",\n        \"created_by\": {\n          \"type\": \"user\",\n          \"id\": \"<string>\",\n          \"name\": \"<string>\",\n          \"login\": \"<email>\"\n        },\n        \"modified_by\": {\n          \"type\": \"user\",\n          \"id\": \"<string>\",\n          \"name\": \"<string>\",\n          \"login\": \"<email>\"\n        },\n        \"owned_by\": {\n          \"type\": \"user\",\n          \"id\": \"<string>\",\n          \"name\": \"<string>\",\n          \"login\": \"<email>\"\n        },\n        \"shared_link\": {\n          \"url\": \"<string>\",\n          \"effective_access\": \"collaborators\",\n          \"effective_permission\": \"can_download\",\n          \"is_password_enabled\": \"<boolean>\",\n          \"download_count\": \"<integer>\",\n          \"preview_count\": \"<integer>\",\n          \"download_url\": \"<string>\",\n          \"vanity_url\": \"<string>\",\n          \"vanity_name\": \"<string>\",\n          \"access\": \"open\",\n          \"unshared_at\": \"<dateTime>\",\n          \"permissions\": {\n            \"can_download\": \"<boolean>\",\n            \"can_preview\": \"<boolean>\",\n            \"can_edit\": \"<boolean>\"\n          }\n        },\n        \"parent\": {\n          \"id\": \"<string>\",\n          \"type\": \"folder\",\n          \"etag\": \"<string>\",\n          \"sequence_id\": \"<string>\",\n          \"name\": \"<string>\"\n        },\n        \"item_status\": \"active\",\n        \"version_number\": \"<string>\",\n        \"comment_count\": \"<integer>\",\n        \"permissions\": {\n          \"can_annotate\": \"<boolean>\",\n          \"can_comment\": \"<boolean>\",\n          \"can_delete\": \"<boolean>\",\n          \"can_download\": \"<boolean>\",\n          \"can_invite_collaborator\": \"<boolean>\",\n          \"can_preview\": \"<boolean>\",\n          \"can_rename\": \"<boolean>\",\n          \"can_set_share_access\": \"<boolean>\",\n          \"can_share\": \"<boolean>\",\n          \"can_upload\": \"<boolean>\",\n          \"can_view_annotations_all\": \"<boolean>\",\n          \"can_view_annotations_self\": \"<boolean>\"\n        },\n        \"tags\": [\n          \"<string>\"\n        ],\n        \"lock\": {\n          \"id\": \"<string>\",\n          \"type\": \"lock\",\n          \"created_by\": {\n            \"type\": \"user\",\n            \"id\": \"<string>\",\n            \"name\": \"<string>\",\n            \"login\": \"<email>\"\n          },\n          \"created_at\": \"<dateTime>\",\n          \"expired_at\": \"<dateTime>\",\n          \"is_download_prevented\": \"<boolean>\",\n          \"app_type\": \"office_wopi\"\n        },\n        \"extension\": \"<string>\",\n        \"is_package\": \"<boolean>\",\n        \"expiring_embed_link\": {\n          \"access_token\": \"<string>\",\n          \"expires_in\": \"<long>\",\n          \"token_type\": \"bearer\",\n          \"restricted_to\": [\n            {\n              \"scope\": \"item_download\",\n              \"object\": {\n                \"id\": \"<string>\",\n                \"type\": \"folder\",\n                \"etag\": \"<string>\",\n                \"sequence_id\": \"<string>\",\n                \"name\": \"<string>\"\n              }\n            },\n            {\n              \"scope\": \"base_explorer\",\n              \"object\": {\n                \"id\": \"<string>\",\n                \"type\": \"folder\",\n                \"etag\": \"<string>\",\n                \"sequence_id\": \"<string>\",\n                \"name\": \"<string>\"\n              }\n            }\n          ],\n          \"url\": \"<string>\"\n        },\n        \"watermark_info\": {\n          \"is_watermarked\": \"<boolean>\"\n        },\n        \"is_accessible_via_shared_link\": true,\n        \"allowed_invitee_roles\": [\n          \"previewer uploader\",\n          \"viewer\"\n        ],\n        \"is_externally_owned\": \"<boolean>\",\n        \"has_collaborations\": \"<boolean>\",\n        \"metadata\": {\n          \"ullamcoa8\": {\n            \"tempor6\": {\n              \"$parent\": \"<string>\",\n              \"$template\": \"<string>\",\n              \"$scope\": \"<string>\",\n              \"$version\": \"<integer>\"\n            }\n          },\n          \"cupidatat_79\": {\n            \"ullamco_f\": {\n              \"$parent\": \"<string>\",\n              \"$template\": \"<string>\",\n              \"$scope\": \"<string>\",\n              \"$version\": \"<integer>\"\n            },\n            \"ide\": {\n              \"$parent\": \"<string>\",\n              \"$template\": \"<string>\",\n              \"$scope\": \"<string>\",\n              \"$version\": \"<integer>\"\n            }\n          }\n        },\n        \"expires_at\": \"<dateTime>\",\n        \"representations\": {\n          \"entries\": [\n            {\n              \"content\": {\n                \"url_template\": \"<string>\"\n              },\n              \"info\": {\n                \"url\": \"<string>\"\n              },\n              \"properties\": {\n                \"dimensions\": \"<string>\",\n                \"paged\": \"<boolean>\",\n                \"thumb\": \"<boolean>\"\n              },\n              \"representation\": \"<string>\",\n              \"status\": {\n                \"state\": \"none\"\n              }\n            },\n            {\n              \"content\": {\n                \"url_template\": \"<string>\"\n              },\n              \"info\": {\n                \"url\": \"<string>\"\n              },\n              \"properties\": {\n                \"dimensions\": \"<string>\",\n                \"paged\": \"<boolean>\",\n                \"thumb\": \"<boolean>\"\n              },\n              \"representation\": \"<string>\",\n              \"status\": {\n                \"state\": \"success\"\n              }\n            }\n          ]\n        },\n        \"classification\": {\n          \"name\": \"<string>\",\n          \"definition\": \"<string>\",\n          \"color\": \"<string>\"\n        },\n        \"uploader_display_name\": \"<string>\",\n        \"disposition_at\": \"<dateTime>\",\n        \"shared_link_permission_options\": [\n          \"can_edit\",\n          \"can_edit\"\n        ]\n      },\n      \"interaction_type\": \"item_upload\",\n      \"interacted_at\": \"<dateTime>\",\n      \"interaction_shared_link\": \"<string>\"\n    },\n    {\n      \"type\": \"<string>\",\n      \"item\": {\n        \"id\": \"<string>\",\n        \"type\": \"file\",\n        \"etag\": \"<string>\",\n        \"sequence_id\": \"<string>\",\n        \"name\": \"<string>\",\n        \"sha1\": \"<string>\",\n        \"file_version\": {\n          \"id\": \"<string>\",\n          \"type\": \"file_version\",\n          \"sha1\": \"<string>\"\n        },\n        \"description\": \"<string>\",\n        \"size\": \"<integer>\",\n        \"path_collection\": {\n          \"total_count\": \"<long>\",\n          \"entries\": [\n            {\n              \"id\": \"<string>\",\n              \"type\": \"folder\",\n              \"etag\": \"<string>\",\n              \"sequence_id\": \"<string>\",\n              \"name\": \"<string>\"\n            },\n            {\n              \"id\": \"<string>\",\n              \"type\": \"folder\",\n              \"etag\": \"<string>\",\n              \"sequence_id\": \"<string>\",\n              \"name\": \"<string>\"\n            }\n          ]\n        },\n        \"created_at\": \"<dateTime>\",\n        \"modified_at\": \"<dateTime>\",\n        \"trashed_at\": \"<dateTime>\",\n        \"purged_at\": \"<dateTime>\",\n        \"content_created_at\": \"<dateTime>\",\n        \"content_modified_at\": \"<dateTime>\",\n        \"created_by\": {\n          \"type\": \"user\",\n          \"id\": \"<string>\",\n          \"name\": \"<string>\",\n          \"login\": \"<email>\"\n        },\n        \"modified_by\": {\n          \"type\": \"user\",\n          \"id\": \"<string>\",\n          \"name\": \"<string>\",\n          \"login\": \"<email>\"\n        },\n        \"owned_by\": {\n          \"type\": \"user\",\n          \"id\": \"<string>\",\n          \"name\": \"<string>\",\n          \"login\": \"<email>\"\n        },\n        \"shared_link\": {\n          \"url\": \"<string>\",\n          \"effective_access\": \"collaborators\",\n          \"effective_permission\": \"no_access\",\n          \"is_password_enabled\": \"<boolean>\",\n          \"download_count\": \"<integer>\",\n          \"preview_count\": \"<integer>\",\n          \"download_url\": \"<string>\",\n          \"vanity_url\": \"<string>\",\n          \"vanity_name\": \"<string>\",\n          \"access\": \"company\",\n          \"unshared_at\": \"<dateTime>\",\n          \"permissions\": {\n            \"can_download\": \"<boolean>\",\n            \"can_preview\": \"<boolean>\",\n            \"can_edit\": \"<boolean>\"\n          }\n        },\n        \"parent\": {\n          \"id\": \"<string>\",\n          \"type\": \"folder\",\n          \"etag\": \"<string>\",\n          \"sequence_id\": \"<string>\",\n          \"name\": \"<string>\"\n        },\n        \"item_status\": \"deleted\",\n        \"version_number\": \"<string>\",\n        \"comment_count\": \"<integer>\",\n        \"permissions\": {\n          \"can_annotate\": \"<boolean>\",\n          \"can_comment\": \"<boolean>\",\n          \"can_delete\": \"<boolean>\",\n          \"can_download\": \"<boolean>\",\n          \"can_invite_collaborator\": \"<boolean>\",\n          \"can_preview\": \"<boolean>\",\n          \"can_rename\": \"<boolean>\",\n          \"can_set_share_access\": \"<boolean>\",\n          \"can_share\": \"<boolean>\",\n          \"can_upload\": \"<boolean>\",\n          \"can_view_annotations_all\": \"<boolean>\",\n          \"can_view_annotations_self\": \"<boolean>\"\n        },\n        \"tags\": [\n          \"<string>\"\n        ],\n        \"lock\": {\n          \"id\": \"<string>\",\n          \"type\": \"lock\",\n          \"created_by\": {\n            \"type\": \"user\",\n            \"id\": \"<string>\",\n            \"name\": \"<string>\",\n            \"login\": \"<email>\"\n          },\n          \"created_at\": \"<dateTime>\",\n          \"expired_at\": \"<dateTime>\",\n          \"is_download_prevented\": \"<boolean>\",\n          \"app_type\": \"gsuite\"\n        },\n        \"extension\": \"<string>\",\n        \"is_package\": \"<boolean>\",\n        \"expiring_embed_link\": {\n          \"access_token\": \"<string>\",\n          \"expires_in\": \"<long>\",\n          \"token_type\": \"bearer\",\n          \"restricted_to\": [\n            {\n              \"scope\": \"annotation_edit\",\n              \"object\": {\n                \"id\": \"<string>\",\n                \"type\": \"folder\",\n                \"etag\": \"<string>\",\n                \"sequence_id\": \"<string>\",\n                \"name\": \"<string>\"\n              }\n            },\n            {\n              \"scope\": \"item_download\",\n              \"object\": {\n                \"id\": \"<string>\",\n                \"type\": \"folder\",\n                \"etag\": \"<string>\",\n                \"sequence_id\": \"<string>\",\n                \"name\": \"<string>\"\n              }\n            }\n          ],\n          \"url\": \"<string>\"\n        },\n        \"watermark_info\": {\n          \"is_watermarked\": \"<boolean>\"\n        },\n        \"is_accessible_via_shared_link\": true,\n        \"allowed_invitee_roles\": [\n          \"viewer uploader\",\n          \"viewer uploader\"\n        ],\n        \"is_externally_owned\": \"<boolean>\",\n        \"has_collaborations\": \"<boolean>\",\n        \"metadata\": {\n          \"et_a08\": {\n            \"mollit_3b\": {\n              \"$parent\": \"<string>\",\n              \"$template\": \"<string>\",\n              \"$scope\": \"<string>\",\n              \"$version\": \"<integer>\"\n            },\n            \"Excepteur_7\": {\n              \"$parent\": \"<string>\",\n              \"$template\": \"<string>\",\n              \"$scope\": \"<string>\",\n              \"$version\": \"<integer>\"\n            }\n          },\n          \"minim_1\": {\n            \"Duis49\": {\n              \"$parent\": \"<string>\",\n              \"$template\": \"<string>\",\n              \"$scope\": \"<string>\",\n              \"$version\": \"<integer>\"\n            },\n            \"qui_cb\": {\n              \"$parent\": \"<string>\",\n              \"$template\": \"<string>\",\n              \"$scope\": \"<string>\",\n              \"$version\": \"<integer>\"\n            },\n            \"ullamco73b\": {\n              \"$parent\": \"<string>\",\n              \"$template\": \"<string>\",\n              \"$scope\": \"<string>\",\n              \"$version\": \"<integer>\"\n            }\n          }\n        },\n        \"expires_at\": \"<dateTime>\",\n        \"representations\": {\n          \"entries\": [\n            {\n              \"content\": {\n                \"url_template\": \"<string>\"\n              },\n              \"info\": {\n                \"url\": \"<string>\"\n              },\n              \"properties\": {\n                \"dimensions\": \"<string>\",\n                \"paged\": \"<boolean>\",\n                \"thumb\": \"<boolean>\"\n              },\n              \"representation\": \"<string>\",\n              \"status\": {\n                \"state\": \"none\"\n              }\n            },\n            {\n              \"content\": {\n                \"url_template\": \"<string>\"\n              },\n              \"info\": {\n                \"url\": \"<string>\"\n              },\n              \"properties\": {\n                \"dimensions\": \"<string>\",\n                \"paged\": \"<boolean>\",\n                \"thumb\": \"<boolean>\"\n              },\n              \"representation\": \"<string>\",\n              \"status\": {\n                \"state\": \"viewable\"\n              }\n            }\n          ]\n        },\n        \"classification\": {\n          \"name\": \"<string>\",\n          \"definition\": \"<string>\",\n          \"color\": \"<string>\"\n        },\n        \"uploader_display_name\": \"<string>\",\n        \"disposition_at\": \"<dateTime>\",\n        \"shared_link_permission_options\": [\n          \"can_download\",\n          \"can_download\"\n        ]\n      },\n      \"interaction_type\": \"item_modify\",\n      \"interacted_at\": \"<dateTime>\",\n      \"interaction_shared_link\": \"<string>\"\n    }\n  ]\n}",
+              "createdAt": "2026-07-28T01:16:51.000Z",
+              "updatedAt": "2026-07-28T01:16:51.000Z",
+              "uid": "35240-e4f8eef1-de82-4f0e-bce1-13a61a5ac2b1"
+            },
+            {
+              "id": "8b48ca71-2634-4034-9e3a-cd50a299f5d2",
+              "name": "An unexpected client error.",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/recent_items?fields=<string>,<string>&limit=<long>&marker=<string>",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "recent_items"
+                  ],
+                  "query": [
+                    {
+                      "description": "A comma-separated list of attributes to include in the\nresponse. This can be used to request fields that are\nnot normally returned in a standard response.\n\nBe aware that specifying this parameter will have the\neffect that none of the standard fields are returned in\nthe response unless explicitly specified, instead only\nfields for the mini representation are returned, additional\nto the fields requested.",
+                      "key": "fields",
+                      "value": "<string>,<string>"
+                    },
+                    {
+                      "description": "The maximum number of items to return per page.",
+                      "key": "limit",
+                      "value": "<long>"
+                    },
+                    {
+                      "description": "Defines the position marker at which to begin returning results. This is\nused when paginating using marker-based pagination.\n\nThis requires `usemarker` to be set to `true`.",
+                      "key": "marker",
+                      "value": "<string>"
+                    }
+                  ]
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "responseTime": null,
+              "body": "{\n  \"type\": \"error\",\n  \"status\": \"<integer>\",\n  \"code\": \"not_modified\",\n  \"message\": \"<string>\",\n  \"context_info\": {\n    \"message\": \"<string>\"\n  },\n  \"help_url\": \"<string>\",\n  \"request_id\": \"<string>\"\n}",
+              "createdAt": "2026-07-28T01:16:51.000Z",
+              "updatedAt": "2026-07-28T01:16:51.000Z",
+              "uid": "35240-8b48ca71-2634-4034-9e3a-cd50a299f5d2"
+            }
+          ],
+          "createdAt": "2026-07-28T01:16:51.000Z",
+          "updatedAt": "2026-07-28T01:16:51.000Z",
+          "uid": "35240-8b3edb83-3c98-4cf3-838b-70e0bea6f948"
+        }
+      ],
+      "id": "bdb444be-97a4-41fc-addf-c9786cf1690a",
+      "createdAt": "2026-07-28T01:16:51.000Z",
+      "updatedAt": "2026-07-28T01:16:51.000Z",
+      "uid": "35240-bdb444be-97a4-41fc-addf-c9786cf1690a"
+    }
+  ],
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "/"
+    }
+  ]
+}

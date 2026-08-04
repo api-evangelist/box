@@ -1,0 +1,787 @@
+{
+  "info": {
+    "_postman_id": "1e4599f8-e950-4794-9d39-db6b0d61381e",
+    "name": "Box Authorize Authorization User Avatars API",
+    "description": "Needs a description.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "createdAt": "2026-07-28T01:18:18.000Z",
+    "updatedAt": "2026-07-28T01:18:18.000Z",
+    "lastUpdatedBy": "35240",
+    "uid": "35240-1e4599f8-e950-4794-9d39-db6b0d61381e"
+  },
+  "item": [
+    {
+      "name": "users",
+      "item": [
+        {
+          "name": "{user_id}",
+          "item": [
+            {
+              "name": "avatar",
+              "item": [
+                {
+                  "name": "Box Get user avatar",
+                  "id": "ee502920-9f8b-48ee-8dac-693fc801a462",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "image/jpg"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/users/:user_id/avatar",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "users",
+                        ":user_id",
+                        "avatar"
+                      ],
+                      "variable": [
+                        {
+                          "id": "e3959676-5b7a-41b6-ab98-7dd50e5508d2",
+                          "key": "user_id",
+                          "value": "<string>",
+                          "description": "(Required) The ID of the user."
+                        }
+                      ]
+                    },
+                    "description": "Retrieves an image of a the user's avatar."
+                  },
+                  "response": [
+                    {
+                      "id": "dfe2d939-443e-4dd2-b54d-a9f30f1227f1",
+                      "name": "When an avatar can be found for the user the\nimage data will be returned in the body of the\nresponse.",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "image/jpg"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/users/:user_id/avatar",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "users",
+                            ":user_id",
+                            "avatar"
+                          ],
+                          "variable": [
+                            {
+                              "key": "user_id"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "OK",
+                      "code": 200,
+                      "_postman_previewlanguage": "text",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "image/jpg"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "<binary>",
+                      "createdAt": "2026-07-28T01:18:18.000Z",
+                      "updatedAt": "2026-07-28T01:18:18.000Z",
+                      "uid": "35240-dfe2d939-443e-4dd2-b54d-a9f30f1227f1"
+                    },
+                    {
+                      "id": "aef3a151-c79b-4d38-be97-6da63d2d04d9",
+                      "name": "An unexpected client error.",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/users/:user_id/avatar",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "users",
+                            ":user_id",
+                            "avatar"
+                          ],
+                          "variable": [
+                            {
+                              "key": "user_id"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Internal Server Error",
+                      "code": 500,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"type\": \"error\",\n  \"status\": \"<integer>\",\n  \"code\": \"item_name_invalid\",\n  \"message\": \"<string>\",\n  \"context_info\": {\n    \"message\": \"<string>\"\n  },\n  \"help_url\": \"<string>\",\n  \"request_id\": \"<string>\"\n}",
+                      "createdAt": "2026-07-28T01:18:18.000Z",
+                      "updatedAt": "2026-07-28T01:18:18.000Z",
+                      "uid": "35240-aef3a151-c79b-4d38-be97-6da63d2d04d9"
+                    }
+                  ],
+                  "createdAt": "2026-07-28T01:18:18.000Z",
+                  "updatedAt": "2026-07-28T01:18:18.000Z",
+                  "uid": "35240-ee502920-9f8b-48ee-8dac-693fc801a462"
+                },
+                {
+                  "name": "Box Add or update user avatar",
+                  "id": "6f3feb3f-434c-4f2b-86fd-75456cf6abee",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "method": "POST",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "multipart/form-data"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "body": {
+                      "mode": "formdata",
+                      "formdata": [
+                        {
+                          "description": "(Required) The image file to be uploaded to Box.\nAccepted file extensions are `.jpg` or `.png`.\nThe maximum file size is 1MB.",
+                          "key": "pic",
+                          "type": "file",
+                          "value": null
+                        }
+                      ]
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/users/:user_id/avatar",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "users",
+                        ":user_id",
+                        "avatar"
+                      ],
+                      "variable": [
+                        {
+                          "id": "ecb1e14b-cff3-4f42-ae04-840f922d8548",
+                          "key": "user_id",
+                          "value": "<string>",
+                          "description": "(Required) The ID of the user."
+                        }
+                      ]
+                    },
+                    "description": "Adds or updates a user avatar."
+                  },
+                  "response": [
+                    {
+                      "id": "5a54cc47-b035-4303-8747-68d0e44eb30c",
+                      "name": "* `ok`: Returns the `pic_urls` object with URLs to existing\nuser avatars that were updated.",
+                      "originalRequest": {
+                        "method": "POST",
+                        "header": [
+                          {
+                            "key": "Content-Type",
+                            "value": "multipart/form-data"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          }
+                        ],
+                        "body": {
+                          "mode": "formdata",
+                          "formdata": [
+                            {
+                              "description": "(Required) The image file to be uploaded to Box.\nAccepted file extensions are `.jpg` or `.png`.\nThe maximum file size is 1MB.",
+                              "key": "pic",
+                              "type": "file"
+                            }
+                          ]
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/users/:user_id/avatar",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "users",
+                            ":user_id",
+                            "avatar"
+                          ],
+                          "variable": [
+                            {
+                              "key": "user_id"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "OK",
+                      "code": 200,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"pic_urls\": {\n    \"small\": \"<string>\",\n    \"large\": \"<string>\",\n    \"preview\": \"<string>\"\n  }\n}",
+                      "createdAt": "2026-07-28T01:18:18.000Z",
+                      "updatedAt": "2026-07-28T01:18:18.000Z",
+                      "uid": "35240-5a54cc47-b035-4303-8747-68d0e44eb30c"
+                    },
+                    {
+                      "id": "ab3e50f2-8239-49c3-b81b-7914eb13757e",
+                      "name": "* `created`: Returns the `pic_urls` object with URLS to user avatars\nuploaded to Box with the request.",
+                      "originalRequest": {
+                        "method": "POST",
+                        "header": [
+                          {
+                            "key": "Content-Type",
+                            "value": "multipart/form-data"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          }
+                        ],
+                        "body": {
+                          "mode": "formdata",
+                          "formdata": [
+                            {
+                              "description": "(Required) The image file to be uploaded to Box.\nAccepted file extensions are `.jpg` or `.png`.\nThe maximum file size is 1MB.",
+                              "key": "pic",
+                              "type": "file"
+                            }
+                          ]
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/users/:user_id/avatar",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "users",
+                            ":user_id",
+                            "avatar"
+                          ],
+                          "variable": [
+                            {
+                              "key": "user_id"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Created",
+                      "code": 201,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"pic_urls\": {\n    \"small\": \"<string>\",\n    \"large\": \"<string>\",\n    \"preview\": \"<string>\"\n  }\n}",
+                      "createdAt": "2026-07-28T01:18:18.000Z",
+                      "updatedAt": "2026-07-28T01:18:18.000Z",
+                      "uid": "35240-ab3e50f2-8239-49c3-b81b-7914eb13757e"
+                    },
+                    {
+                      "id": "98c5970b-39a9-4097-94fb-68c9da1f28ce",
+                      "name": "* `bad_request`: Returns an error when:\n    * An image is not included in the request\n    * The uploaded file is empty\n    * The image size exceeds 1024 * 1024 pixels\n    or 1MB\n    * The file extension is other than `.jpg` or `.png`.",
+                      "originalRequest": {
+                        "method": "POST",
+                        "header": [
+                          {
+                            "key": "Content-Type",
+                            "value": "multipart/form-data"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          }
+                        ],
+                        "body": {
+                          "mode": "formdata",
+                          "formdata": [
+                            {
+                              "description": "(Required) The image file to be uploaded to Box.\nAccepted file extensions are `.jpg` or `.png`.\nThe maximum file size is 1MB.",
+                              "key": "pic",
+                              "type": "file"
+                            }
+                          ]
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/users/:user_id/avatar",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "users",
+                            ":user_id",
+                            "avatar"
+                          ],
+                          "variable": [
+                            {
+                              "key": "user_id"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Bad Request",
+                      "code": 400,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"type\": \"error\",\n  \"status\": \"<integer>\",\n  \"code\": \"item_name_invalid\",\n  \"message\": \"<string>\",\n  \"context_info\": {\n    \"message\": \"<string>\"\n  },\n  \"help_url\": \"<string>\",\n  \"request_id\": \"<string>\"\n}",
+                      "createdAt": "2026-07-28T01:18:18.000Z",
+                      "updatedAt": "2026-07-28T01:18:18.000Z",
+                      "uid": "35240-98c5970b-39a9-4097-94fb-68c9da1f28ce"
+                    },
+                    {
+                      "id": "84b055b2-36fe-4c6b-ad2d-8e1df2c75d3f",
+                      "name": "* `forbidden`: Returns an error if the user does not have permissions\nnecessary to upload an avatar or is not activated.",
+                      "originalRequest": {
+                        "method": "POST",
+                        "header": [
+                          {
+                            "key": "Content-Type",
+                            "value": "multipart/form-data"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          }
+                        ],
+                        "body": {
+                          "mode": "formdata",
+                          "formdata": [
+                            {
+                              "description": "(Required) The image file to be uploaded to Box.\nAccepted file extensions are `.jpg` or `.png`.\nThe maximum file size is 1MB.",
+                              "key": "pic",
+                              "type": "file"
+                            }
+                          ]
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/users/:user_id/avatar",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "users",
+                            ":user_id",
+                            "avatar"
+                          ],
+                          "variable": [
+                            {
+                              "key": "user_id"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Forbidden",
+                      "code": 403,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"type\": \"error\",\n  \"status\": \"<integer>\",\n  \"code\": \"item_name_invalid\",\n  \"message\": \"<string>\",\n  \"context_info\": {\n    \"message\": \"<string>\"\n  },\n  \"help_url\": \"<string>\",\n  \"request_id\": \"<string>\"\n}",
+                      "createdAt": "2026-07-28T01:18:18.000Z",
+                      "updatedAt": "2026-07-28T01:18:18.000Z",
+                      "uid": "35240-84b055b2-36fe-4c6b-ad2d-8e1df2c75d3f"
+                    },
+                    {
+                      "id": "fe4eaeff-bc49-4eb5-8ddc-2d6b4cef63cc",
+                      "name": "* `not_found`: Returns an error if the user\ndoes not exist or cannot be found.",
+                      "originalRequest": {
+                        "method": "POST",
+                        "header": [
+                          {
+                            "key": "Content-Type",
+                            "value": "multipart/form-data"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          }
+                        ],
+                        "body": {
+                          "mode": "formdata",
+                          "formdata": [
+                            {
+                              "description": "(Required) The image file to be uploaded to Box.\nAccepted file extensions are `.jpg` or `.png`.\nThe maximum file size is 1MB.",
+                              "key": "pic",
+                              "type": "file"
+                            }
+                          ]
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/users/:user_id/avatar",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "users",
+                            ":user_id",
+                            "avatar"
+                          ],
+                          "variable": [
+                            {
+                              "key": "user_id"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Not Found",
+                      "code": 404,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"type\": \"error\",\n  \"status\": \"<integer>\",\n  \"code\": \"item_name_invalid\",\n  \"message\": \"<string>\",\n  \"context_info\": {\n    \"message\": \"<string>\"\n  },\n  \"help_url\": \"<string>\",\n  \"request_id\": \"<string>\"\n}",
+                      "createdAt": "2026-07-28T01:18:18.000Z",
+                      "updatedAt": "2026-07-28T01:18:18.000Z",
+                      "uid": "35240-fe4eaeff-bc49-4eb5-8ddc-2d6b4cef63cc"
+                    },
+                    {
+                      "id": "6e5689ba-02fc-411c-8518-2efaacef4dcb",
+                      "name": "An unexpected client error.",
+                      "originalRequest": {
+                        "method": "POST",
+                        "header": [
+                          {
+                            "key": "Content-Type",
+                            "value": "multipart/form-data"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          }
+                        ],
+                        "body": {
+                          "mode": "formdata",
+                          "formdata": [
+                            {
+                              "description": "(Required) The image file to be uploaded to Box.\nAccepted file extensions are `.jpg` or `.png`.\nThe maximum file size is 1MB.",
+                              "key": "pic",
+                              "type": "file"
+                            }
+                          ]
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/users/:user_id/avatar",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "users",
+                            ":user_id",
+                            "avatar"
+                          ],
+                          "variable": [
+                            {
+                              "key": "user_id"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Internal Server Error",
+                      "code": 500,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"type\": \"error\",\n  \"status\": \"<integer>\",\n  \"code\": \"item_name_invalid\",\n  \"message\": \"<string>\",\n  \"context_info\": {\n    \"message\": \"<string>\"\n  },\n  \"help_url\": \"<string>\",\n  \"request_id\": \"<string>\"\n}",
+                      "createdAt": "2026-07-28T01:18:18.000Z",
+                      "updatedAt": "2026-07-28T01:18:18.000Z",
+                      "uid": "35240-6e5689ba-02fc-411c-8518-2efaacef4dcb"
+                    }
+                  ],
+                  "createdAt": "2026-07-28T01:18:18.000Z",
+                  "updatedAt": "2026-07-28T01:18:18.000Z",
+                  "uid": "35240-6f3feb3f-434c-4f2b-86fd-75456cf6abee"
+                },
+                {
+                  "name": "Box Delete user avatar",
+                  "id": "60af6842-da0a-4e13-ba67-282b887e9293",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "method": "DELETE",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/users/:user_id/avatar",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "users",
+                        ":user_id",
+                        "avatar"
+                      ],
+                      "variable": [
+                        {
+                          "id": "4181fadf-304e-480f-a663-0cf718392916",
+                          "key": "user_id",
+                          "value": "<string>",
+                          "description": "(Required) The ID of the user."
+                        }
+                      ]
+                    },
+                    "description": "Removes an existing user avatar.\nYou cannot reverse this operation."
+                  },
+                  "response": [
+                    {
+                      "id": "f7e799fd-4339-4af8-b975-cbad3411d79f",
+                      "name": "* `no_content`: Removes the avatar and returns an empty response.",
+                      "originalRequest": {
+                        "method": "DELETE",
+                        "header": [],
+                        "url": {
+                          "raw": "{{baseUrl}}/users/:user_id/avatar",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "users",
+                            ":user_id",
+                            "avatar"
+                          ],
+                          "variable": [
+                            {
+                              "key": "user_id"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "No Content",
+                      "code": 204,
+                      "_postman_previewlanguage": "text",
+                      "header": [],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": null,
+                      "createdAt": "2026-07-28T01:18:18.000Z",
+                      "updatedAt": "2026-07-28T01:18:18.000Z",
+                      "uid": "35240-f7e799fd-4339-4af8-b975-cbad3411d79f"
+                    },
+                    {
+                      "id": "fe9aa1d2-891a-4433-acde-e32e057b288e",
+                      "name": "* `forbidden`: Returned if the user does not have necessary permissions\n or is not activated.",
+                      "originalRequest": {
+                        "method": "DELETE",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/users/:user_id/avatar",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "users",
+                            ":user_id",
+                            "avatar"
+                          ],
+                          "variable": [
+                            {
+                              "key": "user_id"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Forbidden",
+                      "code": 403,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"type\": \"error\",\n  \"status\": \"<integer>\",\n  \"code\": \"item_name_invalid\",\n  \"message\": \"<string>\",\n  \"context_info\": {\n    \"message\": \"<string>\"\n  },\n  \"help_url\": \"<string>\",\n  \"request_id\": \"<string>\"\n}",
+                      "createdAt": "2026-07-28T01:18:18.000Z",
+                      "updatedAt": "2026-07-28T01:18:18.000Z",
+                      "uid": "35240-fe9aa1d2-891a-4433-acde-e32e057b288e"
+                    },
+                    {
+                      "id": "103930bb-df02-438d-a9cd-f2388f34c547",
+                      "name": "* `not_found`: Returned if the user or user avatar does not exist\n or cannot be found.",
+                      "originalRequest": {
+                        "method": "DELETE",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/users/:user_id/avatar",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "users",
+                            ":user_id",
+                            "avatar"
+                          ],
+                          "variable": [
+                            {
+                              "key": "user_id"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Not Found",
+                      "code": 404,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"type\": \"error\",\n  \"status\": \"<integer>\",\n  \"code\": \"item_name_invalid\",\n  \"message\": \"<string>\",\n  \"context_info\": {\n    \"message\": \"<string>\"\n  },\n  \"help_url\": \"<string>\",\n  \"request_id\": \"<string>\"\n}",
+                      "createdAt": "2026-07-28T01:18:18.000Z",
+                      "updatedAt": "2026-07-28T01:18:18.000Z",
+                      "uid": "35240-103930bb-df02-438d-a9cd-f2388f34c547"
+                    },
+                    {
+                      "id": "43f5a858-1012-4f00-a2ca-9c8da63e2084",
+                      "name": "An unexpected client error.",
+                      "originalRequest": {
+                        "method": "DELETE",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/users/:user_id/avatar",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "users",
+                            ":user_id",
+                            "avatar"
+                          ],
+                          "variable": [
+                            {
+                              "key": "user_id"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Internal Server Error",
+                      "code": 500,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"type\": \"error\",\n  \"status\": \"<integer>\",\n  \"code\": \"item_name_invalid\",\n  \"message\": \"<string>\",\n  \"context_info\": {\n    \"message\": \"<string>\"\n  },\n  \"help_url\": \"<string>\",\n  \"request_id\": \"<string>\"\n}",
+                      "createdAt": "2026-07-28T01:18:18.000Z",
+                      "updatedAt": "2026-07-28T01:18:18.000Z",
+                      "uid": "35240-43f5a858-1012-4f00-a2ca-9c8da63e2084"
+                    }
+                  ],
+                  "createdAt": "2026-07-28T01:18:18.000Z",
+                  "updatedAt": "2026-07-28T01:18:18.000Z",
+                  "uid": "35240-60af6842-da0a-4e13-ba67-282b887e9293"
+                }
+              ],
+              "id": "3e4f1b19-6ec9-4930-8272-10651c1f6ada",
+              "createdAt": "2026-07-28T01:18:18.000Z",
+              "updatedAt": "2026-07-28T01:18:18.000Z",
+              "uid": "35240-3e4f1b19-6ec9-4930-8272-10651c1f6ada"
+            }
+          ],
+          "id": "14ff2f77-4b04-4c88-86fb-b1a1e581c164",
+          "createdAt": "2026-07-28T01:18:18.000Z",
+          "updatedAt": "2026-07-28T01:18:18.000Z",
+          "uid": "35240-14ff2f77-4b04-4c88-86fb-b1a1e581c164"
+        }
+      ],
+      "id": "4c998456-2c7d-43dd-b5a3-319100dd9ec4",
+      "createdAt": "2026-07-28T01:18:18.000Z",
+      "updatedAt": "2026-07-28T01:18:18.000Z",
+      "uid": "35240-4c998456-2c7d-43dd-b5a3-319100dd9ec4"
+    }
+  ],
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "/"
+    }
+  ]
+}

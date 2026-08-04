@@ -1,0 +1,2095 @@
+{
+  "info": {
+    "_postman_id": "a2f72c00-0246-4c9d-9d24-f5eec6c4e12a",
+    "name": "Box Authorize Authorization Shared Links (Folders) API",
+    "description": "Needs a description.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "createdAt": "2026-07-28T01:17:05.000Z",
+    "updatedAt": "2026-07-28T01:17:05.000Z",
+    "lastUpdatedBy": "35240",
+    "uid": "35240-a2f72c00-0246-4c9d-9d24-f5eec6c4e12a"
+  },
+  "item": [
+    {
+      "name": "shared_items#folders",
+      "item": [
+        {
+          "name": "Box Find folder for shared link",
+          "id": "b9ea9b13-163b-4f65-9982-7cca963903ca",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "description": "Ensures an item is only returned if it has changed.\n\nPass in the item's last observed `etag` value\ninto this header and the endpoint will fail\nwith a `304 Not Modified` if the item has not\nchanged since.",
+                "key": "if-none-match",
+                "value": "<string>"
+              },
+              {
+                "description": "(Required) A header containing the shared link and optional password for the\nshared link.\n\nThe format for this header is as follows.\n\n`shared_link=[link]&shared_link_password=[password]`",
+                "key": "boxapi",
+                "value": "<string>"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/shared_items?fields=<string>,<string>#folders",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "shared_items"
+              ],
+              "query": [
+                {
+                  "description": "A comma-separated list of attributes to include in the\nresponse. This can be used to request fields that are\nnot normally returned in a standard response.\n\nBe aware that specifying this parameter will have the\neffect that none of the standard fields are returned in\nthe response unless explicitly specified, instead only\nfields for the mini representation are returned, additional\nto the fields requested.",
+                  "key": "fields",
+                  "value": "<string>,<string>"
+                }
+              ],
+              "hash": "folders"
+            },
+            "description": "Return the folder represented by a shared link.\n\nA shared folder can be represented by a shared link,\nwhich can originate within the current enterprise or within another.\n\nThis endpoint allows an application to retrieve information about a\nshared folder when only given a shared link."
+          },
+          "response": [
+            {
+              "id": "45c851d3-5046-437b-a88b-2675cd02616f",
+              "name": "Returns a full folder resource if the shared link is valid and\nthe user has access to it.",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "description": "Ensures an item is only returned if it has changed.\n\nPass in the item's last observed `etag` value\ninto this header and the endpoint will fail\nwith a `304 Not Modified` if the item has not\nchanged since.",
+                    "key": "if-none-match",
+                    "value": "<string>"
+                  },
+                  {
+                    "description": "(Required) A header containing the shared link and optional password for the\nshared link.\n\nThe format for this header is as follows.\n\n`shared_link=[link]&shared_link_password=[password]`",
+                    "key": "boxapi",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/shared_items?fields=<string>,<string>#folders",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "shared_items"
+                  ],
+                  "query": [
+                    {
+                      "description": "A comma-separated list of attributes to include in the\nresponse. This can be used to request fields that are\nnot normally returned in a standard response.\n\nBe aware that specifying this parameter will have the\neffect that none of the standard fields are returned in\nthe response unless explicitly specified, instead only\nfields for the mini representation are returned, additional\nto the fields requested.",
+                      "key": "fields",
+                      "value": "<string>,<string>"
+                    }
+                  ],
+                  "hash": "folders"
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "responseTime": null,
+              "body": "{\n  \"id\": \"<string>\",\n  \"type\": \"folder\",\n  \"etag\": \"<string>\",\n  \"sequence_id\": \"<string>\",\n  \"name\": \"<string>\",\n  \"created_at\": \"<dateTime>\",\n  \"modified_at\": \"<dateTime>\",\n  \"description\": \"<string>\",\n  \"size\": \"<long>\",\n  \"path_collection\": {\n    \"total_count\": \"<long>\",\n    \"entries\": [\n      {\n        \"id\": \"<string>\",\n        \"type\": \"folder\",\n        \"etag\": \"<string>\",\n        \"sequence_id\": \"<string>\",\n        \"name\": \"<string>\"\n      }\n    ]\n  },\n  \"created_by\": {\n    \"type\": \"user\",\n    \"id\": \"<string>\",\n    \"name\": \"<string>\",\n    \"login\": \"<email>\"\n  },\n  \"modified_by\": {\n    \"type\": \"user\",\n    \"id\": \"<string>\",\n    \"name\": \"<string>\",\n    \"login\": \"<email>\"\n  },\n  \"trashed_at\": \"<dateTime>\",\n  \"purged_at\": \"<dateTime>\",\n  \"content_created_at\": \"<dateTime>\",\n  \"content_modified_at\": \"<dateTime>\",\n  \"owned_by\": {\n    \"type\": \"user\",\n    \"id\": \"<string>\",\n    \"name\": \"<string>\",\n    \"login\": \"<email>\"\n  },\n  \"shared_link\": {\n    \"url\": \"<string>\",\n    \"effective_access\": \"company\",\n    \"effective_permission\": \"can_download\",\n    \"is_password_enabled\": \"<boolean>\",\n    \"download_count\": \"<integer>\",\n    \"preview_count\": \"<integer>\",\n    \"download_url\": \"<string>\",\n    \"vanity_url\": \"<string>\",\n    \"vanity_name\": \"<string>\",\n    \"access\": \"collaborators\",\n    \"unshared_at\": \"<dateTime>\",\n    \"permissions\": {\n      \"can_download\": \"<boolean>\",\n      \"can_preview\": \"<boolean>\",\n      \"can_edit\": \"<boolean>\"\n    }\n  },\n  \"folder_upload_email\": {\n    \"access\": \"open\",\n    \"email\": \"<email>\"\n  },\n  \"parent\": {\n    \"id\": \"<string>\",\n    \"type\": \"folder\",\n    \"etag\": \"<string>\",\n    \"sequence_id\": \"<string>\",\n    \"name\": \"<string>\"\n  },\n  \"item_status\": \"active\",\n  \"item_collection\": {\n    \"total_count\": \"<long>\",\n    \"limit\": \"<long>\",\n    \"offset\": \"<long>\",\n    \"order\": [\n      {\n        \"by\": \"<string>\",\n        \"direction\": \"ASC\"\n      }\n    ],\n    \"entries\": [\n      {\n        \"id\": \"<string>\",\n        \"type\": \"file\",\n        \"etag\": \"<string>\",\n        \"sequence_id\": \"<string>\",\n        \"name\": \"<string>\",\n        \"sha1\": \"<string>\",\n        \"file_version\": {\n          \"id\": \"<string>\",\n          \"type\": \"file_version\",\n          \"sha1\": \"<string>\"\n        },\n        \"description\": \"<string>\",\n        \"size\": \"<integer>\",\n        \"path_collection\": {\n          \"total_count\": \"<long>\",\n          \"entries\": [\n            {\n              \"id\": \"<string>\",\n              \"type\": \"folder\",\n              \"etag\": \"<string>\",\n              \"sequence_id\": \"<string>\",\n              \"name\": \"<string>\"\n            }\n          ]\n        },\n        \"created_at\": \"<dateTime>\",\n        \"modified_at\": \"<dateTime>\",\n        \"trashed_at\": \"<dateTime>\",\n        \"purged_at\": \"<dateTime>\",\n        \"content_created_at\": \"<dateTime>\",\n        \"content_modified_at\": \"<dateTime>\",\n        \"created_by\": {\n          \"type\": \"user\",\n          \"id\": \"<string>\",\n          \"name\": \"<string>\",\n          \"login\": \"<email>\"\n        },\n        \"modified_by\": {\n          \"type\": \"user\",\n          \"id\": \"<string>\",\n          \"name\": \"<string>\",\n          \"login\": \"<email>\"\n        },\n        \"owned_by\": {\n          \"type\": \"user\",\n          \"id\": \"<string>\",\n          \"name\": \"<string>\",\n          \"login\": \"<email>\"\n        },\n        \"shared_link\": {\n          \"url\": \"<string>\",\n          \"effective_access\": \"company\",\n          \"effective_permission\": \"can_edit\",\n          \"is_password_enabled\": \"<boolean>\",\n          \"download_count\": \"<integer>\",\n          \"preview_count\": \"<integer>\",\n          \"download_url\": \"<string>\",\n          \"vanity_url\": \"<string>\",\n          \"vanity_name\": \"<string>\",\n          \"access\": \"open\",\n          \"unshared_at\": \"<dateTime>\",\n          \"permissions\": {\n            \"can_download\": \"<boolean>\",\n            \"can_preview\": \"<boolean>\",\n            \"can_edit\": \"<boolean>\"\n          }\n        },\n        \"parent\": {\n          \"id\": \"<string>\",\n          \"type\": \"folder\",\n          \"etag\": \"<string>\",\n          \"sequence_id\": \"<string>\",\n          \"name\": \"<string>\"\n        },\n        \"item_status\": \"active\",\n        \"version_number\": \"<string>\",\n        \"comment_count\": \"<integer>\",\n        \"permissions\": {\n          \"can_annotate\": \"<boolean>\",\n          \"can_comment\": \"<boolean>\",\n          \"can_delete\": \"<boolean>\",\n          \"can_download\": \"<boolean>\",\n          \"can_invite_collaborator\": \"<boolean>\",\n          \"can_preview\": \"<boolean>\",\n          \"can_rename\": \"<boolean>\",\n          \"can_set_share_access\": \"<boolean>\",\n          \"can_share\": \"<boolean>\",\n          \"can_upload\": \"<boolean>\",\n          \"can_view_annotations_all\": \"<boolean>\",\n          \"can_view_annotations_self\": \"<boolean>\"\n        },\n        \"tags\": [\n          \"<string>\"\n        ],\n        \"lock\": {\n          \"id\": \"<string>\",\n          \"type\": \"lock\",\n          \"created_by\": {\n            \"type\": \"user\",\n            \"id\": \"<string>\",\n            \"name\": \"<string>\",\n            \"login\": \"<email>\"\n          },\n          \"created_at\": \"<dateTime>\",\n          \"expired_at\": \"<dateTime>\",\n          \"is_download_prevented\": \"<boolean>\",\n          \"app_type\": \"other\"\n        },\n        \"extension\": \"<string>\",\n        \"is_package\": \"<boolean>\",\n        \"expiring_embed_link\": {\n          \"access_token\": \"<string>\",\n          \"expires_in\": \"<long>\",\n          \"token_type\": \"bearer\",\n          \"restricted_to\": [\n            {\n              \"scope\": \"base_preview\",\n              \"object\": {\n                \"id\": \"<string>\",\n                \"type\": \"folder\",\n                \"etag\": \"<string>\",\n                \"sequence_id\": \"<string>\",\n                \"name\": \"<string>\"\n              }\n            }\n          ],\n          \"url\": \"<string>\"\n        },\n        \"watermark_info\": {\n          \"is_watermarked\": \"<boolean>\"\n        },\n        \"is_accessible_via_shared_link\": true,\n        \"allowed_invitee_roles\": [\n          \"editor\"\n        ],\n        \"is_externally_owned\": \"<boolean>\",\n        \"has_collaborations\": \"<boolean>\",\n        \"metadata\": {\n          \"iruree_\": {\n            \"Excepteur_2\": {\n              \"$parent\": \"<string>\",\n              \"$template\": \"<string>\",\n              \"$scope\": \"<string>\",\n              \"$version\": \"<integer>\"\n            }\n          },\n          \"voluptate_d4c\": {\n            \"pariatur_4fa\": {\n              \"$parent\": \"<string>\",\n              \"$template\": \"<string>\",\n              \"$scope\": \"<string>\",\n              \"$version\": \"<integer>\"\n            },\n            \"irure_18c\": {\n              \"$parent\": \"<string>\",\n              \"$template\": \"<string>\",\n              \"$scope\": \"<string>\",\n              \"$version\": \"<integer>\"\n            }\n          },\n          \"veniam_1\": {\n            \"nostrud0c9\": {\n              \"$parent\": \"<string>\",\n              \"$template\": \"<string>\",\n              \"$scope\": \"<string>\",\n              \"$version\": \"<integer>\"\n            },\n            \"aliquaf9\": {\n              \"$parent\": \"<string>\",\n              \"$template\": \"<string>\",\n              \"$scope\": \"<string>\",\n              \"$version\": \"<integer>\"\n            }\n          }\n        },\n        \"expires_at\": \"<dateTime>\",\n        \"representations\": {\n          \"entries\": [\n            {\n              \"content\": {\n                \"url_template\": \"<string>\"\n              },\n              \"info\": {\n                \"url\": \"<string>\"\n              },\n              \"properties\": {\n                \"dimensions\": \"<string>\",\n                \"paged\": \"<boolean>\",\n                \"thumb\": \"<boolean>\"\n              },\n              \"representation\": \"<string>\",\n              \"status\": {\n                \"state\": \"viewable\"\n              }\n            }\n          ]\n        },\n        \"classification\": {\n          \"name\": \"<string>\",\n          \"definition\": \"<string>\",\n          \"color\": \"<string>\"\n        },\n        \"uploader_display_name\": \"<string>\",\n        \"disposition_at\": \"<dateTime>\",\n        \"shared_link_permission_options\": [\n          \"can_edit\"\n        ]\n      }\n    ]\n  },\n  \"sync_state\": \"synced\",\n  \"has_collaborations\": \"<boolean>\",\n  \"permissions\": {\n    \"can_delete\": \"<boolean>\",\n    \"can_download\": \"<boolean>\",\n    \"can_invite_collaborator\": \"<boolean>\",\n    \"can_rename\": \"<boolean>\",\n    \"can_set_share_access\": \"<boolean>\",\n    \"can_share\": \"<boolean>\",\n    \"can_upload\": \"<boolean>\"\n  },\n  \"tags\": [\n    \"<string>\"\n  ],\n  \"can_non_owners_invite\": \"<boolean>\",\n  \"is_externally_owned\": \"<boolean>\",\n  \"metadata\": {\n    \"Excepteur_5\": {\n      \"do5\": {\n        \"$parent\": \"<string>\",\n        \"$template\": \"<string>\",\n        \"$scope\": \"<string>\",\n        \"$version\": \"<integer>\"\n      },\n      \"mollit_17\": {\n        \"$parent\": \"<string>\",\n        \"$template\": \"<string>\",\n        \"$scope\": \"<string>\",\n        \"$version\": \"<integer>\"\n      },\n      \"voluptate_a\": {\n        \"$parent\": \"<string>\",\n        \"$template\": \"<string>\",\n        \"$scope\": \"<string>\",\n        \"$version\": \"<integer>\"\n      }\n    }\n  },\n  \"is_collaboration_restricted_to_enterprise\": \"<boolean>\",\n  \"allowed_shared_link_access_levels\": [\n    \"collaborators\"\n  ],\n  \"allowed_invitee_roles\": [\n    \"uploader\"\n  ],\n  \"watermark_info\": {\n    \"is_watermarked\": \"<boolean>\"\n  },\n  \"is_accessible_via_shared_link\": false,\n  \"can_non_owners_view_collaborators\": \"<boolean>\",\n  \"classification\": {\n    \"name\": \"<string>\",\n    \"definition\": \"<string>\",\n    \"color\": \"<string>\"\n  }\n}",
+              "createdAt": "2026-07-28T01:17:05.000Z",
+              "updatedAt": "2026-07-28T01:17:05.000Z",
+              "uid": "35240-45c851d3-5046-437b-a88b-2675cd02616f"
+            },
+            {
+              "id": "c4437b35-942f-4120-a2a1-36e6583833f7",
+              "name": "Returns an empty response when the `If-None-Match` header matches\nthe current `etag` value of the folder. This indicates that the folder\nhas not changed since it was last requested.",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "description": "Ensures an item is only returned if it has changed.\n\nPass in the item's last observed `etag` value\ninto this header and the endpoint will fail\nwith a `304 Not Modified` if the item has not\nchanged since.",
+                    "key": "if-none-match",
+                    "value": "<string>"
+                  },
+                  {
+                    "description": "(Required) A header containing the shared link and optional password for the\nshared link.\n\nThe format for this header is as follows.\n\n`shared_link=[link]&shared_link_password=[password]`",
+                    "key": "boxapi",
+                    "value": "<string>"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/shared_items?fields=<string>,<string>#folders",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "shared_items"
+                  ],
+                  "query": [
+                    {
+                      "description": "A comma-separated list of attributes to include in the\nresponse. This can be used to request fields that are\nnot normally returned in a standard response.\n\nBe aware that specifying this parameter will have the\neffect that none of the standard fields are returned in\nthe response unless explicitly specified, instead only\nfields for the mini representation are returned, additional\nto the fields requested.",
+                      "key": "fields",
+                      "value": "<string>,<string>"
+                    }
+                  ],
+                  "hash": "folders"
+                }
+              },
+              "status": "Not Modified",
+              "code": 304,
+              "_postman_previewlanguage": "text",
+              "header": [],
+              "cookie": [],
+              "responseTime": null,
+              "body": null,
+              "createdAt": "2026-07-28T01:17:05.000Z",
+              "updatedAt": "2026-07-28T01:17:05.000Z",
+              "uid": "35240-c4437b35-942f-4120-a2a1-36e6583833f7"
+            },
+            {
+              "id": "85978ec2-00ea-46b9-81e3-78f9fc90075b",
+              "name": "An unexpected client error.",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "description": "Ensures an item is only returned if it has changed.\n\nPass in the item's last observed `etag` value\ninto this header and the endpoint will fail\nwith a `304 Not Modified` if the item has not\nchanged since.",
+                    "key": "if-none-match",
+                    "value": "<string>"
+                  },
+                  {
+                    "description": "(Required) A header containing the shared link and optional password for the\nshared link.\n\nThe format for this header is as follows.\n\n`shared_link=[link]&shared_link_password=[password]`",
+                    "key": "boxapi",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/shared_items?fields=<string>,<string>#folders",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "shared_items"
+                  ],
+                  "query": [
+                    {
+                      "description": "A comma-separated list of attributes to include in the\nresponse. This can be used to request fields that are\nnot normally returned in a standard response.\n\nBe aware that specifying this parameter will have the\neffect that none of the standard fields are returned in\nthe response unless explicitly specified, instead only\nfields for the mini representation are returned, additional\nto the fields requested.",
+                      "key": "fields",
+                      "value": "<string>,<string>"
+                    }
+                  ],
+                  "hash": "folders"
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "responseTime": null,
+              "body": "{\n  \"type\": \"error\",\n  \"status\": \"<integer>\",\n  \"code\": \"conflict\",\n  \"message\": \"<string>\",\n  \"context_info\": {\n    \"message\": \"<string>\"\n  },\n  \"help_url\": \"<string>\",\n  \"request_id\": \"<string>\"\n}",
+              "createdAt": "2026-07-28T01:17:05.000Z",
+              "updatedAt": "2026-07-28T01:17:05.000Z",
+              "uid": "35240-85978ec2-00ea-46b9-81e3-78f9fc90075b"
+            }
+          ],
+          "createdAt": "2026-07-28T01:17:05.000Z",
+          "updatedAt": "2026-07-28T01:17:05.000Z",
+          "uid": "35240-b9ea9b13-163b-4f65-9982-7cca963903ca"
+        }
+      ],
+      "id": "c8e050e4-44aa-4f33-8b69-d28c8f6346c3",
+      "createdAt": "2026-07-28T01:17:05.000Z",
+      "updatedAt": "2026-07-28T01:17:05.000Z",
+      "uid": "35240-c8e050e4-44aa-4f33-8b69-d28c8f6346c3"
+    },
+    {
+      "name": "folders",
+      "item": [
+        {
+          "name": "{folder_id}#get_shared_link",
+          "item": [
+            {
+              "name": "Box Get shared link for folder",
+              "id": "0afc58be-6e65-412c-bf48-16c78946edac",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/folders/{{folder_id}}?fields=<string>#get_shared_link",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "folders",
+                    "{{folder_id}}"
+                  ],
+                  "query": [
+                    {
+                      "description": "(Required) Explicitly request the `shared_link` fields\nto be returned for this item.",
+                      "key": "fields",
+                      "value": "<string>"
+                    }
+                  ],
+                  "hash": "get_shared_link"
+                },
+                "description": "Gets the information for a shared link on a folder."
+              },
+              "response": [
+                {
+                  "id": "28bf07b7-0b91-48de-aca1-9defc8c88550",
+                  "name": "Returns the base representation of a folder with the\nadditional shared link information.",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/folders/{{folder_id}}?fields=<string>#get_shared_link",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "folders",
+                        "{{folder_id}}"
+                      ],
+                      "query": [
+                        {
+                          "description": "(Required) Explicitly request the `shared_link` fields\nto be returned for this item.",
+                          "key": "fields",
+                          "value": "<string>"
+                        }
+                      ],
+                      "hash": "get_shared_link"
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"id\": \"<string>\",\n  \"type\": \"folder\",\n  \"etag\": \"<string>\",\n  \"sequence_id\": \"<string>\",\n  \"name\": \"<string>\",\n  \"created_at\": \"<dateTime>\",\n  \"modified_at\": \"<dateTime>\",\n  \"description\": \"<string>\",\n  \"size\": \"<long>\",\n  \"path_collection\": {\n    \"total_count\": \"<long>\",\n    \"entries\": [\n      {\n        \"id\": \"<string>\",\n        \"type\": \"folder\",\n        \"etag\": \"<string>\",\n        \"sequence_id\": \"<string>\",\n        \"name\": \"<string>\"\n      }\n    ]\n  },\n  \"created_by\": {\n    \"type\": \"user\",\n    \"id\": \"<string>\",\n    \"name\": \"<string>\",\n    \"login\": \"<email>\"\n  },\n  \"modified_by\": {\n    \"type\": \"user\",\n    \"id\": \"<string>\",\n    \"name\": \"<string>\",\n    \"login\": \"<email>\"\n  },\n  \"trashed_at\": \"<dateTime>\",\n  \"purged_at\": \"<dateTime>\",\n  \"content_created_at\": \"<dateTime>\",\n  \"content_modified_at\": \"<dateTime>\",\n  \"owned_by\": {\n    \"type\": \"user\",\n    \"id\": \"<string>\",\n    \"name\": \"<string>\",\n    \"login\": \"<email>\"\n  },\n  \"shared_link\": {\n    \"url\": \"<string>\",\n    \"effective_access\": \"company\",\n    \"effective_permission\": \"can_download\",\n    \"is_password_enabled\": \"<boolean>\",\n    \"download_count\": \"<integer>\",\n    \"preview_count\": \"<integer>\",\n    \"download_url\": \"<string>\",\n    \"vanity_url\": \"<string>\",\n    \"vanity_name\": \"<string>\",\n    \"access\": \"collaborators\",\n    \"unshared_at\": \"<dateTime>\",\n    \"permissions\": {\n      \"can_download\": \"<boolean>\",\n      \"can_preview\": \"<boolean>\",\n      \"can_edit\": \"<boolean>\"\n    }\n  },\n  \"folder_upload_email\": {\n    \"access\": \"open\",\n    \"email\": \"<email>\"\n  },\n  \"parent\": {\n    \"id\": \"<string>\",\n    \"type\": \"folder\",\n    \"etag\": \"<string>\",\n    \"sequence_id\": \"<string>\",\n    \"name\": \"<string>\"\n  },\n  \"item_status\": \"active\",\n  \"item_collection\": {\n    \"total_count\": \"<long>\",\n    \"limit\": \"<long>\",\n    \"offset\": \"<long>\",\n    \"order\": [\n      {\n        \"by\": \"<string>\",\n        \"direction\": \"ASC\"\n      }\n    ],\n    \"entries\": [\n      {\n        \"id\": \"<string>\",\n        \"type\": \"file\",\n        \"etag\": \"<string>\",\n        \"sequence_id\": \"<string>\",\n        \"name\": \"<string>\",\n        \"sha1\": \"<string>\",\n        \"file_version\": {\n          \"id\": \"<string>\",\n          \"type\": \"file_version\",\n          \"sha1\": \"<string>\"\n        },\n        \"description\": \"<string>\",\n        \"size\": \"<integer>\",\n        \"path_collection\": {\n          \"total_count\": \"<long>\",\n          \"entries\": [\n            {\n              \"id\": \"<string>\",\n              \"type\": \"folder\",\n              \"etag\": \"<string>\",\n              \"sequence_id\": \"<string>\",\n              \"name\": \"<string>\"\n            }\n          ]\n        },\n        \"created_at\": \"<dateTime>\",\n        \"modified_at\": \"<dateTime>\",\n        \"trashed_at\": \"<dateTime>\",\n        \"purged_at\": \"<dateTime>\",\n        \"content_created_at\": \"<dateTime>\",\n        \"content_modified_at\": \"<dateTime>\",\n        \"created_by\": {\n          \"type\": \"user\",\n          \"id\": \"<string>\",\n          \"name\": \"<string>\",\n          \"login\": \"<email>\"\n        },\n        \"modified_by\": {\n          \"type\": \"user\",\n          \"id\": \"<string>\",\n          \"name\": \"<string>\",\n          \"login\": \"<email>\"\n        },\n        \"owned_by\": {\n          \"type\": \"user\",\n          \"id\": \"<string>\",\n          \"name\": \"<string>\",\n          \"login\": \"<email>\"\n        },\n        \"shared_link\": {\n          \"url\": \"<string>\",\n          \"effective_access\": \"company\",\n          \"effective_permission\": \"can_edit\",\n          \"is_password_enabled\": \"<boolean>\",\n          \"download_count\": \"<integer>\",\n          \"preview_count\": \"<integer>\",\n          \"download_url\": \"<string>\",\n          \"vanity_url\": \"<string>\",\n          \"vanity_name\": \"<string>\",\n          \"access\": \"open\",\n          \"unshared_at\": \"<dateTime>\",\n          \"permissions\": {\n            \"can_download\": \"<boolean>\",\n            \"can_preview\": \"<boolean>\",\n            \"can_edit\": \"<boolean>\"\n          }\n        },\n        \"parent\": {\n          \"id\": \"<string>\",\n          \"type\": \"folder\",\n          \"etag\": \"<string>\",\n          \"sequence_id\": \"<string>\",\n          \"name\": \"<string>\"\n        },\n        \"item_status\": \"active\",\n        \"version_number\": \"<string>\",\n        \"comment_count\": \"<integer>\",\n        \"permissions\": {\n          \"can_annotate\": \"<boolean>\",\n          \"can_comment\": \"<boolean>\",\n          \"can_delete\": \"<boolean>\",\n          \"can_download\": \"<boolean>\",\n          \"can_invite_collaborator\": \"<boolean>\",\n          \"can_preview\": \"<boolean>\",\n          \"can_rename\": \"<boolean>\",\n          \"can_set_share_access\": \"<boolean>\",\n          \"can_share\": \"<boolean>\",\n          \"can_upload\": \"<boolean>\",\n          \"can_view_annotations_all\": \"<boolean>\",\n          \"can_view_annotations_self\": \"<boolean>\"\n        },\n        \"tags\": [\n          \"<string>\"\n        ],\n        \"lock\": {\n          \"id\": \"<string>\",\n          \"type\": \"lock\",\n          \"created_by\": {\n            \"type\": \"user\",\n            \"id\": \"<string>\",\n            \"name\": \"<string>\",\n            \"login\": \"<email>\"\n          },\n          \"created_at\": \"<dateTime>\",\n          \"expired_at\": \"<dateTime>\",\n          \"is_download_prevented\": \"<boolean>\",\n          \"app_type\": \"other\"\n        },\n        \"extension\": \"<string>\",\n        \"is_package\": \"<boolean>\",\n        \"expiring_embed_link\": {\n          \"access_token\": \"<string>\",\n          \"expires_in\": \"<long>\",\n          \"token_type\": \"bearer\",\n          \"restricted_to\": [\n            {\n              \"scope\": \"base_preview\",\n              \"object\": {\n                \"id\": \"<string>\",\n                \"type\": \"folder\",\n                \"etag\": \"<string>\",\n                \"sequence_id\": \"<string>\",\n                \"name\": \"<string>\"\n              }\n            }\n          ],\n          \"url\": \"<string>\"\n        },\n        \"watermark_info\": {\n          \"is_watermarked\": \"<boolean>\"\n        },\n        \"is_accessible_via_shared_link\": true,\n        \"allowed_invitee_roles\": [\n          \"editor\"\n        ],\n        \"is_externally_owned\": \"<boolean>\",\n        \"has_collaborations\": \"<boolean>\",\n        \"metadata\": {\n          \"iruree_\": {\n            \"Excepteur_2\": {\n              \"$parent\": \"<string>\",\n              \"$template\": \"<string>\",\n              \"$scope\": \"<string>\",\n              \"$version\": \"<integer>\"\n            }\n          },\n          \"voluptate_d4c\": {\n            \"pariatur_4fa\": {\n              \"$parent\": \"<string>\",\n              \"$template\": \"<string>\",\n              \"$scope\": \"<string>\",\n              \"$version\": \"<integer>\"\n            },\n            \"irure_18c\": {\n              \"$parent\": \"<string>\",\n              \"$template\": \"<string>\",\n              \"$scope\": \"<string>\",\n              \"$version\": \"<integer>\"\n            }\n          },\n          \"veniam_1\": {\n            \"nostrud0c9\": {\n              \"$parent\": \"<string>\",\n              \"$template\": \"<string>\",\n              \"$scope\": \"<string>\",\n              \"$version\": \"<integer>\"\n            },\n            \"aliquaf9\": {\n              \"$parent\": \"<string>\",\n              \"$template\": \"<string>\",\n              \"$scope\": \"<string>\",\n              \"$version\": \"<integer>\"\n            }\n          }\n        },\n        \"expires_at\": \"<dateTime>\",\n        \"representations\": {\n          \"entries\": [\n            {\n              \"content\": {\n                \"url_template\": \"<string>\"\n              },\n              \"info\": {\n                \"url\": \"<string>\"\n              },\n              \"properties\": {\n                \"dimensions\": \"<string>\",\n                \"paged\": \"<boolean>\",\n                \"thumb\": \"<boolean>\"\n              },\n              \"representation\": \"<string>\",\n              \"status\": {\n                \"state\": \"viewable\"\n              }\n            }\n          ]\n        },\n        \"classification\": {\n          \"name\": \"<string>\",\n          \"definition\": \"<string>\",\n          \"color\": \"<string>\"\n        },\n        \"uploader_display_name\": \"<string>\",\n        \"disposition_at\": \"<dateTime>\",\n        \"shared_link_permission_options\": [\n          \"can_edit\"\n        ]\n      }\n    ]\n  },\n  \"sync_state\": \"synced\",\n  \"has_collaborations\": \"<boolean>\",\n  \"permissions\": {\n    \"can_delete\": \"<boolean>\",\n    \"can_download\": \"<boolean>\",\n    \"can_invite_collaborator\": \"<boolean>\",\n    \"can_rename\": \"<boolean>\",\n    \"can_set_share_access\": \"<boolean>\",\n    \"can_share\": \"<boolean>\",\n    \"can_upload\": \"<boolean>\"\n  },\n  \"tags\": [\n    \"<string>\"\n  ],\n  \"can_non_owners_invite\": \"<boolean>\",\n  \"is_externally_owned\": \"<boolean>\",\n  \"metadata\": {\n    \"Excepteur_5\": {\n      \"do5\": {\n        \"$parent\": \"<string>\",\n        \"$template\": \"<string>\",\n        \"$scope\": \"<string>\",\n        \"$version\": \"<integer>\"\n      },\n      \"mollit_17\": {\n        \"$parent\": \"<string>\",\n        \"$template\": \"<string>\",\n        \"$scope\": \"<string>\",\n        \"$version\": \"<integer>\"\n      },\n      \"voluptate_a\": {\n        \"$parent\": \"<string>\",\n        \"$template\": \"<string>\",\n        \"$scope\": \"<string>\",\n        \"$version\": \"<integer>\"\n      }\n    }\n  },\n  \"is_collaboration_restricted_to_enterprise\": \"<boolean>\",\n  \"allowed_shared_link_access_levels\": [\n    \"collaborators\"\n  ],\n  \"allowed_invitee_roles\": [\n    \"uploader\"\n  ],\n  \"watermark_info\": {\n    \"is_watermarked\": \"<boolean>\"\n  },\n  \"is_accessible_via_shared_link\": false,\n  \"can_non_owners_view_collaborators\": \"<boolean>\",\n  \"classification\": {\n    \"name\": \"<string>\",\n    \"definition\": \"<string>\",\n    \"color\": \"<string>\"\n  }\n}",
+                  "createdAt": "2026-07-28T01:17:05.000Z",
+                  "updatedAt": "2026-07-28T01:17:05.000Z",
+                  "uid": "35240-28bf07b7-0b91-48de-aca1-9defc8c88550"
+                },
+                {
+                  "id": "4d2cc36e-beae-4736-a2bd-7dc06c7d8319",
+                  "name": "Returned when the access token provided in the `Authorization` header\nis not recognized or not provided.",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/folders/{{folder_id}}?fields=<string>#get_shared_link",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "folders",
+                        "{{folder_id}}"
+                      ],
+                      "query": [
+                        {
+                          "description": "(Required) Explicitly request the `shared_link` fields\nto be returned for this item.",
+                          "key": "fields",
+                          "value": "<string>"
+                        }
+                      ],
+                      "hash": "get_shared_link"
+                    }
+                  },
+                  "status": "Unauthorized",
+                  "code": 401,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"type\": \"error\",\n  \"status\": \"<integer>\",\n  \"code\": \"conflict\",\n  \"message\": \"<string>\",\n  \"context_info\": {\n    \"message\": \"<string>\"\n  },\n  \"help_url\": \"<string>\",\n  \"request_id\": \"<string>\"\n}",
+                  "createdAt": "2026-07-28T01:17:05.000Z",
+                  "updatedAt": "2026-07-28T01:17:05.000Z",
+                  "uid": "35240-4d2cc36e-beae-4736-a2bd-7dc06c7d8319"
+                },
+                {
+                  "id": "73384102-171c-412f-a3f7-5f4e3a0c4b2d",
+                  "name": "Returned if the folder is not found, or the user does not\nhave access to the folder.",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/folders/{{folder_id}}?fields=<string>#get_shared_link",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "folders",
+                        "{{folder_id}}"
+                      ],
+                      "query": [
+                        {
+                          "description": "(Required) Explicitly request the `shared_link` fields\nto be returned for this item.",
+                          "key": "fields",
+                          "value": "<string>"
+                        }
+                      ],
+                      "hash": "get_shared_link"
+                    }
+                  },
+                  "status": "Not Found",
+                  "code": 404,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"type\": \"error\",\n  \"status\": \"<integer>\",\n  \"code\": \"conflict\",\n  \"message\": \"<string>\",\n  \"context_info\": {\n    \"message\": \"<string>\"\n  },\n  \"help_url\": \"<string>\",\n  \"request_id\": \"<string>\"\n}",
+                  "createdAt": "2026-07-28T01:17:05.000Z",
+                  "updatedAt": "2026-07-28T01:17:05.000Z",
+                  "uid": "35240-73384102-171c-412f-a3f7-5f4e3a0c4b2d"
+                },
+                {
+                  "id": "c979da6a-26cc-4e24-80d8-8baf6fd070fb",
+                  "name": "Returned if the `folder_id` is not in a recognized format.",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/folders/{{folder_id}}?fields=<string>#get_shared_link",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "folders",
+                        "{{folder_id}}"
+                      ],
+                      "query": [
+                        {
+                          "description": "(Required) Explicitly request the `shared_link` fields\nto be returned for this item.",
+                          "key": "fields",
+                          "value": "<string>"
+                        }
+                      ],
+                      "hash": "get_shared_link"
+                    }
+                  },
+                  "status": "Method Not Allowed",
+                  "code": 405,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"type\": \"error\",\n  \"status\": \"<integer>\",\n  \"code\": \"conflict\",\n  \"message\": \"<string>\",\n  \"context_info\": {\n    \"message\": \"<string>\"\n  },\n  \"help_url\": \"<string>\",\n  \"request_id\": \"<string>\"\n}",
+                  "createdAt": "2026-07-28T01:17:05.000Z",
+                  "updatedAt": "2026-07-28T01:17:05.000Z",
+                  "uid": "35240-c979da6a-26cc-4e24-80d8-8baf6fd070fb"
+                },
+                {
+                  "id": "7ba7cd76-fba2-44dc-8f53-ccdce7028932",
+                  "name": "An unexpected client error.",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/folders/{{folder_id}}?fields=<string>#get_shared_link",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "folders",
+                        "{{folder_id}}"
+                      ],
+                      "query": [
+                        {
+                          "description": "(Required) Explicitly request the `shared_link` fields\nto be returned for this item.",
+                          "key": "fields",
+                          "value": "<string>"
+                        }
+                      ],
+                      "hash": "get_shared_link"
+                    }
+                  },
+                  "status": "Internal Server Error",
+                  "code": 500,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"type\": \"error\",\n  \"status\": \"<integer>\",\n  \"code\": \"conflict\",\n  \"message\": \"<string>\",\n  \"context_info\": {\n    \"message\": \"<string>\"\n  },\n  \"help_url\": \"<string>\",\n  \"request_id\": \"<string>\"\n}",
+                  "createdAt": "2026-07-28T01:17:05.000Z",
+                  "updatedAt": "2026-07-28T01:17:05.000Z",
+                  "uid": "35240-7ba7cd76-fba2-44dc-8f53-ccdce7028932"
+                }
+              ],
+              "createdAt": "2026-07-28T01:17:05.000Z",
+              "updatedAt": "2026-07-28T01:17:05.000Z",
+              "uid": "35240-0afc58be-6e65-412c-bf48-16c78946edac"
+            }
+          ],
+          "id": "a8d024ea-c001-49b0-8474-52420492aad9",
+          "createdAt": "2026-07-28T01:17:05.000Z",
+          "updatedAt": "2026-07-28T01:17:05.000Z",
+          "uid": "35240-a8d024ea-c001-49b0-8474-52420492aad9"
+        },
+        {
+          "name": "{folder_id}#add_shared_link",
+          "item": [
+            {
+              "name": "Box Add shared link to folder",
+              "id": "38cfa8e0-58c6-456e-95d6-d39f9f1f46bc",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "PUT",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"shared_link\": {\n    \"access\": \"company\",\n    \"password\": \"<string>\",\n    \"vanity_name\": \"<string>\",\n    \"unshared_at\": \"<dateTime>\",\n    \"permissions\": {\n      \"can_download\": \"<boolean>\",\n      \"can_preview\": \"<boolean>\",\n      \"can_edit\": \"<boolean>\"\n    }\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/folders/{{folder_id}}?fields=<string>#add_shared_link",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "folders",
+                    "{{folder_id}}"
+                  ],
+                  "query": [
+                    {
+                      "description": "(Required) Explicitly request the `shared_link` fields\nto be returned for this item.",
+                      "key": "fields",
+                      "value": "<string>"
+                    }
+                  ],
+                  "hash": "add_shared_link"
+                },
+                "description": "Adds a shared link to a folder."
+              },
+              "response": [
+                {
+                  "id": "c3018b09-03bc-4d67-af64-f8606163e5da",
+                  "name": "Returns the base representation of a folder with a new shared\nlink attached.",
+                  "originalRequest": {
+                    "method": "PUT",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"shared_link\": {\n    \"access\": \"company\",\n    \"password\": \"<string>\",\n    \"vanity_name\": \"<string>\",\n    \"unshared_at\": \"<dateTime>\",\n    \"permissions\": {\n      \"can_download\": \"<boolean>\",\n      \"can_preview\": \"<boolean>\",\n      \"can_edit\": \"<boolean>\"\n    }\n  }\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/folders/{{folder_id}}?fields=<string>#add_shared_link",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "folders",
+                        "{{folder_id}}"
+                      ],
+                      "query": [
+                        {
+                          "description": "(Required) Explicitly request the `shared_link` fields\nto be returned for this item.",
+                          "key": "fields",
+                          "value": "<string>"
+                        }
+                      ],
+                      "hash": "add_shared_link"
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"id\": \"<string>\",\n  \"type\": \"folder\",\n  \"etag\": \"<string>\",\n  \"sequence_id\": \"<string>\",\n  \"name\": \"<string>\",\n  \"created_at\": \"<dateTime>\",\n  \"modified_at\": \"<dateTime>\",\n  \"description\": \"<string>\",\n  \"size\": \"<long>\",\n  \"path_collection\": {\n    \"total_count\": \"<long>\",\n    \"entries\": [\n      {\n        \"id\": \"<string>\",\n        \"type\": \"folder\",\n        \"etag\": \"<string>\",\n        \"sequence_id\": \"<string>\",\n        \"name\": \"<string>\"\n      }\n    ]\n  },\n  \"created_by\": {\n    \"type\": \"user\",\n    \"id\": \"<string>\",\n    \"name\": \"<string>\",\n    \"login\": \"<email>\"\n  },\n  \"modified_by\": {\n    \"type\": \"user\",\n    \"id\": \"<string>\",\n    \"name\": \"<string>\",\n    \"login\": \"<email>\"\n  },\n  \"trashed_at\": \"<dateTime>\",\n  \"purged_at\": \"<dateTime>\",\n  \"content_created_at\": \"<dateTime>\",\n  \"content_modified_at\": \"<dateTime>\",\n  \"owned_by\": {\n    \"type\": \"user\",\n    \"id\": \"<string>\",\n    \"name\": \"<string>\",\n    \"login\": \"<email>\"\n  },\n  \"shared_link\": {\n    \"url\": \"<string>\",\n    \"effective_access\": \"company\",\n    \"effective_permission\": \"can_download\",\n    \"is_password_enabled\": \"<boolean>\",\n    \"download_count\": \"<integer>\",\n    \"preview_count\": \"<integer>\",\n    \"download_url\": \"<string>\",\n    \"vanity_url\": \"<string>\",\n    \"vanity_name\": \"<string>\",\n    \"access\": \"collaborators\",\n    \"unshared_at\": \"<dateTime>\",\n    \"permissions\": {\n      \"can_download\": \"<boolean>\",\n      \"can_preview\": \"<boolean>\",\n      \"can_edit\": \"<boolean>\"\n    }\n  },\n  \"folder_upload_email\": {\n    \"access\": \"open\",\n    \"email\": \"<email>\"\n  },\n  \"parent\": {\n    \"id\": \"<string>\",\n    \"type\": \"folder\",\n    \"etag\": \"<string>\",\n    \"sequence_id\": \"<string>\",\n    \"name\": \"<string>\"\n  },\n  \"item_status\": \"active\",\n  \"item_collection\": {\n    \"total_count\": \"<long>\",\n    \"limit\": \"<long>\",\n    \"offset\": \"<long>\",\n    \"order\": [\n      {\n        \"by\": \"<string>\",\n        \"direction\": \"ASC\"\n      }\n    ],\n    \"entries\": [\n      {\n        \"id\": \"<string>\",\n        \"type\": \"file\",\n        \"etag\": \"<string>\",\n        \"sequence_id\": \"<string>\",\n        \"name\": \"<string>\",\n        \"sha1\": \"<string>\",\n        \"file_version\": {\n          \"id\": \"<string>\",\n          \"type\": \"file_version\",\n          \"sha1\": \"<string>\"\n        },\n        \"description\": \"<string>\",\n        \"size\": \"<integer>\",\n        \"path_collection\": {\n          \"total_count\": \"<long>\",\n          \"entries\": [\n            {\n              \"id\": \"<string>\",\n              \"type\": \"folder\",\n              \"etag\": \"<string>\",\n              \"sequence_id\": \"<string>\",\n              \"name\": \"<string>\"\n            }\n          ]\n        },\n        \"created_at\": \"<dateTime>\",\n        \"modified_at\": \"<dateTime>\",\n        \"trashed_at\": \"<dateTime>\",\n        \"purged_at\": \"<dateTime>\",\n        \"content_created_at\": \"<dateTime>\",\n        \"content_modified_at\": \"<dateTime>\",\n        \"created_by\": {\n          \"type\": \"user\",\n          \"id\": \"<string>\",\n          \"name\": \"<string>\",\n          \"login\": \"<email>\"\n        },\n        \"modified_by\": {\n          \"type\": \"user\",\n          \"id\": \"<string>\",\n          \"name\": \"<string>\",\n          \"login\": \"<email>\"\n        },\n        \"owned_by\": {\n          \"type\": \"user\",\n          \"id\": \"<string>\",\n          \"name\": \"<string>\",\n          \"login\": \"<email>\"\n        },\n        \"shared_link\": {\n          \"url\": \"<string>\",\n          \"effective_access\": \"company\",\n          \"effective_permission\": \"can_edit\",\n          \"is_password_enabled\": \"<boolean>\",\n          \"download_count\": \"<integer>\",\n          \"preview_count\": \"<integer>\",\n          \"download_url\": \"<string>\",\n          \"vanity_url\": \"<string>\",\n          \"vanity_name\": \"<string>\",\n          \"access\": \"open\",\n          \"unshared_at\": \"<dateTime>\",\n          \"permissions\": {\n            \"can_download\": \"<boolean>\",\n            \"can_preview\": \"<boolean>\",\n            \"can_edit\": \"<boolean>\"\n          }\n        },\n        \"parent\": {\n          \"id\": \"<string>\",\n          \"type\": \"folder\",\n          \"etag\": \"<string>\",\n          \"sequence_id\": \"<string>\",\n          \"name\": \"<string>\"\n        },\n        \"item_status\": \"active\",\n        \"version_number\": \"<string>\",\n        \"comment_count\": \"<integer>\",\n        \"permissions\": {\n          \"can_annotate\": \"<boolean>\",\n          \"can_comment\": \"<boolean>\",\n          \"can_delete\": \"<boolean>\",\n          \"can_download\": \"<boolean>\",\n          \"can_invite_collaborator\": \"<boolean>\",\n          \"can_preview\": \"<boolean>\",\n          \"can_rename\": \"<boolean>\",\n          \"can_set_share_access\": \"<boolean>\",\n          \"can_share\": \"<boolean>\",\n          \"can_upload\": \"<boolean>\",\n          \"can_view_annotations_all\": \"<boolean>\",\n          \"can_view_annotations_self\": \"<boolean>\"\n        },\n        \"tags\": [\n          \"<string>\"\n        ],\n        \"lock\": {\n          \"id\": \"<string>\",\n          \"type\": \"lock\",\n          \"created_by\": {\n            \"type\": \"user\",\n            \"id\": \"<string>\",\n            \"name\": \"<string>\",\n            \"login\": \"<email>\"\n          },\n          \"created_at\": \"<dateTime>\",\n          \"expired_at\": \"<dateTime>\",\n          \"is_download_prevented\": \"<boolean>\",\n          \"app_type\": \"other\"\n        },\n        \"extension\": \"<string>\",\n        \"is_package\": \"<boolean>\",\n        \"expiring_embed_link\": {\n          \"access_token\": \"<string>\",\n          \"expires_in\": \"<long>\",\n          \"token_type\": \"bearer\",\n          \"restricted_to\": [\n            {\n              \"scope\": \"base_preview\",\n              \"object\": {\n                \"id\": \"<string>\",\n                \"type\": \"folder\",\n                \"etag\": \"<string>\",\n                \"sequence_id\": \"<string>\",\n                \"name\": \"<string>\"\n              }\n            }\n          ],\n          \"url\": \"<string>\"\n        },\n        \"watermark_info\": {\n          \"is_watermarked\": \"<boolean>\"\n        },\n        \"is_accessible_via_shared_link\": true,\n        \"allowed_invitee_roles\": [\n          \"editor\"\n        ],\n        \"is_externally_owned\": \"<boolean>\",\n        \"has_collaborations\": \"<boolean>\",\n        \"metadata\": {\n          \"iruree_\": {\n            \"Excepteur_2\": {\n              \"$parent\": \"<string>\",\n              \"$template\": \"<string>\",\n              \"$scope\": \"<string>\",\n              \"$version\": \"<integer>\"\n            }\n          },\n          \"voluptate_d4c\": {\n            \"pariatur_4fa\": {\n              \"$parent\": \"<string>\",\n              \"$template\": \"<string>\",\n              \"$scope\": \"<string>\",\n              \"$version\": \"<integer>\"\n            },\n            \"irure_18c\": {\n              \"$parent\": \"<string>\",\n              \"$template\": \"<string>\",\n              \"$scope\": \"<string>\",\n              \"$version\": \"<integer>\"\n            }\n          },\n          \"veniam_1\": {\n            \"nostrud0c9\": {\n              \"$parent\": \"<string>\",\n              \"$template\": \"<string>\",\n              \"$scope\": \"<string>\",\n              \"$version\": \"<integer>\"\n            },\n            \"aliquaf9\": {\n              \"$parent\": \"<string>\",\n              \"$template\": \"<string>\",\n              \"$scope\": \"<string>\",\n              \"$version\": \"<integer>\"\n            }\n          }\n        },\n        \"expires_at\": \"<dateTime>\",\n        \"representations\": {\n          \"entries\": [\n            {\n              \"content\": {\n                \"url_template\": \"<string>\"\n              },\n              \"info\": {\n                \"url\": \"<string>\"\n              },\n              \"properties\": {\n                \"dimensions\": \"<string>\",\n                \"paged\": \"<boolean>\",\n                \"thumb\": \"<boolean>\"\n              },\n              \"representation\": \"<string>\",\n              \"status\": {\n                \"state\": \"viewable\"\n              }\n            }\n          ]\n        },\n        \"classification\": {\n          \"name\": \"<string>\",\n          \"definition\": \"<string>\",\n          \"color\": \"<string>\"\n        },\n        \"uploader_display_name\": \"<string>\",\n        \"disposition_at\": \"<dateTime>\",\n        \"shared_link_permission_options\": [\n          \"can_edit\"\n        ]\n      }\n    ]\n  },\n  \"sync_state\": \"synced\",\n  \"has_collaborations\": \"<boolean>\",\n  \"permissions\": {\n    \"can_delete\": \"<boolean>\",\n    \"can_download\": \"<boolean>\",\n    \"can_invite_collaborator\": \"<boolean>\",\n    \"can_rename\": \"<boolean>\",\n    \"can_set_share_access\": \"<boolean>\",\n    \"can_share\": \"<boolean>\",\n    \"can_upload\": \"<boolean>\"\n  },\n  \"tags\": [\n    \"<string>\"\n  ],\n  \"can_non_owners_invite\": \"<boolean>\",\n  \"is_externally_owned\": \"<boolean>\",\n  \"metadata\": {\n    \"Excepteur_5\": {\n      \"do5\": {\n        \"$parent\": \"<string>\",\n        \"$template\": \"<string>\",\n        \"$scope\": \"<string>\",\n        \"$version\": \"<integer>\"\n      },\n      \"mollit_17\": {\n        \"$parent\": \"<string>\",\n        \"$template\": \"<string>\",\n        \"$scope\": \"<string>\",\n        \"$version\": \"<integer>\"\n      },\n      \"voluptate_a\": {\n        \"$parent\": \"<string>\",\n        \"$template\": \"<string>\",\n        \"$scope\": \"<string>\",\n        \"$version\": \"<integer>\"\n      }\n    }\n  },\n  \"is_collaboration_restricted_to_enterprise\": \"<boolean>\",\n  \"allowed_shared_link_access_levels\": [\n    \"collaborators\"\n  ],\n  \"allowed_invitee_roles\": [\n    \"uploader\"\n  ],\n  \"watermark_info\": {\n    \"is_watermarked\": \"<boolean>\"\n  },\n  \"is_accessible_via_shared_link\": false,\n  \"can_non_owners_view_collaborators\": \"<boolean>\",\n  \"classification\": {\n    \"name\": \"<string>\",\n    \"definition\": \"<string>\",\n    \"color\": \"<string>\"\n  }\n}",
+                  "createdAt": "2026-07-28T01:17:05.000Z",
+                  "updatedAt": "2026-07-28T01:17:05.000Z",
+                  "uid": "35240-c3018b09-03bc-4d67-af64-f8606163e5da"
+                },
+                {
+                  "id": "e101b51c-f578-4e27-9986-ee7f0ca379ba",
+                  "name": "Returned when there is an incorrect permission combination",
+                  "originalRequest": {
+                    "method": "PUT",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"shared_link\": {\n    \"access\": \"company\",\n    \"password\": \"<string>\",\n    \"vanity_name\": \"<string>\",\n    \"unshared_at\": \"<dateTime>\",\n    \"permissions\": {\n      \"can_download\": \"<boolean>\",\n      \"can_preview\": \"<boolean>\",\n      \"can_edit\": \"<boolean>\"\n    }\n  }\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/folders/{{folder_id}}?fields=<string>#add_shared_link",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "folders",
+                        "{{folder_id}}"
+                      ],
+                      "query": [
+                        {
+                          "description": "(Required) Explicitly request the `shared_link` fields\nto be returned for this item.",
+                          "key": "fields",
+                          "value": "<string>"
+                        }
+                      ],
+                      "hash": "add_shared_link"
+                    }
+                  },
+                  "status": "Bad Request",
+                  "code": 400,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"type\": \"error\",\n  \"status\": \"<integer>\",\n  \"code\": \"conflict\",\n  \"message\": \"<string>\",\n  \"context_info\": {\n    \"message\": \"<string>\"\n  },\n  \"help_url\": \"<string>\",\n  \"request_id\": \"<string>\"\n}",
+                  "createdAt": "2026-07-28T01:17:05.000Z",
+                  "updatedAt": "2026-07-28T01:17:05.000Z",
+                  "uid": "35240-e101b51c-f578-4e27-9986-ee7f0ca379ba"
+                },
+                {
+                  "id": "8d3925d7-4f88-4764-85dc-bedb7a5a2c1b",
+                  "name": "Returned when the access token provided in the `Authorization` header\nis not recognized or not provided.",
+                  "originalRequest": {
+                    "method": "PUT",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"shared_link\": {\n    \"access\": \"company\",\n    \"password\": \"<string>\",\n    \"vanity_name\": \"<string>\",\n    \"unshared_at\": \"<dateTime>\",\n    \"permissions\": {\n      \"can_download\": \"<boolean>\",\n      \"can_preview\": \"<boolean>\",\n      \"can_edit\": \"<boolean>\"\n    }\n  }\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/folders/{{folder_id}}?fields=<string>#add_shared_link",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "folders",
+                        "{{folder_id}}"
+                      ],
+                      "query": [
+                        {
+                          "description": "(Required) Explicitly request the `shared_link` fields\nto be returned for this item.",
+                          "key": "fields",
+                          "value": "<string>"
+                        }
+                      ],
+                      "hash": "add_shared_link"
+                    }
+                  },
+                  "status": "Unauthorized",
+                  "code": 401,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"type\": \"error\",\n  \"status\": \"<integer>\",\n  \"code\": \"conflict\",\n  \"message\": \"<string>\",\n  \"context_info\": {\n    \"message\": \"<string>\"\n  },\n  \"help_url\": \"<string>\",\n  \"request_id\": \"<string>\"\n}",
+                  "createdAt": "2026-07-28T01:17:05.000Z",
+                  "updatedAt": "2026-07-28T01:17:05.000Z",
+                  "uid": "35240-8d3925d7-4f88-4764-85dc-bedb7a5a2c1b"
+                },
+                {
+                  "id": "7877e156-cde9-474d-a101-fffce4b7a63d",
+                  "name": "Returned if the user does not have all the permissions to complete the\nupdate.",
+                  "originalRequest": {
+                    "method": "PUT",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"shared_link\": {\n    \"access\": \"company\",\n    \"password\": \"<string>\",\n    \"vanity_name\": \"<string>\",\n    \"unshared_at\": \"<dateTime>\",\n    \"permissions\": {\n      \"can_download\": \"<boolean>\",\n      \"can_preview\": \"<boolean>\",\n      \"can_edit\": \"<boolean>\"\n    }\n  }\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/folders/{{folder_id}}?fields=<string>#add_shared_link",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "folders",
+                        "{{folder_id}}"
+                      ],
+                      "query": [
+                        {
+                          "description": "(Required) Explicitly request the `shared_link` fields\nto be returned for this item.",
+                          "key": "fields",
+                          "value": "<string>"
+                        }
+                      ],
+                      "hash": "add_shared_link"
+                    }
+                  },
+                  "status": "Forbidden",
+                  "code": 403,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"type\": \"error\",\n  \"status\": \"<integer>\",\n  \"code\": \"conflict\",\n  \"message\": \"<string>\",\n  \"context_info\": {\n    \"message\": \"<string>\"\n  },\n  \"help_url\": \"<string>\",\n  \"request_id\": \"<string>\"\n}",
+                  "createdAt": "2026-07-28T01:17:05.000Z",
+                  "updatedAt": "2026-07-28T01:17:05.000Z",
+                  "uid": "35240-7877e156-cde9-474d-a101-fffce4b7a63d"
+                },
+                {
+                  "id": "947f99d7-abac-44ca-83d6-97c1bc6c7544",
+                  "name": "Returned if the folder is not found, or the user does not\nhave access to the folder.",
+                  "originalRequest": {
+                    "method": "PUT",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"shared_link\": {\n    \"access\": \"company\",\n    \"password\": \"<string>\",\n    \"vanity_name\": \"<string>\",\n    \"unshared_at\": \"<dateTime>\",\n    \"permissions\": {\n      \"can_download\": \"<boolean>\",\n      \"can_preview\": \"<boolean>\",\n      \"can_edit\": \"<boolean>\"\n    }\n  }\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/folders/{{folder_id}}?fields=<string>#add_shared_link",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "folders",
+                        "{{folder_id}}"
+                      ],
+                      "query": [
+                        {
+                          "description": "(Required) Explicitly request the `shared_link` fields\nto be returned for this item.",
+                          "key": "fields",
+                          "value": "<string>"
+                        }
+                      ],
+                      "hash": "add_shared_link"
+                    }
+                  },
+                  "status": "Not Found",
+                  "code": 404,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"type\": \"error\",\n  \"status\": \"<integer>\",\n  \"code\": \"conflict\",\n  \"message\": \"<string>\",\n  \"context_info\": {\n    \"message\": \"<string>\"\n  },\n  \"help_url\": \"<string>\",\n  \"request_id\": \"<string>\"\n}",
+                  "createdAt": "2026-07-28T01:17:05.000Z",
+                  "updatedAt": "2026-07-28T01:17:05.000Z",
+                  "uid": "35240-947f99d7-abac-44ca-83d6-97c1bc6c7544"
+                },
+                {
+                  "id": "a343030a-3066-4af5-9c55-eaf29aff877a",
+                  "name": "Returned if the `folder_id` is not in a recognized format.",
+                  "originalRequest": {
+                    "method": "PUT",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"shared_link\": {\n    \"access\": \"company\",\n    \"password\": \"<string>\",\n    \"vanity_name\": \"<string>\",\n    \"unshared_at\": \"<dateTime>\",\n    \"permissions\": {\n      \"can_download\": \"<boolean>\",\n      \"can_preview\": \"<boolean>\",\n      \"can_edit\": \"<boolean>\"\n    }\n  }\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/folders/{{folder_id}}?fields=<string>#add_shared_link",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "folders",
+                        "{{folder_id}}"
+                      ],
+                      "query": [
+                        {
+                          "description": "(Required) Explicitly request the `shared_link` fields\nto be returned for this item.",
+                          "key": "fields",
+                          "value": "<string>"
+                        }
+                      ],
+                      "hash": "add_shared_link"
+                    }
+                  },
+                  "status": "Method Not Allowed",
+                  "code": 405,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"type\": \"error\",\n  \"status\": \"<integer>\",\n  \"code\": \"conflict\",\n  \"message\": \"<string>\",\n  \"context_info\": {\n    \"message\": \"<string>\"\n  },\n  \"help_url\": \"<string>\",\n  \"request_id\": \"<string>\"\n}",
+                  "createdAt": "2026-07-28T01:17:05.000Z",
+                  "updatedAt": "2026-07-28T01:17:05.000Z",
+                  "uid": "35240-a343030a-3066-4af5-9c55-eaf29aff877a"
+                },
+                {
+                  "id": "a9ca2eb3-b6ce-4bb2-8b4d-0a96f35c93ec",
+                  "name": "Returns an error when the `If-Match` header does not match\nthe current `etag` value of the folder. This indicates that the folder\nhas changed since it was last requested.",
+                  "originalRequest": {
+                    "method": "PUT",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"shared_link\": {\n    \"access\": \"company\",\n    \"password\": \"<string>\",\n    \"vanity_name\": \"<string>\",\n    \"unshared_at\": \"<dateTime>\",\n    \"permissions\": {\n      \"can_download\": \"<boolean>\",\n      \"can_preview\": \"<boolean>\",\n      \"can_edit\": \"<boolean>\"\n    }\n  }\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/folders/{{folder_id}}?fields=<string>#add_shared_link",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "folders",
+                        "{{folder_id}}"
+                      ],
+                      "query": [
+                        {
+                          "description": "(Required) Explicitly request the `shared_link` fields\nto be returned for this item.",
+                          "key": "fields",
+                          "value": "<string>"
+                        }
+                      ],
+                      "hash": "add_shared_link"
+                    }
+                  },
+                  "status": "Precondition Failed",
+                  "code": 412,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"type\": \"error\",\n  \"status\": \"<integer>\",\n  \"code\": \"conflict\",\n  \"message\": \"<string>\",\n  \"context_info\": {\n    \"message\": \"<string>\"\n  },\n  \"help_url\": \"<string>\",\n  \"request_id\": \"<string>\"\n}",
+                  "createdAt": "2026-07-28T01:17:05.000Z",
+                  "updatedAt": "2026-07-28T01:17:05.000Z",
+                  "uid": "35240-a9ca2eb3-b6ce-4bb2-8b4d-0a96f35c93ec"
+                },
+                {
+                  "id": "5c60dfc2-6113-461f-bb82-e410057c25aa",
+                  "name": "An unexpected client error.",
+                  "originalRequest": {
+                    "method": "PUT",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"shared_link\": {\n    \"access\": \"company\",\n    \"password\": \"<string>\",\n    \"vanity_name\": \"<string>\",\n    \"unshared_at\": \"<dateTime>\",\n    \"permissions\": {\n      \"can_download\": \"<boolean>\",\n      \"can_preview\": \"<boolean>\",\n      \"can_edit\": \"<boolean>\"\n    }\n  }\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/folders/{{folder_id}}?fields=<string>#add_shared_link",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "folders",
+                        "{{folder_id}}"
+                      ],
+                      "query": [
+                        {
+                          "description": "(Required) Explicitly request the `shared_link` fields\nto be returned for this item.",
+                          "key": "fields",
+                          "value": "<string>"
+                        }
+                      ],
+                      "hash": "add_shared_link"
+                    }
+                  },
+                  "status": "Internal Server Error",
+                  "code": 500,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"type\": \"error\",\n  \"status\": \"<integer>\",\n  \"code\": \"conflict\",\n  \"message\": \"<string>\",\n  \"context_info\": {\n    \"message\": \"<string>\"\n  },\n  \"help_url\": \"<string>\",\n  \"request_id\": \"<string>\"\n}",
+                  "createdAt": "2026-07-28T01:17:05.000Z",
+                  "updatedAt": "2026-07-28T01:17:05.000Z",
+                  "uid": "35240-5c60dfc2-6113-461f-bb82-e410057c25aa"
+                }
+              ],
+              "createdAt": "2026-07-28T01:17:05.000Z",
+              "updatedAt": "2026-07-28T01:17:05.000Z",
+              "uid": "35240-38cfa8e0-58c6-456e-95d6-d39f9f1f46bc"
+            }
+          ],
+          "id": "c24346c2-2798-4902-b633-8f724b53c6f9",
+          "createdAt": "2026-07-28T01:17:05.000Z",
+          "updatedAt": "2026-07-28T01:17:05.000Z",
+          "uid": "35240-c24346c2-2798-4902-b633-8f724b53c6f9"
+        },
+        {
+          "name": "{folder_id}#update_shared_link",
+          "item": [
+            {
+              "name": "Box Update shared link on folder",
+              "id": "9e57343f-cfb7-427b-90fc-653d3facc95c",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "PUT",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"shared_link\": {\n    \"access\": \"company\",\n    \"password\": \"<string>\",\n    \"vanity_name\": \"<string>\",\n    \"unshared_at\": \"<dateTime>\",\n    \"permissions\": {\n      \"can_download\": \"<boolean>\",\n      \"can_preview\": \"<boolean>\",\n      \"can_edit\": \"<boolean>\"\n    }\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/folders/{{folder_id}}?fields=<string>#update_shared_link",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "folders",
+                    "{{folder_id}}"
+                  ],
+                  "query": [
+                    {
+                      "description": "(Required) Explicitly request the `shared_link` fields\nto be returned for this item.",
+                      "key": "fields",
+                      "value": "<string>"
+                    }
+                  ],
+                  "hash": "update_shared_link"
+                },
+                "description": "Updates a shared link on a folder."
+              },
+              "response": [
+                {
+                  "id": "5da014f7-6930-41e0-b90b-5ac43367919c",
+                  "name": "Returns a basic representation of the folder, with the updated shared\nlink attached.",
+                  "originalRequest": {
+                    "method": "PUT",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"shared_link\": {\n    \"access\": \"company\",\n    \"password\": \"<string>\",\n    \"vanity_name\": \"<string>\",\n    \"unshared_at\": \"<dateTime>\",\n    \"permissions\": {\n      \"can_download\": \"<boolean>\",\n      \"can_preview\": \"<boolean>\",\n      \"can_edit\": \"<boolean>\"\n    }\n  }\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/folders/{{folder_id}}?fields=<string>#update_shared_link",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "folders",
+                        "{{folder_id}}"
+                      ],
+                      "query": [
+                        {
+                          "description": "(Required) Explicitly request the `shared_link` fields\nto be returned for this item.",
+                          "key": "fields",
+                          "value": "<string>"
+                        }
+                      ],
+                      "hash": "update_shared_link"
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"id\": \"<string>\",\n  \"type\": \"folder\",\n  \"etag\": \"<string>\",\n  \"sequence_id\": \"<string>\",\n  \"name\": \"<string>\",\n  \"created_at\": \"<dateTime>\",\n  \"modified_at\": \"<dateTime>\",\n  \"description\": \"<string>\",\n  \"size\": \"<long>\",\n  \"path_collection\": {\n    \"total_count\": \"<long>\",\n    \"entries\": [\n      {\n        \"id\": \"<string>\",\n        \"type\": \"folder\",\n        \"etag\": \"<string>\",\n        \"sequence_id\": \"<string>\",\n        \"name\": \"<string>\"\n      }\n    ]\n  },\n  \"created_by\": {\n    \"type\": \"user\",\n    \"id\": \"<string>\",\n    \"name\": \"<string>\",\n    \"login\": \"<email>\"\n  },\n  \"modified_by\": {\n    \"type\": \"user\",\n    \"id\": \"<string>\",\n    \"name\": \"<string>\",\n    \"login\": \"<email>\"\n  },\n  \"trashed_at\": \"<dateTime>\",\n  \"purged_at\": \"<dateTime>\",\n  \"content_created_at\": \"<dateTime>\",\n  \"content_modified_at\": \"<dateTime>\",\n  \"owned_by\": {\n    \"type\": \"user\",\n    \"id\": \"<string>\",\n    \"name\": \"<string>\",\n    \"login\": \"<email>\"\n  },\n  \"shared_link\": {\n    \"url\": \"<string>\",\n    \"effective_access\": \"company\",\n    \"effective_permission\": \"can_download\",\n    \"is_password_enabled\": \"<boolean>\",\n    \"download_count\": \"<integer>\",\n    \"preview_count\": \"<integer>\",\n    \"download_url\": \"<string>\",\n    \"vanity_url\": \"<string>\",\n    \"vanity_name\": \"<string>\",\n    \"access\": \"collaborators\",\n    \"unshared_at\": \"<dateTime>\",\n    \"permissions\": {\n      \"can_download\": \"<boolean>\",\n      \"can_preview\": \"<boolean>\",\n      \"can_edit\": \"<boolean>\"\n    }\n  },\n  \"folder_upload_email\": {\n    \"access\": \"open\",\n    \"email\": \"<email>\"\n  },\n  \"parent\": {\n    \"id\": \"<string>\",\n    \"type\": \"folder\",\n    \"etag\": \"<string>\",\n    \"sequence_id\": \"<string>\",\n    \"name\": \"<string>\"\n  },\n  \"item_status\": \"active\",\n  \"item_collection\": {\n    \"total_count\": \"<long>\",\n    \"limit\": \"<long>\",\n    \"offset\": \"<long>\",\n    \"order\": [\n      {\n        \"by\": \"<string>\",\n        \"direction\": \"ASC\"\n      }\n    ],\n    \"entries\": [\n      {\n        \"id\": \"<string>\",\n        \"type\": \"file\",\n        \"etag\": \"<string>\",\n        \"sequence_id\": \"<string>\",\n        \"name\": \"<string>\",\n        \"sha1\": \"<string>\",\n        \"file_version\": {\n          \"id\": \"<string>\",\n          \"type\": \"file_version\",\n          \"sha1\": \"<string>\"\n        },\n        \"description\": \"<string>\",\n        \"size\": \"<integer>\",\n        \"path_collection\": {\n          \"total_count\": \"<long>\",\n          \"entries\": [\n            {\n              \"id\": \"<string>\",\n              \"type\": \"folder\",\n              \"etag\": \"<string>\",\n              \"sequence_id\": \"<string>\",\n              \"name\": \"<string>\"\n            }\n          ]\n        },\n        \"created_at\": \"<dateTime>\",\n        \"modified_at\": \"<dateTime>\",\n        \"trashed_at\": \"<dateTime>\",\n        \"purged_at\": \"<dateTime>\",\n        \"content_created_at\": \"<dateTime>\",\n        \"content_modified_at\": \"<dateTime>\",\n        \"created_by\": {\n          \"type\": \"user\",\n          \"id\": \"<string>\",\n          \"name\": \"<string>\",\n          \"login\": \"<email>\"\n        },\n        \"modified_by\": {\n          \"type\": \"user\",\n          \"id\": \"<string>\",\n          \"name\": \"<string>\",\n          \"login\": \"<email>\"\n        },\n        \"owned_by\": {\n          \"type\": \"user\",\n          \"id\": \"<string>\",\n          \"name\": \"<string>\",\n          \"login\": \"<email>\"\n        },\n        \"shared_link\": {\n          \"url\": \"<string>\",\n          \"effective_access\": \"company\",\n          \"effective_permission\": \"can_edit\",\n          \"is_password_enabled\": \"<boolean>\",\n          \"download_count\": \"<integer>\",\n          \"preview_count\": \"<integer>\",\n          \"download_url\": \"<string>\",\n          \"vanity_url\": \"<string>\",\n          \"vanity_name\": \"<string>\",\n          \"access\": \"open\",\n          \"unshared_at\": \"<dateTime>\",\n          \"permissions\": {\n            \"can_download\": \"<boolean>\",\n            \"can_preview\": \"<boolean>\",\n            \"can_edit\": \"<boolean>\"\n          }\n        },\n        \"parent\": {\n          \"id\": \"<string>\",\n          \"type\": \"folder\",\n          \"etag\": \"<string>\",\n          \"sequence_id\": \"<string>\",\n          \"name\": \"<string>\"\n        },\n        \"item_status\": \"active\",\n        \"version_number\": \"<string>\",\n        \"comment_count\": \"<integer>\",\n        \"permissions\": {\n          \"can_annotate\": \"<boolean>\",\n          \"can_comment\": \"<boolean>\",\n          \"can_delete\": \"<boolean>\",\n          \"can_download\": \"<boolean>\",\n          \"can_invite_collaborator\": \"<boolean>\",\n          \"can_preview\": \"<boolean>\",\n          \"can_rename\": \"<boolean>\",\n          \"can_set_share_access\": \"<boolean>\",\n          \"can_share\": \"<boolean>\",\n          \"can_upload\": \"<boolean>\",\n          \"can_view_annotations_all\": \"<boolean>\",\n          \"can_view_annotations_self\": \"<boolean>\"\n        },\n        \"tags\": [\n          \"<string>\"\n        ],\n        \"lock\": {\n          \"id\": \"<string>\",\n          \"type\": \"lock\",\n          \"created_by\": {\n            \"type\": \"user\",\n            \"id\": \"<string>\",\n            \"name\": \"<string>\",\n            \"login\": \"<email>\"\n          },\n          \"created_at\": \"<dateTime>\",\n          \"expired_at\": \"<dateTime>\",\n          \"is_download_prevented\": \"<boolean>\",\n          \"app_type\": \"other\"\n        },\n        \"extension\": \"<string>\",\n        \"is_package\": \"<boolean>\",\n        \"expiring_embed_link\": {\n          \"access_token\": \"<string>\",\n          \"expires_in\": \"<long>\",\n          \"token_type\": \"bearer\",\n          \"restricted_to\": [\n            {\n              \"scope\": \"base_preview\",\n              \"object\": {\n                \"id\": \"<string>\",\n                \"type\": \"folder\",\n                \"etag\": \"<string>\",\n                \"sequence_id\": \"<string>\",\n                \"name\": \"<string>\"\n              }\n            }\n          ],\n          \"url\": \"<string>\"\n        },\n        \"watermark_info\": {\n          \"is_watermarked\": \"<boolean>\"\n        },\n        \"is_accessible_via_shared_link\": true,\n        \"allowed_invitee_roles\": [\n          \"editor\"\n        ],\n        \"is_externally_owned\": \"<boolean>\",\n        \"has_collaborations\": \"<boolean>\",\n        \"metadata\": {\n          \"iruree_\": {\n            \"Excepteur_2\": {\n              \"$parent\": \"<string>\",\n              \"$template\": \"<string>\",\n              \"$scope\": \"<string>\",\n              \"$version\": \"<integer>\"\n            }\n          },\n          \"voluptate_d4c\": {\n            \"pariatur_4fa\": {\n              \"$parent\": \"<string>\",\n              \"$template\": \"<string>\",\n              \"$scope\": \"<string>\",\n              \"$version\": \"<integer>\"\n            },\n            \"irure_18c\": {\n              \"$parent\": \"<string>\",\n              \"$template\": \"<string>\",\n              \"$scope\": \"<string>\",\n              \"$version\": \"<integer>\"\n            }\n          },\n          \"veniam_1\": {\n            \"nostrud0c9\": {\n              \"$parent\": \"<string>\",\n              \"$template\": \"<string>\",\n              \"$scope\": \"<string>\",\n              \"$version\": \"<integer>\"\n            },\n            \"aliquaf9\": {\n              \"$parent\": \"<string>\",\n              \"$template\": \"<string>\",\n              \"$scope\": \"<string>\",\n              \"$version\": \"<integer>\"\n            }\n          }\n        },\n        \"expires_at\": \"<dateTime>\",\n        \"representations\": {\n          \"entries\": [\n            {\n              \"content\": {\n                \"url_template\": \"<string>\"\n              },\n              \"info\": {\n                \"url\": \"<string>\"\n              },\n              \"properties\": {\n                \"dimensions\": \"<string>\",\n                \"paged\": \"<boolean>\",\n                \"thumb\": \"<boolean>\"\n              },\n              \"representation\": \"<string>\",\n              \"status\": {\n                \"state\": \"viewable\"\n              }\n            }\n          ]\n        },\n        \"classification\": {\n          \"name\": \"<string>\",\n          \"definition\": \"<string>\",\n          \"color\": \"<string>\"\n        },\n        \"uploader_display_name\": \"<string>\",\n        \"disposition_at\": \"<dateTime>\",\n        \"shared_link_permission_options\": [\n          \"can_edit\"\n        ]\n      }\n    ]\n  },\n  \"sync_state\": \"synced\",\n  \"has_collaborations\": \"<boolean>\",\n  \"permissions\": {\n    \"can_delete\": \"<boolean>\",\n    \"can_download\": \"<boolean>\",\n    \"can_invite_collaborator\": \"<boolean>\",\n    \"can_rename\": \"<boolean>\",\n    \"can_set_share_access\": \"<boolean>\",\n    \"can_share\": \"<boolean>\",\n    \"can_upload\": \"<boolean>\"\n  },\n  \"tags\": [\n    \"<string>\"\n  ],\n  \"can_non_owners_invite\": \"<boolean>\",\n  \"is_externally_owned\": \"<boolean>\",\n  \"metadata\": {\n    \"Excepteur_5\": {\n      \"do5\": {\n        \"$parent\": \"<string>\",\n        \"$template\": \"<string>\",\n        \"$scope\": \"<string>\",\n        \"$version\": \"<integer>\"\n      },\n      \"mollit_17\": {\n        \"$parent\": \"<string>\",\n        \"$template\": \"<string>\",\n        \"$scope\": \"<string>\",\n        \"$version\": \"<integer>\"\n      },\n      \"voluptate_a\": {\n        \"$parent\": \"<string>\",\n        \"$template\": \"<string>\",\n        \"$scope\": \"<string>\",\n        \"$version\": \"<integer>\"\n      }\n    }\n  },\n  \"is_collaboration_restricted_to_enterprise\": \"<boolean>\",\n  \"allowed_shared_link_access_levels\": [\n    \"collaborators\"\n  ],\n  \"allowed_invitee_roles\": [\n    \"uploader\"\n  ],\n  \"watermark_info\": {\n    \"is_watermarked\": \"<boolean>\"\n  },\n  \"is_accessible_via_shared_link\": false,\n  \"can_non_owners_view_collaborators\": \"<boolean>\",\n  \"classification\": {\n    \"name\": \"<string>\",\n    \"definition\": \"<string>\",\n    \"color\": \"<string>\"\n  }\n}",
+                  "createdAt": "2026-07-28T01:17:05.000Z",
+                  "updatedAt": "2026-07-28T01:17:05.000Z",
+                  "uid": "35240-5da014f7-6930-41e0-b90b-5ac43367919c"
+                },
+                {
+                  "id": "d9684253-467f-428d-ab55-9d427eae588c",
+                  "name": "Returned when there is an incorrect permission combination",
+                  "originalRequest": {
+                    "method": "PUT",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"shared_link\": {\n    \"access\": \"company\",\n    \"password\": \"<string>\",\n    \"vanity_name\": \"<string>\",\n    \"unshared_at\": \"<dateTime>\",\n    \"permissions\": {\n      \"can_download\": \"<boolean>\",\n      \"can_preview\": \"<boolean>\",\n      \"can_edit\": \"<boolean>\"\n    }\n  }\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/folders/{{folder_id}}?fields=<string>#update_shared_link",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "folders",
+                        "{{folder_id}}"
+                      ],
+                      "query": [
+                        {
+                          "description": "(Required) Explicitly request the `shared_link` fields\nto be returned for this item.",
+                          "key": "fields",
+                          "value": "<string>"
+                        }
+                      ],
+                      "hash": "update_shared_link"
+                    }
+                  },
+                  "status": "Bad Request",
+                  "code": 400,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"type\": \"error\",\n  \"status\": \"<integer>\",\n  \"code\": \"conflict\",\n  \"message\": \"<string>\",\n  \"context_info\": {\n    \"message\": \"<string>\"\n  },\n  \"help_url\": \"<string>\",\n  \"request_id\": \"<string>\"\n}",
+                  "createdAt": "2026-07-28T01:17:05.000Z",
+                  "updatedAt": "2026-07-28T01:17:05.000Z",
+                  "uid": "35240-d9684253-467f-428d-ab55-9d427eae588c"
+                },
+                {
+                  "id": "1c70abe2-5a97-42ac-b0ff-eeb922d4a275",
+                  "name": "Returned when the access token provided in the `Authorization` header\nis not recognized or not provided.",
+                  "originalRequest": {
+                    "method": "PUT",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"shared_link\": {\n    \"access\": \"company\",\n    \"password\": \"<string>\",\n    \"vanity_name\": \"<string>\",\n    \"unshared_at\": \"<dateTime>\",\n    \"permissions\": {\n      \"can_download\": \"<boolean>\",\n      \"can_preview\": \"<boolean>\",\n      \"can_edit\": \"<boolean>\"\n    }\n  }\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/folders/{{folder_id}}?fields=<string>#update_shared_link",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "folders",
+                        "{{folder_id}}"
+                      ],
+                      "query": [
+                        {
+                          "description": "(Required) Explicitly request the `shared_link` fields\nto be returned for this item.",
+                          "key": "fields",
+                          "value": "<string>"
+                        }
+                      ],
+                      "hash": "update_shared_link"
+                    }
+                  },
+                  "status": "Unauthorized",
+                  "code": 401,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"type\": \"error\",\n  \"status\": \"<integer>\",\n  \"code\": \"conflict\",\n  \"message\": \"<string>\",\n  \"context_info\": {\n    \"message\": \"<string>\"\n  },\n  \"help_url\": \"<string>\",\n  \"request_id\": \"<string>\"\n}",
+                  "createdAt": "2026-07-28T01:17:05.000Z",
+                  "updatedAt": "2026-07-28T01:17:05.000Z",
+                  "uid": "35240-1c70abe2-5a97-42ac-b0ff-eeb922d4a275"
+                },
+                {
+                  "id": "dc19e161-a13b-404c-8994-91ad63911502",
+                  "name": "Returned if the user does not have all the permissions to complete the\nupdate.",
+                  "originalRequest": {
+                    "method": "PUT",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"shared_link\": {\n    \"access\": \"company\",\n    \"password\": \"<string>\",\n    \"vanity_name\": \"<string>\",\n    \"unshared_at\": \"<dateTime>\",\n    \"permissions\": {\n      \"can_download\": \"<boolean>\",\n      \"can_preview\": \"<boolean>\",\n      \"can_edit\": \"<boolean>\"\n    }\n  }\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/folders/{{folder_id}}?fields=<string>#update_shared_link",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "folders",
+                        "{{folder_id}}"
+                      ],
+                      "query": [
+                        {
+                          "description": "(Required) Explicitly request the `shared_link` fields\nto be returned for this item.",
+                          "key": "fields",
+                          "value": "<string>"
+                        }
+                      ],
+                      "hash": "update_shared_link"
+                    }
+                  },
+                  "status": "Forbidden",
+                  "code": 403,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"type\": \"error\",\n  \"status\": \"<integer>\",\n  \"code\": \"conflict\",\n  \"message\": \"<string>\",\n  \"context_info\": {\n    \"message\": \"<string>\"\n  },\n  \"help_url\": \"<string>\",\n  \"request_id\": \"<string>\"\n}",
+                  "createdAt": "2026-07-28T01:17:05.000Z",
+                  "updatedAt": "2026-07-28T01:17:05.000Z",
+                  "uid": "35240-dc19e161-a13b-404c-8994-91ad63911502"
+                },
+                {
+                  "id": "6d3ac715-3126-4507-a938-dfdacb62e316",
+                  "name": "Returned if the folder is not found, or the user does not\nhave access to the folder.",
+                  "originalRequest": {
+                    "method": "PUT",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"shared_link\": {\n    \"access\": \"company\",\n    \"password\": \"<string>\",\n    \"vanity_name\": \"<string>\",\n    \"unshared_at\": \"<dateTime>\",\n    \"permissions\": {\n      \"can_download\": \"<boolean>\",\n      \"can_preview\": \"<boolean>\",\n      \"can_edit\": \"<boolean>\"\n    }\n  }\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/folders/{{folder_id}}?fields=<string>#update_shared_link",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "folders",
+                        "{{folder_id}}"
+                      ],
+                      "query": [
+                        {
+                          "description": "(Required) Explicitly request the `shared_link` fields\nto be returned for this item.",
+                          "key": "fields",
+                          "value": "<string>"
+                        }
+                      ],
+                      "hash": "update_shared_link"
+                    }
+                  },
+                  "status": "Not Found",
+                  "code": 404,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"type\": \"error\",\n  \"status\": \"<integer>\",\n  \"code\": \"conflict\",\n  \"message\": \"<string>\",\n  \"context_info\": {\n    \"message\": \"<string>\"\n  },\n  \"help_url\": \"<string>\",\n  \"request_id\": \"<string>\"\n}",
+                  "createdAt": "2026-07-28T01:17:05.000Z",
+                  "updatedAt": "2026-07-28T01:17:05.000Z",
+                  "uid": "35240-6d3ac715-3126-4507-a938-dfdacb62e316"
+                },
+                {
+                  "id": "d647551c-89d9-4815-84ee-1111a638cc6e",
+                  "name": "Returned if the `folder_id` is not in a recognized format.",
+                  "originalRequest": {
+                    "method": "PUT",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"shared_link\": {\n    \"access\": \"company\",\n    \"password\": \"<string>\",\n    \"vanity_name\": \"<string>\",\n    \"unshared_at\": \"<dateTime>\",\n    \"permissions\": {\n      \"can_download\": \"<boolean>\",\n      \"can_preview\": \"<boolean>\",\n      \"can_edit\": \"<boolean>\"\n    }\n  }\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/folders/{{folder_id}}?fields=<string>#update_shared_link",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "folders",
+                        "{{folder_id}}"
+                      ],
+                      "query": [
+                        {
+                          "description": "(Required) Explicitly request the `shared_link` fields\nto be returned for this item.",
+                          "key": "fields",
+                          "value": "<string>"
+                        }
+                      ],
+                      "hash": "update_shared_link"
+                    }
+                  },
+                  "status": "Method Not Allowed",
+                  "code": 405,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"type\": \"error\",\n  \"status\": \"<integer>\",\n  \"code\": \"conflict\",\n  \"message\": \"<string>\",\n  \"context_info\": {\n    \"message\": \"<string>\"\n  },\n  \"help_url\": \"<string>\",\n  \"request_id\": \"<string>\"\n}",
+                  "createdAt": "2026-07-28T01:17:05.000Z",
+                  "updatedAt": "2026-07-28T01:17:05.000Z",
+                  "uid": "35240-d647551c-89d9-4815-84ee-1111a638cc6e"
+                },
+                {
+                  "id": "8d715d4d-41cf-4ae0-b044-9d5e227efa8a",
+                  "name": "Returns an error when the `If-Match` header does not match\nthe current `etag` value of the folder. This indicates that the folder\nhas changed since it was last requested.",
+                  "originalRequest": {
+                    "method": "PUT",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"shared_link\": {\n    \"access\": \"company\",\n    \"password\": \"<string>\",\n    \"vanity_name\": \"<string>\",\n    \"unshared_at\": \"<dateTime>\",\n    \"permissions\": {\n      \"can_download\": \"<boolean>\",\n      \"can_preview\": \"<boolean>\",\n      \"can_edit\": \"<boolean>\"\n    }\n  }\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/folders/{{folder_id}}?fields=<string>#update_shared_link",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "folders",
+                        "{{folder_id}}"
+                      ],
+                      "query": [
+                        {
+                          "description": "(Required) Explicitly request the `shared_link` fields\nto be returned for this item.",
+                          "key": "fields",
+                          "value": "<string>"
+                        }
+                      ],
+                      "hash": "update_shared_link"
+                    }
+                  },
+                  "status": "Precondition Failed",
+                  "code": 412,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"type\": \"error\",\n  \"status\": \"<integer>\",\n  \"code\": \"conflict\",\n  \"message\": \"<string>\",\n  \"context_info\": {\n    \"message\": \"<string>\"\n  },\n  \"help_url\": \"<string>\",\n  \"request_id\": \"<string>\"\n}",
+                  "createdAt": "2026-07-28T01:17:05.000Z",
+                  "updatedAt": "2026-07-28T01:17:05.000Z",
+                  "uid": "35240-8d715d4d-41cf-4ae0-b044-9d5e227efa8a"
+                },
+                {
+                  "id": "5fdb8265-5e47-4f6f-8128-9c59cb0c232b",
+                  "name": "An unexpected client error.",
+                  "originalRequest": {
+                    "method": "PUT",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"shared_link\": {\n    \"access\": \"company\",\n    \"password\": \"<string>\",\n    \"vanity_name\": \"<string>\",\n    \"unshared_at\": \"<dateTime>\",\n    \"permissions\": {\n      \"can_download\": \"<boolean>\",\n      \"can_preview\": \"<boolean>\",\n      \"can_edit\": \"<boolean>\"\n    }\n  }\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/folders/{{folder_id}}?fields=<string>#update_shared_link",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "folders",
+                        "{{folder_id}}"
+                      ],
+                      "query": [
+                        {
+                          "description": "(Required) Explicitly request the `shared_link` fields\nto be returned for this item.",
+                          "key": "fields",
+                          "value": "<string>"
+                        }
+                      ],
+                      "hash": "update_shared_link"
+                    }
+                  },
+                  "status": "Internal Server Error",
+                  "code": 500,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"type\": \"error\",\n  \"status\": \"<integer>\",\n  \"code\": \"conflict\",\n  \"message\": \"<string>\",\n  \"context_info\": {\n    \"message\": \"<string>\"\n  },\n  \"help_url\": \"<string>\",\n  \"request_id\": \"<string>\"\n}",
+                  "createdAt": "2026-07-28T01:17:05.000Z",
+                  "updatedAt": "2026-07-28T01:17:05.000Z",
+                  "uid": "35240-5fdb8265-5e47-4f6f-8128-9c59cb0c232b"
+                }
+              ],
+              "createdAt": "2026-07-28T01:17:05.000Z",
+              "updatedAt": "2026-07-28T01:17:05.000Z",
+              "uid": "35240-9e57343f-cfb7-427b-90fc-653d3facc95c"
+            }
+          ],
+          "id": "5a1f31f1-b65a-4568-a8d4-a54fd99e727c",
+          "createdAt": "2026-07-28T01:17:05.000Z",
+          "updatedAt": "2026-07-28T01:17:05.000Z",
+          "uid": "35240-5a1f31f1-b65a-4568-a8d4-a54fd99e727c"
+        },
+        {
+          "name": "{folder_id}#remove_shared_link",
+          "item": [
+            {
+              "name": "Box Remove shared link from folder",
+              "id": "37d9b9ca-d052-488a-a396-d9338ef72568",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "PUT",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"shared_link\": {}\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/folders/{{folder_id}}?fields=<string>#remove_shared_link",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "folders",
+                    "{{folder_id}}"
+                  ],
+                  "query": [
+                    {
+                      "description": "(Required) Explicitly request the `shared_link` fields\nto be returned for this item.",
+                      "key": "fields",
+                      "value": "<string>"
+                    }
+                  ],
+                  "hash": "remove_shared_link"
+                },
+                "description": "Removes a shared link from a folder."
+              },
+              "response": [
+                {
+                  "id": "4231c6bb-f0ec-4d68-a90c-3df4b592e8b7",
+                  "name": "Returns a basic representation of a folder, with the shared link removed.",
+                  "originalRequest": {
+                    "method": "PUT",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"shared_link\": {}\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/folders/{{folder_id}}?fields=<string>#remove_shared_link",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "folders",
+                        "{{folder_id}}"
+                      ],
+                      "query": [
+                        {
+                          "description": "(Required) Explicitly request the `shared_link` fields\nto be returned for this item.",
+                          "key": "fields",
+                          "value": "<string>"
+                        }
+                      ],
+                      "hash": "remove_shared_link"
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"id\": \"<string>\",\n  \"type\": \"folder\",\n  \"etag\": \"<string>\",\n  \"sequence_id\": \"<string>\",\n  \"name\": \"<string>\",\n  \"created_at\": \"<dateTime>\",\n  \"modified_at\": \"<dateTime>\",\n  \"description\": \"<string>\",\n  \"size\": \"<long>\",\n  \"path_collection\": {\n    \"total_count\": \"<long>\",\n    \"entries\": [\n      {\n        \"id\": \"<string>\",\n        \"type\": \"folder\",\n        \"etag\": \"<string>\",\n        \"sequence_id\": \"<string>\",\n        \"name\": \"<string>\"\n      }\n    ]\n  },\n  \"created_by\": {\n    \"type\": \"user\",\n    \"id\": \"<string>\",\n    \"name\": \"<string>\",\n    \"login\": \"<email>\"\n  },\n  \"modified_by\": {\n    \"type\": \"user\",\n    \"id\": \"<string>\",\n    \"name\": \"<string>\",\n    \"login\": \"<email>\"\n  },\n  \"trashed_at\": \"<dateTime>\",\n  \"purged_at\": \"<dateTime>\",\n  \"content_created_at\": \"<dateTime>\",\n  \"content_modified_at\": \"<dateTime>\",\n  \"owned_by\": {\n    \"type\": \"user\",\n    \"id\": \"<string>\",\n    \"name\": \"<string>\",\n    \"login\": \"<email>\"\n  },\n  \"shared_link\": {\n    \"url\": \"<string>\",\n    \"effective_access\": \"company\",\n    \"effective_permission\": \"can_download\",\n    \"is_password_enabled\": \"<boolean>\",\n    \"download_count\": \"<integer>\",\n    \"preview_count\": \"<integer>\",\n    \"download_url\": \"<string>\",\n    \"vanity_url\": \"<string>\",\n    \"vanity_name\": \"<string>\",\n    \"access\": \"collaborators\",\n    \"unshared_at\": \"<dateTime>\",\n    \"permissions\": {\n      \"can_download\": \"<boolean>\",\n      \"can_preview\": \"<boolean>\",\n      \"can_edit\": \"<boolean>\"\n    }\n  },\n  \"folder_upload_email\": {\n    \"access\": \"open\",\n    \"email\": \"<email>\"\n  },\n  \"parent\": {\n    \"id\": \"<string>\",\n    \"type\": \"folder\",\n    \"etag\": \"<string>\",\n    \"sequence_id\": \"<string>\",\n    \"name\": \"<string>\"\n  },\n  \"item_status\": \"active\",\n  \"item_collection\": {\n    \"total_count\": \"<long>\",\n    \"limit\": \"<long>\",\n    \"offset\": \"<long>\",\n    \"order\": [\n      {\n        \"by\": \"<string>\",\n        \"direction\": \"ASC\"\n      }\n    ],\n    \"entries\": [\n      {\n        \"id\": \"<string>\",\n        \"type\": \"file\",\n        \"etag\": \"<string>\",\n        \"sequence_id\": \"<string>\",\n        \"name\": \"<string>\",\n        \"sha1\": \"<string>\",\n        \"file_version\": {\n          \"id\": \"<string>\",\n          \"type\": \"file_version\",\n          \"sha1\": \"<string>\"\n        },\n        \"description\": \"<string>\",\n        \"size\": \"<integer>\",\n        \"path_collection\": {\n          \"total_count\": \"<long>\",\n          \"entries\": [\n            {\n              \"id\": \"<string>\",\n              \"type\": \"folder\",\n              \"etag\": \"<string>\",\n              \"sequence_id\": \"<string>\",\n              \"name\": \"<string>\"\n            }\n          ]\n        },\n        \"created_at\": \"<dateTime>\",\n        \"modified_at\": \"<dateTime>\",\n        \"trashed_at\": \"<dateTime>\",\n        \"purged_at\": \"<dateTime>\",\n        \"content_created_at\": \"<dateTime>\",\n        \"content_modified_at\": \"<dateTime>\",\n        \"created_by\": {\n          \"type\": \"user\",\n          \"id\": \"<string>\",\n          \"name\": \"<string>\",\n          \"login\": \"<email>\"\n        },\n        \"modified_by\": {\n          \"type\": \"user\",\n          \"id\": \"<string>\",\n          \"name\": \"<string>\",\n          \"login\": \"<email>\"\n        },\n        \"owned_by\": {\n          \"type\": \"user\",\n          \"id\": \"<string>\",\n          \"name\": \"<string>\",\n          \"login\": \"<email>\"\n        },\n        \"shared_link\": {\n          \"url\": \"<string>\",\n          \"effective_access\": \"company\",\n          \"effective_permission\": \"can_edit\",\n          \"is_password_enabled\": \"<boolean>\",\n          \"download_count\": \"<integer>\",\n          \"preview_count\": \"<integer>\",\n          \"download_url\": \"<string>\",\n          \"vanity_url\": \"<string>\",\n          \"vanity_name\": \"<string>\",\n          \"access\": \"open\",\n          \"unshared_at\": \"<dateTime>\",\n          \"permissions\": {\n            \"can_download\": \"<boolean>\",\n            \"can_preview\": \"<boolean>\",\n            \"can_edit\": \"<boolean>\"\n          }\n        },\n        \"parent\": {\n          \"id\": \"<string>\",\n          \"type\": \"folder\",\n          \"etag\": \"<string>\",\n          \"sequence_id\": \"<string>\",\n          \"name\": \"<string>\"\n        },\n        \"item_status\": \"active\",\n        \"version_number\": \"<string>\",\n        \"comment_count\": \"<integer>\",\n        \"permissions\": {\n          \"can_annotate\": \"<boolean>\",\n          \"can_comment\": \"<boolean>\",\n          \"can_delete\": \"<boolean>\",\n          \"can_download\": \"<boolean>\",\n          \"can_invite_collaborator\": \"<boolean>\",\n          \"can_preview\": \"<boolean>\",\n          \"can_rename\": \"<boolean>\",\n          \"can_set_share_access\": \"<boolean>\",\n          \"can_share\": \"<boolean>\",\n          \"can_upload\": \"<boolean>\",\n          \"can_view_annotations_all\": \"<boolean>\",\n          \"can_view_annotations_self\": \"<boolean>\"\n        },\n        \"tags\": [\n          \"<string>\"\n        ],\n        \"lock\": {\n          \"id\": \"<string>\",\n          \"type\": \"lock\",\n          \"created_by\": {\n            \"type\": \"user\",\n            \"id\": \"<string>\",\n            \"name\": \"<string>\",\n            \"login\": \"<email>\"\n          },\n          \"created_at\": \"<dateTime>\",\n          \"expired_at\": \"<dateTime>\",\n          \"is_download_prevented\": \"<boolean>\",\n          \"app_type\": \"other\"\n        },\n        \"extension\": \"<string>\",\n        \"is_package\": \"<boolean>\",\n        \"expiring_embed_link\": {\n          \"access_token\": \"<string>\",\n          \"expires_in\": \"<long>\",\n          \"token_type\": \"bearer\",\n          \"restricted_to\": [\n            {\n              \"scope\": \"base_preview\",\n              \"object\": {\n                \"id\": \"<string>\",\n                \"type\": \"folder\",\n                \"etag\": \"<string>\",\n                \"sequence_id\": \"<string>\",\n                \"name\": \"<string>\"\n              }\n            }\n          ],\n          \"url\": \"<string>\"\n        },\n        \"watermark_info\": {\n          \"is_watermarked\": \"<boolean>\"\n        },\n        \"is_accessible_via_shared_link\": true,\n        \"allowed_invitee_roles\": [\n          \"editor\"\n        ],\n        \"is_externally_owned\": \"<boolean>\",\n        \"has_collaborations\": \"<boolean>\",\n        \"metadata\": {\n          \"iruree_\": {\n            \"Excepteur_2\": {\n              \"$parent\": \"<string>\",\n              \"$template\": \"<string>\",\n              \"$scope\": \"<string>\",\n              \"$version\": \"<integer>\"\n            }\n          },\n          \"voluptate_d4c\": {\n            \"pariatur_4fa\": {\n              \"$parent\": \"<string>\",\n              \"$template\": \"<string>\",\n              \"$scope\": \"<string>\",\n              \"$version\": \"<integer>\"\n            },\n            \"irure_18c\": {\n              \"$parent\": \"<string>\",\n              \"$template\": \"<string>\",\n              \"$scope\": \"<string>\",\n              \"$version\": \"<integer>\"\n            }\n          },\n          \"veniam_1\": {\n            \"nostrud0c9\": {\n              \"$parent\": \"<string>\",\n              \"$template\": \"<string>\",\n              \"$scope\": \"<string>\",\n              \"$version\": \"<integer>\"\n            },\n            \"aliquaf9\": {\n              \"$parent\": \"<string>\",\n              \"$template\": \"<string>\",\n              \"$scope\": \"<string>\",\n              \"$version\": \"<integer>\"\n            }\n          }\n        },\n        \"expires_at\": \"<dateTime>\",\n        \"representations\": {\n          \"entries\": [\n            {\n              \"content\": {\n                \"url_template\": \"<string>\"\n              },\n              \"info\": {\n                \"url\": \"<string>\"\n              },\n              \"properties\": {\n                \"dimensions\": \"<string>\",\n                \"paged\": \"<boolean>\",\n                \"thumb\": \"<boolean>\"\n              },\n              \"representation\": \"<string>\",\n              \"status\": {\n                \"state\": \"viewable\"\n              }\n            }\n          ]\n        },\n        \"classification\": {\n          \"name\": \"<string>\",\n          \"definition\": \"<string>\",\n          \"color\": \"<string>\"\n        },\n        \"uploader_display_name\": \"<string>\",\n        \"disposition_at\": \"<dateTime>\",\n        \"shared_link_permission_options\": [\n          \"can_edit\"\n        ]\n      }\n    ]\n  },\n  \"sync_state\": \"synced\",\n  \"has_collaborations\": \"<boolean>\",\n  \"permissions\": {\n    \"can_delete\": \"<boolean>\",\n    \"can_download\": \"<boolean>\",\n    \"can_invite_collaborator\": \"<boolean>\",\n    \"can_rename\": \"<boolean>\",\n    \"can_set_share_access\": \"<boolean>\",\n    \"can_share\": \"<boolean>\",\n    \"can_upload\": \"<boolean>\"\n  },\n  \"tags\": [\n    \"<string>\"\n  ],\n  \"can_non_owners_invite\": \"<boolean>\",\n  \"is_externally_owned\": \"<boolean>\",\n  \"metadata\": {\n    \"Excepteur_5\": {\n      \"do5\": {\n        \"$parent\": \"<string>\",\n        \"$template\": \"<string>\",\n        \"$scope\": \"<string>\",\n        \"$version\": \"<integer>\"\n      },\n      \"mollit_17\": {\n        \"$parent\": \"<string>\",\n        \"$template\": \"<string>\",\n        \"$scope\": \"<string>\",\n        \"$version\": \"<integer>\"\n      },\n      \"voluptate_a\": {\n        \"$parent\": \"<string>\",\n        \"$template\": \"<string>\",\n        \"$scope\": \"<string>\",\n        \"$version\": \"<integer>\"\n      }\n    }\n  },\n  \"is_collaboration_restricted_to_enterprise\": \"<boolean>\",\n  \"allowed_shared_link_access_levels\": [\n    \"collaborators\"\n  ],\n  \"allowed_invitee_roles\": [\n    \"uploader\"\n  ],\n  \"watermark_info\": {\n    \"is_watermarked\": \"<boolean>\"\n  },\n  \"is_accessible_via_shared_link\": false,\n  \"can_non_owners_view_collaborators\": \"<boolean>\",\n  \"classification\": {\n    \"name\": \"<string>\",\n    \"definition\": \"<string>\",\n    \"color\": \"<string>\"\n  }\n}",
+                  "createdAt": "2026-07-28T01:17:05.000Z",
+                  "updatedAt": "2026-07-28T01:17:05.000Z",
+                  "uid": "35240-4231c6bb-f0ec-4d68-a90c-3df4b592e8b7"
+                },
+                {
+                  "id": "2bd0e23f-1142-4a56-b4c6-5ab8195f7527",
+                  "name": "Returned when the access token provided in the `Authorization` header\nis not recognized or not provided.",
+                  "originalRequest": {
+                    "method": "PUT",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"shared_link\": {}\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/folders/{{folder_id}}?fields=<string>#remove_shared_link",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "folders",
+                        "{{folder_id}}"
+                      ],
+                      "query": [
+                        {
+                          "description": "(Required) Explicitly request the `shared_link` fields\nto be returned for this item.",
+                          "key": "fields",
+                          "value": "<string>"
+                        }
+                      ],
+                      "hash": "remove_shared_link"
+                    }
+                  },
+                  "status": "Unauthorized",
+                  "code": 401,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"type\": \"error\",\n  \"status\": \"<integer>\",\n  \"code\": \"conflict\",\n  \"message\": \"<string>\",\n  \"context_info\": {\n    \"message\": \"<string>\"\n  },\n  \"help_url\": \"<string>\",\n  \"request_id\": \"<string>\"\n}",
+                  "createdAt": "2026-07-28T01:17:05.000Z",
+                  "updatedAt": "2026-07-28T01:17:05.000Z",
+                  "uid": "35240-2bd0e23f-1142-4a56-b4c6-5ab8195f7527"
+                },
+                {
+                  "id": "534ba0d6-6e1e-4074-a05d-a37550b38fcf",
+                  "name": "Returned if the user does not have all the permissions to complete the\nupdate.",
+                  "originalRequest": {
+                    "method": "PUT",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"shared_link\": {}\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/folders/{{folder_id}}?fields=<string>#remove_shared_link",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "folders",
+                        "{{folder_id}}"
+                      ],
+                      "query": [
+                        {
+                          "description": "(Required) Explicitly request the `shared_link` fields\nto be returned for this item.",
+                          "key": "fields",
+                          "value": "<string>"
+                        }
+                      ],
+                      "hash": "remove_shared_link"
+                    }
+                  },
+                  "status": "Forbidden",
+                  "code": 403,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"type\": \"error\",\n  \"status\": \"<integer>\",\n  \"code\": \"conflict\",\n  \"message\": \"<string>\",\n  \"context_info\": {\n    \"message\": \"<string>\"\n  },\n  \"help_url\": \"<string>\",\n  \"request_id\": \"<string>\"\n}",
+                  "createdAt": "2026-07-28T01:17:05.000Z",
+                  "updatedAt": "2026-07-28T01:17:05.000Z",
+                  "uid": "35240-534ba0d6-6e1e-4074-a05d-a37550b38fcf"
+                },
+                {
+                  "id": "a2b9e586-8a8e-4c87-bbe5-bb3a82144066",
+                  "name": "Returned if the folder is not found, or the user does not\nhave access to the folder.",
+                  "originalRequest": {
+                    "method": "PUT",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"shared_link\": {}\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/folders/{{folder_id}}?fields=<string>#remove_shared_link",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "folders",
+                        "{{folder_id}}"
+                      ],
+                      "query": [
+                        {
+                          "description": "(Required) Explicitly request the `shared_link` fields\nto be returned for this item.",
+                          "key": "fields",
+                          "value": "<string>"
+                        }
+                      ],
+                      "hash": "remove_shared_link"
+                    }
+                  },
+                  "status": "Not Found",
+                  "code": 404,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"type\": \"error\",\n  \"status\": \"<integer>\",\n  \"code\": \"conflict\",\n  \"message\": \"<string>\",\n  \"context_info\": {\n    \"message\": \"<string>\"\n  },\n  \"help_url\": \"<string>\",\n  \"request_id\": \"<string>\"\n}",
+                  "createdAt": "2026-07-28T01:17:05.000Z",
+                  "updatedAt": "2026-07-28T01:17:05.000Z",
+                  "uid": "35240-a2b9e586-8a8e-4c87-bbe5-bb3a82144066"
+                },
+                {
+                  "id": "256e1133-e170-434a-aef8-bdecfaaa32af",
+                  "name": "Returned if the `folder_id` is not in a recognized format.",
+                  "originalRequest": {
+                    "method": "PUT",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"shared_link\": {}\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/folders/{{folder_id}}?fields=<string>#remove_shared_link",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "folders",
+                        "{{folder_id}}"
+                      ],
+                      "query": [
+                        {
+                          "description": "(Required) Explicitly request the `shared_link` fields\nto be returned for this item.",
+                          "key": "fields",
+                          "value": "<string>"
+                        }
+                      ],
+                      "hash": "remove_shared_link"
+                    }
+                  },
+                  "status": "Method Not Allowed",
+                  "code": 405,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"type\": \"error\",\n  \"status\": \"<integer>\",\n  \"code\": \"conflict\",\n  \"message\": \"<string>\",\n  \"context_info\": {\n    \"message\": \"<string>\"\n  },\n  \"help_url\": \"<string>\",\n  \"request_id\": \"<string>\"\n}",
+                  "createdAt": "2026-07-28T01:17:05.000Z",
+                  "updatedAt": "2026-07-28T01:17:05.000Z",
+                  "uid": "35240-256e1133-e170-434a-aef8-bdecfaaa32af"
+                },
+                {
+                  "id": "9173d01d-77c0-444b-9177-a6c02f6b5eb1",
+                  "name": "Returns an error when the `If-Match` header does not match\nthe current `etag` value of the folder. This indicates that the folder\nhas changed since it was last requested.",
+                  "originalRequest": {
+                    "method": "PUT",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"shared_link\": {}\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/folders/{{folder_id}}?fields=<string>#remove_shared_link",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "folders",
+                        "{{folder_id}}"
+                      ],
+                      "query": [
+                        {
+                          "description": "(Required) Explicitly request the `shared_link` fields\nto be returned for this item.",
+                          "key": "fields",
+                          "value": "<string>"
+                        }
+                      ],
+                      "hash": "remove_shared_link"
+                    }
+                  },
+                  "status": "Precondition Failed",
+                  "code": 412,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"type\": \"error\",\n  \"status\": \"<integer>\",\n  \"code\": \"conflict\",\n  \"message\": \"<string>\",\n  \"context_info\": {\n    \"message\": \"<string>\"\n  },\n  \"help_url\": \"<string>\",\n  \"request_id\": \"<string>\"\n}",
+                  "createdAt": "2026-07-28T01:17:05.000Z",
+                  "updatedAt": "2026-07-28T01:17:05.000Z",
+                  "uid": "35240-9173d01d-77c0-444b-9177-a6c02f6b5eb1"
+                },
+                {
+                  "id": "bff04c58-c50f-415f-8191-dbd36921259e",
+                  "name": "An unexpected client error.",
+                  "originalRequest": {
+                    "method": "PUT",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"shared_link\": {}\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/folders/{{folder_id}}?fields=<string>#remove_shared_link",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "folders",
+                        "{{folder_id}}"
+                      ],
+                      "query": [
+                        {
+                          "description": "(Required) Explicitly request the `shared_link` fields\nto be returned for this item.",
+                          "key": "fields",
+                          "value": "<string>"
+                        }
+                      ],
+                      "hash": "remove_shared_link"
+                    }
+                  },
+                  "status": "Internal Server Error",
+                  "code": 500,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"type\": \"error\",\n  \"status\": \"<integer>\",\n  \"code\": \"conflict\",\n  \"message\": \"<string>\",\n  \"context_info\": {\n    \"message\": \"<string>\"\n  },\n  \"help_url\": \"<string>\",\n  \"request_id\": \"<string>\"\n}",
+                  "createdAt": "2026-07-28T01:17:05.000Z",
+                  "updatedAt": "2026-07-28T01:17:05.000Z",
+                  "uid": "35240-bff04c58-c50f-415f-8191-dbd36921259e"
+                }
+              ],
+              "createdAt": "2026-07-28T01:17:05.000Z",
+              "updatedAt": "2026-07-28T01:17:05.000Z",
+              "uid": "35240-37d9b9ca-d052-488a-a396-d9338ef72568"
+            }
+          ],
+          "id": "d3913d30-66e4-49e5-b08c-83d4be3afe99",
+          "createdAt": "2026-07-28T01:17:05.000Z",
+          "updatedAt": "2026-07-28T01:17:05.000Z",
+          "uid": "35240-d3913d30-66e4-49e5-b08c-83d4be3afe99"
+        }
+      ],
+      "id": "28e635a4-ec4d-4d71-b174-7caeb6c1c4bb",
+      "createdAt": "2026-07-28T01:17:05.000Z",
+      "updatedAt": "2026-07-28T01:17:05.000Z",
+      "uid": "35240-28e635a4-ec4d-4d71-b174-7caeb6c1c4bb"
+    }
+  ],
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "/"
+    },
+    {
+      "key": "folder_id",
+      "value": "<string>"
+    }
+  ]
+}

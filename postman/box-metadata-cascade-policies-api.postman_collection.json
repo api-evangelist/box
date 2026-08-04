@@ -1,0 +1,1294 @@
+{
+  "info": {
+    "_postman_id": "33892efd-81c0-47b5-8ae1-8b084304c816",
+    "name": "Box Authorize Authorization Metadata Cascade Policies API",
+    "description": "Needs a description.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "createdAt": "2026-07-28T01:16:41.000Z",
+    "updatedAt": "2026-07-28T01:16:41.000Z",
+    "lastUpdatedBy": "35240",
+    "uid": "35240-33892efd-81c0-47b5-8ae1-8b084304c816"
+  },
+  "item": [
+    {
+      "name": "metadata_cascade_policies",
+      "item": [
+        {
+          "name": "{metadata_cascade_policy_id}",
+          "item": [
+            {
+              "name": "apply",
+              "item": [
+                {
+                  "name": "Box Force-apply metadata cascade policy to folder",
+                  "id": "fd1f78a9-699f-43a5-b24c-1192dbe08e58",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "method": "POST",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"conflict_resolution\": \"overwrite\"\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/metadata_cascade_policies/:metadata_cascade_policy_id/apply",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "metadata_cascade_policies",
+                        ":metadata_cascade_policy_id",
+                        "apply"
+                      ],
+                      "variable": [
+                        {
+                          "id": "99a821dd-eecf-4257-9fdc-b38e71bf6f1d",
+                          "key": "metadata_cascade_policy_id",
+                          "value": "<string>",
+                          "description": "(Required) The ID of the cascade policy to force-apply."
+                        }
+                      ]
+                    },
+                    "description": "Force the metadata on a folder with a metadata cascade policy to be applied to\nall of its children. This can be used after creating a new cascade policy to\nenforce the metadata to be cascaded down to all existing files within that\nfolder."
+                  },
+                  "response": [
+                    {
+                      "id": "2ba9bc7e-ec7f-4616-a87e-17ea5ba084de",
+                      "name": "Returns an empty response when the API call was successful. The metadata\ncascade operation will be performed asynchronously.\n\nThe API call will return directly, before the cascade operation\nis complete. There is currently no API to check for the status of",
+                      "originalRequest": {
+                        "method": "POST",
+                        "header": [
+                          {
+                            "key": "Content-Type",
+                            "value": "application/json"
+                          }
+                        ],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"conflict_resolution\": \"overwrite\"\n}",
+                          "options": {
+                            "raw": {
+                              "headerFamily": "json",
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/metadata_cascade_policies/:metadata_cascade_policy_id/apply",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "metadata_cascade_policies",
+                            ":metadata_cascade_policy_id",
+                            "apply"
+                          ],
+                          "variable": [
+                            {
+                              "key": "metadata_cascade_policy_id"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Accepted",
+                      "code": 202,
+                      "_postman_previewlanguage": "text",
+                      "header": [],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": null,
+                      "createdAt": "2026-07-28T01:16:42.000Z",
+                      "updatedAt": "2026-07-28T01:16:42.000Z",
+                      "uid": "35240-2ba9bc7e-ec7f-4616-a87e-17ea5ba084de"
+                    },
+                    {
+                      "id": "06c18682-36d6-45e5-a666-118fe2ae61df",
+                      "name": "Returns an error when the policy can not be found or the user does not\nhave access to the folder.\n\n* `instance_not_found` - The policy could not be found\n* `not_found` - The folder could not be found or the user does not have\n  access to the folder.",
+                      "originalRequest": {
+                        "method": "POST",
+                        "header": [
+                          {
+                            "key": "Content-Type",
+                            "value": "application/json"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          }
+                        ],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"conflict_resolution\": \"overwrite\"\n}",
+                          "options": {
+                            "raw": {
+                              "headerFamily": "json",
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/metadata_cascade_policies/:metadata_cascade_policy_id/apply",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "metadata_cascade_policies",
+                            ":metadata_cascade_policy_id",
+                            "apply"
+                          ],
+                          "variable": [
+                            {
+                              "key": "metadata_cascade_policy_id"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Not Found",
+                      "code": 404,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"type\": \"error\",\n  \"status\": \"<integer>\",\n  \"code\": \"created\",\n  \"message\": \"<string>\",\n  \"context_info\": {\n    \"message\": \"<string>\"\n  },\n  \"help_url\": \"<string>\",\n  \"request_id\": \"<string>\"\n}",
+                      "createdAt": "2026-07-28T01:16:42.000Z",
+                      "updatedAt": "2026-07-28T01:16:42.000Z",
+                      "uid": "35240-06c18682-36d6-45e5-a666-118fe2ae61df"
+                    },
+                    {
+                      "id": "a5595a9b-2732-4279-8d20-b159ff49d5aa",
+                      "name": "An unexpected client error.",
+                      "originalRequest": {
+                        "method": "POST",
+                        "header": [
+                          {
+                            "key": "Content-Type",
+                            "value": "application/json"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          }
+                        ],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"conflict_resolution\": \"overwrite\"\n}",
+                          "options": {
+                            "raw": {
+                              "headerFamily": "json",
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/metadata_cascade_policies/:metadata_cascade_policy_id/apply",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "metadata_cascade_policies",
+                            ":metadata_cascade_policy_id",
+                            "apply"
+                          ],
+                          "variable": [
+                            {
+                              "key": "metadata_cascade_policy_id"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Internal Server Error",
+                      "code": 500,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"type\": \"error\",\n  \"status\": \"<integer>\",\n  \"code\": \"created\",\n  \"message\": \"<string>\",\n  \"context_info\": {\n    \"message\": \"<string>\"\n  },\n  \"help_url\": \"<string>\",\n  \"request_id\": \"<string>\"\n}",
+                      "createdAt": "2026-07-28T01:16:42.000Z",
+                      "updatedAt": "2026-07-28T01:16:42.000Z",
+                      "uid": "35240-a5595a9b-2732-4279-8d20-b159ff49d5aa"
+                    }
+                  ],
+                  "createdAt": "2026-07-28T01:16:42.000Z",
+                  "updatedAt": "2026-07-28T01:16:42.000Z",
+                  "uid": "35240-fd1f78a9-699f-43a5-b24c-1192dbe08e58"
+                }
+              ],
+              "id": "6a8c6bd7-c165-4947-90da-97cbf04ab942",
+              "createdAt": "2026-07-28T01:16:42.000Z",
+              "updatedAt": "2026-07-28T01:16:42.000Z",
+              "uid": "35240-6a8c6bd7-c165-4947-90da-97cbf04ab942"
+            },
+            {
+              "name": "Box Get metadata cascade policy",
+              "id": "60cfa1f8-a2c5-47c5-9e3d-43f1afe7a2e8",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/metadata_cascade_policies/:metadata_cascade_policy_id",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "metadata_cascade_policies",
+                    ":metadata_cascade_policy_id"
+                  ],
+                  "variable": [
+                    {
+                      "id": "ecdde80b-65b7-44b2-b6c9-03015bdfe4dd",
+                      "key": "metadata_cascade_policy_id",
+                      "value": "<string>",
+                      "description": "(Required) The ID of the metadata cascade policy."
+                    }
+                  ]
+                },
+                "description": "Retrieve a specific metadata cascade policy assigned to a folder."
+              },
+              "response": [
+                {
+                  "id": "785c8d24-60c5-4d7c-9839-37b506daee2a",
+                  "name": "Returns a metadata cascade policy",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/metadata_cascade_policies/:metadata_cascade_policy_id",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "metadata_cascade_policies",
+                        ":metadata_cascade_policy_id"
+                      ],
+                      "variable": [
+                        {
+                          "key": "metadata_cascade_policy_id"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"id\": \"<string>\",\n  \"type\": \"metadata_cascade_policy\",\n  \"owner_enterprise\": {\n    \"type\": \"enterprise\",\n    \"id\": \"<string>\"\n  },\n  \"parent\": {\n    \"type\": \"folder\",\n    \"id\": \"<string>\"\n  },\n  \"scope\": \"<string>\",\n  \"templateKey\": \"<string>\"\n}",
+                  "createdAt": "2026-07-28T01:16:42.000Z",
+                  "updatedAt": "2026-07-28T01:16:42.000Z",
+                  "uid": "35240-785c8d24-60c5-4d7c-9839-37b506daee2a"
+                },
+                {
+                  "id": "54eb8129-d5a3-42af-bf39-a05fe1b12c29",
+                  "name": "Returns an error when the policy can not be found or the user does not\nhave access to the folder.\n\n* `instance_not_found` - The policy could not be found\n* `not_found` - The folder could not be found or the user does not have\n  access to the folder.",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/metadata_cascade_policies/:metadata_cascade_policy_id",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "metadata_cascade_policies",
+                        ":metadata_cascade_policy_id"
+                      ],
+                      "variable": [
+                        {
+                          "key": "metadata_cascade_policy_id"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Not Found",
+                  "code": 404,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"type\": \"error\",\n  \"status\": \"<integer>\",\n  \"code\": \"created\",\n  \"message\": \"<string>\",\n  \"context_info\": {\n    \"message\": \"<string>\"\n  },\n  \"help_url\": \"<string>\",\n  \"request_id\": \"<string>\"\n}",
+                  "createdAt": "2026-07-28T01:16:42.000Z",
+                  "updatedAt": "2026-07-28T01:16:42.000Z",
+                  "uid": "35240-54eb8129-d5a3-42af-bf39-a05fe1b12c29"
+                },
+                {
+                  "id": "48129968-b752-4151-8f19-433f6da25090",
+                  "name": "An unexpected client error.",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/metadata_cascade_policies/:metadata_cascade_policy_id",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "metadata_cascade_policies",
+                        ":metadata_cascade_policy_id"
+                      ],
+                      "variable": [
+                        {
+                          "key": "metadata_cascade_policy_id"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Internal Server Error",
+                  "code": 500,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"type\": \"error\",\n  \"status\": \"<integer>\",\n  \"code\": \"created\",\n  \"message\": \"<string>\",\n  \"context_info\": {\n    \"message\": \"<string>\"\n  },\n  \"help_url\": \"<string>\",\n  \"request_id\": \"<string>\"\n}",
+                  "createdAt": "2026-07-28T01:16:42.000Z",
+                  "updatedAt": "2026-07-28T01:16:42.000Z",
+                  "uid": "35240-48129968-b752-4151-8f19-433f6da25090"
+                }
+              ],
+              "createdAt": "2026-07-28T01:16:42.000Z",
+              "updatedAt": "2026-07-28T01:16:42.000Z",
+              "uid": "35240-60cfa1f8-a2c5-47c5-9e3d-43f1afe7a2e8"
+            },
+            {
+              "name": "Box Remove metadata cascade policy",
+              "id": "2d68b147-1c4b-410f-abdf-3ede7f976c28",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "DELETE",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/metadata_cascade_policies/:metadata_cascade_policy_id",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "metadata_cascade_policies",
+                    ":metadata_cascade_policy_id"
+                  ],
+                  "variable": [
+                    {
+                      "id": "17dcf3be-d62d-4a98-8a1b-a69c314582d2",
+                      "key": "metadata_cascade_policy_id",
+                      "value": "<string>",
+                      "description": "(Required) The ID of the metadata cascade policy."
+                    }
+                  ]
+                },
+                "description": "Deletes a metadata cascade policy."
+              },
+              "response": [
+                {
+                  "id": "3c2182be-3283-4ab3-bbcf-825915b4c17e",
+                  "name": "Returns an empty response when the policy\nis successfully deleted.",
+                  "originalRequest": {
+                    "method": "DELETE",
+                    "header": [],
+                    "url": {
+                      "raw": "{{baseUrl}}/metadata_cascade_policies/:metadata_cascade_policy_id",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "metadata_cascade_policies",
+                        ":metadata_cascade_policy_id"
+                      ],
+                      "variable": [
+                        {
+                          "key": "metadata_cascade_policy_id"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "No Content",
+                  "code": 204,
+                  "_postman_previewlanguage": "text",
+                  "header": [],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": null,
+                  "createdAt": "2026-07-28T01:16:42.000Z",
+                  "updatedAt": "2026-07-28T01:16:42.000Z",
+                  "uid": "35240-3c2182be-3283-4ab3-bbcf-825915b4c17e"
+                },
+                {
+                  "id": "f1cc31ca-9afd-4690-8cdb-c394f5870780",
+                  "name": "Returns an error when the policy can not be found or the user does not\nhave access to the folder.\n\n* `instance_not_found` - The policy could not be found\n* `not_found` - The folder could not be found or the user does not have\n  access to the folder.",
+                  "originalRequest": {
+                    "method": "DELETE",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/metadata_cascade_policies/:metadata_cascade_policy_id",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "metadata_cascade_policies",
+                        ":metadata_cascade_policy_id"
+                      ],
+                      "variable": [
+                        {
+                          "key": "metadata_cascade_policy_id"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Not Found",
+                  "code": 404,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"type\": \"error\",\n  \"status\": \"<integer>\",\n  \"code\": \"created\",\n  \"message\": \"<string>\",\n  \"context_info\": {\n    \"message\": \"<string>\"\n  },\n  \"help_url\": \"<string>\",\n  \"request_id\": \"<string>\"\n}",
+                  "createdAt": "2026-07-28T01:16:42.000Z",
+                  "updatedAt": "2026-07-28T01:16:42.000Z",
+                  "uid": "35240-f1cc31ca-9afd-4690-8cdb-c394f5870780"
+                },
+                {
+                  "id": "e2647533-ffa4-4196-90ba-35ab1813b9a9",
+                  "name": "An unexpected client error.",
+                  "originalRequest": {
+                    "method": "DELETE",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/metadata_cascade_policies/:metadata_cascade_policy_id",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "metadata_cascade_policies",
+                        ":metadata_cascade_policy_id"
+                      ],
+                      "variable": [
+                        {
+                          "key": "metadata_cascade_policy_id"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Internal Server Error",
+                  "code": 500,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"type\": \"error\",\n  \"status\": \"<integer>\",\n  \"code\": \"created\",\n  \"message\": \"<string>\",\n  \"context_info\": {\n    \"message\": \"<string>\"\n  },\n  \"help_url\": \"<string>\",\n  \"request_id\": \"<string>\"\n}",
+                  "createdAt": "2026-07-28T01:16:42.000Z",
+                  "updatedAt": "2026-07-28T01:16:42.000Z",
+                  "uid": "35240-e2647533-ffa4-4196-90ba-35ab1813b9a9"
+                }
+              ],
+              "createdAt": "2026-07-28T01:16:42.000Z",
+              "updatedAt": "2026-07-28T01:16:42.000Z",
+              "uid": "35240-2d68b147-1c4b-410f-abdf-3ede7f976c28"
+            }
+          ],
+          "id": "ec97b1ef-e02c-4bfe-a283-2f20c2877ce8",
+          "createdAt": "2026-07-28T01:16:42.000Z",
+          "updatedAt": "2026-07-28T01:16:42.000Z",
+          "uid": "35240-ec97b1ef-e02c-4bfe-a283-2f20c2877ce8"
+        },
+        {
+          "name": "Box List metadata cascade policies",
+          "id": "43093a5a-1a87-4c2d-9105-edb3f75861c1",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/metadata_cascade_policies?folder_id=<string>&owner_enterprise_id=<string>&marker=<string>&offset=0",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "metadata_cascade_policies"
+              ],
+              "query": [
+                {
+                  "description": "(Required) Specifies which folder to return policies for. This can not be used on the\nroot folder with ID `0`.",
+                  "key": "folder_id",
+                  "value": "<string>"
+                },
+                {
+                  "description": "The ID of the enterprise ID for which to find metadata\ncascade policies. If not specified, it defaults to the\ncurrent enterprise.",
+                  "key": "owner_enterprise_id",
+                  "value": "<string>"
+                },
+                {
+                  "description": "Defines the position marker at which to begin returning results. This is\nused when paginating using marker-based pagination.\n\nThis requires `usemarker` to be set to `true`.",
+                  "key": "marker",
+                  "value": "<string>"
+                },
+                {
+                  "description": "The offset of the item at which to begin the response.\n\nQueries with offset parameter value\nexceeding 10000 will be rejected\nwith a 400 response.",
+                  "key": "offset",
+                  "value": "0"
+                }
+              ]
+            },
+            "description": "Retrieves a list of all the metadata cascade policies\nthat are applied to a given folder. This can not be used on the root\nfolder with ID `0`."
+          },
+          "response": [
+            {
+              "id": "1cd6add9-7326-4d3e-9702-e055902134c2",
+              "name": "Returns a list of metadata cascade policies",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/metadata_cascade_policies?folder_id=<string>&owner_enterprise_id=<string>&marker=<string>&offset=0",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "metadata_cascade_policies"
+                  ],
+                  "query": [
+                    {
+                      "description": "(Required) Specifies which folder to return policies for. This can not be used on the\nroot folder with ID `0`.",
+                      "key": "folder_id",
+                      "value": "<string>"
+                    },
+                    {
+                      "description": "The ID of the enterprise ID for which to find metadata\ncascade policies. If not specified, it defaults to the\ncurrent enterprise.",
+                      "key": "owner_enterprise_id",
+                      "value": "<string>"
+                    },
+                    {
+                      "description": "Defines the position marker at which to begin returning results. This is\nused when paginating using marker-based pagination.\n\nThis requires `usemarker` to be set to `true`.",
+                      "key": "marker",
+                      "value": "<string>"
+                    },
+                    {
+                      "description": "The offset of the item at which to begin the response.\n\nQueries with offset parameter value\nexceeding 10000 will be rejected\nwith a 400 response.",
+                      "key": "offset",
+                      "value": "0"
+                    }
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "responseTime": null,
+              "body": "{\n  \"limit\": \"<long>\",\n  \"next_marker\": \"<string>\",\n  \"prev_marker\": \"<string>\",\n  \"entries\": [\n    {\n      \"id\": \"<string>\",\n      \"type\": \"metadata_cascade_policy\",\n      \"owner_enterprise\": {\n        \"type\": \"enterprise\",\n        \"id\": \"<string>\"\n      },\n      \"parent\": {\n        \"type\": \"folder\",\n        \"id\": \"<string>\"\n      },\n      \"scope\": \"<string>\",\n      \"templateKey\": \"<string>\"\n    },\n    {\n      \"id\": \"<string>\",\n      \"type\": \"metadata_cascade_policy\",\n      \"owner_enterprise\": {\n        \"type\": \"enterprise\",\n        \"id\": \"<string>\"\n      },\n      \"parent\": {\n        \"type\": \"folder\",\n        \"id\": \"<string>\"\n      },\n      \"scope\": \"<string>\",\n      \"templateKey\": \"<string>\"\n    }\n  ]\n}",
+              "createdAt": "2026-07-28T01:16:42.000Z",
+              "updatedAt": "2026-07-28T01:16:42.000Z",
+              "uid": "35240-1cd6add9-7326-4d3e-9702-e055902134c2"
+            },
+            {
+              "id": "4f5a79ac-c26b-467e-85d1-71f3d3ce94b8",
+              "name": "Returns an error when any of the parameters are not in a valid format.",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/metadata_cascade_policies?folder_id=<string>&owner_enterprise_id=<string>&marker=<string>&offset=0",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "metadata_cascade_policies"
+                  ],
+                  "query": [
+                    {
+                      "description": "(Required) Specifies which folder to return policies for. This can not be used on the\nroot folder with ID `0`.",
+                      "key": "folder_id",
+                      "value": "<string>"
+                    },
+                    {
+                      "description": "The ID of the enterprise ID for which to find metadata\ncascade policies. If not specified, it defaults to the\ncurrent enterprise.",
+                      "key": "owner_enterprise_id",
+                      "value": "<string>"
+                    },
+                    {
+                      "description": "Defines the position marker at which to begin returning results. This is\nused when paginating using marker-based pagination.\n\nThis requires `usemarker` to be set to `true`.",
+                      "key": "marker",
+                      "value": "<string>"
+                    },
+                    {
+                      "description": "The offset of the item at which to begin the response.\n\nQueries with offset parameter value\nexceeding 10000 will be rejected\nwith a 400 response.",
+                      "key": "offset",
+                      "value": "0"
+                    }
+                  ]
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "responseTime": null,
+              "body": "{\n  \"type\": \"error\",\n  \"status\": \"<integer>\",\n  \"code\": \"created\",\n  \"message\": \"<string>\",\n  \"context_info\": {\n    \"message\": \"<string>\"\n  },\n  \"help_url\": \"<string>\",\n  \"request_id\": \"<string>\"\n}",
+              "createdAt": "2026-07-28T01:16:42.000Z",
+              "updatedAt": "2026-07-28T01:16:42.000Z",
+              "uid": "35240-4f5a79ac-c26b-467e-85d1-71f3d3ce94b8"
+            },
+            {
+              "id": "2ef28814-b8a2-4de7-a63d-4cdab3b4dd2a",
+              "name": "Returns an error when the folder can not be accessed. This error often\nhappens when accessing the root folder with ID `0`.",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/metadata_cascade_policies?folder_id=<string>&owner_enterprise_id=<string>&marker=<string>&offset=0",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "metadata_cascade_policies"
+                  ],
+                  "query": [
+                    {
+                      "description": "(Required) Specifies which folder to return policies for. This can not be used on the\nroot folder with ID `0`.",
+                      "key": "folder_id",
+                      "value": "<string>"
+                    },
+                    {
+                      "description": "The ID of the enterprise ID for which to find metadata\ncascade policies. If not specified, it defaults to the\ncurrent enterprise.",
+                      "key": "owner_enterprise_id",
+                      "value": "<string>"
+                    },
+                    {
+                      "description": "Defines the position marker at which to begin returning results. This is\nused when paginating using marker-based pagination.\n\nThis requires `usemarker` to be set to `true`.",
+                      "key": "marker",
+                      "value": "<string>"
+                    },
+                    {
+                      "description": "The offset of the item at which to begin the response.\n\nQueries with offset parameter value\nexceeding 10000 will be rejected\nwith a 400 response.",
+                      "key": "offset",
+                      "value": "0"
+                    }
+                  ]
+                }
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "responseTime": null,
+              "body": "{\n  \"type\": \"error\",\n  \"status\": \"<integer>\",\n  \"code\": \"created\",\n  \"message\": \"<string>\",\n  \"context_info\": {\n    \"message\": \"<string>\"\n  },\n  \"help_url\": \"<string>\",\n  \"request_id\": \"<string>\"\n}",
+              "createdAt": "2026-07-28T01:16:42.000Z",
+              "updatedAt": "2026-07-28T01:16:42.000Z",
+              "uid": "35240-2ef28814-b8a2-4de7-a63d-4cdab3b4dd2a"
+            },
+            {
+              "id": "3571af01-9292-472a-bbbd-72f60777af5f",
+              "name": "Returns an error when the folder can not be found or the user does not\nhave access to the folder.\n\n* `not_found` - The folder could not be found or the user does not have\n  access to the folder.",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/metadata_cascade_policies?folder_id=<string>&owner_enterprise_id=<string>&marker=<string>&offset=0",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "metadata_cascade_policies"
+                  ],
+                  "query": [
+                    {
+                      "description": "(Required) Specifies which folder to return policies for. This can not be used on the\nroot folder with ID `0`.",
+                      "key": "folder_id",
+                      "value": "<string>"
+                    },
+                    {
+                      "description": "The ID of the enterprise ID for which to find metadata\ncascade policies. If not specified, it defaults to the\ncurrent enterprise.",
+                      "key": "owner_enterprise_id",
+                      "value": "<string>"
+                    },
+                    {
+                      "description": "Defines the position marker at which to begin returning results. This is\nused when paginating using marker-based pagination.\n\nThis requires `usemarker` to be set to `true`.",
+                      "key": "marker",
+                      "value": "<string>"
+                    },
+                    {
+                      "description": "The offset of the item at which to begin the response.\n\nQueries with offset parameter value\nexceeding 10000 will be rejected\nwith a 400 response.",
+                      "key": "offset",
+                      "value": "0"
+                    }
+                  ]
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "responseTime": null,
+              "body": "{\n  \"type\": \"error\",\n  \"status\": \"<integer>\",\n  \"code\": \"created\",\n  \"message\": \"<string>\",\n  \"context_info\": {\n    \"message\": \"<string>\"\n  },\n  \"help_url\": \"<string>\",\n  \"request_id\": \"<string>\"\n}",
+              "createdAt": "2026-07-28T01:16:42.000Z",
+              "updatedAt": "2026-07-28T01:16:42.000Z",
+              "uid": "35240-3571af01-9292-472a-bbbd-72f60777af5f"
+            },
+            {
+              "id": "c426cb0d-36bb-4dea-bf6d-bbef93f6f599",
+              "name": "An unexpected client error.",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/metadata_cascade_policies?folder_id=<string>&owner_enterprise_id=<string>&marker=<string>&offset=0",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "metadata_cascade_policies"
+                  ],
+                  "query": [
+                    {
+                      "description": "(Required) Specifies which folder to return policies for. This can not be used on the\nroot folder with ID `0`.",
+                      "key": "folder_id",
+                      "value": "<string>"
+                    },
+                    {
+                      "description": "The ID of the enterprise ID for which to find metadata\ncascade policies. If not specified, it defaults to the\ncurrent enterprise.",
+                      "key": "owner_enterprise_id",
+                      "value": "<string>"
+                    },
+                    {
+                      "description": "Defines the position marker at which to begin returning results. This is\nused when paginating using marker-based pagination.\n\nThis requires `usemarker` to be set to `true`.",
+                      "key": "marker",
+                      "value": "<string>"
+                    },
+                    {
+                      "description": "The offset of the item at which to begin the response.\n\nQueries with offset parameter value\nexceeding 10000 will be rejected\nwith a 400 response.",
+                      "key": "offset",
+                      "value": "0"
+                    }
+                  ]
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "responseTime": null,
+              "body": "{\n  \"type\": \"error\",\n  \"status\": \"<integer>\",\n  \"code\": \"created\",\n  \"message\": \"<string>\",\n  \"context_info\": {\n    \"message\": \"<string>\"\n  },\n  \"help_url\": \"<string>\",\n  \"request_id\": \"<string>\"\n}",
+              "createdAt": "2026-07-28T01:16:42.000Z",
+              "updatedAt": "2026-07-28T01:16:42.000Z",
+              "uid": "35240-c426cb0d-36bb-4dea-bf6d-bbef93f6f599"
+            }
+          ],
+          "createdAt": "2026-07-28T01:16:42.000Z",
+          "updatedAt": "2026-07-28T01:16:42.000Z",
+          "uid": "35240-43093a5a-1a87-4c2d-9105-edb3f75861c1"
+        },
+        {
+          "name": "Box Create metadata cascade policy",
+          "id": "bbee6837-248d-45d7-9e8c-624cc31abb1b",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"folder_id\": \"<string>\",\n  \"scope\": \"enterprise\",\n  \"templateKey\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "headerFamily": "json",
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/metadata_cascade_policies",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "metadata_cascade_policies"
+              ]
+            },
+            "description": "Creates a new metadata cascade policy that applies a given\nmetadata template to a given folder and automatically\ncascades it down to any files within that folder.\n\nIn order for the policy to be applied a metadata instance must first\nbe applied to the folder the policy is to be applied to."
+          },
+          "response": [
+            {
+              "id": "317bea05-8075-4034-a996-6ad0e23b5b19",
+              "name": "Returns a new of metadata cascade policy",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"folder_id\": \"<string>\",\n  \"scope\": \"enterprise\",\n  \"templateKey\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/metadata_cascade_policies",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "metadata_cascade_policies"
+                  ]
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "responseTime": null,
+              "body": "{\n  \"id\": \"<string>\",\n  \"type\": \"metadata_cascade_policy\",\n  \"owner_enterprise\": {\n    \"type\": \"enterprise\",\n    \"id\": \"<string>\"\n  },\n  \"parent\": {\n    \"type\": \"folder\",\n    \"id\": \"<string>\"\n  },\n  \"scope\": \"<string>\",\n  \"templateKey\": \"<string>\"\n}",
+              "createdAt": "2026-07-28T01:16:42.000Z",
+              "updatedAt": "2026-07-28T01:16:42.000Z",
+              "uid": "35240-317bea05-8075-4034-a996-6ad0e23b5b19"
+            },
+            {
+              "id": "f879e07f-f9d3-4125-af2a-88532d591b3e",
+              "name": "Returns an error when any of the parameters are not in a valid format.\n\n* `bad_request` - Either the `scope`, `templateKey`, or `folder_id` are\nnot in a valid format.",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"folder_id\": \"<string>\",\n  \"scope\": \"enterprise\",\n  \"templateKey\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/metadata_cascade_policies",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "metadata_cascade_policies"
+                  ]
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "responseTime": null,
+              "body": "{\n  \"type\": \"error\",\n  \"status\": \"<integer>\",\n  \"code\": \"created\",\n  \"message\": \"<string>\",\n  \"context_info\": {\n    \"message\": \"<string>\"\n  },\n  \"help_url\": \"<string>\",\n  \"request_id\": \"<string>\"\n}",
+              "createdAt": "2026-07-28T01:16:42.000Z",
+              "updatedAt": "2026-07-28T01:16:42.000Z",
+              "uid": "35240-f879e07f-f9d3-4125-af2a-88532d591b3e"
+            },
+            {
+              "id": "ae084b37-49fe-4b47-be8d-b8d5cbe63c4f",
+              "name": "Returns an error when trying to apply a policy to a restricted folder, for\nexample the root folder with ID `0`.\n\n* `forbidden` - Although the folder ID was valid and the user has access\nto the folder, the policy could not be applied to this folder.",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"folder_id\": \"<string>\",\n  \"scope\": \"enterprise\",\n  \"templateKey\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/metadata_cascade_policies",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "metadata_cascade_policies"
+                  ]
+                }
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "responseTime": null,
+              "body": "{\n  \"type\": \"error\",\n  \"status\": \"<integer>\",\n  \"code\": \"created\",\n  \"message\": \"<string>\",\n  \"context_info\": {\n    \"message\": \"<string>\"\n  },\n  \"help_url\": \"<string>\",\n  \"request_id\": \"<string>\"\n}",
+              "createdAt": "2026-07-28T01:16:42.000Z",
+              "updatedAt": "2026-07-28T01:16:42.000Z",
+              "uid": "35240-ae084b37-49fe-4b47-be8d-b8d5cbe63c4f"
+            },
+            {
+              "id": "d7f9e579-4a4c-4327-a667-9d91059551c3",
+              "name": "Returns an error when the template or folder can not be found, or when the\nuser does not have access to the folder or template.\n\n* `instance_tuple_not_found` - The template could not be found or the user\ndoes not have access to the template.\n* `not_found`",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"folder_id\": \"<string>\",\n  \"scope\": \"enterprise\",\n  \"templateKey\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/metadata_cascade_policies",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "metadata_cascade_policies"
+                  ]
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "responseTime": null,
+              "body": "{\n  \"type\": \"error\",\n  \"status\": \"<integer>\",\n  \"code\": \"created\",\n  \"message\": \"<string>\",\n  \"context_info\": {\n    \"message\": \"<string>\"\n  },\n  \"help_url\": \"<string>\",\n  \"request_id\": \"<string>\"\n}",
+              "createdAt": "2026-07-28T01:16:42.000Z",
+              "updatedAt": "2026-07-28T01:16:42.000Z",
+              "uid": "35240-d7f9e579-4a4c-4327-a667-9d91059551c3"
+            },
+            {
+              "id": "be851646-8912-4d72-888e-3f04b24e417f",
+              "name": "Returns an error when a policy for this folder and template is already in\nplace.\n\n* `tuple_already_exists` - A cascade policy for this combination of\n`folder_id`, `scope` and `templateKey` already exists.",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"folder_id\": \"<string>\",\n  \"scope\": \"enterprise\",\n  \"templateKey\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/metadata_cascade_policies",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "metadata_cascade_policies"
+                  ]
+                }
+              },
+              "status": "Conflict",
+              "code": 409,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "responseTime": null,
+              "body": "{\n  \"type\": \"error\",\n  \"status\": \"<integer>\",\n  \"code\": \"unavailable\",\n  \"message\": \"<string>\",\n  \"context_info\": {\n    \"message\": \"<string>\",\n    \"conflicts\": [\n      {\n        \"id\": \"<string>\",\n        \"type\": \"file\",\n        \"etag\": \"<string>\",\n        \"sequence_id\": \"<string>\",\n        \"name\": \"<string>\",\n        \"sha1\": \"<string>\",\n        \"file_version\": {\n          \"id\": \"<string>\",\n          \"type\": \"file_version\",\n          \"sha1\": \"<string>\"\n        }\n      },\n      {\n        \"id\": \"<string>\",\n        \"type\": \"file\",\n        \"etag\": \"<string>\",\n        \"sequence_id\": \"<string>\",\n        \"name\": \"<string>\",\n        \"sha1\": \"<string>\",\n        \"file_version\": {\n          \"id\": \"<string>\",\n          \"type\": \"file_version\",\n          \"sha1\": \"<string>\"\n        }\n      }\n    ]\n  },\n  \"help_url\": \"<string>\",\n  \"request_id\": \"<string>\"\n}",
+              "createdAt": "2026-07-28T01:16:42.000Z",
+              "updatedAt": "2026-07-28T01:16:42.000Z",
+              "uid": "35240-be851646-8912-4d72-888e-3f04b24e417f"
+            },
+            {
+              "id": "831a32a4-9cff-4e40-a8d4-709439d26720",
+              "name": "An unexpected client error.",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"folder_id\": \"<string>\",\n  \"scope\": \"enterprise\",\n  \"templateKey\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/metadata_cascade_policies",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "metadata_cascade_policies"
+                  ]
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "responseTime": null,
+              "body": "{\n  \"type\": \"error\",\n  \"status\": \"<integer>\",\n  \"code\": \"created\",\n  \"message\": \"<string>\",\n  \"context_info\": {\n    \"message\": \"<string>\"\n  },\n  \"help_url\": \"<string>\",\n  \"request_id\": \"<string>\"\n}",
+              "createdAt": "2026-07-28T01:16:42.000Z",
+              "updatedAt": "2026-07-28T01:16:42.000Z",
+              "uid": "35240-831a32a4-9cff-4e40-a8d4-709439d26720"
+            }
+          ],
+          "createdAt": "2026-07-28T01:16:42.000Z",
+          "updatedAt": "2026-07-28T01:16:42.000Z",
+          "uid": "35240-bbee6837-248d-45d7-9e8c-624cc31abb1b"
+        }
+      ],
+      "id": "5e24b885-dbcf-47eb-b7b8-d81682919e62",
+      "createdAt": "2026-07-28T01:16:42.000Z",
+      "updatedAt": "2026-07-28T01:16:42.000Z",
+      "uid": "35240-5e24b885-dbcf-47eb-b7b8-d81682919e62"
+    }
+  ],
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "/"
+    }
+  ]
+}

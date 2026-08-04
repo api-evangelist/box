@@ -1,0 +1,612 @@
+{
+  "info": {
+    "_postman_id": "a3cf9f25-143c-4907-a4dd-5cb1aaa1102f",
+    "name": "Box Authorize Authorization Watermarks (Files) API",
+    "description": "Needs a description.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "createdAt": "2026-07-28T01:18:24.000Z",
+    "updatedAt": "2026-07-28T01:18:24.000Z",
+    "lastUpdatedBy": "35240",
+    "uid": "35240-a3cf9f25-143c-4907-a4dd-5cb1aaa1102f"
+  },
+  "item": [
+    {
+      "name": "files",
+      "item": [
+        {
+          "name": "{file_id}",
+          "item": [
+            {
+              "name": "watermark",
+              "item": [
+                {
+                  "name": "Box Get watermark on file",
+                  "id": "22c36407-8fe5-4563-9637-2dbe6ef6acb9",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/files/:file_id/watermark",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "files",
+                        ":file_id",
+                        "watermark"
+                      ],
+                      "variable": [
+                        {
+                          "id": "db86dc5b-fd14-47ed-92ce-ebf52c4f0b77",
+                          "key": "file_id",
+                          "value": "<string>",
+                          "description": "(Required) The unique identifier that represents a file.\n\nThe ID for any file can be determined\nby visiting a file in the web application\nand copying the ID from the URL. For example,\nfor the URL `https://*.app.box.com/files/123`\nthe `file_id` is `123`."
+                        }
+                      ]
+                    },
+                    "description": "Retrieve the watermark for a file."
+                  },
+                  "response": [
+                    {
+                      "id": "99189fa4-ac7f-4299-ad7b-443b8073e874",
+                      "name": "Returns an object containing information about the\nwatermark associated for to this file.",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/files/:file_id/watermark",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "files",
+                            ":file_id",
+                            "watermark"
+                          ],
+                          "variable": [
+                            {
+                              "key": "file_id"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "OK",
+                      "code": 200,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"watermark\": {\n    \"created_at\": \"<dateTime>\",\n    \"modified_at\": \"<dateTime>\"\n  }\n}",
+                      "createdAt": "2026-07-28T01:18:24.000Z",
+                      "updatedAt": "2026-07-28T01:18:24.000Z",
+                      "uid": "35240-99189fa4-ac7f-4299-ad7b-443b8073e874"
+                    },
+                    {
+                      "id": "9fd76e38-1fb2-4278-9a39-894b5615ea26",
+                      "name": "Returns an error if the file does not have a watermark applied.",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/files/:file_id/watermark",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "files",
+                            ":file_id",
+                            "watermark"
+                          ],
+                          "variable": [
+                            {
+                              "key": "file_id"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Not Found",
+                      "code": 404,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"type\": \"error\",\n  \"status\": \"<integer>\",\n  \"code\": \"insufficient_scope\",\n  \"message\": \"<string>\",\n  \"context_info\": {\n    \"message\": \"<string>\"\n  },\n  \"help_url\": \"<string>\",\n  \"request_id\": \"<string>\"\n}",
+                      "createdAt": "2026-07-28T01:18:24.000Z",
+                      "updatedAt": "2026-07-28T01:18:24.000Z",
+                      "uid": "35240-9fd76e38-1fb2-4278-9a39-894b5615ea26"
+                    },
+                    {
+                      "id": "04fe849a-15e9-42bc-9508-b5768f1ea2f3",
+                      "name": "An unexpected client error.",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/files/:file_id/watermark",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "files",
+                            ":file_id",
+                            "watermark"
+                          ],
+                          "variable": [
+                            {
+                              "key": "file_id"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Internal Server Error",
+                      "code": 500,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"type\": \"error\",\n  \"status\": \"<integer>\",\n  \"code\": \"insufficient_scope\",\n  \"message\": \"<string>\",\n  \"context_info\": {\n    \"message\": \"<string>\"\n  },\n  \"help_url\": \"<string>\",\n  \"request_id\": \"<string>\"\n}",
+                      "createdAt": "2026-07-28T01:18:24.000Z",
+                      "updatedAt": "2026-07-28T01:18:24.000Z",
+                      "uid": "35240-04fe849a-15e9-42bc-9508-b5768f1ea2f3"
+                    }
+                  ],
+                  "createdAt": "2026-07-28T01:18:24.000Z",
+                  "updatedAt": "2026-07-28T01:18:24.000Z",
+                  "uid": "35240-22c36407-8fe5-4563-9637-2dbe6ef6acb9"
+                },
+                {
+                  "name": "Box Apply watermark to file",
+                  "id": "8ada10fd-b276-4672-93f4-e665b54ccf8e",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "method": "PUT",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "{\n  \"watermark\": {\n    \"imprint\": \"default\"\n  }\n}",
+                      "options": {
+                        "raw": {
+                          "headerFamily": "json",
+                          "language": "json"
+                        }
+                      }
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/files/:file_id/watermark",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "files",
+                        ":file_id",
+                        "watermark"
+                      ],
+                      "variable": [
+                        {
+                          "id": "7ce915bb-a449-40a6-a1b7-d8315461f7dc",
+                          "key": "file_id",
+                          "value": "<string>",
+                          "description": "(Required) The unique identifier that represents a file.\n\nThe ID for any file can be determined\nby visiting a file in the web application\nand copying the ID from the URL. For example,\nfor the URL `https://*.app.box.com/files/123`\nthe `file_id` is `123`."
+                        }
+                      ]
+                    },
+                    "description": "Applies or update a watermark on a file."
+                  },
+                  "response": [
+                    {
+                      "id": "2d7d8128-3c53-44d3-8297-b3140ce5bd38",
+                      "name": "Returns an updated watermark if a watermark already\nexisted on this file.",
+                      "originalRequest": {
+                        "method": "PUT",
+                        "header": [
+                          {
+                            "key": "Content-Type",
+                            "value": "application/json"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          }
+                        ],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"watermark\": {\n    \"imprint\": \"default\"\n  }\n}",
+                          "options": {
+                            "raw": {
+                              "headerFamily": "json",
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/files/:file_id/watermark",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "files",
+                            ":file_id",
+                            "watermark"
+                          ],
+                          "variable": [
+                            {
+                              "key": "file_id"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "OK",
+                      "code": 200,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"watermark\": {\n    \"created_at\": \"<dateTime>\",\n    \"modified_at\": \"<dateTime>\"\n  }\n}",
+                      "createdAt": "2026-07-28T01:18:24.000Z",
+                      "updatedAt": "2026-07-28T01:18:24.000Z",
+                      "uid": "35240-2d7d8128-3c53-44d3-8297-b3140ce5bd38"
+                    },
+                    {
+                      "id": "5f2aae9e-a739-4a7b-8c5e-b07e1c9c6232",
+                      "name": "Returns a new watermark if no watermark existed on\nthis file yet.",
+                      "originalRequest": {
+                        "method": "PUT",
+                        "header": [
+                          {
+                            "key": "Content-Type",
+                            "value": "application/json"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          }
+                        ],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"watermark\": {\n    \"imprint\": \"default\"\n  }\n}",
+                          "options": {
+                            "raw": {
+                              "headerFamily": "json",
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/files/:file_id/watermark",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "files",
+                            ":file_id",
+                            "watermark"
+                          ],
+                          "variable": [
+                            {
+                              "key": "file_id"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Created",
+                      "code": 201,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"watermark\": {\n    \"created_at\": \"<dateTime>\",\n    \"modified_at\": \"<dateTime>\"\n  }\n}",
+                      "createdAt": "2026-07-28T01:18:24.000Z",
+                      "updatedAt": "2026-07-28T01:18:24.000Z",
+                      "uid": "35240-5f2aae9e-a739-4a7b-8c5e-b07e1c9c6232"
+                    },
+                    {
+                      "id": "8049142f-f0b6-4009-9962-5d0549f935da",
+                      "name": "An unexpected client error.",
+                      "originalRequest": {
+                        "method": "PUT",
+                        "header": [
+                          {
+                            "key": "Content-Type",
+                            "value": "application/json"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          }
+                        ],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "{\n  \"watermark\": {\n    \"imprint\": \"default\"\n  }\n}",
+                          "options": {
+                            "raw": {
+                              "headerFamily": "json",
+                              "language": "json"
+                            }
+                          }
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/files/:file_id/watermark",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "files",
+                            ":file_id",
+                            "watermark"
+                          ],
+                          "variable": [
+                            {
+                              "key": "file_id"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Internal Server Error",
+                      "code": 500,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"type\": \"error\",\n  \"status\": \"<integer>\",\n  \"code\": \"insufficient_scope\",\n  \"message\": \"<string>\",\n  \"context_info\": {\n    \"message\": \"<string>\"\n  },\n  \"help_url\": \"<string>\",\n  \"request_id\": \"<string>\"\n}",
+                      "createdAt": "2026-07-28T01:18:24.000Z",
+                      "updatedAt": "2026-07-28T01:18:24.000Z",
+                      "uid": "35240-8049142f-f0b6-4009-9962-5d0549f935da"
+                    }
+                  ],
+                  "createdAt": "2026-07-28T01:18:24.000Z",
+                  "updatedAt": "2026-07-28T01:18:24.000Z",
+                  "uid": "35240-8ada10fd-b276-4672-93f4-e665b54ccf8e"
+                },
+                {
+                  "name": "Box Remove watermark from file",
+                  "id": "11431dd0-cf85-4f70-9ffa-2f9ba9c145b0",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "method": "DELETE",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/files/:file_id/watermark",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "files",
+                        ":file_id",
+                        "watermark"
+                      ],
+                      "variable": [
+                        {
+                          "id": "7d515a38-ebae-4679-9f9b-71c79486f272",
+                          "key": "file_id",
+                          "value": "<string>",
+                          "description": "(Required) The unique identifier that represents a file.\n\nThe ID for any file can be determined\nby visiting a file in the web application\nand copying the ID from the URL. For example,\nfor the URL `https://*.app.box.com/files/123`\nthe `file_id` is `123`."
+                        }
+                      ]
+                    },
+                    "description": "Removes the watermark from a file."
+                  },
+                  "response": [
+                    {
+                      "id": "ccbaa103-9e12-4635-8fa1-480f5f360b25",
+                      "name": "Removes the watermark and returns an empty response.",
+                      "originalRequest": {
+                        "method": "DELETE",
+                        "header": [],
+                        "url": {
+                          "raw": "{{baseUrl}}/files/:file_id/watermark",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "files",
+                            ":file_id",
+                            "watermark"
+                          ],
+                          "variable": [
+                            {
+                              "key": "file_id"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "No Content",
+                      "code": 204,
+                      "_postman_previewlanguage": "text",
+                      "header": [],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": null,
+                      "createdAt": "2026-07-28T01:18:24.000Z",
+                      "updatedAt": "2026-07-28T01:18:24.000Z",
+                      "uid": "35240-ccbaa103-9e12-4635-8fa1-480f5f360b25"
+                    },
+                    {
+                      "id": "701a0126-8acf-47df-b1c8-416dd7bd6ae0",
+                      "name": "Returns an error if the file did not have\na watermark applied to it.",
+                      "originalRequest": {
+                        "method": "DELETE",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/files/:file_id/watermark",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "files",
+                            ":file_id",
+                            "watermark"
+                          ],
+                          "variable": [
+                            {
+                              "key": "file_id"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Not Found",
+                      "code": 404,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"type\": \"error\",\n  \"status\": \"<integer>\",\n  \"code\": \"insufficient_scope\",\n  \"message\": \"<string>\",\n  \"context_info\": {\n    \"message\": \"<string>\"\n  },\n  \"help_url\": \"<string>\",\n  \"request_id\": \"<string>\"\n}",
+                      "createdAt": "2026-07-28T01:18:24.000Z",
+                      "updatedAt": "2026-07-28T01:18:24.000Z",
+                      "uid": "35240-701a0126-8acf-47df-b1c8-416dd7bd6ae0"
+                    },
+                    {
+                      "id": "0da1824c-3344-44c6-8220-49474a5780b5",
+                      "name": "An unexpected client error.",
+                      "originalRequest": {
+                        "method": "DELETE",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/files/:file_id/watermark",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "files",
+                            ":file_id",
+                            "watermark"
+                          ],
+                          "variable": [
+                            {
+                              "key": "file_id"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Internal Server Error",
+                      "code": 500,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"type\": \"error\",\n  \"status\": \"<integer>\",\n  \"code\": \"insufficient_scope\",\n  \"message\": \"<string>\",\n  \"context_info\": {\n    \"message\": \"<string>\"\n  },\n  \"help_url\": \"<string>\",\n  \"request_id\": \"<string>\"\n}",
+                      "createdAt": "2026-07-28T01:18:24.000Z",
+                      "updatedAt": "2026-07-28T01:18:24.000Z",
+                      "uid": "35240-0da1824c-3344-44c6-8220-49474a5780b5"
+                    }
+                  ],
+                  "createdAt": "2026-07-28T01:18:24.000Z",
+                  "updatedAt": "2026-07-28T01:18:24.000Z",
+                  "uid": "35240-11431dd0-cf85-4f70-9ffa-2f9ba9c145b0"
+                }
+              ],
+              "id": "b70c4b9f-0104-4113-88f9-0ff5a6091033",
+              "createdAt": "2026-07-28T01:18:24.000Z",
+              "updatedAt": "2026-07-28T01:18:24.000Z",
+              "uid": "35240-b70c4b9f-0104-4113-88f9-0ff5a6091033"
+            }
+          ],
+          "id": "77ba3d62-2f83-4622-9a42-8ecb09f88b47",
+          "createdAt": "2026-07-28T01:18:24.000Z",
+          "updatedAt": "2026-07-28T01:18:24.000Z",
+          "uid": "35240-77ba3d62-2f83-4622-9a42-8ecb09f88b47"
+        }
+      ],
+      "id": "2c23aa4b-3902-4330-b12e-86cab884ad74",
+      "createdAt": "2026-07-28T01:18:24.000Z",
+      "updatedAt": "2026-07-28T01:18:24.000Z",
+      "uid": "35240-2c23aa4b-3902-4330-b12e-86cab884ad74"
+    }
+  ],
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "/"
+    }
+  ]
+}

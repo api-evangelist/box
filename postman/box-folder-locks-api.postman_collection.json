@@ -1,0 +1,747 @@
+{
+  "info": {
+    "_postman_id": "cba669ac-0cf3-4e7e-86b2-67f70f1c9bd5",
+    "name": "Box Authorize Authorization Folder Locks API",
+    "description": "Needs a description.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "createdAt": "2026-07-28T01:16:08.000Z",
+    "updatedAt": "2026-07-28T01:16:08.000Z",
+    "lastUpdatedBy": "35240",
+    "uid": "35240-cba669ac-0cf3-4e7e-86b2-67f70f1c9bd5"
+  },
+  "item": [
+    {
+      "name": "folder_locks",
+      "item": [
+        {
+          "name": "{folder_lock_id}",
+          "item": [
+            {
+              "name": "Box Delete folder lock",
+              "id": "da12bede-451d-4465-9240-546d3e8b10a9",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "DELETE",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/folder_locks/:folder_lock_id",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "folder_locks",
+                    ":folder_lock_id"
+                  ],
+                  "variable": [
+                    {
+                      "id": "8cca6e98-b17f-434f-830b-55ad6506d4b6",
+                      "key": "folder_lock_id",
+                      "value": "<string>",
+                      "description": "(Required) The ID of the folder lock."
+                    }
+                  ]
+                },
+                "description": "Deletes a folder lock on a given folder.\n\nYou must be authenticated as the owner or co-owner of the folder to\nuse this endpoint."
+              },
+              "response": [
+                {
+                  "id": "5eaf2303-aade-462a-a000-8d670d51b11f",
+                  "name": "Returns an empty response when the folder lock is successfully deleted.",
+                  "originalRequest": {
+                    "method": "DELETE",
+                    "header": [],
+                    "url": {
+                      "raw": "{{baseUrl}}/folder_locks/:folder_lock_id",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "folder_locks",
+                        ":folder_lock_id"
+                      ],
+                      "variable": [
+                        {
+                          "key": "folder_lock_id"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "No Content",
+                  "code": 204,
+                  "_postman_previewlanguage": "text",
+                  "header": [],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": null,
+                  "createdAt": "2026-07-28T01:16:08.000Z",
+                  "updatedAt": "2026-07-28T01:16:08.000Z",
+                  "uid": "35240-5eaf2303-aade-462a-a000-8d670d51b11f"
+                },
+                {
+                  "id": "ee38c682-24b4-4b0e-ae4b-eb7950d44a4c",
+                  "name": "Returns an error if the user does not have the required\naccess to perform the action.\n\n* `access_denied_insufficient_permissions`: Returned when the\n  user does not have access to the folder.\n\n* `insufficient_scope`: Returned an error if the application\n ",
+                  "originalRequest": {
+                    "method": "DELETE",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/folder_locks/:folder_lock_id",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "folder_locks",
+                        ":folder_lock_id"
+                      ],
+                      "variable": [
+                        {
+                          "key": "folder_lock_id"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Forbidden",
+                  "code": 403,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"type\": \"error\",\n  \"status\": \"<integer>\",\n  \"code\": \"unavailable\",\n  \"message\": \"<string>\",\n  \"context_info\": {\n    \"message\": \"<string>\"\n  },\n  \"help_url\": \"<string>\",\n  \"request_id\": \"<string>\"\n}",
+                  "createdAt": "2026-07-28T01:16:08.000Z",
+                  "updatedAt": "2026-07-28T01:16:08.000Z",
+                  "uid": "35240-ee38c682-24b4-4b0e-ae4b-eb7950d44a4c"
+                },
+                {
+                  "id": "f0545846-f42b-4a1e-8de9-a63e32e07629",
+                  "name": "Returns an error if the folder could not be found,\nor the authenticated user does not have access to the folder.\n\n* `not_found` when the authenticated user does not have access\n  to the folder.",
+                  "originalRequest": {
+                    "method": "DELETE",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/folder_locks/:folder_lock_id",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "folder_locks",
+                        ":folder_lock_id"
+                      ],
+                      "variable": [
+                        {
+                          "key": "folder_lock_id"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Not Found",
+                  "code": 404,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"type\": \"error\",\n  \"status\": \"<integer>\",\n  \"code\": \"unavailable\",\n  \"message\": \"<string>\",\n  \"context_info\": {\n    \"message\": \"<string>\"\n  },\n  \"help_url\": \"<string>\",\n  \"request_id\": \"<string>\"\n}",
+                  "createdAt": "2026-07-28T01:16:08.000Z",
+                  "updatedAt": "2026-07-28T01:16:08.000Z",
+                  "uid": "35240-f0545846-f42b-4a1e-8de9-a63e32e07629"
+                },
+                {
+                  "id": "b5768eee-1e8b-45f7-81c6-d310a5491992",
+                  "name": "An unexpected client error.",
+                  "originalRequest": {
+                    "method": "DELETE",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/folder_locks/:folder_lock_id",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "folder_locks",
+                        ":folder_lock_id"
+                      ],
+                      "variable": [
+                        {
+                          "key": "folder_lock_id"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Internal Server Error",
+                  "code": 500,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"type\": \"error\",\n  \"status\": \"<integer>\",\n  \"code\": \"unavailable\",\n  \"message\": \"<string>\",\n  \"context_info\": {\n    \"message\": \"<string>\"\n  },\n  \"help_url\": \"<string>\",\n  \"request_id\": \"<string>\"\n}",
+                  "createdAt": "2026-07-28T01:16:08.000Z",
+                  "updatedAt": "2026-07-28T01:16:08.000Z",
+                  "uid": "35240-b5768eee-1e8b-45f7-81c6-d310a5491992"
+                }
+              ],
+              "createdAt": "2026-07-28T01:16:08.000Z",
+              "updatedAt": "2026-07-28T01:16:08.000Z",
+              "uid": "35240-da12bede-451d-4465-9240-546d3e8b10a9"
+            }
+          ],
+          "id": "0b862661-9abc-497f-9a70-167aac0e7d72",
+          "createdAt": "2026-07-28T01:16:08.000Z",
+          "updatedAt": "2026-07-28T01:16:08.000Z",
+          "uid": "35240-0b862661-9abc-497f-9a70-167aac0e7d72"
+        },
+        {
+          "name": "Box List folder locks",
+          "id": "0706bd2d-74cc-42a2-9704-bee1ba3df205",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/folder_locks?folder_id=<string>",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "folder_locks"
+              ],
+              "query": [
+                {
+                  "description": "(Required) The unique identifier that represent a folder.\n\nThe ID for any folder can be determined\nby visiting this folder in the web application\nand copying the ID from the URL. For example,\nfor the URL `https://*.app.box.com/folder/123`\nthe `folder_id` is `123`.\n\nThe root folder of a Box account is\nalways represented by the ID `0`.",
+                  "key": "folder_id",
+                  "value": "<string>"
+                }
+              ]
+            },
+            "description": "Retrieves folder lock details for a given folder.\n\nYou must be authenticated as the owner or co-owner of the folder to\nuse this endpoint."
+          },
+          "response": [
+            {
+              "id": "08df2e2d-e821-420a-9df9-7bf60fb518b2",
+              "name": "Returns details for all folder locks applied to the folder, including the\nlock type and user that applied the lock.",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/folder_locks?folder_id=<string>",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "folder_locks"
+                  ],
+                  "query": [
+                    {
+                      "description": "(Required) The unique identifier that represent a folder.\n\nThe ID for any folder can be determined\nby visiting this folder in the web application\nand copying the ID from the URL. For example,\nfor the URL `https://*.app.box.com/folder/123`\nthe `folder_id` is `123`.\n\nThe root folder of a Box account is\nalways represented by the ID `0`.",
+                      "key": "folder_id",
+                      "value": "<string>"
+                    }
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "responseTime": null,
+              "body": "{\n  \"entries\": [\n    {\n      \"folder\": {\n        \"id\": \"<string>\",\n        \"type\": \"folder\",\n        \"etag\": \"<string>\",\n        \"sequence_id\": \"<string>\",\n        \"name\": \"<string>\"\n      },\n      \"id\": \"<string>\",\n      \"type\": \"<string>\",\n      \"created_by\": {\n        \"type\": \"user\",\n        \"id\": \"<string>\"\n      },\n      \"created_at\": \"<dateTime>\",\n      \"locked_operations\": {\n        \"move\": \"<boolean>\",\n        \"delete\": \"<boolean>\"\n      },\n      \"lock_type\": \"<string>\"\n    },\n    {\n      \"folder\": {\n        \"id\": \"<string>\",\n        \"type\": \"folder\",\n        \"etag\": \"<string>\",\n        \"sequence_id\": \"<string>\",\n        \"name\": \"<string>\"\n      },\n      \"id\": \"<string>\",\n      \"type\": \"<string>\",\n      \"created_by\": {\n        \"type\": \"user\",\n        \"id\": \"<string>\"\n      },\n      \"created_at\": \"<dateTime>\",\n      \"locked_operations\": {\n        \"move\": \"<boolean>\",\n        \"delete\": \"<boolean>\"\n      },\n      \"lock_type\": \"<string>\"\n    }\n  ],\n  \"limit\": \"<string>\",\n  \"next_marker\": \"<string>\"\n}",
+              "createdAt": "2026-07-28T01:16:08.000Z",
+              "updatedAt": "2026-07-28T01:16:08.000Z",
+              "uid": "35240-08df2e2d-e821-420a-9df9-7bf60fb518b2"
+            },
+            {
+              "id": "7de14e43-7807-491a-94e0-12551743df81",
+              "name": "Returned when the access token provided in the `Authorization` header\nis not recognized or not provided.",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/folder_locks?folder_id=<string>",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "folder_locks"
+                  ],
+                  "query": [
+                    {
+                      "description": "(Required) The unique identifier that represent a folder.\n\nThe ID for any folder can be determined\nby visiting this folder in the web application\nand copying the ID from the URL. For example,\nfor the URL `https://*.app.box.com/folder/123`\nthe `folder_id` is `123`.\n\nThe root folder of a Box account is\nalways represented by the ID `0`.",
+                      "key": "folder_id",
+                      "value": "<string>"
+                    }
+                  ]
+                }
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "responseTime": null,
+              "body": "{\n  \"type\": \"error\",\n  \"status\": \"<integer>\",\n  \"code\": \"unavailable\",\n  \"message\": \"<string>\",\n  \"context_info\": {\n    \"message\": \"<string>\"\n  },\n  \"help_url\": \"<string>\",\n  \"request_id\": \"<string>\"\n}",
+              "createdAt": "2026-07-28T01:16:08.000Z",
+              "updatedAt": "2026-07-28T01:16:08.000Z",
+              "uid": "35240-7de14e43-7807-491a-94e0-12551743df81"
+            },
+            {
+              "id": "89350ba7-bf0f-4b45-8141-6f5be2ab5727",
+              "name": "Returned if the folder is not found, or the user does not\nhave access to the folder.",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/folder_locks?folder_id=<string>",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "folder_locks"
+                  ],
+                  "query": [
+                    {
+                      "description": "(Required) The unique identifier that represent a folder.\n\nThe ID for any folder can be determined\nby visiting this folder in the web application\nand copying the ID from the URL. For example,\nfor the URL `https://*.app.box.com/folder/123`\nthe `folder_id` is `123`.\n\nThe root folder of a Box account is\nalways represented by the ID `0`.",
+                      "key": "folder_id",
+                      "value": "<string>"
+                    }
+                  ]
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "responseTime": null,
+              "body": "{\n  \"type\": \"error\",\n  \"status\": \"<integer>\",\n  \"code\": \"unavailable\",\n  \"message\": \"<string>\",\n  \"context_info\": {\n    \"message\": \"<string>\"\n  },\n  \"help_url\": \"<string>\",\n  \"request_id\": \"<string>\"\n}",
+              "createdAt": "2026-07-28T01:16:08.000Z",
+              "updatedAt": "2026-07-28T01:16:08.000Z",
+              "uid": "35240-89350ba7-bf0f-4b45-8141-6f5be2ab5727"
+            },
+            {
+              "id": "5a8d6b99-dea4-45d2-bc8a-ca7d2caff678",
+              "name": "Returned if the `folder_id` is not in a recognized format.",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/folder_locks?folder_id=<string>",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "folder_locks"
+                  ],
+                  "query": [
+                    {
+                      "description": "(Required) The unique identifier that represent a folder.\n\nThe ID for any folder can be determined\nby visiting this folder in the web application\nand copying the ID from the URL. For example,\nfor the URL `https://*.app.box.com/folder/123`\nthe `folder_id` is `123`.\n\nThe root folder of a Box account is\nalways represented by the ID `0`.",
+                      "key": "folder_id",
+                      "value": "<string>"
+                    }
+                  ]
+                }
+              },
+              "status": "Method Not Allowed",
+              "code": 405,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "responseTime": null,
+              "body": "{\n  \"type\": \"error\",\n  \"status\": \"<integer>\",\n  \"code\": \"unavailable\",\n  \"message\": \"<string>\",\n  \"context_info\": {\n    \"message\": \"<string>\"\n  },\n  \"help_url\": \"<string>\",\n  \"request_id\": \"<string>\"\n}",
+              "createdAt": "2026-07-28T01:16:08.000Z",
+              "updatedAt": "2026-07-28T01:16:08.000Z",
+              "uid": "35240-5a8d6b99-dea4-45d2-bc8a-ca7d2caff678"
+            },
+            {
+              "id": "2a5baab0-d2b4-452f-a658-578380f9eb62",
+              "name": "An unexpected client error.",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/folder_locks?folder_id=<string>",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "folder_locks"
+                  ],
+                  "query": [
+                    {
+                      "description": "(Required) The unique identifier that represent a folder.\n\nThe ID for any folder can be determined\nby visiting this folder in the web application\nand copying the ID from the URL. For example,\nfor the URL `https://*.app.box.com/folder/123`\nthe `folder_id` is `123`.\n\nThe root folder of a Box account is\nalways represented by the ID `0`.",
+                      "key": "folder_id",
+                      "value": "<string>"
+                    }
+                  ]
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "responseTime": null,
+              "body": "{\n  \"type\": \"error\",\n  \"status\": \"<integer>\",\n  \"code\": \"unavailable\",\n  \"message\": \"<string>\",\n  \"context_info\": {\n    \"message\": \"<string>\"\n  },\n  \"help_url\": \"<string>\",\n  \"request_id\": \"<string>\"\n}",
+              "createdAt": "2026-07-28T01:16:08.000Z",
+              "updatedAt": "2026-07-28T01:16:08.000Z",
+              "uid": "35240-2a5baab0-d2b4-452f-a658-578380f9eb62"
+            }
+          ],
+          "createdAt": "2026-07-28T01:16:08.000Z",
+          "updatedAt": "2026-07-28T01:16:08.000Z",
+          "uid": "35240-0706bd2d-74cc-42a2-9704-bee1ba3df205"
+        },
+        {
+          "name": "Box Create folder lock",
+          "id": "afd4ebb9-78e7-4d78-8eac-88863a07472d",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"folder\": {\n    \"type\": \"<string>\",\n    \"id\": \"<string>\"\n  },\n  \"locked_operations\": {\n    \"move\": \"<boolean>\",\n    \"delete\": \"<boolean>\"\n  }\n}",
+              "options": {
+                "raw": {
+                  "headerFamily": "json",
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/folder_locks",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "folder_locks"
+              ]
+            },
+            "description": "Creates a folder lock on a folder, preventing it from being moved and/or\ndeleted.\n\nYou must be authenticated as the owner or co-owner of the folder to\nuse this endpoint."
+          },
+          "response": [
+            {
+              "id": "4a29f88a-d15e-48fb-bf28-e474a5eca967",
+              "name": "Returns the instance of the folder lock that was applied to the folder,\nincluding the user that applied the lock and the operations set.",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"folder\": {\n    \"type\": \"<string>\",\n    \"id\": \"<string>\"\n  },\n  \"locked_operations\": {\n    \"move\": \"<boolean>\",\n    \"delete\": \"<boolean>\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/folder_locks",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "folder_locks"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "responseTime": null,
+              "body": "{\n  \"folder\": {\n    \"id\": \"<string>\",\n    \"type\": \"folder\",\n    \"etag\": \"<string>\",\n    \"sequence_id\": \"<string>\",\n    \"name\": \"<string>\"\n  },\n  \"id\": \"<string>\",\n  \"type\": \"<string>\",\n  \"created_by\": {\n    \"type\": \"user\",\n    \"id\": \"<string>\"\n  },\n  \"created_at\": \"<dateTime>\",\n  \"locked_operations\": {\n    \"move\": \"<boolean>\",\n    \"delete\": \"<boolean>\"\n  },\n  \"lock_type\": \"<string>\"\n}",
+              "createdAt": "2026-07-28T01:16:08.000Z",
+              "updatedAt": "2026-07-28T01:16:08.000Z",
+              "uid": "35240-4a29f88a-d15e-48fb-bf28-e474a5eca967"
+            },
+            {
+              "id": "7db85df2-df94-421c-9683-a7fdd2ff6fa9",
+              "name": "Returns an error when the request body is not valid.\n\n* `schema_validation_failed` - The request body contains a value for\na field that either does not exist, or for which the value or type does\nnot match the expected field type. An example might be an un",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"folder\": {\n    \"type\": \"<string>\",\n    \"id\": \"<string>\"\n  },\n  \"locked_operations\": {\n    \"move\": \"<boolean>\",\n    \"delete\": \"<boolean>\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/folder_locks",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "folder_locks"
+                  ]
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "responseTime": null,
+              "body": "{\n  \"type\": \"error\",\n  \"status\": \"<integer>\",\n  \"code\": \"unavailable\",\n  \"message\": \"<string>\",\n  \"context_info\": {\n    \"message\": \"<string>\"\n  },\n  \"help_url\": \"<string>\",\n  \"request_id\": \"<string>\"\n}",
+              "createdAt": "2026-07-28T01:16:08.000Z",
+              "updatedAt": "2026-07-28T01:16:08.000Z",
+              "uid": "35240-7db85df2-df94-421c-9683-a7fdd2ff6fa9"
+            },
+            {
+              "id": "45fd3424-b264-4829-a90a-ae48e2ccc099",
+              "name": "Returns an error when the folder was not found.\n\n* `not_found` - The folder could not be found, the user does not have\naccess to the folder, or the user making call is not an owner or co-owner\nof folder.",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"folder\": {\n    \"type\": \"<string>\",\n    \"id\": \"<string>\"\n  },\n  \"locked_operations\": {\n    \"move\": \"<boolean>\",\n    \"delete\": \"<boolean>\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/folder_locks",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "folder_locks"
+                  ]
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "responseTime": null,
+              "body": "{\n  \"type\": \"error\",\n  \"status\": \"<integer>\",\n  \"code\": \"unavailable\",\n  \"message\": \"<string>\",\n  \"context_info\": {\n    \"message\": \"<string>\"\n  },\n  \"help_url\": \"<string>\",\n  \"request_id\": \"<string>\"\n}",
+              "createdAt": "2026-07-28T01:16:08.000Z",
+              "updatedAt": "2026-07-28T01:16:08.000Z",
+              "uid": "35240-45fd3424-b264-4829-a90a-ae48e2ccc099"
+            },
+            {
+              "id": "a311df66-c138-4f1c-be96-1ba5dccdc579",
+              "name": "An unexpected client error.",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"folder\": {\n    \"type\": \"<string>\",\n    \"id\": \"<string>\"\n  },\n  \"locked_operations\": {\n    \"move\": \"<boolean>\",\n    \"delete\": \"<boolean>\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/folder_locks",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "folder_locks"
+                  ]
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "responseTime": null,
+              "body": "{\n  \"type\": \"error\",\n  \"status\": \"<integer>\",\n  \"code\": \"unavailable\",\n  \"message\": \"<string>\",\n  \"context_info\": {\n    \"message\": \"<string>\"\n  },\n  \"help_url\": \"<string>\",\n  \"request_id\": \"<string>\"\n}",
+              "createdAt": "2026-07-28T01:16:08.000Z",
+              "updatedAt": "2026-07-28T01:16:08.000Z",
+              "uid": "35240-a311df66-c138-4f1c-be96-1ba5dccdc579"
+            }
+          ],
+          "createdAt": "2026-07-28T01:16:08.000Z",
+          "updatedAt": "2026-07-28T01:16:08.000Z",
+          "uid": "35240-afd4ebb9-78e7-4d78-8eac-88863a07472d"
+        }
+      ],
+      "id": "970c1eec-b5de-48bb-a1d7-e33eb172ade2",
+      "createdAt": "2026-07-28T01:16:08.000Z",
+      "updatedAt": "2026-07-28T01:16:08.000Z",
+      "uid": "35240-970c1eec-b5de-48bb-a1d7-e33eb172ade2"
+    }
+  ],
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "/"
+    }
+  ]
+}

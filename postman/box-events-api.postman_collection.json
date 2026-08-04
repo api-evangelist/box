@@ -1,0 +1,335 @@
+{
+  "info": {
+    "_postman_id": "a099c998-f5c3-4d9a-941b-d4dab108bb8d",
+    "name": "Box Authorize Authorization Events API",
+    "description": "Needs a description.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "createdAt": "2026-07-28T01:15:59.000Z",
+    "updatedAt": "2026-07-28T01:15:59.000Z",
+    "lastUpdatedBy": "35240",
+    "uid": "35240-a099c998-f5c3-4d9a-941b-d4dab108bb8d"
+  },
+  "item": [
+    {
+      "name": "events",
+      "item": [
+        {
+          "name": "Box Get events long poll endpoint",
+          "id": "51924711-3f9c-47c8-9fef-17f2773fbe2c",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "OPTIONS",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/events",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "events"
+              ]
+            },
+            "description": "Returns a list of real-time servers that can be used for long-polling updates\nto the [event stream](#get-events).\n\nLong polling is the concept where a HTTP request is kept open until the\nserver sends a response, then repeating the process over and over to receive\nupdated responses.\n\nLong polling the event stream can only be used for user events, not for\nenterprise events.\n\nTo use long polling, first use this endpoint to retrieve a list of long poll\nURLs. Next, make a long poll request to any of the provided URLs.\n\nWhen an event occurs in monitored account a response with the value\n`new_change` will be sent. The response contains no other details as\nit only serves as a prompt to take further action such as sending a\nrequest to the [events endpoint](#get-events) with the last known\n`stream_position`.\n\nAfter the server sends this response it closes the connection. You must now\nrepeat the long poll process to begin listening for events again.\n\nIf no events occur for a while and the connection times out you will\nreceive a response with the value `reconnect`. When you receive this response\nyou\u2019ll make another call to this endpoint to restart the process.\n\nIf you receive no events in `retry_timeout` seconds then you will need to\nmake another request to the real-time server (one of the URLs in the response\nfor this endpoint). This might be necessary due to network errors.\n\nFinally, if you receive a `max_retries` error when making a request to the\nreal-time server, you should start over by making a call to this endpoint\nfirst."
+          },
+          "response": [
+            {
+              "id": "bc55f34e-35b6-4b4e-b53b-ed9a17debebf",
+              "name": "Returns a paginated array of servers that can be used\ninstead of the regular endpoints for long-polling events.",
+              "originalRequest": {
+                "method": "OPTIONS",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/events",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "events"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "responseTime": null,
+              "body": "{\n  \"chunk_size\": \"<long>\",\n  \"entries\": [\n    {\n      \"type\": \"<string>\",\n      \"url\": \"<string>\",\n      \"ttl\": \"<integer>\",\n      \"max_retries\": \"<integer>\",\n      \"retry_timeout\": \"<integer>\"\n    },\n    {\n      \"type\": \"<string>\",\n      \"url\": \"<string>\",\n      \"ttl\": \"<integer>\",\n      \"max_retries\": \"<integer>\",\n      \"retry_timeout\": \"<integer>\"\n    }\n  ]\n}",
+              "createdAt": "2026-07-28T01:16:00.000Z",
+              "updatedAt": "2026-07-28T01:16:00.000Z",
+              "uid": "35240-bc55f34e-35b6-4b4e-b53b-ed9a17debebf"
+            },
+            {
+              "id": "fab7851c-8b90-4056-ba9a-ae802e5d487d",
+              "name": "An unexpected client error.",
+              "originalRequest": {
+                "method": "OPTIONS",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/events",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "events"
+                  ]
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "responseTime": null,
+              "body": "{\n  \"type\": \"error\",\n  \"status\": \"<integer>\",\n  \"code\": \"internal_server_error\",\n  \"message\": \"<string>\",\n  \"context_info\": {\n    \"message\": \"<string>\"\n  },\n  \"help_url\": \"<string>\",\n  \"request_id\": \"<string>\"\n}",
+              "createdAt": "2026-07-28T01:16:00.000Z",
+              "updatedAt": "2026-07-28T01:16:00.000Z",
+              "uid": "35240-fab7851c-8b90-4056-ba9a-ae802e5d487d"
+            }
+          ],
+          "createdAt": "2026-07-28T01:16:00.000Z",
+          "updatedAt": "2026-07-28T01:16:00.000Z",
+          "uid": "35240-51924711-3f9c-47c8-9fef-17f2773fbe2c"
+        },
+        {
+          "name": "Box List user and enterprise events",
+          "id": "56973252-120d-4523-9409-5f703b76ae60",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/events?stream_type=all&stream_position=<string>&limit=100&event_type=COLLABORATION_REMOVE,COLLABORATION_REMOVE&created_after=<dateTime>&created_before=<dateTime>",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "events"
+              ],
+              "query": [
+                {
+                  "description": "Defines the type of events that are returned\n\n* `all` returns everything for a user and is the default\n* `changes` returns events that may cause file tree changes\n  such as file updates or collaborations.\n* `sync` is similar to `changes` but only applies to synced folders\n* `admin_logs` returns all events for an entire enterprise and\n  requires the user making the API call to have admin permissions. This\n  stream type is for programmatically pulling from a 1 year history of\n  events across all users within the enterprise and within a\n  `created_after` and `created_before` time frame. The complete history\n  of events will be returned in chronological order based on the event\n  time, but latency will be much higher than `admin_logs_streaming`.\n* `admin_logs_streaming` returns all events for an entire enterprise and\n  requires the user making the API call to have admin permissions. This\n  stream type is for polling for recent events across all users within\n  the enterprise. Latency will be much lower than `admin_logs`, but\n  events will not be returned in chronological order and may\n  contain duplicates.",
+                  "key": "stream_type",
+                  "value": "all"
+                },
+                {
+                  "description": "The location in the event stream to start receiving events from.\n\n* `now` will return an empty list events and\nthe latest stream position for initialization.\n* `0` or `null` will return all events.",
+                  "key": "stream_position",
+                  "value": "<string>"
+                },
+                {
+                  "description": "Limits the number of events returned\n\nNote: Sometimes, the events less than the limit requested can be returned\neven when there may be more events remaining. This is primarily done in\nthe case where a number of events have already been retrieved and these\nretrieved events are returned rather than delaying for an unknown amount\nof time to see if there are any more results.",
+                  "key": "limit",
+                  "value": "100"
+                },
+                {
+                  "description": "A comma-separated list of events to filter by. This can only be used when\nrequesting the events with a `stream_type` of `admin_logs` or\n`adming_logs_streaming`. For any other `stream_type` this value will be\nignored.",
+                  "key": "event_type",
+                  "value": "COLLABORATION_REMOVE,COLLABORATION_REMOVE"
+                },
+                {
+                  "description": "The lower bound date and time to return events for. This can only be used\nwhen requesting the events with a `stream_type` of `admin_logs`. For any\nother `stream_type` this value will be ignored.",
+                  "key": "created_after",
+                  "value": "<dateTime>"
+                },
+                {
+                  "description": "The upper bound date and time to return events for. This can only be used\nwhen requesting the events with a `stream_type` of `admin_logs`. For any\nother `stream_type` this value will be ignored.",
+                  "key": "created_before",
+                  "value": "<dateTime>"
+                }
+              ]
+            },
+            "description": "Returns up to a year of past events for a given user\nor for the entire enterprise.\n\nBy default this returns events for the authenticated user. To retrieve events\nfor the entire enterprise, set the `stream_type` to `admin_logs_streaming`\nfor live monitoring of new events, or `admin_logs` for querying across\nhistorical events. The user making the API call will\nneed to have admin privileges, and the application will need to have the\nscope `manage enterprise properties` checked."
+          },
+          "response": [
+            {
+              "id": "cdea8368-a903-49d9-bb99-01d25f2c37ef",
+              "name": "Returns a list of event objects.\n\nEvents objects are returned in pages, with each page (chunk)\nincluding a list of event objects. The response includes a\n`chunk_size` parameter indicating how many events were returned in this\nchunk, as well as the next `s",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/events?stream_type=all&stream_position=<string>&limit=100&event_type=COLLABORATION_REMOVE,COLLABORATION_REMOVE&created_after=<dateTime>&created_before=<dateTime>",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "events"
+                  ],
+                  "query": [
+                    {
+                      "description": "Defines the type of events that are returned\n\n* `all` returns everything for a user and is the default\n* `changes` returns events that may cause file tree changes\n  such as file updates or collaborations.\n* `sync` is similar to `changes` but only applies to synced folders\n* `admin_logs` returns all events for an entire enterprise and\n  requires the user making the API call to have admin permissions. This\n  stream type is for programmatically pulling from a 1 year history of\n  events across all users within the enterprise and within a\n  `created_after` and `created_before` time frame. The complete history\n  of events will be returned in chronological order based on the event\n  time, but latency will be much higher than `admin_logs_streaming`.\n* `admin_logs_streaming` returns all events for an entire enterprise and\n  requires the user making the API call to have admin permissions. This\n  stream type is for polling for recent events across all users within\n  the enterprise. Latency will be much lower than `admin_logs`, but\n  events will not be returned in chronological order and may\n  contain duplicates.",
+                      "key": "stream_type",
+                      "value": "all"
+                    },
+                    {
+                      "description": "The location in the event stream to start receiving events from.\n\n* `now` will return an empty list events and\nthe latest stream position for initialization.\n* `0` or `null` will return all events.",
+                      "key": "stream_position",
+                      "value": "<string>"
+                    },
+                    {
+                      "description": "Limits the number of events returned\n\nNote: Sometimes, the events less than the limit requested can be returned\neven when there may be more events remaining. This is primarily done in\nthe case where a number of events have already been retrieved and these\nretrieved events are returned rather than delaying for an unknown amount\nof time to see if there are any more results.",
+                      "key": "limit",
+                      "value": "100"
+                    },
+                    {
+                      "description": "A comma-separated list of events to filter by. This can only be used when\nrequesting the events with a `stream_type` of `admin_logs` or\n`adming_logs_streaming`. For any other `stream_type` this value will be\nignored.",
+                      "key": "event_type",
+                      "value": "COLLABORATION_REMOVE,COLLABORATION_REMOVE"
+                    },
+                    {
+                      "description": "The lower bound date and time to return events for. This can only be used\nwhen requesting the events with a `stream_type` of `admin_logs`. For any\nother `stream_type` this value will be ignored.",
+                      "key": "created_after",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "description": "The upper bound date and time to return events for. This can only be used\nwhen requesting the events with a `stream_type` of `admin_logs`. For any\nother `stream_type` this value will be ignored.",
+                      "key": "created_before",
+                      "value": "<dateTime>"
+                    }
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "responseTime": null,
+              "body": "{\n  \"chunk_size\": \"<long>\",\n  \"next_stream_position\": \"<string>\",\n  \"entries\": [\n    {\n      \"type\": \"<string>\",\n      \"created_at\": \"<dateTime>\",\n      \"recorded_at\": \"<dateTime>\",\n      \"event_id\": \"<string>\",\n      \"created_by\": {\n        \"type\": \"user\",\n        \"id\": \"<string>\",\n        \"name\": \"<string>\",\n        \"login\": \"<email>\"\n      },\n      \"event_type\": \"COLLAB_ADD_COLLABORATOR\",\n      \"session_id\": \"<string>\",\n      \"source\": {\n        \"type\": \"user\",\n        \"id\": \"<string>\",\n        \"name\": \"<string>\",\n        \"login\": \"<email>\",\n        \"created_at\": \"<dateTime>\",\n        \"modified_at\": \"<dateTime>\",\n        \"language\": \"<string>\",\n        \"timezone\": \"<string>\",\n        \"space_amount\": \"<long>\",\n        \"space_used\": \"<long>\",\n        \"max_upload_size\": \"<long>\",\n        \"status\": \"inactive\",\n        \"job_title\": \"<string>\",\n        \"phone\": \"<string>\",\n        \"address\": \"<string>\",\n        \"avatar_url\": \"<string>\",\n        \"notification_email\": {\n          \"email\": \"<string>\",\n          \"is_confirmed\": \"<boolean>\"\n        }\n      },\n      \"additional_details\": {}\n    },\n    {\n      \"type\": \"<string>\",\n      \"created_at\": \"<dateTime>\",\n      \"recorded_at\": \"<dateTime>\",\n      \"event_id\": \"<string>\",\n      \"created_by\": {\n        \"type\": \"user\",\n        \"id\": \"<string>\",\n        \"name\": \"<string>\",\n        \"login\": \"<email>\"\n      },\n      \"event_type\": \"REMOVE_LOGIN_ACTIVITY_DEVICE\",\n      \"session_id\": \"<string>\",\n      \"source\": {\n        \"type\": \"user\",\n        \"id\": \"<string>\",\n        \"name\": \"<string>\",\n        \"login\": \"<email>\",\n        \"created_at\": \"<dateTime>\",\n        \"modified_at\": \"<dateTime>\",\n        \"language\": \"<string>\",\n        \"timezone\": \"<string>\",\n        \"space_amount\": \"<long>\",\n        \"space_used\": \"<long>\",\n        \"max_upload_size\": \"<long>\",\n        \"status\": \"cannot_delete_edit\",\n        \"job_title\": \"<string>\",\n        \"phone\": \"<string>\",\n        \"address\": \"<string>\",\n        \"avatar_url\": \"<string>\",\n        \"notification_email\": {\n          \"email\": \"<string>\",\n          \"is_confirmed\": \"<boolean>\"\n        }\n      },\n      \"additional_details\": {}\n    }\n  ]\n}",
+              "createdAt": "2026-07-28T01:16:00.000Z",
+              "updatedAt": "2026-07-28T01:16:00.000Z",
+              "uid": "35240-cdea8368-a903-49d9-bb99-01d25f2c37ef"
+            },
+            {
+              "id": "11dcf394-374b-4d12-b776-4f82b5761dad",
+              "name": "An unexpected client error.",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/events?stream_type=all&stream_position=<string>&limit=100&event_type=COLLABORATION_REMOVE,COLLABORATION_REMOVE&created_after=<dateTime>&created_before=<dateTime>",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "events"
+                  ],
+                  "query": [
+                    {
+                      "description": "Defines the type of events that are returned\n\n* `all` returns everything for a user and is the default\n* `changes` returns events that may cause file tree changes\n  such as file updates or collaborations.\n* `sync` is similar to `changes` but only applies to synced folders\n* `admin_logs` returns all events for an entire enterprise and\n  requires the user making the API call to have admin permissions. This\n  stream type is for programmatically pulling from a 1 year history of\n  events across all users within the enterprise and within a\n  `created_after` and `created_before` time frame. The complete history\n  of events will be returned in chronological order based on the event\n  time, but latency will be much higher than `admin_logs_streaming`.\n* `admin_logs_streaming` returns all events for an entire enterprise and\n  requires the user making the API call to have admin permissions. This\n  stream type is for polling for recent events across all users within\n  the enterprise. Latency will be much lower than `admin_logs`, but\n  events will not be returned in chronological order and may\n  contain duplicates.",
+                      "key": "stream_type",
+                      "value": "all"
+                    },
+                    {
+                      "description": "The location in the event stream to start receiving events from.\n\n* `now` will return an empty list events and\nthe latest stream position for initialization.\n* `0` or `null` will return all events.",
+                      "key": "stream_position",
+                      "value": "<string>"
+                    },
+                    {
+                      "description": "Limits the number of events returned\n\nNote: Sometimes, the events less than the limit requested can be returned\neven when there may be more events remaining. This is primarily done in\nthe case where a number of events have already been retrieved and these\nretrieved events are returned rather than delaying for an unknown amount\nof time to see if there are any more results.",
+                      "key": "limit",
+                      "value": "100"
+                    },
+                    {
+                      "description": "A comma-separated list of events to filter by. This can only be used when\nrequesting the events with a `stream_type` of `admin_logs` or\n`adming_logs_streaming`. For any other `stream_type` this value will be\nignored.",
+                      "key": "event_type",
+                      "value": "COLLABORATION_REMOVE,COLLABORATION_REMOVE"
+                    },
+                    {
+                      "description": "The lower bound date and time to return events for. This can only be used\nwhen requesting the events with a `stream_type` of `admin_logs`. For any\nother `stream_type` this value will be ignored.",
+                      "key": "created_after",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "description": "The upper bound date and time to return events for. This can only be used\nwhen requesting the events with a `stream_type` of `admin_logs`. For any\nother `stream_type` this value will be ignored.",
+                      "key": "created_before",
+                      "value": "<dateTime>"
+                    }
+                  ]
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "responseTime": null,
+              "body": "{\n  \"type\": \"error\",\n  \"status\": \"<integer>\",\n  \"code\": \"internal_server_error\",\n  \"message\": \"<string>\",\n  \"context_info\": {\n    \"message\": \"<string>\"\n  },\n  \"help_url\": \"<string>\",\n  \"request_id\": \"<string>\"\n}",
+              "createdAt": "2026-07-28T01:16:00.000Z",
+              "updatedAt": "2026-07-28T01:16:00.000Z",
+              "uid": "35240-11dcf394-374b-4d12-b776-4f82b5761dad"
+            }
+          ],
+          "createdAt": "2026-07-28T01:16:00.000Z",
+          "updatedAt": "2026-07-28T01:16:00.000Z",
+          "uid": "35240-56973252-120d-4523-9409-5f703b76ae60"
+        }
+      ],
+      "id": "5f0ece86-23ee-4098-8b7a-7954c7f681d6",
+      "createdAt": "2026-07-28T01:16:00.000Z",
+      "updatedAt": "2026-07-28T01:16:00.000Z",
+      "uid": "35240-5f0ece86-23ee-4098-8b7a-7954c7f681d6"
+    }
+  ],
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "/"
+    }
+  ]
+}

@@ -1,0 +1,863 @@
+{
+  "info": {
+    "_postman_id": "6f73d637-80ff-427b-b15d-52327b37a77d",
+    "name": "Box Authorize Authorization Zip Downloads API",
+    "description": "Needs a description.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "createdAt": "2026-07-28T01:19:00.000Z",
+    "updatedAt": "2026-07-28T01:19:00.000Z",
+    "lastUpdatedBy": "35240",
+    "uid": "35240-6f73d637-80ff-427b-b15d-52327b37a77d"
+  },
+  "item": [
+    {
+      "name": "zip_downloads",
+      "item": [
+        {
+          "name": "{zip_download_id}",
+          "item": [
+            {
+              "name": "content",
+              "item": [
+                {
+                  "name": "Box Download zip archive",
+                  "id": "3ac88106-ef6e-45ff-8996-708c60c3e024",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/octet-stream"
+                      }
+                    ],
+                    "url": {
+                      "raw": "https://dl.boxcloud.com/2.0/zip_downloads/:zip_download_id/content",
+                      "protocol": "https",
+                      "host": [
+                        "dl",
+                        "boxcloud",
+                        "com"
+                      ],
+                      "path": [
+                        "2.0",
+                        "zip_downloads",
+                        ":zip_download_id",
+                        "content"
+                      ],
+                      "variable": [
+                        {
+                          "id": "310e8b93-cb57-4489-bc0a-174b812319ba",
+                          "key": "zip_download_id",
+                          "value": "<string>",
+                          "description": "(Required) The unique identifier that represent this `zip` archive."
+                        }
+                      ]
+                    },
+                    "description": "Returns the contents of a `zip` archive in binary format. This URL does not\nrequire any form of authentication and could be used in a user's browser to\ndownload the archive to a user's device.\n\nBy default, this URL is only valid for a few seconds from the creation of\nthe request for this archive. Once a download has started it can not be\nstopped and resumed, instead a new request for a zip archive would need to\nbe created.\n\nThe URL of this endpoint should not be considered as fixed. Instead, use\nthe [Create zip download](e://post_zip_downloads) API to request to create a\n`zip` archive, and then follow the `download_url` field in the response to\nthis endpoint."
+                  },
+                  "response": [
+                    {
+                      "id": "8cd9cfb0-8b49-4f7e-b025-8779c7053cc1",
+                      "name": "Returns the content of the items requested for this download, formatted as\na stream of files and folders in a `zip` archive.",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/octet-stream"
+                          }
+                        ],
+                        "url": {
+                          "raw": "https://dl.boxcloud.com/2.0/zip_downloads/:zip_download_id/content",
+                          "protocol": "https",
+                          "host": [
+                            "dl",
+                            "boxcloud",
+                            "com"
+                          ],
+                          "path": [
+                            "2.0",
+                            "zip_downloads",
+                            ":zip_download_id",
+                            "content"
+                          ],
+                          "variable": [
+                            {
+                              "key": "zip_download_id"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "OK",
+                      "code": 200,
+                      "_postman_previewlanguage": "text",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/octet-stream"
+                        },
+                        {
+                          "disabled": false,
+                          "description": {
+                            "content": "The name of the archive to be downloaded",
+                            "type": "text/plain"
+                          },
+                          "key": "Content-Disposition",
+                          "value": "<string>"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "<binary>",
+                      "createdAt": "2026-07-28T01:19:01.000Z",
+                      "updatedAt": "2026-07-28T01:19:01.000Z",
+                      "uid": "35240-8cd9cfb0-8b49-4f7e-b025-8779c7053cc1"
+                    },
+                    {
+                      "id": "e6148e0f-e294-4cad-9c98-cb62a245ffdc",
+                      "name": "Returns an error if the ID of this download request is not valid. This\nerror can also be returned if this URL has been called before. To\nre-download this archive, please create a new request for a zip download.",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          }
+                        ],
+                        "url": {
+                          "raw": "https://dl.boxcloud.com/2.0/zip_downloads/:zip_download_id/content",
+                          "protocol": "https",
+                          "host": [
+                            "dl",
+                            "boxcloud",
+                            "com"
+                          ],
+                          "path": [
+                            "2.0",
+                            "zip_downloads",
+                            ":zip_download_id",
+                            "content"
+                          ],
+                          "variable": [
+                            {
+                              "key": "zip_download_id"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Not Found",
+                      "code": 404,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"type\": \"error\",\n  \"status\": \"<integer>\",\n  \"code\": \"not_found\",\n  \"message\": \"<string>\",\n  \"context_info\": {\n    \"message\": \"<string>\"\n  },\n  \"help_url\": \"<string>\",\n  \"request_id\": \"<string>\"\n}",
+                      "createdAt": "2026-07-28T01:19:01.000Z",
+                      "updatedAt": "2026-07-28T01:19:01.000Z",
+                      "uid": "35240-e6148e0f-e294-4cad-9c98-cb62a245ffdc"
+                    },
+                    {
+                      "id": "b03c6cd7-328b-4ec9-9f6f-dd5c2f5eed84",
+                      "name": "Returns an error if the number of concurrent zip downloads has been\nreached for either the user or the enterprise.\n\n* `user_too_many_concurrent_downloads` - the maximum of 5 parallel\ndownloads of zip archives per user has been met.\n* `enterprise_too_many_",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          }
+                        ],
+                        "url": {
+                          "raw": "https://dl.boxcloud.com/2.0/zip_downloads/:zip_download_id/content",
+                          "protocol": "https",
+                          "host": [
+                            "dl",
+                            "boxcloud",
+                            "com"
+                          ],
+                          "path": [
+                            "2.0",
+                            "zip_downloads",
+                            ":zip_download_id",
+                            "content"
+                          ],
+                          "variable": [
+                            {
+                              "key": "zip_download_id"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Too Many Requests",
+                      "code": 429,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"type\": \"error\",\n  \"status\": \"<integer>\",\n  \"code\": \"not_found\",\n  \"message\": \"<string>\",\n  \"context_info\": {\n    \"message\": \"<string>\"\n  },\n  \"help_url\": \"<string>\",\n  \"request_id\": \"<string>\"\n}",
+                      "createdAt": "2026-07-28T01:19:01.000Z",
+                      "updatedAt": "2026-07-28T01:19:01.000Z",
+                      "uid": "35240-b03c6cd7-328b-4ec9-9f6f-dd5c2f5eed84"
+                    },
+                    {
+                      "id": "261f2b00-93fa-4316-87b0-7dbfa3a7c918",
+                      "name": "An unexpected client error.",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          }
+                        ],
+                        "url": {
+                          "raw": "https://dl.boxcloud.com/2.0/zip_downloads/:zip_download_id/content",
+                          "protocol": "https",
+                          "host": [
+                            "dl",
+                            "boxcloud",
+                            "com"
+                          ],
+                          "path": [
+                            "2.0",
+                            "zip_downloads",
+                            ":zip_download_id",
+                            "content"
+                          ],
+                          "variable": [
+                            {
+                              "key": "zip_download_id"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Internal Server Error",
+                      "code": 500,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"type\": \"error\",\n  \"status\": \"<integer>\",\n  \"code\": \"not_found\",\n  \"message\": \"<string>\",\n  \"context_info\": {\n    \"message\": \"<string>\"\n  },\n  \"help_url\": \"<string>\",\n  \"request_id\": \"<string>\"\n}",
+                      "createdAt": "2026-07-28T01:19:01.000Z",
+                      "updatedAt": "2026-07-28T01:19:01.000Z",
+                      "uid": "35240-261f2b00-93fa-4316-87b0-7dbfa3a7c918"
+                    }
+                  ],
+                  "createdAt": "2026-07-28T01:19:01.000Z",
+                  "updatedAt": "2026-07-28T01:19:01.000Z",
+                  "uid": "35240-3ac88106-ef6e-45ff-8996-708c60c3e024"
+                }
+              ],
+              "id": "53960e47-4db8-41ce-9219-ea6b6a8fc993",
+              "createdAt": "2026-07-28T01:19:01.000Z",
+              "updatedAt": "2026-07-28T01:19:01.000Z",
+              "uid": "35240-53960e47-4db8-41ce-9219-ea6b6a8fc993"
+            },
+            {
+              "name": "status",
+              "item": [
+                {
+                  "name": "Box Get zip download status",
+                  "id": "b3afdf61-4b58-407e-89ac-0aabd552d6fb",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/zip_downloads/:zip_download_id/status",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "zip_downloads",
+                        ":zip_download_id",
+                        "status"
+                      ],
+                      "variable": [
+                        {
+                          "id": "f29d9ba8-749d-470d-a77f-aabe209a6c73",
+                          "key": "zip_download_id",
+                          "value": "<string>",
+                          "description": "(Required) The unique identifier that represent this `zip` archive."
+                        }
+                      ]
+                    },
+                    "description": "Returns the download status of a `zip` archive, allowing an application to\ninspect the progress of the download as well as the number of items that\nmight have been skipped.\n\nThis endpoint can only be accessed once the download has started.\nSubsequently this endpoint is valid for 12 hours from the start of the\ndownload.\n\nThe URL of this endpoint should not be considered as fixed. Instead, use\nthe [Create zip download](e://post_zip_downloads) API to request to create a\n`zip` archive, and then follow the `status_url` field in the response to\nthis endpoint."
+                  },
+                  "response": [
+                    {
+                      "id": "129b122b-2e9b-4aaa-bbc9-5b44cfb9c3bf",
+                      "name": "Returns the status of the `zip` archive that is being downloaded.",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/zip_downloads/:zip_download_id/status",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "zip_downloads",
+                            ":zip_download_id",
+                            "status"
+                          ],
+                          "variable": [
+                            {
+                              "key": "zip_download_id"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "OK",
+                      "code": 200,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"total_file_count\": \"<integer>\",\n  \"downloaded_file_count\": \"<integer>\",\n  \"skipped_file_count\": \"<integer>\",\n  \"skipped_folder_count\": \"<integer>\",\n  \"state\": \"in_progress\"\n}",
+                      "createdAt": "2026-07-28T01:19:01.000Z",
+                      "updatedAt": "2026-07-28T01:19:01.000Z",
+                      "uid": "35240-129b122b-2e9b-4aaa-bbc9-5b44cfb9c3bf"
+                    },
+                    {
+                      "id": "7ee88e79-6d64-457e-a201-fcfa054cdded",
+                      "name": "Returned when the access token provided in the `Authorization` header\nis not recognized or not provided.",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/zip_downloads/:zip_download_id/status",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "zip_downloads",
+                            ":zip_download_id",
+                            "status"
+                          ],
+                          "variable": [
+                            {
+                              "key": "zip_download_id"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Unauthorized",
+                      "code": 401,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"type\": \"error\",\n  \"status\": \"<integer>\",\n  \"code\": \"not_found\",\n  \"message\": \"<string>\",\n  \"context_info\": {\n    \"message\": \"<string>\"\n  },\n  \"help_url\": \"<string>\",\n  \"request_id\": \"<string>\"\n}",
+                      "createdAt": "2026-07-28T01:19:01.000Z",
+                      "updatedAt": "2026-07-28T01:19:01.000Z",
+                      "uid": "35240-7ee88e79-6d64-457e-a201-fcfa054cdded"
+                    },
+                    {
+                      "id": "6bffd77d-b27e-4ca5-b82b-b485a5bf91d2",
+                      "name": "Returned when an authorization header is provided but the user does not\nhave access to the items.",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/zip_downloads/:zip_download_id/status",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "zip_downloads",
+                            ":zip_download_id",
+                            "status"
+                          ],
+                          "variable": [
+                            {
+                              "key": "zip_download_id"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Forbidden",
+                      "code": 403,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"type\": \"error\",\n  \"status\": \"<integer>\",\n  \"code\": \"not_found\",\n  \"message\": \"<string>\",\n  \"context_info\": {\n    \"message\": \"<string>\"\n  },\n  \"help_url\": \"<string>\",\n  \"request_id\": \"<string>\"\n}",
+                      "createdAt": "2026-07-28T01:19:01.000Z",
+                      "updatedAt": "2026-07-28T01:19:01.000Z",
+                      "uid": "35240-6bffd77d-b27e-4ca5-b82b-b485a5bf91d2"
+                    },
+                    {
+                      "id": "3002bd58-2919-47f5-be55-92a8a6c8c394",
+                      "name": "Returns an error if the ID of this download request is not valid, or if\nthe status of a download is requested before the download has been\nstarted.",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/zip_downloads/:zip_download_id/status",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "zip_downloads",
+                            ":zip_download_id",
+                            "status"
+                          ],
+                          "variable": [
+                            {
+                              "key": "zip_download_id"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Not Found",
+                      "code": 404,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"type\": \"error\",\n  \"status\": \"<integer>\",\n  \"code\": \"not_found\",\n  \"message\": \"<string>\",\n  \"context_info\": {\n    \"message\": \"<string>\"\n  },\n  \"help_url\": \"<string>\",\n  \"request_id\": \"<string>\"\n}",
+                      "createdAt": "2026-07-28T01:19:01.000Z",
+                      "updatedAt": "2026-07-28T01:19:01.000Z",
+                      "uid": "35240-3002bd58-2919-47f5-be55-92a8a6c8c394"
+                    },
+                    {
+                      "id": "032561be-7a83-4ac1-a368-bb01890dd7a2",
+                      "name": "An unexpected client error.",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/zip_downloads/:zip_download_id/status",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "zip_downloads",
+                            ":zip_download_id",
+                            "status"
+                          ],
+                          "variable": [
+                            {
+                              "key": "zip_download_id"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Internal Server Error",
+                      "code": 500,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"type\": \"error\",\n  \"status\": \"<integer>\",\n  \"code\": \"not_found\",\n  \"message\": \"<string>\",\n  \"context_info\": {\n    \"message\": \"<string>\"\n  },\n  \"help_url\": \"<string>\",\n  \"request_id\": \"<string>\"\n}",
+                      "createdAt": "2026-07-28T01:19:01.000Z",
+                      "updatedAt": "2026-07-28T01:19:01.000Z",
+                      "uid": "35240-032561be-7a83-4ac1-a368-bb01890dd7a2"
+                    }
+                  ],
+                  "createdAt": "2026-07-28T01:19:01.000Z",
+                  "updatedAt": "2026-07-28T01:19:01.000Z",
+                  "uid": "35240-b3afdf61-4b58-407e-89ac-0aabd552d6fb"
+                }
+              ],
+              "id": "d7b10fb2-3e72-4101-a432-eaabb4d7e2cd",
+              "createdAt": "2026-07-28T01:19:01.000Z",
+              "updatedAt": "2026-07-28T01:19:01.000Z",
+              "uid": "35240-d7b10fb2-3e72-4101-a432-eaabb4d7e2cd"
+            }
+          ],
+          "id": "43a90a49-9cc0-483a-be77-3eaf49df0a3b",
+          "createdAt": "2026-07-28T01:19:01.000Z",
+          "updatedAt": "2026-07-28T01:19:01.000Z",
+          "uid": "35240-43a90a49-9cc0-483a-be77-3eaf49df0a3b"
+        },
+        {
+          "name": "Box Create zip download",
+          "id": "98cf0291-8d2a-453c-9eb0-17c8c8ff733b",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"items\": [\n    {\n      \"type\": \"file\",\n      \"id\": \"<string>\"\n    },\n    {\n      \"type\": \"file\",\n      \"id\": \"<string>\"\n    }\n  ],\n  \"download_file_name\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "headerFamily": "json",
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/zip_downloads",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "zip_downloads"
+              ]
+            },
+            "description": "Creates a request to download multiple files and folders as a single `zip`\narchive file. This API does not return the archive but instead performs all\nthe checks to ensure that the user has access to all the items, and then\nreturns a `download_url` and a `status_url` that can be used to download the\narchive.\n\nThe limit for an archive is either the Account's upload limit or\n10,000 files, whichever is met first.\n\n**Note**: Downloading a large file can be\naffected by various\nfactors such as distance, network latency,\nbandwidth, and congestion, as well as packet loss\nratio and current server load.\nFor these reasons we recommend that a maximum ZIP archive\ntotal size does not exceed 25GB."
+          },
+          "response": [
+            {
+              "id": "97c4e138-ee79-4997-a2ca-a75446762849",
+              "name": "If the `zip` archive is ready to be downloaded, the API will return a\nresponse that will include a `download_url`, a `status_url`, as well as\nany conflicts that might have occurred when creating the request.",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"items\": [\n    {\n      \"type\": \"file\",\n      \"id\": \"<string>\"\n    },\n    {\n      \"type\": \"file\",\n      \"id\": \"<string>\"\n    }\n  ],\n  \"download_file_name\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/zip_downloads",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "zip_downloads"
+                  ]
+                }
+              },
+              "status": "Accepted",
+              "code": 202,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "responseTime": null,
+              "body": "{\n  \"download_url\": \"<string>\",\n  \"status_url\": \"<string>\",\n  \"expires_at\": \"<dateTime>\",\n  \"name_conflicts\": [\n    [\n      {\n        \"id\": \"<string>\",\n        \"type\": \"file\",\n        \"original_name\": \"<string>\",\n        \"download_name\": \"<string>\"\n      },\n      {\n        \"id\": \"<string>\",\n        \"type\": \"folder\",\n        \"original_name\": \"<string>\",\n        \"download_name\": \"<string>\"\n      }\n    ],\n    [\n      {\n        \"id\": \"<string>\",\n        \"type\": \"file\",\n        \"original_name\": \"<string>\",\n        \"download_name\": \"<string>\"\n      },\n      {\n        \"id\": \"<string>\",\n        \"type\": \"file\",\n        \"original_name\": \"<string>\",\n        \"download_name\": \"<string>\"\n      }\n    ]\n  ]\n}",
+              "createdAt": "2026-07-28T01:19:01.000Z",
+              "updatedAt": "2026-07-28T01:19:01.000Z",
+              "uid": "35240-97c4e138-ee79-4997-a2ca-a75446762849"
+            },
+            {
+              "id": "b69fc7bb-46db-484a-b43d-2694a8d99479",
+              "name": "Returns an error if some of the parameters are missing or\nnot valid.\n\nIn most cases, this error might happen because the JSON request body is\nnot valid JSON, any of the items has an incorrect or missing ID, any of\nthe items is not a file or folder, or the",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"items\": [\n    {\n      \"type\": \"file\",\n      \"id\": \"<string>\"\n    },\n    {\n      \"type\": \"file\",\n      \"id\": \"<string>\"\n    }\n  ],\n  \"download_file_name\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/zip_downloads",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "zip_downloads"
+                  ]
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "responseTime": null,
+              "body": "{\n  \"type\": \"error\",\n  \"status\": \"<integer>\",\n  \"code\": \"not_found\",\n  \"message\": \"<string>\",\n  \"context_info\": {\n    \"message\": \"<string>\"\n  },\n  \"help_url\": \"<string>\",\n  \"request_id\": \"<string>\"\n}",
+              "createdAt": "2026-07-28T01:19:01.000Z",
+              "updatedAt": "2026-07-28T01:19:01.000Z",
+              "uid": "35240-b69fc7bb-46db-484a-b43d-2694a8d99479"
+            },
+            {
+              "id": "de252d8b-3749-4ed8-9541-cbf0afd3aea3",
+              "name": "Returned when the access token provided in the `Authorization` header\nis not recognized or not provided.",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"items\": [\n    {\n      \"type\": \"file\",\n      \"id\": \"<string>\"\n    },\n    {\n      \"type\": \"file\",\n      \"id\": \"<string>\"\n    }\n  ],\n  \"download_file_name\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/zip_downloads",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "zip_downloads"
+                  ]
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "responseTime": null,
+              "body": "{\n  \"type\": \"error\",\n  \"status\": \"<integer>\",\n  \"code\": \"not_found\",\n  \"message\": \"<string>\",\n  \"context_info\": {\n    \"message\": \"<string>\"\n  },\n  \"help_url\": \"<string>\",\n  \"request_id\": \"<string>\"\n}",
+              "createdAt": "2026-07-28T01:19:01.000Z",
+              "updatedAt": "2026-07-28T01:19:01.000Z",
+              "uid": "35240-de252d8b-3749-4ed8-9541-cbf0afd3aea3"
+            },
+            {
+              "id": "bb8bf0dc-574b-4118-96c4-e81a1c6e128d",
+              "name": "Returned when an authorization header is provided but the user does not\nhave access to the items.",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"items\": [\n    {\n      \"type\": \"file\",\n      \"id\": \"<string>\"\n    },\n    {\n      \"type\": \"file\",\n      \"id\": \"<string>\"\n    }\n  ],\n  \"download_file_name\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/zip_downloads",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "zip_downloads"
+                  ]
+                }
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "responseTime": null,
+              "body": "{\n  \"type\": \"error\",\n  \"status\": \"<integer>\",\n  \"code\": \"not_found\",\n  \"message\": \"<string>\",\n  \"context_info\": {\n    \"message\": \"<string>\"\n  },\n  \"help_url\": \"<string>\",\n  \"request_id\": \"<string>\"\n}",
+              "createdAt": "2026-07-28T01:19:01.000Z",
+              "updatedAt": "2026-07-28T01:19:01.000Z",
+              "uid": "35240-bb8bf0dc-574b-4118-96c4-e81a1c6e128d"
+            },
+            {
+              "id": "cffe875f-aba7-4599-b4b6-d365b0bdc8b9",
+              "name": "An unexpected client error.",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"items\": [\n    {\n      \"type\": \"file\",\n      \"id\": \"<string>\"\n    },\n    {\n      \"type\": \"file\",\n      \"id\": \"<string>\"\n    }\n  ],\n  \"download_file_name\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "headerFamily": "json",
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/zip_downloads",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "zip_downloads"
+                  ]
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "responseTime": null,
+              "body": "{\n  \"type\": \"error\",\n  \"status\": \"<integer>\",\n  \"code\": \"not_found\",\n  \"message\": \"<string>\",\n  \"context_info\": {\n    \"message\": \"<string>\"\n  },\n  \"help_url\": \"<string>\",\n  \"request_id\": \"<string>\"\n}",
+              "createdAt": "2026-07-28T01:19:01.000Z",
+              "updatedAt": "2026-07-28T01:19:01.000Z",
+              "uid": "35240-cffe875f-aba7-4599-b4b6-d365b0bdc8b9"
+            }
+          ],
+          "createdAt": "2026-07-28T01:19:01.000Z",
+          "updatedAt": "2026-07-28T01:19:01.000Z",
+          "uid": "35240-98cf0291-8d2a-453c-9eb0-17c8c8ff733b"
+        }
+      ],
+      "id": "6ee8b654-9c7a-4e0c-bf5b-113be1d65ac5",
+      "createdAt": "2026-07-28T01:19:01.000Z",
+      "updatedAt": "2026-07-28T01:19:01.000Z",
+      "uid": "35240-6ee8b654-9c7a-4e0c-bf5b-113be1d65ac5"
+    }
+  ],
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "/"
+    }
+  ]
+}

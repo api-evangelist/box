@@ -1,0 +1,234 @@
+{
+  "info": {
+    "_postman_id": "c803d245-1d96-4ade-aef0-b9f59fa69c08",
+    "name": "Box Authorize Authorization Shared Items#web Links API",
+    "description": "Needs a description.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "createdAt": "2026-07-28T01:17:02.000Z",
+    "updatedAt": "2026-07-28T01:17:02.000Z",
+    "lastUpdatedBy": "35240",
+    "uid": "35240-c803d245-1d96-4ade-aef0-b9f59fa69c08"
+  },
+  "item": [
+    {
+      "name": "shared_items#web_links",
+      "item": [
+        {
+          "name": "Box Find web link for shared link",
+          "id": "ba44708f-5bbe-4ae4-ab8b-609a98d4ebed",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "description": "Ensures an item is only returned if it has changed.\n\nPass in the item's last observed `etag` value\ninto this header and the endpoint will fail\nwith a `304 Not Modified` if the item has not\nchanged since.",
+                "key": "if-none-match",
+                "value": "<string>"
+              },
+              {
+                "description": "(Required) A header containing the shared link and optional password for the\nshared link.\n\nThe format for this header is as follows.\n\n`shared_link=[link]&shared_link_password=[password]`",
+                "key": "boxapi",
+                "value": "<string>"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/shared_items?fields=<string>,<string>#web_links",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "shared_items"
+              ],
+              "query": [
+                {
+                  "description": "A comma-separated list of attributes to include in the\nresponse. This can be used to request fields that are\nnot normally returned in a standard response.\n\nBe aware that specifying this parameter will have the\neffect that none of the standard fields are returned in\nthe response unless explicitly specified, instead only\nfields for the mini representation are returned, additional\nto the fields requested.",
+                  "key": "fields",
+                  "value": "<string>,<string>"
+                }
+              ],
+              "hash": "web_links"
+            },
+            "description": "Returns the web link represented by a shared link.\n\nA shared web link can be represented by a shared link,\nwhich can originate within the current enterprise or within another.\n\nThis endpoint allows an application to retrieve information about a\nshared web link when only given a shared link."
+          },
+          "response": [
+            {
+              "id": "9702cb50-2137-42da-88aa-b5f92513acbd",
+              "name": "Returns a full file resource if the shared link is valid and\nthe user has access to it.",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "description": "Ensures an item is only returned if it has changed.\n\nPass in the item's last observed `etag` value\ninto this header and the endpoint will fail\nwith a `304 Not Modified` if the item has not\nchanged since.",
+                    "key": "if-none-match",
+                    "value": "<string>"
+                  },
+                  {
+                    "description": "(Required) A header containing the shared link and optional password for the\nshared link.\n\nThe format for this header is as follows.\n\n`shared_link=[link]&shared_link_password=[password]`",
+                    "key": "boxapi",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/shared_items?fields=<string>,<string>#web_links",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "shared_items"
+                  ],
+                  "query": [
+                    {
+                      "description": "A comma-separated list of attributes to include in the\nresponse. This can be used to request fields that are\nnot normally returned in a standard response.\n\nBe aware that specifying this parameter will have the\neffect that none of the standard fields are returned in\nthe response unless explicitly specified, instead only\nfields for the mini representation are returned, additional\nto the fields requested.",
+                      "key": "fields",
+                      "value": "<string>,<string>"
+                    }
+                  ],
+                  "hash": "web_links"
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "responseTime": null,
+              "body": "{\n  \"parent\": {\n    \"value\": \"reference #/components/schemas/Folder--Mini not found in the OpenAPI spec\",\n    \"description\": \"The parent object the web link belongs to\"\n  },\n  \"description\": \"<string>\",\n  \"path_collection\": {\n    \"total_count\": \"<long>\",\n    \"entries\": [\n      {\n        \"value\": \"reference #/components/schemas/Folder--Mini not found in the OpenAPI spec\"\n      },\n      {\n        \"value\": \"reference #/components/schemas/Folder--Mini not found in the OpenAPI spec\"\n      }\n    ]\n  },\n  \"created_at\": \"<dateTime>\",\n  \"modified_at\": \"<dateTime>\",\n  \"trashed_at\": \"<dateTime>\",\n  \"purged_at\": \"<dateTime>\",\n  \"created_by\": {\n    \"value\": \"reference #/components/schemas/User--Mini not found in the OpenAPI spec\",\n    \"description\": \"The user who created this web link\"\n  },\n  \"modified_by\": {\n    \"value\": \"reference #/components/schemas/User--Mini not found in the OpenAPI spec\",\n    \"description\": \"The user who last modified this web link\"\n  },\n  \"owned_by\": {\n    \"value\": \"reference #/components/schemas/User--Mini not found in the OpenAPI spec\",\n    \"description\": \"The user who owns this web link\"\n  },\n  \"shared_link\": {\n    \"url\": \"<string>\",\n    \"effective_access\": \"company\",\n    \"effective_permission\": \"can_edit\",\n    \"is_password_enabled\": \"<boolean>\",\n    \"download_count\": \"<integer>\",\n    \"preview_count\": \"<integer>\",\n    \"download_url\": \"<string>\",\n    \"vanity_url\": \"<string>\",\n    \"vanity_name\": \"<string>\",\n    \"access\": \"collaborators\",\n    \"unshared_at\": \"<dateTime>\",\n    \"permissions\": {\n      \"can_download\": \"<boolean>\",\n      \"can_preview\": \"<boolean>\",\n      \"can_edit\": \"<boolean>\"\n    }\n  },\n  \"item_status\": \"trashed\"\n}",
+              "createdAt": "2026-07-28T01:17:03.000Z",
+              "updatedAt": "2026-07-28T01:17:03.000Z",
+              "uid": "35240-9702cb50-2137-42da-88aa-b5f92513acbd"
+            },
+            {
+              "id": "e63018ad-8c25-45b7-9fe6-6a6071e094e5",
+              "name": "Returns an empty response when the `If-None-Match` header matches\nthe current `etag` value of the folder. This indicates that the folder\nhas not changed since it was last requested.",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "description": "Ensures an item is only returned if it has changed.\n\nPass in the item's last observed `etag` value\ninto this header and the endpoint will fail\nwith a `304 Not Modified` if the item has not\nchanged since.",
+                    "key": "if-none-match",
+                    "value": "<string>"
+                  },
+                  {
+                    "description": "(Required) A header containing the shared link and optional password for the\nshared link.\n\nThe format for this header is as follows.\n\n`shared_link=[link]&shared_link_password=[password]`",
+                    "key": "boxapi",
+                    "value": "<string>"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/shared_items?fields=<string>,<string>#web_links",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "shared_items"
+                  ],
+                  "query": [
+                    {
+                      "description": "A comma-separated list of attributes to include in the\nresponse. This can be used to request fields that are\nnot normally returned in a standard response.\n\nBe aware that specifying this parameter will have the\neffect that none of the standard fields are returned in\nthe response unless explicitly specified, instead only\nfields for the mini representation are returned, additional\nto the fields requested.",
+                      "key": "fields",
+                      "value": "<string>,<string>"
+                    }
+                  ],
+                  "hash": "web_links"
+                }
+              },
+              "status": "Not Modified",
+              "code": 304,
+              "_postman_previewlanguage": "text",
+              "header": [],
+              "cookie": [],
+              "responseTime": null,
+              "body": null,
+              "createdAt": "2026-07-28T01:17:03.000Z",
+              "updatedAt": "2026-07-28T01:17:03.000Z",
+              "uid": "35240-e63018ad-8c25-45b7-9fe6-6a6071e094e5"
+            },
+            {
+              "id": "3b61482d-32cb-4ff5-a86b-26a4498c70df",
+              "name": "An unexpected client error.",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "description": "Ensures an item is only returned if it has changed.\n\nPass in the item's last observed `etag` value\ninto this header and the endpoint will fail\nwith a `304 Not Modified` if the item has not\nchanged since.",
+                    "key": "if-none-match",
+                    "value": "<string>"
+                  },
+                  {
+                    "description": "(Required) A header containing the shared link and optional password for the\nshared link.\n\nThe format for this header is as follows.\n\n`shared_link=[link]&shared_link_password=[password]`",
+                    "key": "boxapi",
+                    "value": "<string>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/shared_items?fields=<string>,<string>#web_links",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "shared_items"
+                  ],
+                  "query": [
+                    {
+                      "description": "A comma-separated list of attributes to include in the\nresponse. This can be used to request fields that are\nnot normally returned in a standard response.\n\nBe aware that specifying this parameter will have the\neffect that none of the standard fields are returned in\nthe response unless explicitly specified, instead only\nfields for the mini representation are returned, additional\nto the fields requested.",
+                      "key": "fields",
+                      "value": "<string>,<string>"
+                    }
+                  ],
+                  "hash": "web_links"
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "responseTime": null,
+              "body": "{\n  \"type\": \"error\",\n  \"status\": \"<integer>\",\n  \"code\": \"unauthorized\",\n  \"message\": \"<string>\",\n  \"context_info\": {\n    \"message\": \"<string>\"\n  },\n  \"help_url\": \"<string>\",\n  \"request_id\": \"<string>\"\n}",
+              "createdAt": "2026-07-28T01:17:03.000Z",
+              "updatedAt": "2026-07-28T01:17:03.000Z",
+              "uid": "35240-3b61482d-32cb-4ff5-a86b-26a4498c70df"
+            }
+          ],
+          "createdAt": "2026-07-28T01:17:03.000Z",
+          "updatedAt": "2026-07-28T01:17:03.000Z",
+          "uid": "35240-ba44708f-5bbe-4ae4-ab8b-609a98d4ebed"
+        }
+      ],
+      "id": "685c5687-638f-4af2-87d8-bec1dd4b636c",
+      "createdAt": "2026-07-28T01:17:02.000Z",
+      "updatedAt": "2026-07-28T01:17:02.000Z",
+      "uid": "35240-685c5687-638f-4af2-87d8-bec1dd4b636c"
+    }
+  ],
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "/"
+    }
+  ]
+}
