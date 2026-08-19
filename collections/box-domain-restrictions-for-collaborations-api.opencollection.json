@@ -1,0 +1,96 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Box Authorize Authorization Domain Restrictions for Collaborations API",
+    "version": "1.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Domain Restrictions for Collaborations",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Box List allowed collaboration domains",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/collaboration_whitelist_entries",
+            "params": [
+              {
+                "name": "marker",
+                "value": "JV9IRGZmieiBasejOG9yDCRNgd2ymoZIbjsxbJMjIs3kioVii",
+                "type": "query",
+                "description": "Defines the position marker at which to begin returning results. This is\nused when paginating using marker-based pagination.\n\nThis requires `usemarker` to be set to `true`."
+              },
+              {
+                "name": "limit",
+                "value": "1000",
+                "type": "query",
+                "description": "The maximum number of items to return per page."
+              }
+            ]
+          },
+          "docs": "Returns the list domains that have been deemed safe to create collaborations\nfor within the current enterprise."
+        },
+        {
+          "info": {
+            "name": "Box Add domain to list of allowed collaboration domains",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/collaboration_whitelist_entries",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Creates a new entry in the list of allowed domains to allow\ncollaboration for."
+        },
+        {
+          "info": {
+            "name": "Box Get allowed collaboration domain",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/collaboration_whitelist_entries/:collaboration_whitelist_entry_id",
+            "params": [
+              {
+                "name": "collaboration_whitelist_entry_id",
+                "value": "213123",
+                "type": "path",
+                "description": "The ID of the entry in the list."
+              }
+            ]
+          },
+          "docs": "Returns a domain that has been deemed safe to create collaborations\nfor within the current enterprise."
+        },
+        {
+          "info": {
+            "name": "Box Remove domain from list of allowed collaboration domains",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "{{baseUrl}}/collaboration_whitelist_entries/:collaboration_whitelist_entry_id",
+            "params": [
+              {
+                "name": "collaboration_whitelist_entry_id",
+                "value": "213123",
+                "type": "path",
+                "description": "The ID of the entry in the list."
+              }
+            ]
+          },
+          "docs": "Removes a domain from the list of domains that have been deemed safe to create\ncollaborations for within the current enterprise."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

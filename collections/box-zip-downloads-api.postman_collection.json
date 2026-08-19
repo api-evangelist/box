@@ -1,0 +1,816 @@
+{
+  "item": [
+    {
+      "id": "44b0fb74-44c9-4c81-a34b-20a4df3362b7",
+      "name": "Zip Downloads",
+      "description": {
+        "content": "Zip downloads represent a successful request\nto create a ZIP archive with files and folders.",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "d0872def-b808-4845-8d78-5ff90ac0bba8",
+          "name": "Box Create zip download",
+          "request": {
+            "name": "Box Create zip download",
+            "description": {
+              "content": "Creates a request to download multiple files and folders as a single `zip`\narchive file. This API does not return the archive but instead performs all\nthe checks to ensure that the user has access to all the items, and then\nreturns a `download_url` and a `status_url` that can be used to download the\narchive.\n\nThe limit for an archive is either the Account's upload limit or\n10,000 files, whichever is met first.\n\n**Note**: Downloading a large file can be\naffected by various\nfactors such as distance, network latency,\nbandwidth, and congestion, as well as packet loss\nratio and current server load.\nFor these reasons we recommend that a maximum ZIP archive\ntotal size does not exceed 25GB.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "zip_downloads"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"items\": [\n    {\n      \"type\": \"<string>\",\n      \"id\": \"<string>\"\n    },\n    {\n      \"type\": \"<string>\",\n      \"id\": \"<string>\"\n    }\n  ],\n  \"download_file_name\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "2097b048-a31f-4738-85d0-22f0657df537",
+              "name": "If the `zip` archive is ready to be downloaded, the API will return a\nresponse that will include a `download_url`, a `status_url`, as well as\nany conflicts that might have occurred when creating the request.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "zip_downloads"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"items\": [\n    {\n      \"type\": \"file\",\n      \"id\": \"12345\"\n    },\n    {\n      \"type\": \"file\",\n      \"id\": \"12345\"\n    }\n  ],\n  \"download_file_name\": \"January Financials\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Accepted",
+              "code": 202,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"download_url\": \"https://dl.boxcloud.com/2.0/zip_downloads/29l00nfxDyHOt7RphI9zT_w==nDnZEDjY2S8iEWWCHEEiptFxwoWojjlibZjJ6geuE5xnXENDTPxzgbks_yY=/content\",\n  \"status_url\": \"https://api.box.com/2.0/zip_downloads/29l00nfxDyHOt7RphI9zT_w==nDnZEDjY2S8iEWWCHEEiptFxwoWojjlibZjJ6geuE5xnXENDTPxzgbks_yY=/status\",\n  \"expires_at\": \"2020-07-22T11:26:08Z\",\n  \"name_conflicts\": [\n    [\n      {\n        \"id\": \"12345\",\n        \"type\": \"file\",\n        \"original_name\": \"Report.pdf\",\n        \"download_name\": \"3aa6a7.pdf\"\n      },\n      {\n        \"id\": \"34325\",\n        \"type\": \"file\",\n        \"original_name\": \"Report.pdf\",\n        \"download_name\": \"5d53f2.pdf\"\n      }\n    ]\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "b541f69a-bcfe-4544-881b-5c7a0fefed2f",
+              "name": "Returns an error if some of the parameters are missing or\nnot valid.\n\nIn most cases, this error might happen because the JSON request body is\nnot valid JSON, any of the items has an incorrect or missing ID, any of\nthe items is not a file or folder, or the root folder with ID `0` has been\nadded to the list of folders to add to the archive.\n\nThe following is a list of common error codes for this response.\n\n* `bad_request` - the request body is missing, invalid, or both the list\nof files and folders are empty. Additionally, it this error might be\nreturned when attempting to add the root folder with ID `0` to an archive.\n* `zip_download_file_count_exceeded_limit` - the requested files and\nfolders would result in an archive with more than 10,000 files. The\nrequest will have to be split into multiple requests to reduce the number\nof files per archive.\n* `zip_download_pre_compressed_bytes_exceeded_limit` - the requested files\nand folders would result in an archive with more than the allowed download\nlimit. The request will have to be split into multiple requests to reduce\nthe size of the archive.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "zip_downloads"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"items\": [\n    {\n      \"type\": \"file\",\n      \"id\": \"12345\"\n    },\n    {\n      \"type\": \"file\",\n      \"id\": \"12345\"\n    }\n  ],\n  \"download_file_name\": \"January Financials\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"type\": \"error\",\n  \"status\": 400,\n  \"code\": \"item_name_invalid\",\n  \"message\": \"Method Not Allowed\",\n  \"context_info\": {\n    \"message\": \"Something went wrong.\"\n  },\n  \"help_url\": \"https://developer.box.com/guides/api-calls/permissions-and-errors/common-errors/\",\n  \"request_id\": \"abcdef123456\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "71abe646-e0a1-4dae-80c5-2c998e6909e7",
+              "name": "Returned when the access token provided in the `Authorization` header\nis not recognized or not provided.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "zip_downloads"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"items\": [\n    {\n      \"type\": \"file\",\n      \"id\": \"12345\"\n    },\n    {\n      \"type\": \"file\",\n      \"id\": \"12345\"\n    }\n  ],\n  \"download_file_name\": \"January Financials\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"type\": \"error\",\n  \"status\": 400,\n  \"code\": \"item_name_invalid\",\n  \"message\": \"Method Not Allowed\",\n  \"context_info\": {\n    \"message\": \"Something went wrong.\"\n  },\n  \"help_url\": \"https://developer.box.com/guides/api-calls/permissions-and-errors/common-errors/\",\n  \"request_id\": \"abcdef123456\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "9fb5db30-8f3d-4d0e-a954-9415adee1006",
+              "name": "Returned when an authorization header is provided but the user does not\nhave access to the items.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "zip_downloads"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"items\": [\n    {\n      \"type\": \"file\",\n      \"id\": \"12345\"\n    },\n    {\n      \"type\": \"file\",\n      \"id\": \"12345\"\n    }\n  ],\n  \"download_file_name\": \"January Financials\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"type\": \"error\",\n  \"status\": 400,\n  \"code\": \"item_name_invalid\",\n  \"message\": \"Method Not Allowed\",\n  \"context_info\": {\n    \"message\": \"Something went wrong.\"\n  },\n  \"help_url\": \"https://developer.box.com/guides/api-calls/permissions-and-errors/common-errors/\",\n  \"request_id\": \"abcdef123456\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "64c4796d-ebe5-42ce-9a09-05bafc927f9d",
+              "name": "An unexpected client error.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "zip_downloads"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"items\": [\n    {\n      \"type\": \"file\",\n      \"id\": \"12345\"\n    },\n    {\n      \"type\": \"file\",\n      \"id\": \"12345\"\n    }\n  ],\n  \"download_file_name\": \"January Financials\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"type\": \"error\",\n  \"status\": 400,\n  \"code\": \"item_name_invalid\",\n  \"message\": \"Method Not Allowed\",\n  \"context_info\": {\n    \"message\": \"Something went wrong.\"\n  },\n  \"help_url\": \"https://developer.box.com/guides/api-calls/permissions-and-errors/common-errors/\",\n  \"request_id\": \"abcdef123456\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "ff6481af-b453-4096-9722-a4de746ad483",
+          "name": "Box Download zip archive",
+          "request": {
+            "name": "Box Download zip archive",
+            "description": {
+              "content": "Returns the contents of a `zip` archive in binary format. This URL does not\nrequire any form of authentication and could be used in a user's browser to\ndownload the archive to a user's device.\n\nBy default, this URL is only valid for a few seconds from the creation of\nthe request for this archive. Once a download has started it can not be\nstopped and resumed, instead a new request for a zip archive would need to\nbe created.\n\nThe URL of this endpoint should not be considered as fixed. Instead, use\nthe [Create zip download](e://post_zip_downloads) API to request to create a\n`zip` archive, and then follow the `download_url` field in the response to\nthis endpoint.",
+              "type": "text/plain"
+            },
+            "url": {
+              "protocol": "https",
+              "path": [
+                "2.0",
+                "zip_downloads",
+                ":zip_download_id",
+                "content"
+              ],
+              "host": [
+                "dl",
+                "boxcloud",
+                "com"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "zip_download_id",
+                  "description": "(Required) The unique identifier that represent this `zip` archive."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/octet-stream"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "6a51491b-7f5d-4339-b516-710a8165be92",
+              "name": "Returns the content of the items requested for this download, formatted as\na stream of files and folders in a `zip` archive.",
+              "originalRequest": {
+                "url": {
+                  "protocol": "https",
+                  "path": [
+                    "2.0",
+                    "zip_downloads",
+                    ":zip_download_id",
+                    "content"
+                  ],
+                  "host": [
+                    "dl",
+                    "boxcloud",
+                    "com"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "zip_download_id",
+                      "description": "(Required) The unique identifier that represent this `zip` archive."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/octet-stream"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "disabled": false,
+                  "description": "The name of the archive to be downloaded",
+                  "key": "Content-Disposition",
+                  "value": "attachment;filename=\"Avatars.zip\";filename*=UTF-8''Avatars.zip"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/octet-stream"
+                }
+              ],
+              "body": "string",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "455ee647-af67-45b8-bf5e-a3194fdca746",
+              "name": "Returns an error if the ID of this download request is not valid. This\nerror can also be returned if this URL has been called before. To\nre-download this archive, please create a new request for a zip download.",
+              "originalRequest": {
+                "url": {
+                  "protocol": "https",
+                  "path": [
+                    "2.0",
+                    "zip_downloads",
+                    ":zip_download_id",
+                    "content"
+                  ],
+                  "host": [
+                    "dl",
+                    "boxcloud",
+                    "com"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "zip_download_id",
+                      "description": "(Required) The unique identifier that represent this `zip` archive."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"type\": \"error\",\n  \"status\": 400,\n  \"code\": \"item_name_invalid\",\n  \"message\": \"Method Not Allowed\",\n  \"context_info\": {\n    \"message\": \"Something went wrong.\"\n  },\n  \"help_url\": \"https://developer.box.com/guides/api-calls/permissions-and-errors/common-errors/\",\n  \"request_id\": \"abcdef123456\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "0ec542e0-9d12-4fb8-987b-eab7b7d77348",
+              "name": "Returns an error if the number of concurrent zip downloads has been\nreached for either the user or the enterprise.\n\n* `user_too_many_concurrent_downloads` - the maximum of 5 parallel\ndownloads of zip archives per user has been met.\n* `enterprise_too_many_concurrent_downloads` - the maximum of 10 parallel\ndownloads of zip archives per enterprise has been met.",
+              "originalRequest": {
+                "url": {
+                  "protocol": "https",
+                  "path": [
+                    "2.0",
+                    "zip_downloads",
+                    ":zip_download_id",
+                    "content"
+                  ],
+                  "host": [
+                    "dl",
+                    "boxcloud",
+                    "com"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "zip_download_id",
+                      "description": "(Required) The unique identifier that represent this `zip` archive."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Too Many Requests",
+              "code": 429,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"type\": \"error\",\n  \"status\": 400,\n  \"code\": \"item_name_invalid\",\n  \"message\": \"Method Not Allowed\",\n  \"context_info\": {\n    \"message\": \"Something went wrong.\"\n  },\n  \"help_url\": \"https://developer.box.com/guides/api-calls/permissions-and-errors/common-errors/\",\n  \"request_id\": \"abcdef123456\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "e4e63195-7130-43eb-8db8-20175e9137e1",
+              "name": "An unexpected client error.",
+              "originalRequest": {
+                "url": {
+                  "protocol": "https",
+                  "path": [
+                    "2.0",
+                    "zip_downloads",
+                    ":zip_download_id",
+                    "content"
+                  ],
+                  "host": [
+                    "dl",
+                    "boxcloud",
+                    "com"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "zip_download_id",
+                      "description": "(Required) The unique identifier that represent this `zip` archive."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"type\": \"error\",\n  \"status\": 400,\n  \"code\": \"item_name_invalid\",\n  \"message\": \"Method Not Allowed\",\n  \"context_info\": {\n    \"message\": \"Something went wrong.\"\n  },\n  \"help_url\": \"https://developer.box.com/guides/api-calls/permissions-and-errors/common-errors/\",\n  \"request_id\": \"abcdef123456\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "95c6dbe3-5768-4765-93f5-44a4b42742ab",
+          "name": "Box Get zip download status",
+          "request": {
+            "name": "Box Get zip download status",
+            "description": {
+              "content": "Returns the download status of a `zip` archive, allowing an application to\ninspect the progress of the download as well as the number of items that\nmight have been skipped.\n\nThis endpoint can only be accessed once the download has started.\nSubsequently this endpoint is valid for 12 hours from the start of the\ndownload.\n\nThe URL of this endpoint should not be considered as fixed. Instead, use\nthe [Create zip download](e://post_zip_downloads) API to request to create a\n`zip` archive, and then follow the `status_url` field in the response to\nthis endpoint.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "zip_downloads",
+                ":zip_download_id",
+                "status"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "zip_download_id",
+                  "description": "(Required) The unique identifier that represent this `zip` archive."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "f78acd22-8efe-49ef-8974-9e8365cad0ed",
+              "name": "Returns the status of the `zip` archive that is being downloaded.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "zip_downloads",
+                    ":zip_download_id",
+                    "status"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "zip_download_id",
+                      "description": "(Required) The unique identifier that represent this `zip` archive."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"total_file_count\": 20,\n  \"downloaded_file_count\": 10,\n  \"skipped_file_count\": 5,\n  \"skipped_folder_count\": 5,\n  \"state\": \"succeeded\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "97eb8fce-a070-4aee-b7d7-d7b0202b1faf",
+              "name": "Returned when the access token provided in the `Authorization` header\nis not recognized or not provided.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "zip_downloads",
+                    ":zip_download_id",
+                    "status"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "zip_download_id",
+                      "description": "(Required) The unique identifier that represent this `zip` archive."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"type\": \"error\",\n  \"status\": 400,\n  \"code\": \"item_name_invalid\",\n  \"message\": \"Method Not Allowed\",\n  \"context_info\": {\n    \"message\": \"Something went wrong.\"\n  },\n  \"help_url\": \"https://developer.box.com/guides/api-calls/permissions-and-errors/common-errors/\",\n  \"request_id\": \"abcdef123456\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "2669b334-39a1-4f20-b85c-f3c3baee3b30",
+              "name": "Returned when an authorization header is provided but the user does not\nhave access to the items.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "zip_downloads",
+                    ":zip_download_id",
+                    "status"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "zip_download_id",
+                      "description": "(Required) The unique identifier that represent this `zip` archive."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"type\": \"error\",\n  \"status\": 400,\n  \"code\": \"item_name_invalid\",\n  \"message\": \"Method Not Allowed\",\n  \"context_info\": {\n    \"message\": \"Something went wrong.\"\n  },\n  \"help_url\": \"https://developer.box.com/guides/api-calls/permissions-and-errors/common-errors/\",\n  \"request_id\": \"abcdef123456\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "a20c6108-16d4-472c-b05d-29b010411f62",
+              "name": "Returns an error if the ID of this download request is not valid, or if\nthe status of a download is requested before the download has been\nstarted.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "zip_downloads",
+                    ":zip_download_id",
+                    "status"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "zip_download_id",
+                      "description": "(Required) The unique identifier that represent this `zip` archive."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"type\": \"error\",\n  \"status\": 400,\n  \"code\": \"item_name_invalid\",\n  \"message\": \"Method Not Allowed\",\n  \"context_info\": {\n    \"message\": \"Something went wrong.\"\n  },\n  \"help_url\": \"https://developer.box.com/guides/api-calls/permissions-and-errors/common-errors/\",\n  \"request_id\": \"abcdef123456\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "6ba17a57-5082-4003-89c4-d46a74c97961",
+              "name": "An unexpected client error.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "zip_downloads",
+                    ":zip_download_id",
+                    "status"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "zip_download_id",
+                      "description": "(Required) The unique identifier that represent this `zip` archive."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"type\": \"error\",\n  \"status\": 400,\n  \"code\": \"item_name_invalid\",\n  \"message\": \"Method Not Allowed\",\n  \"context_info\": {\n    \"message\": \"Something went wrong.\"\n  },\n  \"help_url\": \"https://developer.box.com/guides/api-calls/permissions-and-errors/common-errors/\",\n  \"request_id\": \"abcdef123456\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "/",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "26017f94-f704-4c92-87a8-a83429e04a0c",
+    "name": "Box Authorize Authorization Zip Downloads API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "Needs a description.",
+      "type": "text/plain"
+    }
+  }
+}

@@ -1,0 +1,1321 @@
+{
+  "item": [
+    {
+      "id": "a82486ed-c289-4018-9e94-5ea71904db11",
+      "name": "Webhooks",
+      "description": {
+        "content": "Webhooks allow you to monitor Box content for events,\nand receive notifications to a URL of your choice when they occur.\nFor example, a workflow may include waiting\nfor a file to be downloaded to delete a shared link.",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "c5523630-1421-403f-aec4-cea36ce8973d",
+          "name": "Box List all webhooks",
+          "request": {
+            "name": "Box List all webhooks",
+            "description": {
+              "content": "Returns all defined webhooks for the requesting application.\n\nThis API only returns webhooks that are applied to files or folders that are\nowned by the authenticated user. This means that an admin can not see webhooks\ncreated by a service account unless the admin has access to those folders, and\nvice versa.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "webhooks"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "marker",
+                  "value": "<string>",
+                  "description": "Defines the position marker at which to begin returning results. This is\nused when paginating using marker-based pagination.\n\nThis requires `usemarker` to be set to `true`."
+                },
+                {
+                  "disabled": false,
+                  "key": "limit",
+                  "value": "<long>",
+                  "description": "The maximum number of items to return per page."
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "9a21add1-9805-4db3-9e3c-749d3ae91f68",
+              "name": "Returns a list of webhooks.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "webhooks"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "marker",
+                      "value": "JV9IRGZmieiBasejOG9yDCRNgd2ymoZIbjsxbJMjIs3kioVii"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "1000"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"limit\": 1000,\n  \"next_marker\": \"JV9IRGZmieiBasejOG9yDCRNgd2ymoZIbjsxbJMjIs3kioVii\",\n  \"prev_marker\": \"JV9IRGZmieiBasejOG9yDCRNgd2ymoZIbjsxbJMjIs3kioVih\",\n  \"entries\": [\n    {\n      \"id\": \"11446498\",\n      \"type\": \"webhook\",\n      \"target\": {\n        \"id\": \"1231232\",\n        \"type\": \"file\"\n      }\n    },\n    {\n      \"id\": \"11446498\",\n      \"type\": \"webhook\",\n      \"target\": {\n        \"id\": \"1231232\",\n        \"type\": \"file\"\n      }\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "d92693e9-a38a-4118-a041-2b2cf5aa6320",
+              "name": "Returns an error if the application does not\nhave the permission to manage webhooks.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "webhooks"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "marker",
+                      "value": "JV9IRGZmieiBasejOG9yDCRNgd2ymoZIbjsxbJMjIs3kioVii"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "1000"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"type\": \"error\",\n  \"status\": 400,\n  \"code\": \"item_name_invalid\",\n  \"message\": \"Method Not Allowed\",\n  \"context_info\": {\n    \"message\": \"Something went wrong.\"\n  },\n  \"help_url\": \"https://developer.box.com/guides/api-calls/permissions-and-errors/common-errors/\",\n  \"request_id\": \"abcdef123456\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "f58e2cd7-5ad7-4356-bfb5-2e64739c6920",
+              "name": "An unexpected client error.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "webhooks"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "marker",
+                      "value": "JV9IRGZmieiBasejOG9yDCRNgd2ymoZIbjsxbJMjIs3kioVii"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "1000"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"type\": \"error\",\n  \"status\": 400,\n  \"code\": \"item_name_invalid\",\n  \"message\": \"Method Not Allowed\",\n  \"context_info\": {\n    \"message\": \"Something went wrong.\"\n  },\n  \"help_url\": \"https://developer.box.com/guides/api-calls/permissions-and-errors/common-errors/\",\n  \"request_id\": \"abcdef123456\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "33a1829f-619a-45d5-b0be-ec46aae3f216",
+          "name": "Box Create webhook",
+          "request": {
+            "name": "Box Create webhook",
+            "description": {
+              "content": "Creates a webhook.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "webhooks"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"target\": {\n    \"id\": \"<string>\",\n    \"type\": \"<string>\"\n  },\n  \"triggers\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"address\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "f84351ae-2f08-46f9-aceb-3003070cba4e",
+              "name": "Returns the new webhook object.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "webhooks"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"target\": {\n    \"id\": \"1231232\",\n    \"type\": \"file\"\n  },\n  \"triggers\": [\n    \"FILE.UPLOADED\"\n  ],\n  \"address\": \"https://example.com/webhooks\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": \"11446498\",\n  \"type\": \"webhook\",\n  \"target\": {\n    \"id\": \"1231232\",\n    \"type\": \"file\"\n  },\n  \"created_by\": {\n    \"type\": \"user\",\n    \"id\": \"11446498\",\n    \"name\": \"Aaron Levie\",\n    \"login\": \"ceo@example.com\"\n  },\n  \"created_at\": \"2012-12-12T10:53:43-08:00\",\n  \"address\": \"https://example.com/webhooks\",\n  \"triggers\": [\n    \"FILE.UPLOADED\"\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "25c9df85-ea01-4df5-a4ab-244ac6ec9ec5",
+              "name": "Returns an error if the parameters were\nincorrect.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "webhooks"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"target\": {\n    \"id\": \"1231232\",\n    \"type\": \"file\"\n  },\n  \"triggers\": [\n    \"FILE.UPLOADED\"\n  ],\n  \"address\": \"https://example.com/webhooks\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"type\": \"error\",\n  \"status\": 400,\n  \"code\": \"item_name_invalid\",\n  \"message\": \"Method Not Allowed\",\n  \"context_info\": {\n    \"message\": \"Something went wrong.\"\n  },\n  \"help_url\": \"https://developer.box.com/guides/api-calls/permissions-and-errors/common-errors/\",\n  \"request_id\": \"abcdef123456\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "69dc8612-1dd0-4596-8a5e-02c83e354c73",
+              "name": "Returns an error if the application does not\nhave the permission to manage webhooks.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "webhooks"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"target\": {\n    \"id\": \"1231232\",\n    \"type\": \"file\"\n  },\n  \"triggers\": [\n    \"FILE.UPLOADED\"\n  ],\n  \"address\": \"https://example.com/webhooks\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"type\": \"error\",\n  \"status\": 400,\n  \"code\": \"item_name_invalid\",\n  \"message\": \"Method Not Allowed\",\n  \"context_info\": {\n    \"message\": \"Something went wrong.\"\n  },\n  \"help_url\": \"https://developer.box.com/guides/api-calls/permissions-and-errors/common-errors/\",\n  \"request_id\": \"abcdef123456\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "aa031670-2121-42e5-85b8-8048e8d390b3",
+              "name": "Returns an error if the target item could\nnot be found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "webhooks"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"target\": {\n    \"id\": \"1231232\",\n    \"type\": \"file\"\n  },\n  \"triggers\": [\n    \"FILE.UPLOADED\"\n  ],\n  \"address\": \"https://example.com/webhooks\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"type\": \"error\",\n  \"status\": 400,\n  \"code\": \"item_name_invalid\",\n  \"message\": \"Method Not Allowed\",\n  \"context_info\": {\n    \"message\": \"Something went wrong.\"\n  },\n  \"help_url\": \"https://developer.box.com/guides/api-calls/permissions-and-errors/common-errors/\",\n  \"request_id\": \"abcdef123456\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "2348f332-dce9-425c-a59f-f658b0d15697",
+              "name": "Returns an error if the a webhook for this\ncombination of target, application, and user\nalready exists.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "webhooks"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"target\": {\n    \"id\": \"1231232\",\n    \"type\": \"file\"\n  },\n  \"triggers\": [\n    \"FILE.UPLOADED\"\n  ],\n  \"address\": \"https://example.com/webhooks\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Conflict",
+              "code": 409,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"type\": \"error\",\n  \"status\": 400,\n  \"code\": \"item_name_invalid\",\n  \"message\": \"Method Not Allowed\",\n  \"context_info\": {\n    \"message\": \"Something went wrong.\"\n  },\n  \"help_url\": \"https://developer.box.com/guides/api-calls/permissions-and-errors/common-errors/\",\n  \"request_id\": \"abcdef123456\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "53514d1d-bfb0-4081-9898-b46b06989f90",
+              "name": "An unexpected client error.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "webhooks"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"target\": {\n    \"id\": \"1231232\",\n    \"type\": \"file\"\n  },\n  \"triggers\": [\n    \"FILE.UPLOADED\"\n  ],\n  \"address\": \"https://example.com/webhooks\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"type\": \"error\",\n  \"status\": 400,\n  \"code\": \"item_name_invalid\",\n  \"message\": \"Method Not Allowed\",\n  \"context_info\": {\n    \"message\": \"Something went wrong.\"\n  },\n  \"help_url\": \"https://developer.box.com/guides/api-calls/permissions-and-errors/common-errors/\",\n  \"request_id\": \"abcdef123456\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "95566486-b342-435a-bdbd-06ffc073d0e5",
+          "name": "Box Get webhook",
+          "request": {
+            "name": "Box Get webhook",
+            "description": {
+              "content": "Retrieves a specific webhook",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "webhooks",
+                ":webhook_id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "webhook_id",
+                  "description": "(Required) The ID of the webhook."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "5d08f2eb-a48b-4d4a-b180-6dbab61ea248",
+              "name": "Returns a webhook object",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "webhooks",
+                    ":webhook_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "webhook_id",
+                      "description": "(Required) The ID of the webhook."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": \"11446498\",\n  \"type\": \"webhook\",\n  \"target\": {\n    \"id\": \"1231232\",\n    \"type\": \"file\"\n  },\n  \"created_by\": {\n    \"type\": \"user\",\n    \"id\": \"11446498\",\n    \"name\": \"Aaron Levie\",\n    \"login\": \"ceo@example.com\"\n  },\n  \"created_at\": \"2012-12-12T10:53:43-08:00\",\n  \"address\": \"https://example.com/webhooks\",\n  \"triggers\": [\n    \"FILE.UPLOADED\"\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "99e41987-f45c-405e-b35d-da70f7aa6748",
+              "name": "Returns an error if the application does not\nhave the permission to manage webhooks.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "webhooks",
+                    ":webhook_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "webhook_id",
+                      "description": "(Required) The ID of the webhook."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"type\": \"error\",\n  \"status\": 400,\n  \"code\": \"item_name_invalid\",\n  \"message\": \"Method Not Allowed\",\n  \"context_info\": {\n    \"message\": \"Something went wrong.\"\n  },\n  \"help_url\": \"https://developer.box.com/guides/api-calls/permissions-and-errors/common-errors/\",\n  \"request_id\": \"abcdef123456\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "029d934a-dda5-4bd1-a798-966e37d9512b",
+              "name": "Returns an error if the webhook could not be found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "webhooks",
+                    ":webhook_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "webhook_id",
+                      "description": "(Required) The ID of the webhook."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"type\": \"error\",\n  \"status\": 400,\n  \"code\": \"item_name_invalid\",\n  \"message\": \"Method Not Allowed\",\n  \"context_info\": {\n    \"message\": \"Something went wrong.\"\n  },\n  \"help_url\": \"https://developer.box.com/guides/api-calls/permissions-and-errors/common-errors/\",\n  \"request_id\": \"abcdef123456\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "8fcd4a8e-873a-44c0-ba71-af00f5fd178c",
+              "name": "An unexpected client error.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "webhooks",
+                    ":webhook_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "webhook_id",
+                      "description": "(Required) The ID of the webhook."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"type\": \"error\",\n  \"status\": 400,\n  \"code\": \"item_name_invalid\",\n  \"message\": \"Method Not Allowed\",\n  \"context_info\": {\n    \"message\": \"Something went wrong.\"\n  },\n  \"help_url\": \"https://developer.box.com/guides/api-calls/permissions-and-errors/common-errors/\",\n  \"request_id\": \"abcdef123456\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "2a40d542-4baf-47f8-9e0b-61b3c944cc86",
+          "name": "Box Update webhook",
+          "request": {
+            "name": "Box Update webhook",
+            "description": {
+              "content": "Updates a webhook.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "webhooks",
+                ":webhook_id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "webhook_id",
+                  "description": "(Required) The ID of the webhook."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "PUT",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"target\": {\n    \"id\": \"<string>\",\n    \"type\": \"<string>\"\n  },\n  \"address\": \"<string>\",\n  \"triggers\": [\n    \"<string>\",\n    \"<string>\"\n  ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "dcd96863-0acf-4081-bd25-dc54b57d8697",
+              "name": "Returns the new webhook object.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "webhooks",
+                    ":webhook_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "webhook_id",
+                      "description": "(Required) The ID of the webhook."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"target\": {\n    \"id\": \"1231232\",\n    \"type\": \"file\"\n  },\n  \"address\": \"https://example.com/webhooks\",\n  \"triggers\": [\n    \"FILE.UPLOADED\"\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": \"11446498\",\n  \"type\": \"webhook\",\n  \"target\": {\n    \"id\": \"1231232\",\n    \"type\": \"file\"\n  },\n  \"created_by\": {\n    \"type\": \"user\",\n    \"id\": \"11446498\",\n    \"name\": \"Aaron Levie\",\n    \"login\": \"ceo@example.com\"\n  },\n  \"created_at\": \"2012-12-12T10:53:43-08:00\",\n  \"address\": \"https://example.com/webhooks\",\n  \"triggers\": [\n    \"FILE.UPLOADED\"\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "fed4e9c4-4fc4-46d6-93d1-d242950a3239",
+              "name": "Returns an error if the parameters were\nincorrect.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "webhooks",
+                    ":webhook_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "webhook_id",
+                      "description": "(Required) The ID of the webhook."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"target\": {\n    \"id\": \"1231232\",\n    \"type\": \"file\"\n  },\n  \"address\": \"https://example.com/webhooks\",\n  \"triggers\": [\n    \"FILE.UPLOADED\"\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"type\": \"error\",\n  \"status\": 400,\n  \"code\": \"item_name_invalid\",\n  \"message\": \"Method Not Allowed\",\n  \"context_info\": {\n    \"message\": \"Something went wrong.\"\n  },\n  \"help_url\": \"https://developer.box.com/guides/api-calls/permissions-and-errors/common-errors/\",\n  \"request_id\": \"abcdef123456\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "36c0fd8d-dd36-4d31-8f1c-604590200946",
+              "name": "Returns an error if the application does not\nhave the permission to manage webhooks.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "webhooks",
+                    ":webhook_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "webhook_id",
+                      "description": "(Required) The ID of the webhook."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"target\": {\n    \"id\": \"1231232\",\n    \"type\": \"file\"\n  },\n  \"address\": \"https://example.com/webhooks\",\n  \"triggers\": [\n    \"FILE.UPLOADED\"\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"type\": \"error\",\n  \"status\": 400,\n  \"code\": \"item_name_invalid\",\n  \"message\": \"Method Not Allowed\",\n  \"context_info\": {\n    \"message\": \"Something went wrong.\"\n  },\n  \"help_url\": \"https://developer.box.com/guides/api-calls/permissions-and-errors/common-errors/\",\n  \"request_id\": \"abcdef123456\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "93bb6a30-7c43-45ba-8783-8f4330405663",
+              "name": "Returns an error if the target item or webhook\ncould not be found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "webhooks",
+                    ":webhook_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "webhook_id",
+                      "description": "(Required) The ID of the webhook."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"target\": {\n    \"id\": \"1231232\",\n    \"type\": \"file\"\n  },\n  \"address\": \"https://example.com/webhooks\",\n  \"triggers\": [\n    \"FILE.UPLOADED\"\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"type\": \"error\",\n  \"status\": 400,\n  \"code\": \"item_name_invalid\",\n  \"message\": \"Method Not Allowed\",\n  \"context_info\": {\n    \"message\": \"Something went wrong.\"\n  },\n  \"help_url\": \"https://developer.box.com/guides/api-calls/permissions-and-errors/common-errors/\",\n  \"request_id\": \"abcdef123456\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "f4f520d0-3420-484a-88e9-0245306a3309",
+              "name": "Returns an error if the a webhook for this\ncombination of target, application, and user\nalready exists.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "webhooks",
+                    ":webhook_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "webhook_id",
+                      "description": "(Required) The ID of the webhook."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"target\": {\n    \"id\": \"1231232\",\n    \"type\": \"file\"\n  },\n  \"address\": \"https://example.com/webhooks\",\n  \"triggers\": [\n    \"FILE.UPLOADED\"\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Conflict",
+              "code": 409,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"type\": \"error\",\n  \"status\": 400,\n  \"code\": \"item_name_invalid\",\n  \"message\": \"Method Not Allowed\",\n  \"context_info\": {\n    \"message\": \"Something went wrong.\"\n  },\n  \"help_url\": \"https://developer.box.com/guides/api-calls/permissions-and-errors/common-errors/\",\n  \"request_id\": \"abcdef123456\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "df46b781-d46d-4465-86a8-448e111adfcf",
+              "name": "An unexpected client error.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "webhooks",
+                    ":webhook_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "webhook_id",
+                      "description": "(Required) The ID of the webhook."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"target\": {\n    \"id\": \"1231232\",\n    \"type\": \"file\"\n  },\n  \"address\": \"https://example.com/webhooks\",\n  \"triggers\": [\n    \"FILE.UPLOADED\"\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"type\": \"error\",\n  \"status\": 400,\n  \"code\": \"item_name_invalid\",\n  \"message\": \"Method Not Allowed\",\n  \"context_info\": {\n    \"message\": \"Something went wrong.\"\n  },\n  \"help_url\": \"https://developer.box.com/guides/api-calls/permissions-and-errors/common-errors/\",\n  \"request_id\": \"abcdef123456\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "857a3094-ee35-4f48-8ff2-f5a4d30d3356",
+          "name": "Box Remove webhook",
+          "request": {
+            "name": "Box Remove webhook",
+            "description": {
+              "content": "Deletes a webhook.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "webhooks",
+                ":webhook_id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "webhook_id",
+                  "description": "(Required) The ID of the webhook."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "DELETE",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "1683aba9-a869-411f-a1bf-83558f68af75",
+              "name": "An empty response will be returned when the webhook\nwas successfully deleted.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "webhooks",
+                    ":webhook_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "webhook_id",
+                      "description": "(Required) The ID of the webhook."
+                    }
+                  ]
+                },
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "No Content",
+              "code": 204,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "66617e53-5e78-4a6f-aa0c-c7552690c226",
+              "name": "Returns an error if the application does not\nhave the permission to manage webhooks.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "webhooks",
+                    ":webhook_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "webhook_id",
+                      "description": "(Required) The ID of the webhook."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"type\": \"error\",\n  \"status\": 400,\n  \"code\": \"item_name_invalid\",\n  \"message\": \"Method Not Allowed\",\n  \"context_info\": {\n    \"message\": \"Something went wrong.\"\n  },\n  \"help_url\": \"https://developer.box.com/guides/api-calls/permissions-and-errors/common-errors/\",\n  \"request_id\": \"abcdef123456\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "114f55bd-1782-48b8-bfa4-f7dc8fc64769",
+              "name": "Returns an error if the webhook could not be found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "webhooks",
+                    ":webhook_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "webhook_id",
+                      "description": "(Required) The ID of the webhook."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"type\": \"error\",\n  \"status\": 400,\n  \"code\": \"item_name_invalid\",\n  \"message\": \"Method Not Allowed\",\n  \"context_info\": {\n    \"message\": \"Something went wrong.\"\n  },\n  \"help_url\": \"https://developer.box.com/guides/api-calls/permissions-and-errors/common-errors/\",\n  \"request_id\": \"abcdef123456\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "cd31723c-d54e-4ae0-91b1-42c4e3267801",
+              "name": "An unexpected client error.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "webhooks",
+                    ":webhook_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "webhook_id",
+                      "description": "(Required) The ID of the webhook."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"type\": \"error\",\n  \"status\": 400,\n  \"code\": \"item_name_invalid\",\n  \"message\": \"Method Not Allowed\",\n  \"context_info\": {\n    \"message\": \"Something went wrong.\"\n  },\n  \"help_url\": \"https://developer.box.com/guides/api-calls/permissions-and-errors/common-errors/\",\n  \"request_id\": \"abcdef123456\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "/",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "76f78e4e-65d0-4325-a9aa-0c521c70f5bb",
+    "name": "Box Authorize Authorization Webhooks API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "Needs a description.",
+      "type": "text/plain"
+    }
+  }
+}

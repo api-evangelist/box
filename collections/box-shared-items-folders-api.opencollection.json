@@ -1,0 +1,47 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Box Authorize Authorization Shared Items#folders API",
+    "version": "1.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Shared Items#folders",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Box Find folder for shared link",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/shared_items#folders",
+            "headers": [
+              {
+                "name": "if-none-match",
+                "value": "1"
+              },
+              {
+                "name": "boxapi",
+                "value": "shared_link=[link]&shared_link_password=[password]"
+              }
+            ],
+            "params": [
+              {
+                "name": "fields",
+                "value": "id,type,name",
+                "type": "query",
+                "description": "A comma-separated list of attributes to include in the\nresponse. This can be used to request fields that are\nnot normally returned in a standard response.\n\nBe aware that specifying this parameter will have the\neffect that none of the standard fields are returned in\nthe response unless explicitly specified, instead only\nfields for the mini representation are returned, additional\nto the fields requested."
+              }
+            ]
+          },
+          "docs": "Return the folder represented by a shared link.\n\nA shared folder can be represented by a shared link,\nwhich can originate within the current enterprise or within another.\n\nThis endpoint allows an application to retrieve information about a\nshared folder when only given a shared link."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

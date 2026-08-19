@@ -1,0 +1,228 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Box Authorize Authorization Groups API",
+    "version": "1.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Groups",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Box List groups for enterprise",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/groups",
+            "params": [
+              {
+                "name": "filter_term",
+                "value": "Engineering",
+                "type": "query",
+                "description": "Limits the results to only groups whose `name` starts\nwith the search term."
+              },
+              {
+                "name": "fields",
+                "value": "id,type,name",
+                "type": "query",
+                "description": "A comma-separated list of attributes to include in the\nresponse. This can be used to request fields that are\nnot normally returned in a standard response.\n\nBe aware that specifying this parameter will have the\neffect that none of the standard fields are returned in\nthe response unless explicitly specified, instead only\nfields for the mini representation are returned, additional\nto the fields requested."
+              },
+              {
+                "name": "limit",
+                "value": "1000",
+                "type": "query",
+                "description": "The maximum number of items to return per page."
+              },
+              {
+                "name": "offset",
+                "value": "1000",
+                "type": "query",
+                "description": "The offset of the item at which to begin the response.\n\nQueries with offset parameter value\nexceeding 10000 will be rejected\nwith a 400 response."
+              }
+            ]
+          },
+          "docs": "Retrieves all of the groups for a given enterprise. The user\nmust have admin permissions to inspect enterprise's groups."
+        },
+        {
+          "info": {
+            "name": "Box Create group",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/groups",
+            "params": [
+              {
+                "name": "fields",
+                "value": "id,type,name",
+                "type": "query",
+                "description": "A comma-separated list of attributes to include in the\nresponse. This can be used to request fields that are\nnot normally returned in a standard response.\n\nBe aware that specifying this parameter will have the\neffect that none of the standard fields are returned in\nthe response unless explicitly specified, instead only\nfields for the mini representation are returned, additional\nto the fields requested."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Creates a new group of users in an enterprise. Only users with admin\npermissions can create new groups."
+        },
+        {
+          "info": {
+            "name": "Box Get group",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/groups/:group_id",
+            "params": [
+              {
+                "name": "group_id",
+                "value": "57645",
+                "type": "path",
+                "description": "The ID of the group."
+              },
+              {
+                "name": "fields",
+                "value": "id,type,name",
+                "type": "query",
+                "description": "A comma-separated list of attributes to include in the\nresponse. This can be used to request fields that are\nnot normally returned in a standard response.\n\nBe aware that specifying this parameter will have the\neffect that none of the standard fields are returned in\nthe response unless explicitly specified, instead only\nfields for the mini representation are returned, additional\nto the fields requested."
+              }
+            ]
+          },
+          "docs": "Retrieves information about a group. Only members of this\ngroup or users with admin-level permissions will be able to\nuse this API."
+        },
+        {
+          "info": {
+            "name": "Box Update group",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "{{baseUrl}}/groups/:group_id",
+            "params": [
+              {
+                "name": "group_id",
+                "value": "57645",
+                "type": "path",
+                "description": "The ID of the group."
+              },
+              {
+                "name": "fields",
+                "value": "id,type,name",
+                "type": "query",
+                "description": "A comma-separated list of attributes to include in the\nresponse. This can be used to request fields that are\nnot normally returned in a standard response.\n\nBe aware that specifying this parameter will have the\neffect that none of the standard fields are returned in\nthe response unless explicitly specified, instead only\nfields for the mini representation are returned, additional\nto the fields requested."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Updates a specific group. Only admins of this\ngroup or users with admin-level permissions will be able to\nuse this API."
+        },
+        {
+          "info": {
+            "name": "Box Remove group",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "{{baseUrl}}/groups/:group_id",
+            "params": [
+              {
+                "name": "group_id",
+                "value": "57645",
+                "type": "path",
+                "description": "The ID of the group."
+              }
+            ]
+          },
+          "docs": "Permanently deletes a group. Only users with\nadmin-level permissions will be able to use this API."
+        },
+        {
+          "info": {
+            "name": "Box List group collaborations",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/groups/:group_id/collaborations",
+            "params": [
+              {
+                "name": "group_id",
+                "value": "57645",
+                "type": "path",
+                "description": "The ID of the group."
+              },
+              {
+                "name": "limit",
+                "value": "1000",
+                "type": "query",
+                "description": "The maximum number of items to return per page."
+              },
+              {
+                "name": "offset",
+                "value": "1000",
+                "type": "query",
+                "description": "The offset of the item at which to begin the response.\n\nQueries with offset parameter value\nexceeding 10000 will be rejected\nwith a 400 response."
+              }
+            ]
+          },
+          "docs": "Retrieves all the collaborations for a group. The user\nmust have admin permissions to inspect enterprise's groups.\n\nEach collaboration object has details on which files or\nfolders the group has access to and with what role."
+        },
+        {
+          "info": {
+            "name": "Box Create jobs to terminate user group session",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/groups/terminate_sessions",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Validates the roles and permissions of the group,\nand creates asynchronous jobs\nto terminate the group's sessions.\nReturns the status for the POST request."
+        },
+        {
+          "info": {
+            "name": "Box List members of group",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/groups/:group_id/memberships",
+            "params": [
+              {
+                "name": "group_id",
+                "value": "57645",
+                "type": "path",
+                "description": "The ID of the group."
+              },
+              {
+                "name": "limit",
+                "value": "1000",
+                "type": "query",
+                "description": "The maximum number of items to return per page."
+              },
+              {
+                "name": "offset",
+                "value": "1000",
+                "type": "query",
+                "description": "The offset of the item at which to begin the response.\n\nQueries with offset parameter value\nexceeding 10000 will be rejected\nwith a 400 response."
+              }
+            ]
+          },
+          "docs": "Retrieves all the members for a group. Only members of this\ngroup or users with admin-level permissions will be able to\nuse this API."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

@@ -1,0 +1,194 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Box Authorize Authorization Legal Hold Policy Assignments API",
+    "version": "1.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Legal Hold Policy Assignments",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Box List legal hold policy assignments",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/legal_hold_policy_assignments",
+            "params": [
+              {
+                "name": "policy_id",
+                "value": "324432",
+                "type": "query",
+                "description": "The ID of the legal hold policy"
+              },
+              {
+                "name": "assign_to_type",
+                "value": "file",
+                "type": "query",
+                "description": "Filters the results by the type of item the\npolicy was applied to."
+              },
+              {
+                "name": "assign_to_id",
+                "value": "1234323",
+                "type": "query",
+                "description": "Filters the results by the ID of item the\npolicy was applied to."
+              },
+              {
+                "name": "marker",
+                "value": "JV9IRGZmieiBasejOG9yDCRNgd2ymoZIbjsxbJMjIs3kioVii",
+                "type": "query",
+                "description": "Defines the position marker at which to begin returning results. This is\nused when paginating using marker-based pagination.\n\nThis requires `usemarker` to be set to `true`."
+              },
+              {
+                "name": "limit",
+                "value": "1000",
+                "type": "query",
+                "description": "The maximum number of items to return per page."
+              },
+              {
+                "name": "fields",
+                "value": "id,type,name",
+                "type": "query",
+                "description": "A comma-separated list of attributes to include in the\nresponse. This can be used to request fields that are\nnot normally returned in a standard response.\n\nBe aware that specifying this parameter will have the\neffect that none of the standard fields are returned in\nthe response unless explicitly specified, instead only\nfields for the mini representation are returned, additional\nto the fields requested."
+              }
+            ]
+          },
+          "docs": "Retrieves a list of items a legal hold policy has been assigned to."
+        },
+        {
+          "info": {
+            "name": "Box Assign legal hold policy",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/legal_hold_policy_assignments",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Assign a legal hold to a file, file version, folder, or user."
+        },
+        {
+          "info": {
+            "name": "Box Get legal hold policy assignment",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/legal_hold_policy_assignments/:legal_hold_policy_assignment_id",
+            "params": [
+              {
+                "name": "legal_hold_policy_assignment_id",
+                "value": "753465",
+                "type": "path",
+                "description": "The ID of the legal hold policy assignment"
+              }
+            ]
+          },
+          "docs": "Retrieve a legal hold policy assignment."
+        },
+        {
+          "info": {
+            "name": "Box Unassign legal hold policy",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "{{baseUrl}}/legal_hold_policy_assignments/:legal_hold_policy_assignment_id",
+            "params": [
+              {
+                "name": "legal_hold_policy_assignment_id",
+                "value": "753465",
+                "type": "path",
+                "description": "The ID of the legal hold policy assignment"
+              }
+            ]
+          },
+          "docs": "Remove a legal hold from an item.\n\nThis is an asynchronous process. The policy will not be\nfully removed yet when the response returns."
+        },
+        {
+          "info": {
+            "name": "Box List current file versions for legal hold policy assignment",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/legal_hold_policy_assignments/:legal_hold_policy_assignment_id/files_on_hold",
+            "params": [
+              {
+                "name": "legal_hold_policy_assignment_id",
+                "value": "753465",
+                "type": "path",
+                "description": "The ID of the legal hold policy assignment"
+              },
+              {
+                "name": "marker",
+                "value": "JV9IRGZmieiBasejOG9yDCRNgd2ymoZIbjsxbJMjIs3kioVii",
+                "type": "query",
+                "description": "Defines the position marker at which to begin returning results. This is\nused when paginating using marker-based pagination.\n\nThis requires `usemarker` to be set to `true`."
+              },
+              {
+                "name": "limit",
+                "value": "1000",
+                "type": "query",
+                "description": "The maximum number of items to return per page."
+              },
+              {
+                "name": "fields",
+                "value": "id,type,name",
+                "type": "query",
+                "description": "A comma-separated list of attributes to include in the\nresponse. This can be used to request fields that are\nnot normally returned in a standard response.\n\nBe aware that specifying this parameter will have the\neffect that none of the standard fields are returned in\nthe response unless explicitly specified, instead only\nfields for the mini representation are returned, additional\nto the fields requested."
+              }
+            ]
+          },
+          "docs": "Get a list of current file versions for a legal hold\nassignment.\n\nIn some cases you may want to get previous file versions instead. In these\ncases, use the `GET  /legal_hold_policy_assignments/:id/file_versions_on_hold`\nAPI instead to return any previous versions of a file for this legal hold\npolicy assignment.\n\nDue to ongoing re-architecture efforts this API might not return all file\nversions held for this policy ID. Instead, this API will only return the\nlatest file version held in the newly d"
+        },
+        {
+          "info": {
+            "name": "Box List previous file versions for legal hold policy assignment",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/legal_hold_policy_assignments/:legal_hold_policy_assignment_id/file_versions_on_hold",
+            "params": [
+              {
+                "name": "legal_hold_policy_assignment_id",
+                "value": "753465",
+                "type": "path",
+                "description": "The ID of the legal hold policy assignment"
+              },
+              {
+                "name": "marker",
+                "value": "JV9IRGZmieiBasejOG9yDCRNgd2ymoZIbjsxbJMjIs3kioVii",
+                "type": "query",
+                "description": "Defines the position marker at which to begin returning results. This is\nused when paginating using marker-based pagination.\n\nThis requires `usemarker` to be set to `true`."
+              },
+              {
+                "name": "limit",
+                "value": "1000",
+                "type": "query",
+                "description": "The maximum number of items to return per page."
+              },
+              {
+                "name": "fields",
+                "value": "id,type,name",
+                "type": "query",
+                "description": "A comma-separated list of attributes to include in the\nresponse. This can be used to request fields that are\nnot normally returned in a standard response.\n\nBe aware that specifying this parameter will have the\neffect that none of the standard fields are returned in\nthe response unless explicitly specified, instead only\nfields for the mini representation are returned, additional\nto the fields requested."
+              }
+            ]
+          },
+          "docs": "Get a list of previous file versions for a legal hold\nassignment.\n\nIn some cases you may only need the latest file versions instead. In these\ncases, use the `GET  /legal_hold_policy_assignments/:id/files_on_hold` API\ninstead to return any current (latest) versions of a file for this legal hold\npolicy assignment.\n\nDue to ongoing re-architecture efforts this API might not return all files\nheld for this policy ID. Instead, this API will only return past file versions\nheld in the newly developed arc"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

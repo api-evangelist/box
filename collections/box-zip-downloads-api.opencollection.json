@@ -1,0 +1,71 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Box Authorize Authorization Zip Downloads API",
+    "version": "1.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Zip Downloads",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Box Create zip download",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/zip_downloads",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Creates a request to download multiple files and folders as a single `zip`\narchive file. This API does not return the archive but instead performs all\nthe checks to ensure that the user has access to all the items, and then\nreturns a `download_url` and a `status_url` that can be used to download the\narchive.\n\nThe limit for an archive is either the Account's upload limit or\n10,000 files, whichever is met first.\n\n**Note**: Downloading a large file can be\naffected by various\nfactors such as distanc"
+        },
+        {
+          "info": {
+            "name": "Box Download zip archive",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/zip_downloads/:zip_download_id/content",
+            "params": [
+              {
+                "name": "zip_download_id",
+                "value": "Lu6fA9Ob-jyysp3AAvMF4AkLEwZwAYbL=tgj2zIC=eK9RvJnJbjJl9rNh2qBgHDpyOCAOhpM=vajg2mKq8Mdd",
+                "type": "path",
+                "description": "The unique identifier that represent this `zip` archive."
+              }
+            ]
+          },
+          "docs": "Returns the contents of a `zip` archive in binary format. This URL does not\nrequire any form of authentication and could be used in a user's browser to\ndownload the archive to a user's device.\n\nBy default, this URL is only valid for a few seconds from the creation of\nthe request for this archive. Once a download has started it can not be\nstopped and resumed, instead a new request for a zip archive would need to\nbe created.\n\nThe URL of this endpoint should not be considered as fixed. Instead, use"
+        },
+        {
+          "info": {
+            "name": "Box Get zip download status",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/zip_downloads/:zip_download_id/status",
+            "params": [
+              {
+                "name": "zip_download_id",
+                "value": "Lu6fA9Ob-jyysp3AAvMF4AkLEwZwAYbL=tgj2zIC=eK9RvJnJbjJl9rNh2qBgHDpyOCAOhpM=vajg2mKq8Mdd",
+                "type": "path",
+                "description": "The unique identifier that represent this `zip` archive."
+              }
+            ]
+          },
+          "docs": "Returns the download status of a `zip` archive, allowing an application to\ninspect the progress of the download as well as the number of items that\nmight have been skipped.\n\nThis endpoint can only be accessed once the download has started.\nSubsequently this endpoint is valid for 12 hours from the start of the\ndownload.\n\nThe URL of this endpoint should not be considered as fixed. Instead, use\nthe [Create zip download](e://post_zip_downloads) API to request to create a\n`zip` archive, and then foll"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

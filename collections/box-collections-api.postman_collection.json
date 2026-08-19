@@ -1,0 +1,362 @@
+{
+  "item": [
+    {
+      "id": "b69b8e97-75e3-4cd1-8ca0-d11d2fa4ea48",
+      "name": "Collections",
+      "description": {
+        "content": "Collections are a way to group files,\nfolders, and web links without putting them\nall into a folder.",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "32d0bb5a-0601-43dd-9ccb-b0b2d1036e40",
+          "name": "Box List all collections",
+          "request": {
+            "name": "Box List all collections",
+            "description": {
+              "content": "Retrieves all collections for a given user.\n\nCurrently, only the `favorites` collection\nis supported.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "collections"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "fields",
+                  "value": "<string>,<string>",
+                  "description": "A comma-separated list of attributes to include in the\nresponse. This can be used to request fields that are\nnot normally returned in a standard response.\n\nBe aware that specifying this parameter will have the\neffect that none of the standard fields are returned in\nthe response unless explicitly specified, instead only\nfields for the mini representation are returned, additional\nto the fields requested."
+                },
+                {
+                  "disabled": false,
+                  "key": "offset",
+                  "value": "0",
+                  "description": "The offset of the item at which to begin the response.\n\nQueries with offset parameter value\nexceeding 10000 will be rejected\nwith a 400 response."
+                },
+                {
+                  "disabled": false,
+                  "key": "limit",
+                  "value": "<long>",
+                  "description": "The maximum number of items to return per page."
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "657be612-b4cd-440f-bd1e-45f715b0cdcb",
+              "name": "Returns all collections for the given user",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "collections"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "fields",
+                      "value": "id,type,name"
+                    },
+                    {
+                      "key": "offset",
+                      "value": "1000"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "1000"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"total_count\": 5000,\n  \"limit\": 1000,\n  \"offset\": 2000,\n  \"order\": [\n    {\n      \"by\": \"type\",\n      \"direction\": \"ASC\"\n    },\n    {\n      \"by\": \"type\",\n      \"direction\": \"ASC\"\n    }\n  ],\n  \"entries\": [\n    {\n      \"id\": \"11446498\",\n      \"type\": \"collection\",\n      \"name\": \"Favorites\",\n      \"collection_type\": \"favorites\"\n    },\n    {\n      \"id\": \"11446498\",\n      \"type\": \"collection\",\n      \"name\": \"Favorites\",\n      \"collection_type\": \"favorites\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "0a139ef5-b93b-421a-b1b2-aca34a2b9cb6",
+              "name": "An unexpected client error.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "collections"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "fields",
+                      "value": "id,type,name"
+                    },
+                    {
+                      "key": "offset",
+                      "value": "1000"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "1000"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"type\": \"error\",\n  \"status\": 400,\n  \"code\": \"item_name_invalid\",\n  \"message\": \"Method Not Allowed\",\n  \"context_info\": {\n    \"message\": \"Something went wrong.\"\n  },\n  \"help_url\": \"https://developer.box.com/guides/api-calls/permissions-and-errors/common-errors/\",\n  \"request_id\": \"abcdef123456\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "d5260d14-0be2-45a1-8160-c5ed3ad6800a",
+          "name": "Box List collection items",
+          "request": {
+            "name": "Box List collection items",
+            "description": {
+              "content": "Retrieves the files and/or folders contained within\nthis collection.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "collections",
+                ":collection_id",
+                "items"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "fields",
+                  "value": "<string>,<string>",
+                  "description": "A comma-separated list of attributes to include in the\nresponse. This can be used to request fields that are\nnot normally returned in a standard response.\n\nBe aware that specifying this parameter will have the\neffect that none of the standard fields are returned in\nthe response unless explicitly specified, instead only\nfields for the mini representation are returned, additional\nto the fields requested."
+                },
+                {
+                  "disabled": false,
+                  "key": "offset",
+                  "value": "0",
+                  "description": "The offset of the item at which to begin the response.\n\nQueries with offset parameter value\nexceeding 10000 will be rejected\nwith a 400 response."
+                },
+                {
+                  "disabled": false,
+                  "key": "limit",
+                  "value": "<long>",
+                  "description": "The maximum number of items to return per page."
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "collection_id",
+                  "description": "(Required) The ID of the collection."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "53947a57-8f94-4f2a-8afe-0f73541fcd9d",
+              "name": "Returns an array of items in the collection.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "collections",
+                    ":collection_id",
+                    "items"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "fields",
+                      "value": "id,type,name"
+                    },
+                    {
+                      "key": "offset",
+                      "value": "1000"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "1000"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "collection_id",
+                      "description": "(Required) The ID of the collection."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"total_count\": 5000,\n  \"limit\": 1000,\n  \"offset\": 2000,\n  \"order\": [\n    {\n      \"by\": \"type\",\n      \"direction\": \"ASC\"\n    },\n    {\n      \"by\": \"type\",\n      \"direction\": \"ASC\"\n    }\n  ],\n  \"entries\": [\n    {\n      \"description\": \"Contract for Q1 renewal\",\n      \"size\": 629644,\n      \"path_collection\": {\n        \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n      },\n      \"created_at\": \"2012-12-12T10:53:43-08:00\",\n      \"modified_at\": \"2012-12-12T10:53:43-08:00\",\n      \"trashed_at\": \"2012-12-12T10:53:43-08:00\",\n      \"purged_at\": \"2012-12-12T10:53:43-08:00\",\n      \"content_created_at\": \"2012-12-12T10:53:43-08:00\",\n      \"content_modified_at\": \"2012-12-12T10:53:43-08:00\",\n      \"created_by\": {\n        \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n      },\n      \"modified_by\": {\n        \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n      },\n      \"owned_by\": {\n        \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n      },\n      \"shared_link\": {\n        \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n      },\n      \"parent\": {\n        \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n      },\n      \"item_status\": \"active\",\n      \"version_number\": \"1\",\n      \"comment_count\": 10,\n      \"permissions\": {\n        \"can_annotate\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"can_comment\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"can_delete\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"can_download\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"can_invite_collaborator\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"can_preview\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"can_rename\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"can_set_share_access\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"can_share\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"can_upload\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"can_view_annotations_all\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"can_view_annotations_self\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        }\n      },\n      \"tags\": [\n        \"approved\"\n      ],\n      \"lock\": {\n        \"id\": \"11446498\",\n        \"type\": \"lock\",\n        \"created_by\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"created_at\": \"2012-12-12T10:53:43-08:00\",\n        \"expired_at\": \"2012-12-12T10:53:43-08:00\",\n        \"is_download_prevented\": true,\n        \"app_type\": \"office_wopiplus\"\n      },\n      \"extension\": \"pdf\",\n      \"is_package\": true,\n      \"expiring_embed_link\": {\n        \"access_token\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"expires_in\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"token_type\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"restricted_to\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"url\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        }\n      },\n      \"watermark_info\": {\n        \"is_watermarked\": true\n      },\n      \"is_accessible_via_shared_link\": true,\n      \"allowed_invitee_roles\": [\n        \"editor\"\n      ],\n      \"is_externally_owned\": true,\n      \"has_collaborations\": true,\n      \"metadata\": {\n        \"enterprise_27335\": {\n          \"marketingCollateral\": {\n            \"$canEdit\": true,\n            \"$id\": \"01234500-12f1-1234-aa12-b1d234cb567e\",\n            \"$parent\": \"folder_59449484661\",\n            \"$scope\": \"enterprise_27335\",\n            \"$template\": \"marketingCollateral\",\n            \"$type\": \"properties-6bcba49f-ca6d-4d2a-a758-57fe6edf44d0\",\n            \"$typeVersion\": 2,\n            \"$version\": 1\n          }\n        }\n      },\n      \"expires_at\": \"2012-12-12T10:53:43-08:00\",\n      \"representations\": {\n        \"entries\": [\n          {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        ]\n      },\n      \"classification\": {\n        \"name\": \"Top Secret\",\n        \"definition\": \"Content that should not be shared outside the company.\",\n        \"color\": \"#FF0000\"\n      },\n      \"uploader_display_name\": \"Ellis Wiggins\",\n      \"disposition_at\": \"2012-12-12T10:53:43-08:00\",\n      \"shared_link_permission_options\": [\n        \"can_preview\"\n      ]\n    },\n    {\n      \"description\": \"Contract for Q1 renewal\",\n      \"size\": 629644,\n      \"path_collection\": {\n        \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n      },\n      \"created_at\": \"2012-12-12T10:53:43-08:00\",\n      \"modified_at\": \"2012-12-12T10:53:43-08:00\",\n      \"trashed_at\": \"2012-12-12T10:53:43-08:00\",\n      \"purged_at\": \"2012-12-12T10:53:43-08:00\",\n      \"content_created_at\": \"2012-12-12T10:53:43-08:00\",\n      \"content_modified_at\": \"2012-12-12T10:53:43-08:00\",\n      \"created_by\": {\n        \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n      },\n      \"modified_by\": {\n        \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n      },\n      \"owned_by\": {\n        \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n      },\n      \"shared_link\": {\n        \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n      },\n      \"parent\": {\n        \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n      },\n      \"item_status\": \"active\",\n      \"version_number\": \"1\",\n      \"comment_count\": 10,\n      \"permissions\": {\n        \"can_annotate\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"can_comment\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"can_delete\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"can_download\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"can_invite_collaborator\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"can_preview\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"can_rename\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"can_set_share_access\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"can_share\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"can_upload\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"can_view_annotations_all\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"can_view_annotations_self\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        }\n      },\n      \"tags\": [\n        \"approved\"\n      ],\n      \"lock\": {\n        \"id\": \"11446498\",\n        \"type\": \"lock\",\n        \"created_by\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"created_at\": \"2012-12-12T10:53:43-08:00\",\n        \"expired_at\": \"2012-12-12T10:53:43-08:00\",\n        \"is_download_prevented\": true,\n        \"app_type\": \"office_wopiplus\"\n      },\n      \"extension\": \"pdf\",\n      \"is_package\": true,\n      \"expiring_embed_link\": {\n        \"access_token\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"expires_in\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"token_type\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"restricted_to\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"url\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        }\n      },\n      \"watermark_info\": {\n        \"is_watermarked\": true\n      },\n      \"is_accessible_via_shared_link\": true,\n      \"allowed_invitee_roles\": [\n        \"editor\"\n      ],\n      \"is_externally_owned\": true,\n      \"has_collaborations\": true,\n      \"metadata\": {\n        \"enterprise_27335\": {\n          \"marketingCollateral\": {\n            \"$canEdit\": true,\n            \"$id\": \"01234500-12f1-1234-aa12-b1d234cb567e\",\n            \"$parent\": \"folder_59449484661\",\n            \"$scope\": \"enterprise_27335\",\n            \"$template\": \"marketingCollateral\",\n            \"$type\": \"properties-6bcba49f-ca6d-4d2a-a758-57fe6edf44d0\",\n            \"$typeVersion\": 2,\n            \"$version\": 1\n          }\n        }\n      },\n      \"expires_at\": \"2012-12-12T10:53:43-08:00\",\n      \"representations\": {\n        \"entries\": [\n          {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        ]\n      },\n      \"classification\": {\n        \"name\": \"Top Secret\",\n        \"definition\": \"Content that should not be shared outside the company.\",\n        \"color\": \"#FF0000\"\n      },\n      \"uploader_display_name\": \"Ellis Wiggins\",\n      \"disposition_at\": \"2012-12-12T10:53:43-08:00\",\n      \"shared_link_permission_options\": [\n        \"can_preview\"\n      ]\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "3af6dfe6-8e09-4357-a292-ac2458c6f085",
+              "name": "An unexpected client error.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "collections",
+                    ":collection_id",
+                    "items"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "fields",
+                      "value": "id,type,name"
+                    },
+                    {
+                      "key": "offset",
+                      "value": "1000"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "1000"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "collection_id",
+                      "description": "(Required) The ID of the collection."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"type\": \"error\",\n  \"status\": 400,\n  \"code\": \"item_name_invalid\",\n  \"message\": \"Method Not Allowed\",\n  \"context_info\": {\n    \"message\": \"Something went wrong.\"\n  },\n  \"help_url\": \"https://developer.box.com/guides/api-calls/permissions-and-errors/common-errors/\",\n  \"request_id\": \"abcdef123456\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "/",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "60ecf432-34d2-4ca9-953a-3a6858391dd1",
+    "name": "Box Authorize Authorization Collections API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "Needs a description.",
+      "type": "text/plain"
+    }
+  }
+}

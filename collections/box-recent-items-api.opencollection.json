@@ -1,0 +1,49 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Box Authorize Authorization Recent Items API",
+    "version": "1.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Recent Items",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Box List recently accessed items",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/recent_items",
+            "params": [
+              {
+                "name": "fields",
+                "value": "id,type,name",
+                "type": "query",
+                "description": "A comma-separated list of attributes to include in the\nresponse. This can be used to request fields that are\nnot normally returned in a standard response.\n\nBe aware that specifying this parameter will have the\neffect that none of the standard fields are returned in\nthe response unless explicitly specified, instead only\nfields for the mini representation are returned, additional\nto the fields requested."
+              },
+              {
+                "name": "limit",
+                "value": "1000",
+                "type": "query",
+                "description": "The maximum number of items to return per page."
+              },
+              {
+                "name": "marker",
+                "value": "JV9IRGZmieiBasejOG9yDCRNgd2ymoZIbjsxbJMjIs3kioVii",
+                "type": "query",
+                "description": "Defines the position marker at which to begin returning results. This is\nused when paginating using marker-based pagination.\n\nThis requires `usemarker` to be set to `true`."
+              }
+            ]
+          },
+          "docs": "Returns information about the recent items accessed\nby a user, either in the last 90 days or up to the last\n1000 items accessed."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

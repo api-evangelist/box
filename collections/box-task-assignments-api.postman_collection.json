@@ -1,0 +1,1131 @@
+{
+  "item": [
+    {
+      "id": "1772daf0-45b6-413a-8874-9cdcb02cbcac",
+      "name": "Task Assignments",
+      "description": {
+        "content": "A task assignment defines which\ntask is assigned to which user to complete.",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "40ad6bf2-b85f-4b51-81a8-3c9cff15e8cc",
+          "name": "Box List task assignments",
+          "request": {
+            "name": "Box List task assignments",
+            "description": {
+              "content": "Lists all of the assignments for a given task.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "tasks",
+                ":task_id",
+                "assignments"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "task_id",
+                  "description": "(Required) The ID of the task."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "3ba96c34-914a-4fd5-a1c0-f6067d5c5fba",
+              "name": "Returns a collection of task assignment defining what task on\na file has been assigned to which users and by who.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "tasks",
+                    ":task_id",
+                    "assignments"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "task_id",
+                      "description": "(Required) The ID of the task."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"total_count\": 100,\n  \"entries\": [\n    {\n      \"id\": \"11446498\",\n      \"type\": \"task_assignment\",\n      \"item\": {\n        \"id\": \"12345\",\n        \"type\": \"file\",\n        \"etag\": \"1\",\n        \"sequence_id\": \"3\",\n        \"name\": \"Contract.pdf\",\n        \"sha1\": \"85136C79CBF9FE36BB9D05D0639C70C265C18D37\",\n        \"file_version\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\",\n          \"description\": \"The information about the current version of the file.\"\n        }\n      },\n      \"assigned_to\": {\n        \"type\": \"user\",\n        \"id\": \"11446498\",\n        \"name\": \"Aaron Levie\",\n        \"login\": \"ceo@example.com\"\n      },\n      \"message\": \"Please review\",\n      \"completed_at\": \"2012-12-12T10:53:43-08:00\",\n      \"assigned_at\": \"2012-12-12T10:53:43-08:00\",\n      \"reminded_at\": \"2012-12-12T10:53:43-08:00\",\n      \"resolution_state\": \"incomplete\",\n      \"assigned_by\": {\n        \"type\": \"user\",\n        \"id\": \"11446498\",\n        \"name\": \"Aaron Levie\",\n        \"login\": \"ceo@example.com\"\n      }\n    },\n    {\n      \"id\": \"11446498\",\n      \"type\": \"task_assignment\",\n      \"item\": {\n        \"id\": \"12345\",\n        \"type\": \"file\",\n        \"etag\": \"1\",\n        \"sequence_id\": \"3\",\n        \"name\": \"Contract.pdf\",\n        \"sha1\": \"85136C79CBF9FE36BB9D05D0639C70C265C18D37\",\n        \"file_version\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\",\n          \"description\": \"The information about the current version of the file.\"\n        }\n      },\n      \"assigned_to\": {\n        \"type\": \"user\",\n        \"id\": \"11446498\",\n        \"name\": \"Aaron Levie\",\n        \"login\": \"ceo@example.com\"\n      },\n      \"message\": \"Please review\",\n      \"completed_at\": \"2012-12-12T10:53:43-08:00\",\n      \"assigned_at\": \"2012-12-12T10:53:43-08:00\",\n      \"reminded_at\": \"2012-12-12T10:53:43-08:00\",\n      \"resolution_state\": \"incomplete\",\n      \"assigned_by\": {\n        \"type\": \"user\",\n        \"id\": \"11446498\",\n        \"name\": \"Aaron Levie\",\n        \"login\": \"ceo@example.com\"\n      }\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "8284b9b0-4b4f-4bea-87ef-5b4d6acbe524",
+              "name": "Returns an error when the task could not be found or the user does not\nhave access to the file the task is assigned to.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "tasks",
+                    ":task_id",
+                    "assignments"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "task_id",
+                      "description": "(Required) The ID of the task."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"type\": \"error\",\n  \"status\": 400,\n  \"code\": \"item_name_invalid\",\n  \"message\": \"Method Not Allowed\",\n  \"context_info\": {\n    \"message\": \"Something went wrong.\"\n  },\n  \"help_url\": \"https://developer.box.com/guides/api-calls/permissions-and-errors/common-errors/\",\n  \"request_id\": \"abcdef123456\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "b4b2f112-c1f7-4eb5-9774-3edc50bfd840",
+              "name": "Returns an error if the task assignment ID was omitted in\nthe request.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "tasks",
+                    ":task_id",
+                    "assignments"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "task_id",
+                      "description": "(Required) The ID of the task."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"type\": \"error\",\n  \"status\": 400,\n  \"code\": \"item_name_invalid\",\n  \"message\": \"Method Not Allowed\",\n  \"context_info\": {\n    \"message\": \"Something went wrong.\"\n  },\n  \"help_url\": \"https://developer.box.com/guides/api-calls/permissions-and-errors/common-errors/\",\n  \"request_id\": \"abcdef123456\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "7aba0ba4-4db3-42ad-97ac-39dee8405265",
+              "name": "An unexpected client error.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "tasks",
+                    ":task_id",
+                    "assignments"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "task_id",
+                      "description": "(Required) The ID of the task."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"type\": \"error\",\n  \"status\": 400,\n  \"code\": \"item_name_invalid\",\n  \"message\": \"Method Not Allowed\",\n  \"context_info\": {\n    \"message\": \"Something went wrong.\"\n  },\n  \"help_url\": \"https://developer.box.com/guides/api-calls/permissions-and-errors/common-errors/\",\n  \"request_id\": \"abcdef123456\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "22cb201a-e3a5-49d5-b2db-8b85d5f7a5b0",
+          "name": "Box Assign task",
+          "request": {
+            "name": "Box Assign task",
+            "description": {
+              "content": "Assigns a task to a user.\n\nA task can be assigned to more than one user by creating multiple\nassignments.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "task_assignments"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"task\": {\n    \"id\": \"<string>\",\n    \"type\": \"<string>\"\n  },\n  \"assign_to\": {\n    \"id\": \"<string>\",\n    \"login\": \"<string>\"\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "727b293f-38c4-4046-8941-7866a895aac3",
+              "name": "Returns a new task assignment object.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "task_assignments"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"task\": {\n    \"id\": \"11446498\",\n    \"type\": \"task\"\n  },\n  \"assign_to\": {\n    \"id\": \"3242343\",\n    \"login\": \"john@example.com\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": \"11446498\",\n  \"type\": \"task_assignment\",\n  \"item\": {\n    \"id\": \"12345\",\n    \"type\": \"file\",\n    \"etag\": \"1\",\n    \"sequence_id\": \"3\",\n    \"name\": \"Contract.pdf\",\n    \"sha1\": \"85136C79CBF9FE36BB9D05D0639C70C265C18D37\",\n    \"file_version\": {\n      \"id\": {\n        \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n      },\n      \"type\": {\n        \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n      },\n      \"sha1\": \"134b65991ed521fcfe4724b7d814ab8ded5185dc\"\n    }\n  },\n  \"assigned_to\": {\n    \"type\": \"user\",\n    \"id\": \"11446498\",\n    \"name\": \"Aaron Levie\",\n    \"login\": \"ceo@example.com\"\n  },\n  \"message\": \"Please review\",\n  \"completed_at\": \"2012-12-12T10:53:43-08:00\",\n  \"assigned_at\": \"2012-12-12T10:53:43-08:00\",\n  \"reminded_at\": \"2012-12-12T10:53:43-08:00\",\n  \"resolution_state\": \"incomplete\",\n  \"assigned_by\": {\n    \"type\": \"user\",\n    \"id\": \"11446498\",\n    \"name\": \"Aaron Levie\",\n    \"login\": \"ceo@example.com\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "646ec41e-9f22-4b6c-8978-f8b8f4373a10",
+              "name": "Returns an error if a change is attempted for a completed task or the user\ndoes not have access to the item linked to the task for the given task\nassignment.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "task_assignments"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"task\": {\n    \"id\": \"11446498\",\n    \"type\": \"task\"\n  },\n  \"assign_to\": {\n    \"id\": \"3242343\",\n    \"login\": \"john@example.com\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"type\": \"error\",\n  \"status\": 400,\n  \"code\": \"item_name_invalid\",\n  \"message\": \"Method Not Allowed\",\n  \"context_info\": {\n    \"message\": \"Something went wrong.\"\n  },\n  \"help_url\": \"https://developer.box.com/guides/api-calls/permissions-and-errors/common-errors/\",\n  \"request_id\": \"abcdef123456\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "916e0e7b-f221-4d04-a0e9-930af8dd5c37",
+              "name": "Returns an error when the task cannot be found.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "task_assignments"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"task\": {\n    \"id\": \"11446498\",\n    \"type\": \"task\"\n  },\n  \"assign_to\": {\n    \"id\": \"3242343\",\n    \"login\": \"john@example.com\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"type\": \"error\",\n  \"status\": 400,\n  \"code\": \"item_name_invalid\",\n  \"message\": \"Method Not Allowed\",\n  \"context_info\": {\n    \"message\": \"Something went wrong.\"\n  },\n  \"help_url\": \"https://developer.box.com/guides/api-calls/permissions-and-errors/common-errors/\",\n  \"request_id\": \"abcdef123456\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "7cdf37ef-93e8-470b-b385-fbf55309098a",
+              "name": "Returns an error if any of the IDs for this request were not valid, or if\nthe targeted user does not have access to the file.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "task_assignments"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"task\": {\n    \"id\": \"11446498\",\n    \"type\": \"task\"\n  },\n  \"assign_to\": {\n    \"id\": \"3242343\",\n    \"login\": \"john@example.com\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"type\": \"error\",\n  \"status\": 400,\n  \"code\": \"item_name_invalid\",\n  \"message\": \"Method Not Allowed\",\n  \"context_info\": {\n    \"message\": \"Something went wrong.\"\n  },\n  \"help_url\": \"https://developer.box.com/guides/api-calls/permissions-and-errors/common-errors/\",\n  \"request_id\": \"abcdef123456\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "74f7ea58-3758-486d-b7b7-5ebcff4b7726",
+              "name": "An unexpected client error.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "task_assignments"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"task\": {\n    \"id\": \"11446498\",\n    \"type\": \"task\"\n  },\n  \"assign_to\": {\n    \"id\": \"3242343\",\n    \"login\": \"john@example.com\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"type\": \"error\",\n  \"status\": 400,\n  \"code\": \"item_name_invalid\",\n  \"message\": \"Method Not Allowed\",\n  \"context_info\": {\n    \"message\": \"Something went wrong.\"\n  },\n  \"help_url\": \"https://developer.box.com/guides/api-calls/permissions-and-errors/common-errors/\",\n  \"request_id\": \"abcdef123456\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "8cb5078f-7084-42ab-9772-82e22b696912",
+          "name": "Box Get task assignment",
+          "request": {
+            "name": "Box Get task assignment",
+            "description": {
+              "content": "Retrieves information about a task assignment.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "task_assignments",
+                ":task_assignment_id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "task_assignment_id",
+                  "description": "(Required) The ID of the task assignment."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "6dd64ffd-a366-4a3d-ae30-7840f24b9711",
+              "name": "Returns a task assignment, specifying who the task has been assigned to\nand by whom.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "task_assignments",
+                    ":task_assignment_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "task_assignment_id",
+                      "description": "(Required) The ID of the task assignment."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": \"11446498\",\n  \"type\": \"task_assignment\",\n  \"item\": {\n    \"id\": \"12345\",\n    \"type\": \"file\",\n    \"etag\": \"1\",\n    \"sequence_id\": \"3\",\n    \"name\": \"Contract.pdf\",\n    \"sha1\": \"85136C79CBF9FE36BB9D05D0639C70C265C18D37\",\n    \"file_version\": {\n      \"id\": {\n        \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n      },\n      \"type\": {\n        \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n      },\n      \"sha1\": \"134b65991ed521fcfe4724b7d814ab8ded5185dc\"\n    }\n  },\n  \"assigned_to\": {\n    \"type\": \"user\",\n    \"id\": \"11446498\",\n    \"name\": \"Aaron Levie\",\n    \"login\": \"ceo@example.com\"\n  },\n  \"message\": \"Please review\",\n  \"completed_at\": \"2012-12-12T10:53:43-08:00\",\n  \"assigned_at\": \"2012-12-12T10:53:43-08:00\",\n  \"reminded_at\": \"2012-12-12T10:53:43-08:00\",\n  \"resolution_state\": \"incomplete\",\n  \"assigned_by\": {\n    \"type\": \"user\",\n    \"id\": \"11446498\",\n    \"name\": \"Aaron Levie\",\n    \"login\": \"ceo@example.com\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "f7dd6b00-5105-40db-af1e-ed9e31a5081c",
+              "name": "Returns an error when the task assignment could not be found or the user\ndoes not have access to the file the task is assigned to.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "task_assignments",
+                    ":task_assignment_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "task_assignment_id",
+                      "description": "(Required) The ID of the task assignment."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"type\": \"error\",\n  \"status\": 400,\n  \"code\": \"item_name_invalid\",\n  \"message\": \"Method Not Allowed\",\n  \"context_info\": {\n    \"message\": \"Something went wrong.\"\n  },\n  \"help_url\": \"https://developer.box.com/guides/api-calls/permissions-and-errors/common-errors/\",\n  \"request_id\": \"abcdef123456\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "c629c096-a9a2-4377-977e-5ce2de2d7c9d",
+              "name": "An unexpected client error.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "task_assignments",
+                    ":task_assignment_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "task_assignment_id",
+                      "description": "(Required) The ID of the task assignment."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"type\": \"error\",\n  \"status\": 400,\n  \"code\": \"item_name_invalid\",\n  \"message\": \"Method Not Allowed\",\n  \"context_info\": {\n    \"message\": \"Something went wrong.\"\n  },\n  \"help_url\": \"https://developer.box.com/guides/api-calls/permissions-and-errors/common-errors/\",\n  \"request_id\": \"abcdef123456\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "a8eaa779-5c5b-4685-8710-11af46d75417",
+          "name": "Box Update task assignment",
+          "request": {
+            "name": "Box Update task assignment",
+            "description": {
+              "content": "Updates a task assignment. This endpoint can be\nused to update the state of a task assigned to a user.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "task_assignments",
+                ":task_assignment_id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "task_assignment_id",
+                  "description": "(Required) The ID of the task assignment."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "PUT",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"message\": \"<string>\",\n  \"resolution_state\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "d6263a2d-d56c-490b-938e-7e0bf3f3f7a5",
+              "name": "Returns the updated task assignment object.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "task_assignments",
+                    ":task_assignment_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "task_assignment_id",
+                      "description": "(Required) The ID of the task assignment."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"message\": \"Looks good to me\",\n  \"resolution_state\": \"completed\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": \"11446498\",\n  \"type\": \"task_assignment\",\n  \"item\": {\n    \"id\": \"12345\",\n    \"type\": \"file\",\n    \"etag\": \"1\",\n    \"sequence_id\": \"3\",\n    \"name\": \"Contract.pdf\",\n    \"sha1\": \"85136C79CBF9FE36BB9D05D0639C70C265C18D37\",\n    \"file_version\": {\n      \"id\": {\n        \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n      },\n      \"type\": {\n        \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n      },\n      \"sha1\": \"134b65991ed521fcfe4724b7d814ab8ded5185dc\"\n    }\n  },\n  \"assigned_to\": {\n    \"type\": \"user\",\n    \"id\": \"11446498\",\n    \"name\": \"Aaron Levie\",\n    \"login\": \"ceo@example.com\"\n  },\n  \"message\": \"Please review\",\n  \"completed_at\": \"2012-12-12T10:53:43-08:00\",\n  \"assigned_at\": \"2012-12-12T10:53:43-08:00\",\n  \"reminded_at\": \"2012-12-12T10:53:43-08:00\",\n  \"resolution_state\": \"incomplete\",\n  \"assigned_by\": {\n    \"type\": \"user\",\n    \"id\": \"11446498\",\n    \"name\": \"Aaron Levie\",\n    \"login\": \"ceo@example.com\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "d1009cef-79bd-43dd-8698-4b4ba64cdf53",
+              "name": "Returns an error if a resolution state is incompatible with the action\ntype of the task.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "task_assignments",
+                    ":task_assignment_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "task_assignment_id",
+                      "description": "(Required) The ID of the task assignment."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"message\": \"Looks good to me\",\n  \"resolution_state\": \"completed\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"type\": \"error\",\n  \"status\": 400,\n  \"code\": \"item_name_invalid\",\n  \"message\": \"Method Not Allowed\",\n  \"context_info\": {\n    \"message\": \"Something went wrong.\"\n  },\n  \"help_url\": \"https://developer.box.com/guides/api-calls/permissions-and-errors/common-errors/\",\n  \"request_id\": \"abcdef123456\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "ecf7482e-dae9-4a91-b949-50819e028018",
+              "name": "Returns an error when the task assignment could not be found or the user\ndoes not have access to the file the task is assigned to.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "task_assignments",
+                    ":task_assignment_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "task_assignment_id",
+                      "description": "(Required) The ID of the task assignment."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"message\": \"Looks good to me\",\n  \"resolution_state\": \"completed\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"type\": \"error\",\n  \"status\": 400,\n  \"code\": \"item_name_invalid\",\n  \"message\": \"Method Not Allowed\",\n  \"context_info\": {\n    \"message\": \"Something went wrong.\"\n  },\n  \"help_url\": \"https://developer.box.com/guides/api-calls/permissions-and-errors/common-errors/\",\n  \"request_id\": \"abcdef123456\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "97186362-431f-4daa-ade9-5edd186e8a95",
+              "name": "An unexpected client error.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "task_assignments",
+                    ":task_assignment_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "task_assignment_id",
+                      "description": "(Required) The ID of the task assignment."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"message\": \"Looks good to me\",\n  \"resolution_state\": \"completed\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"type\": \"error\",\n  \"status\": 400,\n  \"code\": \"item_name_invalid\",\n  \"message\": \"Method Not Allowed\",\n  \"context_info\": {\n    \"message\": \"Something went wrong.\"\n  },\n  \"help_url\": \"https://developer.box.com/guides/api-calls/permissions-and-errors/common-errors/\",\n  \"request_id\": \"abcdef123456\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "fabd5339-7729-4a28-abf3-b833aa7d2e4e",
+          "name": "Box Unassign task",
+          "request": {
+            "name": "Box Unassign task",
+            "description": {
+              "content": "Deletes a specific task assignment.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "task_assignments",
+                ":task_assignment_id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "task_assignment_id",
+                  "description": "(Required) The ID of the task assignment."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "DELETE",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "b38d52ba-13a5-4792-a24e-f2eda5dbe552",
+              "name": "Returns an empty response when the task\nassignment was successfully deleted.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "task_assignments",
+                    ":task_assignment_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "task_assignment_id",
+                      "description": "(Required) The ID of the task assignment."
+                    }
+                  ]
+                },
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "No Content",
+              "code": 204,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "6d72d1af-3106-42c9-b2b0-92147e10e382",
+              "name": "Returns an error if the task assignment for the given ID does not exist\nor is inaccessible to your account.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "task_assignments",
+                    ":task_assignment_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "task_assignment_id",
+                      "description": "(Required) The ID of the task assignment."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"type\": \"error\",\n  \"status\": 400,\n  \"code\": \"item_name_invalid\",\n  \"message\": \"Method Not Allowed\",\n  \"context_info\": {\n    \"message\": \"Something went wrong.\"\n  },\n  \"help_url\": \"https://developer.box.com/guides/api-calls/permissions-and-errors/common-errors/\",\n  \"request_id\": \"abcdef123456\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "61a60890-960e-407f-84fe-92897a586bbc",
+              "name": "An unexpected client error.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "task_assignments",
+                    ":task_assignment_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "task_assignment_id",
+                      "description": "(Required) The ID of the task assignment."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"type\": \"error\",\n  \"status\": 400,\n  \"code\": \"item_name_invalid\",\n  \"message\": \"Method Not Allowed\",\n  \"context_info\": {\n    \"message\": \"Something went wrong.\"\n  },\n  \"help_url\": \"https://developer.box.com/guides/api-calls/permissions-and-errors/common-errors/\",\n  \"request_id\": \"abcdef123456\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "/",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "2d496872-5e81-409f-b3b2-d8509f5f20b6",
+    "name": "Box Authorize Authorization Task Assignments API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "Needs a description.",
+      "type": "text/plain"
+    }
+  }
+}

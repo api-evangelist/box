@@ -1,0 +1,1827 @@
+{
+  "item": [
+    {
+      "id": "775a0695-c4a7-42a6-9f98-3d9ff4bda7d7",
+      "name": "Shared Links (Folders)",
+      "description": {
+        "content": "Folders shared links are URLs that are generated for folders stored in Box,\nwhich provide direct, read-only access to the resource.",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "01981b1f-1ba9-4ba3-a666-b6b8bafa8ce1",
+          "name": "Box Find folder for shared link",
+          "request": {
+            "name": "Box Find folder for shared link",
+            "description": {
+              "content": "Return the folder represented by a shared link.\n\nA shared folder can be represented by a shared link,\nwhich can originate within the current enterprise or within another.\n\nThis endpoint allows an application to retrieve information about a\nshared folder when only given a shared link.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "shared_items"
+              ],
+              "hash": "folders",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "fields",
+                  "value": "<string>,<string>",
+                  "description": "A comma-separated list of attributes to include in the\nresponse. This can be used to request fields that are\nnot normally returned in a standard response.\n\nBe aware that specifying this parameter will have the\neffect that none of the standard fields are returned in\nthe response unless explicitly specified, instead only\nfields for the mini representation are returned, additional\nto the fields requested."
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "disabled": false,
+                "description": "Ensures an item is only returned if it has changed.\n\nPass in the item's last observed `etag` value\ninto this header and the endpoint will fail\nwith a `304 Not Modified` if the item has not\nchanged since.",
+                "key": "if-none-match",
+                "value": "<string>"
+              },
+              {
+                "disabled": false,
+                "description": "(Required) A header containing the shared link and optional password for the\nshared link.\n\nThe format for this header is as follows.\n\n`shared_link=[link]&shared_link_password=[password]`",
+                "key": "boxapi",
+                "value": "<string>"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "9e3b3336-5771-4985-91c7-dc3e846f99d3",
+              "name": "Returns a full folder resource if the shared link is valid and\nthe user has access to it.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "shared_items"
+                  ],
+                  "hash": "folders",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "fields",
+                      "value": "id,type,name"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "Ensures an item is only returned if it has changed.\n\nPass in the item's last observed `etag` value\ninto this header and the endpoint will fail\nwith a `304 Not Modified` if the item has not\nchanged since.",
+                    "key": "if-none-match",
+                    "value": "1"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) A header containing the shared link and optional password for the\nshared link.\n\nThe format for this header is as follows.\n\n`shared_link=[link]&shared_link_password=[password]`",
+                    "key": "boxapi",
+                    "value": "shared_link=[link]&shared_link_password=[password]"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": \"12345\",\n  \"type\": \"folder\",\n  \"etag\": \"1\",\n  \"sequence_id\": \"3\",\n  \"name\": \"Contracts\",\n  \"created_at\": \"2012-12-12T10:53:43-08:00\",\n  \"modified_at\": \"2012-12-12T10:53:43-08:00\",\n  \"description\": \"Legal contracts for the new ACME deal\",\n  \"size\": 629644,\n  \"path_collection\": {\n    \"total_count\": 1,\n    \"entries\": [\n      {\n        \"sequence_id\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"name\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        }\n      },\n      {\n        \"sequence_id\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"name\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        }\n      }\n    ]\n  },\n  \"created_by\": {\n    \"type\": \"user\",\n    \"id\": \"11446498\",\n    \"name\": \"Aaron Levie\",\n    \"login\": \"ceo@example.com\"\n  },\n  \"modified_by\": {\n    \"type\": \"user\",\n    \"id\": \"11446498\",\n    \"name\": \"Aaron Levie\",\n    \"login\": \"ceo@example.com\"\n  },\n  \"trashed_at\": \"2012-12-12T10:53:43-08:00\",\n  \"purged_at\": \"2012-12-12T10:53:43-08:00\",\n  \"content_created_at\": \"2012-12-12T10:53:43-08:00\",\n  \"content_modified_at\": \"2012-12-12T10:53:43-08:00\",\n  \"owned_by\": {\n    \"type\": \"user\",\n    \"id\": \"11446498\",\n    \"name\": \"Aaron Levie\",\n    \"login\": \"ceo@example.com\"\n  },\n  \"shared_link\": {\n    \"url\": \"https://www.box.com/s/vspke7y05sb214wjokpk\",\n    \"effective_access\": \"company\",\n    \"effective_permission\": \"can_download\",\n    \"is_password_enabled\": true,\n    \"download_count\": 3,\n    \"preview_count\": 3,\n    \"download_url\": \"https://www.box.com/shared/static/rh935iit6ewrmw0unyul.jpeg\",\n    \"vanity_url\": \"https://acme.app.box.com/v/my_url/\",\n    \"vanity_name\": \"my_url\",\n    \"access\": \"open\",\n    \"unshared_at\": \"2018-04-13T13:53:23-07:00\",\n    \"permissions\": {\n      \"can_download\": true,\n      \"can_preview\": true,\n      \"can_edit\": false\n    }\n  },\n  \"folder_upload_email\": {\n    \"access\": \"open\",\n    \"email\": \"upload.Contracts.asd7asd@u.box.com\"\n  },\n  \"parent\": {\n    \"id\": \"12345\",\n    \"type\": \"folder\",\n    \"etag\": \"1\",\n    \"sequence_id\": \"3\",\n    \"name\": \"Contracts\"\n  },\n  \"item_status\": \"active\",\n  \"item_collection\": {\n    \"total_count\": 5000,\n    \"limit\": 1000,\n    \"offset\": 2000,\n    \"order\": [\n      {\n        \"by\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"direction\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        }\n      },\n      {\n        \"by\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"direction\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        }\n      }\n    ],\n    \"entries\": [\n      {\n        \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n      },\n      {\n        \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n      }\n    ]\n  },\n  \"sync_state\": \"synced\",\n  \"has_collaborations\": true,\n  \"permissions\": {\n    \"can_delete\": true,\n    \"can_download\": true,\n    \"can_invite_collaborator\": true,\n    \"can_rename\": true,\n    \"can_set_share_access\": true,\n    \"can_share\": true,\n    \"can_upload\": true\n  },\n  \"tags\": [\n    \"approved\"\n  ],\n  \"can_non_owners_invite\": true,\n  \"is_externally_owned\": true,\n  \"metadata\": {\n    \"enterprise_27335\": {\n      \"marketingCollateral\": {\n        \"$canEdit\": true,\n        \"$id\": \"01234500-12f1-1234-aa12-b1d234cb567e\",\n        \"$parent\": \"folder_59449484661\",\n        \"$scope\": \"enterprise_27335\",\n        \"$template\": \"marketingCollateral\",\n        \"$type\": \"properties-6bcba49f-ca6d-4d2a-a758-57fe6edf44d0\",\n        \"$typeVersion\": 2,\n        \"$version\": 1\n      }\n    }\n  },\n  \"is_collaboration_restricted_to_enterprise\": true,\n  \"allowed_shared_link_access_levels\": [\n    \"open\"\n  ],\n  \"allowed_invitee_roles\": [\n    \"editor\"\n  ],\n  \"watermark_info\": {\n    \"is_watermarked\": true\n  },\n  \"is_accessible_via_shared_link\": true,\n  \"can_non_owners_view_collaborators\": true,\n  \"classification\": {\n    \"name\": \"Top Secret\",\n    \"definition\": \"Content that should not be shared outside the company.\",\n    \"color\": \"#FF0000\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "c8d08cd5-b59c-4595-8aab-7a667495bd2a",
+              "name": "Returns an empty response when the `If-None-Match` header matches\nthe current `etag` value of the folder. This indicates that the folder\nhas not changed since it was last requested.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "shared_items"
+                  ],
+                  "hash": "folders",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "fields",
+                      "value": "id,type,name"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "Ensures an item is only returned if it has changed.\n\nPass in the item's last observed `etag` value\ninto this header and the endpoint will fail\nwith a `304 Not Modified` if the item has not\nchanged since.",
+                    "key": "if-none-match",
+                    "value": "1"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) A header containing the shared link and optional password for the\nshared link.\n\nThe format for this header is as follows.\n\n`shared_link=[link]&shared_link_password=[password]`",
+                    "key": "boxapi",
+                    "value": "shared_link=[link]&shared_link_password=[password]"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Modified",
+              "code": 304,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "af0e410a-6b5f-4d42-89a1-f867c04dc391",
+              "name": "An unexpected client error.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "shared_items"
+                  ],
+                  "hash": "folders",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "fields",
+                      "value": "id,type,name"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "Ensures an item is only returned if it has changed.\n\nPass in the item's last observed `etag` value\ninto this header and the endpoint will fail\nwith a `304 Not Modified` if the item has not\nchanged since.",
+                    "key": "if-none-match",
+                    "value": "1"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) A header containing the shared link and optional password for the\nshared link.\n\nThe format for this header is as follows.\n\n`shared_link=[link]&shared_link_password=[password]`",
+                    "key": "boxapi",
+                    "value": "shared_link=[link]&shared_link_password=[password]"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"type\": \"error\",\n  \"status\": 400,\n  \"code\": \"item_name_invalid\",\n  \"message\": \"Method Not Allowed\",\n  \"context_info\": {\n    \"message\": \"Something went wrong.\"\n  },\n  \"help_url\": \"https://developer.box.com/guides/api-calls/permissions-and-errors/common-errors/\",\n  \"request_id\": \"abcdef123456\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "0a7cc24c-791b-4de3-8dfc-0ad2cc698415",
+          "name": "Box Get shared link for folder",
+          "request": {
+            "name": "Box Get shared link for folder",
+            "description": {
+              "content": "Gets the information for a shared link on a folder.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "folders",
+                "{{folder_id}}"
+              ],
+              "hash": "get_shared_link",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "fields",
+                  "value": "<string>",
+                  "description": "(Required) Explicitly request the `shared_link` fields\nto be returned for this item."
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "2261a45b-4454-494e-9275-0681ed94cda3",
+              "name": "Returns the base representation of a folder with the\nadditional shared link information.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "folders",
+                    "{{folder_id}}"
+                  ],
+                  "hash": "get_shared_link",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "fields",
+                      "value": "shared_link"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": \"12345\",\n  \"type\": \"folder\",\n  \"etag\": \"1\",\n  \"shared_link\": {\n    \"url\": \"https://app.box.com/s/kwio6b4ovt1264rnfbyqo1\",\n    \"download_url\": \"https://app.box.com/shared/static/kwio6b4ovt1264rnfbyqo1.pdf\",\n    \"vanity_url\": null,\n    \"vanity_name\": null,\n    \"effective_access\": \"open\",\n    \"effective_permission\": \"can_download\",\n    \"is_password_enabled\": false,\n    \"unshared_at\": \"2020-09-21T10:34:41-07:00\",\n    \"download_count\": 0,\n    \"preview_count\": 0,\n    \"access\": \"open\",\n    \"permissions\": {\n      \"can_preview\": true,\n      \"can_download\": true,\n      \"can_edit\": false\n    }\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "414f9e22-5780-4946-910a-96c27b6627ca",
+              "name": "Returned when the access token provided in the `Authorization` header\nis not recognized or not provided.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "folders",
+                    "{{folder_id}}"
+                  ],
+                  "hash": "get_shared_link",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "fields",
+                      "value": "shared_link"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"type\": \"error\",\n  \"status\": 400,\n  \"code\": \"item_name_invalid\",\n  \"message\": \"Method Not Allowed\",\n  \"context_info\": {\n    \"message\": \"Something went wrong.\"\n  },\n  \"help_url\": \"https://developer.box.com/guides/api-calls/permissions-and-errors/common-errors/\",\n  \"request_id\": \"abcdef123456\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "0305b15a-e484-4960-bf0e-b67fcc769106",
+              "name": "Returned if the folder is not found, or the user does not\nhave access to the folder.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "folders",
+                    "{{folder_id}}"
+                  ],
+                  "hash": "get_shared_link",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "fields",
+                      "value": "shared_link"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"type\": \"error\",\n  \"status\": 400,\n  \"code\": \"item_name_invalid\",\n  \"message\": \"Method Not Allowed\",\n  \"context_info\": {\n    \"message\": \"Something went wrong.\"\n  },\n  \"help_url\": \"https://developer.box.com/guides/api-calls/permissions-and-errors/common-errors/\",\n  \"request_id\": \"abcdef123456\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "d9ec413d-0ae6-402d-9ba0-ff2b49c59177",
+              "name": "Returned if the `folder_id` is not in a recognized format.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "folders",
+                    "{{folder_id}}"
+                  ],
+                  "hash": "get_shared_link",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "fields",
+                      "value": "shared_link"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Method Not Allowed",
+              "code": 405,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"type\": \"error\",\n  \"status\": 400,\n  \"code\": \"item_name_invalid\",\n  \"message\": \"Method Not Allowed\",\n  \"context_info\": {\n    \"message\": \"Something went wrong.\"\n  },\n  \"help_url\": \"https://developer.box.com/guides/api-calls/permissions-and-errors/common-errors/\",\n  \"request_id\": \"abcdef123456\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "90ae8d9c-9804-4042-b15f-ed3c484d7883",
+              "name": "An unexpected client error.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "folders",
+                    "{{folder_id}}"
+                  ],
+                  "hash": "get_shared_link",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "fields",
+                      "value": "shared_link"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"type\": \"error\",\n  \"status\": 400,\n  \"code\": \"item_name_invalid\",\n  \"message\": \"Method Not Allowed\",\n  \"context_info\": {\n    \"message\": \"Something went wrong.\"\n  },\n  \"help_url\": \"https://developer.box.com/guides/api-calls/permissions-and-errors/common-errors/\",\n  \"request_id\": \"abcdef123456\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "d4f94ef2-e9aa-45cc-85df-8b8abdb0f681",
+          "name": "Box Add shared link to folder",
+          "request": {
+            "name": "Box Add shared link to folder",
+            "description": {
+              "content": "Adds a shared link to a folder.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "folders",
+                "{{folder_id}}"
+              ],
+              "hash": "add_shared_link",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "fields",
+                  "value": "<string>",
+                  "description": "(Required) Explicitly request the `shared_link` fields\nto be returned for this item."
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "PUT",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"shared_link\": {\n    \"access\": \"<string>\",\n    \"password\": \"<string>\",\n    \"vanity_name\": \"<string>\",\n    \"unshared_at\": \"<dateTime>\",\n    \"permissions\": {\n      \"can_download\": \"<boolean>\",\n      \"can_preview\": \"<boolean>\",\n      \"can_edit\": \"<boolean>\"\n    }\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "c90fe457-daa8-4cee-92a7-d8487dc1ef6b",
+              "name": "Returns the base representation of a folder with a new shared\nlink attached.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "folders",
+                    "{{folder_id}}"
+                  ],
+                  "hash": "add_shared_link",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "fields",
+                      "value": "shared_link"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"shared_link\": {\n    \"access\": \"open\",\n    \"password\": \"do-n8t-use-this-Password\",\n    \"vanity_name\": \"my-shared-link\",\n    \"unshared_at\": \"2012-12-12T10:53:43-08:00\",\n    \"permissions\": {\n      \"can_download\": true,\n      \"can_preview\": true,\n      \"can_edit\": false\n    }\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": \"12345\",\n  \"type\": \"folder\",\n  \"etag\": \"1\",\n  \"shared_link\": {\n    \"url\": \"https://app.box.com/s/kwio6b4ovt1264rnfbyqo1\",\n    \"download_url\": \"https://app.box.com/shared/static/kwio6b4ovt1264rnfbyqo1.pdf\",\n    \"vanity_url\": null,\n    \"vanity_name\": null,\n    \"effective_access\": \"open\",\n    \"effective_permission\": \"can_download\",\n    \"is_password_enabled\": false,\n    \"unshared_at\": \"2020-09-21T10:34:41-07:00\",\n    \"download_count\": 0,\n    \"preview_count\": 0,\n    \"access\": \"open\",\n    \"permissions\": {\n      \"can_preview\": true,\n      \"can_download\": true,\n      \"can_edit\": false\n    }\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "b6eb57e2-2bb7-4682-b140-680e3cd1505f",
+              "name": "Returned when there is an incorrect permission combination",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "folders",
+                    "{{folder_id}}"
+                  ],
+                  "hash": "add_shared_link",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "fields",
+                      "value": "shared_link"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"shared_link\": {\n    \"access\": \"open\",\n    \"password\": \"do-n8t-use-this-Password\",\n    \"vanity_name\": \"my-shared-link\",\n    \"unshared_at\": \"2012-12-12T10:53:43-08:00\",\n    \"permissions\": {\n      \"can_download\": true,\n      \"can_preview\": true,\n      \"can_edit\": false\n    }\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"type\": \"error\",\n  \"status\": 400,\n  \"code\": \"item_name_invalid\",\n  \"message\": \"Method Not Allowed\",\n  \"context_info\": {\n    \"message\": \"Something went wrong.\"\n  },\n  \"help_url\": \"https://developer.box.com/guides/api-calls/permissions-and-errors/common-errors/\",\n  \"request_id\": \"abcdef123456\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "18f82784-e89b-4a1e-a15d-9db918c1a028",
+              "name": "Returned when the access token provided in the `Authorization` header\nis not recognized or not provided.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "folders",
+                    "{{folder_id}}"
+                  ],
+                  "hash": "add_shared_link",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "fields",
+                      "value": "shared_link"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"shared_link\": {\n    \"access\": \"open\",\n    \"password\": \"do-n8t-use-this-Password\",\n    \"vanity_name\": \"my-shared-link\",\n    \"unshared_at\": \"2012-12-12T10:53:43-08:00\",\n    \"permissions\": {\n      \"can_download\": true,\n      \"can_preview\": true,\n      \"can_edit\": false\n    }\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"type\": \"error\",\n  \"status\": 400,\n  \"code\": \"item_name_invalid\",\n  \"message\": \"Method Not Allowed\",\n  \"context_info\": {\n    \"message\": \"Something went wrong.\"\n  },\n  \"help_url\": \"https://developer.box.com/guides/api-calls/permissions-and-errors/common-errors/\",\n  \"request_id\": \"abcdef123456\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "eb543802-b891-4db9-9773-474c55e1cac7",
+              "name": "Returned if the user does not have all the permissions to complete the\nupdate.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "folders",
+                    "{{folder_id}}"
+                  ],
+                  "hash": "add_shared_link",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "fields",
+                      "value": "shared_link"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"shared_link\": {\n    \"access\": \"open\",\n    \"password\": \"do-n8t-use-this-Password\",\n    \"vanity_name\": \"my-shared-link\",\n    \"unshared_at\": \"2012-12-12T10:53:43-08:00\",\n    \"permissions\": {\n      \"can_download\": true,\n      \"can_preview\": true,\n      \"can_edit\": false\n    }\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"type\": \"error\",\n  \"status\": 400,\n  \"code\": \"item_name_invalid\",\n  \"message\": \"Method Not Allowed\",\n  \"context_info\": {\n    \"message\": \"Something went wrong.\"\n  },\n  \"help_url\": \"https://developer.box.com/guides/api-calls/permissions-and-errors/common-errors/\",\n  \"request_id\": \"abcdef123456\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "ad92792f-fbca-475a-bd0b-4bda5674f423",
+              "name": "Returned if the folder is not found, or the user does not\nhave access to the folder.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "folders",
+                    "{{folder_id}}"
+                  ],
+                  "hash": "add_shared_link",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "fields",
+                      "value": "shared_link"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"shared_link\": {\n    \"access\": \"open\",\n    \"password\": \"do-n8t-use-this-Password\",\n    \"vanity_name\": \"my-shared-link\",\n    \"unshared_at\": \"2012-12-12T10:53:43-08:00\",\n    \"permissions\": {\n      \"can_download\": true,\n      \"can_preview\": true,\n      \"can_edit\": false\n    }\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"type\": \"error\",\n  \"status\": 400,\n  \"code\": \"item_name_invalid\",\n  \"message\": \"Method Not Allowed\",\n  \"context_info\": {\n    \"message\": \"Something went wrong.\"\n  },\n  \"help_url\": \"https://developer.box.com/guides/api-calls/permissions-and-errors/common-errors/\",\n  \"request_id\": \"abcdef123456\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "15e88115-00fd-40db-898f-f75118674d92",
+              "name": "Returned if the `folder_id` is not in a recognized format.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "folders",
+                    "{{folder_id}}"
+                  ],
+                  "hash": "add_shared_link",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "fields",
+                      "value": "shared_link"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"shared_link\": {\n    \"access\": \"open\",\n    \"password\": \"do-n8t-use-this-Password\",\n    \"vanity_name\": \"my-shared-link\",\n    \"unshared_at\": \"2012-12-12T10:53:43-08:00\",\n    \"permissions\": {\n      \"can_download\": true,\n      \"can_preview\": true,\n      \"can_edit\": false\n    }\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Method Not Allowed",
+              "code": 405,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"type\": \"error\",\n  \"status\": 400,\n  \"code\": \"item_name_invalid\",\n  \"message\": \"Method Not Allowed\",\n  \"context_info\": {\n    \"message\": \"Something went wrong.\"\n  },\n  \"help_url\": \"https://developer.box.com/guides/api-calls/permissions-and-errors/common-errors/\",\n  \"request_id\": \"abcdef123456\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "85589de7-18d4-40ef-9e23-70df4b13e285",
+              "name": "Returns an error when the `If-Match` header does not match\nthe current `etag` value of the folder. This indicates that the folder\nhas changed since it was last requested.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "folders",
+                    "{{folder_id}}"
+                  ],
+                  "hash": "add_shared_link",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "fields",
+                      "value": "shared_link"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"shared_link\": {\n    \"access\": \"open\",\n    \"password\": \"do-n8t-use-this-Password\",\n    \"vanity_name\": \"my-shared-link\",\n    \"unshared_at\": \"2012-12-12T10:53:43-08:00\",\n    \"permissions\": {\n      \"can_download\": true,\n      \"can_preview\": true,\n      \"can_edit\": false\n    }\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Precondition Failed",
+              "code": 412,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"type\": \"error\",\n  \"status\": 400,\n  \"code\": \"item_name_invalid\",\n  \"message\": \"Method Not Allowed\",\n  \"context_info\": {\n    \"message\": \"Something went wrong.\"\n  },\n  \"help_url\": \"https://developer.box.com/guides/api-calls/permissions-and-errors/common-errors/\",\n  \"request_id\": \"abcdef123456\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "b7179614-e98b-4db2-bf2d-4071cf5c74bd",
+              "name": "An unexpected client error.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "folders",
+                    "{{folder_id}}"
+                  ],
+                  "hash": "add_shared_link",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "fields",
+                      "value": "shared_link"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"shared_link\": {\n    \"access\": \"open\",\n    \"password\": \"do-n8t-use-this-Password\",\n    \"vanity_name\": \"my-shared-link\",\n    \"unshared_at\": \"2012-12-12T10:53:43-08:00\",\n    \"permissions\": {\n      \"can_download\": true,\n      \"can_preview\": true,\n      \"can_edit\": false\n    }\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"type\": \"error\",\n  \"status\": 400,\n  \"code\": \"item_name_invalid\",\n  \"message\": \"Method Not Allowed\",\n  \"context_info\": {\n    \"message\": \"Something went wrong.\"\n  },\n  \"help_url\": \"https://developer.box.com/guides/api-calls/permissions-and-errors/common-errors/\",\n  \"request_id\": \"abcdef123456\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "cbfd020f-328b-4a0d-aa0a-671ba091bb7e",
+          "name": "Box Update shared link on folder",
+          "request": {
+            "name": "Box Update shared link on folder",
+            "description": {
+              "content": "Updates a shared link on a folder.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "folders",
+                "{{folder_id}}"
+              ],
+              "hash": "update_shared_link",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "fields",
+                  "value": "<string>",
+                  "description": "(Required) Explicitly request the `shared_link` fields\nto be returned for this item."
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "PUT",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"shared_link\": {\n    \"access\": \"<string>\",\n    \"password\": \"<string>\",\n    \"vanity_name\": \"<string>\",\n    \"unshared_at\": \"<dateTime>\",\n    \"permissions\": {\n      \"can_download\": \"<boolean>\",\n      \"can_preview\": \"<boolean>\",\n      \"can_edit\": \"<boolean>\"\n    }\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "5d98368d-154e-49a3-a1d0-35eab49490e5",
+              "name": "Returns a basic representation of the folder, with the updated shared\nlink attached.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "folders",
+                    "{{folder_id}}"
+                  ],
+                  "hash": "update_shared_link",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "fields",
+                      "value": "shared_link"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"shared_link\": {\n    \"access\": \"open\",\n    \"password\": \"do-n8t-use-this-Password\",\n    \"vanity_name\": \"my-shared-link\",\n    \"unshared_at\": \"2012-12-12T10:53:43-08:00\",\n    \"permissions\": {\n      \"can_download\": true,\n      \"can_preview\": true,\n      \"can_edit\": false\n    }\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": \"12345\",\n  \"type\": \"folder\",\n  \"etag\": \"1\",\n  \"shared_link\": {\n    \"url\": \"https://app.box.com/s/kwio6b4ovt1264rnfbyqo1\",\n    \"download_url\": \"https://app.box.com/shared/static/kwio6b4ovt1264rnfbyqo1.pdf\",\n    \"vanity_url\": null,\n    \"vanity_name\": null,\n    \"effective_access\": \"open\",\n    \"effective_permission\": \"can_download\",\n    \"is_password_enabled\": false,\n    \"unshared_at\": \"2020-09-21T10:34:41-07:00\",\n    \"download_count\": 0,\n    \"preview_count\": 0,\n    \"access\": \"open\",\n    \"permissions\": {\n      \"can_preview\": true,\n      \"can_download\": true,\n      \"can_edit\": false\n    }\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "1367045e-7933-4a9b-91a3-f8d3cfeed735",
+              "name": "Returned when there is an incorrect permission combination",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "folders",
+                    "{{folder_id}}"
+                  ],
+                  "hash": "update_shared_link",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "fields",
+                      "value": "shared_link"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"shared_link\": {\n    \"access\": \"open\",\n    \"password\": \"do-n8t-use-this-Password\",\n    \"vanity_name\": \"my-shared-link\",\n    \"unshared_at\": \"2012-12-12T10:53:43-08:00\",\n    \"permissions\": {\n      \"can_download\": true,\n      \"can_preview\": true,\n      \"can_edit\": false\n    }\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"type\": \"error\",\n  \"status\": 400,\n  \"code\": \"item_name_invalid\",\n  \"message\": \"Method Not Allowed\",\n  \"context_info\": {\n    \"message\": \"Something went wrong.\"\n  },\n  \"help_url\": \"https://developer.box.com/guides/api-calls/permissions-and-errors/common-errors/\",\n  \"request_id\": \"abcdef123456\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "d15435a9-dd0e-48c9-918a-eb8027d0f5f3",
+              "name": "Returned when the access token provided in the `Authorization` header\nis not recognized or not provided.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "folders",
+                    "{{folder_id}}"
+                  ],
+                  "hash": "update_shared_link",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "fields",
+                      "value": "shared_link"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"shared_link\": {\n    \"access\": \"open\",\n    \"password\": \"do-n8t-use-this-Password\",\n    \"vanity_name\": \"my-shared-link\",\n    \"unshared_at\": \"2012-12-12T10:53:43-08:00\",\n    \"permissions\": {\n      \"can_download\": true,\n      \"can_preview\": true,\n      \"can_edit\": false\n    }\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"type\": \"error\",\n  \"status\": 400,\n  \"code\": \"item_name_invalid\",\n  \"message\": \"Method Not Allowed\",\n  \"context_info\": {\n    \"message\": \"Something went wrong.\"\n  },\n  \"help_url\": \"https://developer.box.com/guides/api-calls/permissions-and-errors/common-errors/\",\n  \"request_id\": \"abcdef123456\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "cc148687-37da-46f0-a51e-bac012a5a866",
+              "name": "Returned if the user does not have all the permissions to complete the\nupdate.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "folders",
+                    "{{folder_id}}"
+                  ],
+                  "hash": "update_shared_link",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "fields",
+                      "value": "shared_link"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"shared_link\": {\n    \"access\": \"open\",\n    \"password\": \"do-n8t-use-this-Password\",\n    \"vanity_name\": \"my-shared-link\",\n    \"unshared_at\": \"2012-12-12T10:53:43-08:00\",\n    \"permissions\": {\n      \"can_download\": true,\n      \"can_preview\": true,\n      \"can_edit\": false\n    }\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"type\": \"error\",\n  \"status\": 400,\n  \"code\": \"item_name_invalid\",\n  \"message\": \"Method Not Allowed\",\n  \"context_info\": {\n    \"message\": \"Something went wrong.\"\n  },\n  \"help_url\": \"https://developer.box.com/guides/api-calls/permissions-and-errors/common-errors/\",\n  \"request_id\": \"abcdef123456\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "f76a10d9-747e-4da6-a828-f384dafa3c6f",
+              "name": "Returned if the folder is not found, or the user does not\nhave access to the folder.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "folders",
+                    "{{folder_id}}"
+                  ],
+                  "hash": "update_shared_link",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "fields",
+                      "value": "shared_link"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"shared_link\": {\n    \"access\": \"open\",\n    \"password\": \"do-n8t-use-this-Password\",\n    \"vanity_name\": \"my-shared-link\",\n    \"unshared_at\": \"2012-12-12T10:53:43-08:00\",\n    \"permissions\": {\n      \"can_download\": true,\n      \"can_preview\": true,\n      \"can_edit\": false\n    }\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"type\": \"error\",\n  \"status\": 400,\n  \"code\": \"item_name_invalid\",\n  \"message\": \"Method Not Allowed\",\n  \"context_info\": {\n    \"message\": \"Something went wrong.\"\n  },\n  \"help_url\": \"https://developer.box.com/guides/api-calls/permissions-and-errors/common-errors/\",\n  \"request_id\": \"abcdef123456\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "e6dd28da-225f-46c6-afa6-3441373fad9c",
+              "name": "Returned if the `folder_id` is not in a recognized format.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "folders",
+                    "{{folder_id}}"
+                  ],
+                  "hash": "update_shared_link",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "fields",
+                      "value": "shared_link"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"shared_link\": {\n    \"access\": \"open\",\n    \"password\": \"do-n8t-use-this-Password\",\n    \"vanity_name\": \"my-shared-link\",\n    \"unshared_at\": \"2012-12-12T10:53:43-08:00\",\n    \"permissions\": {\n      \"can_download\": true,\n      \"can_preview\": true,\n      \"can_edit\": false\n    }\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Method Not Allowed",
+              "code": 405,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"type\": \"error\",\n  \"status\": 400,\n  \"code\": \"item_name_invalid\",\n  \"message\": \"Method Not Allowed\",\n  \"context_info\": {\n    \"message\": \"Something went wrong.\"\n  },\n  \"help_url\": \"https://developer.box.com/guides/api-calls/permissions-and-errors/common-errors/\",\n  \"request_id\": \"abcdef123456\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "9113d759-994c-4977-8f0c-c6d8bf6c2a94",
+              "name": "Returns an error when the `If-Match` header does not match\nthe current `etag` value of the folder. This indicates that the folder\nhas changed since it was last requested.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "folders",
+                    "{{folder_id}}"
+                  ],
+                  "hash": "update_shared_link",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "fields",
+                      "value": "shared_link"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"shared_link\": {\n    \"access\": \"open\",\n    \"password\": \"do-n8t-use-this-Password\",\n    \"vanity_name\": \"my-shared-link\",\n    \"unshared_at\": \"2012-12-12T10:53:43-08:00\",\n    \"permissions\": {\n      \"can_download\": true,\n      \"can_preview\": true,\n      \"can_edit\": false\n    }\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Precondition Failed",
+              "code": 412,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"type\": \"error\",\n  \"status\": 400,\n  \"code\": \"item_name_invalid\",\n  \"message\": \"Method Not Allowed\",\n  \"context_info\": {\n    \"message\": \"Something went wrong.\"\n  },\n  \"help_url\": \"https://developer.box.com/guides/api-calls/permissions-and-errors/common-errors/\",\n  \"request_id\": \"abcdef123456\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "3f09b43b-eb46-496f-b43e-baa7fdee9b33",
+              "name": "An unexpected client error.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "folders",
+                    "{{folder_id}}"
+                  ],
+                  "hash": "update_shared_link",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "fields",
+                      "value": "shared_link"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"shared_link\": {\n    \"access\": \"open\",\n    \"password\": \"do-n8t-use-this-Password\",\n    \"vanity_name\": \"my-shared-link\",\n    \"unshared_at\": \"2012-12-12T10:53:43-08:00\",\n    \"permissions\": {\n      \"can_download\": true,\n      \"can_preview\": true,\n      \"can_edit\": false\n    }\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"type\": \"error\",\n  \"status\": 400,\n  \"code\": \"item_name_invalid\",\n  \"message\": \"Method Not Allowed\",\n  \"context_info\": {\n    \"message\": \"Something went wrong.\"\n  },\n  \"help_url\": \"https://developer.box.com/guides/api-calls/permissions-and-errors/common-errors/\",\n  \"request_id\": \"abcdef123456\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "4b384c35-292b-44e2-95a6-3af27f8cb830",
+          "name": "Box Remove shared link from folder",
+          "request": {
+            "name": "Box Remove shared link from folder",
+            "description": {
+              "content": "Removes a shared link from a folder.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "folders",
+                "{{folder_id}}"
+              ],
+              "hash": "remove_shared_link",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "fields",
+                  "value": "<string>",
+                  "description": "(Required) Explicitly request the `shared_link` fields\nto be returned for this item."
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "PUT",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"shared_link\": \"<object>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "7131b04e-015d-443a-b711-3d5da1d4c7d1",
+              "name": "Returns a basic representation of a folder, with the shared link removed.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "folders",
+                    "{{folder_id}}"
+                  ],
+                  "hash": "remove_shared_link",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "fields",
+                      "value": "shared_link"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"shared_link\": null\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": \"12345\",\n  \"type\": \"folder\",\n  \"etag\": \"1\",\n  \"shared_link\": null\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "b9193916-d018-42fa-85ad-a5ea65847a6f",
+              "name": "Returned when the access token provided in the `Authorization` header\nis not recognized or not provided.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "folders",
+                    "{{folder_id}}"
+                  ],
+                  "hash": "remove_shared_link",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "fields",
+                      "value": "shared_link"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"shared_link\": null\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"type\": \"error\",\n  \"status\": 400,\n  \"code\": \"item_name_invalid\",\n  \"message\": \"Method Not Allowed\",\n  \"context_info\": {\n    \"message\": \"Something went wrong.\"\n  },\n  \"help_url\": \"https://developer.box.com/guides/api-calls/permissions-and-errors/common-errors/\",\n  \"request_id\": \"abcdef123456\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "44104bce-8879-48ae-9cdb-fc01402f6766",
+              "name": "Returned if the user does not have all the permissions to complete the\nupdate.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "folders",
+                    "{{folder_id}}"
+                  ],
+                  "hash": "remove_shared_link",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "fields",
+                      "value": "shared_link"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"shared_link\": null\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"type\": \"error\",\n  \"status\": 400,\n  \"code\": \"item_name_invalid\",\n  \"message\": \"Method Not Allowed\",\n  \"context_info\": {\n    \"message\": \"Something went wrong.\"\n  },\n  \"help_url\": \"https://developer.box.com/guides/api-calls/permissions-and-errors/common-errors/\",\n  \"request_id\": \"abcdef123456\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "3a07d097-6fd2-4ef9-8881-4b0a94756056",
+              "name": "Returned if the folder is not found, or the user does not\nhave access to the folder.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "folders",
+                    "{{folder_id}}"
+                  ],
+                  "hash": "remove_shared_link",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "fields",
+                      "value": "shared_link"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"shared_link\": null\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"type\": \"error\",\n  \"status\": 400,\n  \"code\": \"item_name_invalid\",\n  \"message\": \"Method Not Allowed\",\n  \"context_info\": {\n    \"message\": \"Something went wrong.\"\n  },\n  \"help_url\": \"https://developer.box.com/guides/api-calls/permissions-and-errors/common-errors/\",\n  \"request_id\": \"abcdef123456\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "2d370ec6-360b-43f3-8230-3d1129c6d66b",
+              "name": "Returned if the `folder_id` is not in a recognized format.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "folders",
+                    "{{folder_id}}"
+                  ],
+                  "hash": "remove_shared_link",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "fields",
+                      "value": "shared_link"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"shared_link\": null\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Method Not Allowed",
+              "code": 405,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"type\": \"error\",\n  \"status\": 400,\n  \"code\": \"item_name_invalid\",\n  \"message\": \"Method Not Allowed\",\n  \"context_info\": {\n    \"message\": \"Something went wrong.\"\n  },\n  \"help_url\": \"https://developer.box.com/guides/api-calls/permissions-and-errors/common-errors/\",\n  \"request_id\": \"abcdef123456\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "a769cc3c-2645-4916-83cd-6e301735db26",
+              "name": "Returns an error when the `If-Match` header does not match\nthe current `etag` value of the folder. This indicates that the folder\nhas changed since it was last requested.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "folders",
+                    "{{folder_id}}"
+                  ],
+                  "hash": "remove_shared_link",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "fields",
+                      "value": "shared_link"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"shared_link\": null\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Precondition Failed",
+              "code": 412,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"type\": \"error\",\n  \"status\": 400,\n  \"code\": \"item_name_invalid\",\n  \"message\": \"Method Not Allowed\",\n  \"context_info\": {\n    \"message\": \"Something went wrong.\"\n  },\n  \"help_url\": \"https://developer.box.com/guides/api-calls/permissions-and-errors/common-errors/\",\n  \"request_id\": \"abcdef123456\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "fb6a42e6-656e-41fd-b96b-32aa08e8fb43",
+              "name": "An unexpected client error.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "folders",
+                    "{{folder_id}}"
+                  ],
+                  "hash": "remove_shared_link",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "fields",
+                      "value": "shared_link"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"shared_link\": null\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"type\": \"error\",\n  \"status\": 400,\n  \"code\": \"item_name_invalid\",\n  \"message\": \"Method Not Allowed\",\n  \"context_info\": {\n    \"message\": \"Something went wrong.\"\n  },\n  \"help_url\": \"https://developer.box.com/guides/api-calls/permissions-and-errors/common-errors/\",\n  \"request_id\": \"abcdef123456\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "/",
+      "key": "baseUrl"
+    },
+    {
+      "disabled": false,
+      "description": {
+        "content": "(Required) The unique identifier that represent a folder.\n\nThe ID for any folder can be determined\nby visiting this folder in the web application\nand copying the ID from the URL. For example,\nfor the URL `https://*.app.box.com/folder/123`\nthe `folder_id` is `123`.\n\nThe root folder of a Box account is\nalways represented by the ID `0`.",
+        "type": "text/plain"
+      },
+      "type": "any",
+      "value": "<string>",
+      "key": "folder_id"
+    }
+  ],
+  "info": {
+    "_postman_id": "93a4b550-f447-41ec-accd-c9c3594ff755",
+    "name": "Box Authorize Authorization Shared Links (Folders) API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "Needs a description.",
+      "type": "text/plain"
+    }
+  }
+}

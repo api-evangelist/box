@@ -1,0 +1,66 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Box Authorize Authorization Invites API",
+    "version": "1.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Invites",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Box Create user invite",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/invites",
+            "params": [
+              {
+                "name": "fields",
+                "value": "id,type,name",
+                "type": "query",
+                "description": "A comma-separated list of attributes to include in the\nresponse. This can be used to request fields that are\nnot normally returned in a standard response.\n\nBe aware that specifying this parameter will have the\neffect that none of the standard fields are returned in\nthe response unless explicitly specified, instead only\nfields for the mini representation are returned, additional\nto the fields requested."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Invites an existing external user to join an enterprise.\n\nThe existing user can not be part of another enterprise and\nmust already have a Box account. Once invited, the user will receive an\nemail and are prompted to accept the invitation within the\nBox web application.\n\nThis method requires the \"Manage An Enterprise\" scope enabled for\nthe application, which can be enabled within the developer console."
+        },
+        {
+          "info": {
+            "name": "Box Get user invite status",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/invites/:invite_id",
+            "params": [
+              {
+                "name": "invite_id",
+                "value": "213723",
+                "type": "path",
+                "description": "The ID of an invite."
+              },
+              {
+                "name": "fields",
+                "value": "id,type,name",
+                "type": "query",
+                "description": "A comma-separated list of attributes to include in the\nresponse. This can be used to request fields that are\nnot normally returned in a standard response.\n\nBe aware that specifying this parameter will have the\neffect that none of the standard fields are returned in\nthe response unless explicitly specified, instead only\nfields for the mini representation are returned, additional\nto the fields requested."
+              }
+            ]
+          },
+          "docs": "Returns the status of a user invite."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

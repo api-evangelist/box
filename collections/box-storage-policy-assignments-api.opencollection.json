@@ -1,0 +1,125 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Box Authorize Authorization Storage Policy Assignments API",
+    "version": "1.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Storage Policy Assignments",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Box List storage policy assignments",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/storage_policy_assignments",
+            "params": [
+              {
+                "name": "marker",
+                "value": "JV9IRGZmieiBasejOG9yDCRNgd2ymoZIbjsxbJMjIs3kioVii",
+                "type": "query",
+                "description": "Defines the position marker at which to begin returning results. This is\nused when paginating using marker-based pagination.\n\nThis requires `usemarker` to be set to `true`."
+              },
+              {
+                "name": "resolved_for_type",
+                "value": "user",
+                "type": "query",
+                "description": "The target type to return assignments for"
+              },
+              {
+                "name": "resolved_for_id",
+                "value": "984322",
+                "type": "query",
+                "description": "The ID of the user or enterprise to return assignments for"
+              }
+            ]
+          },
+          "docs": "Fetches all the storage policy assignment for an enterprise or user."
+        },
+        {
+          "info": {
+            "name": "Box Assign storage policy",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/storage_policy_assignments",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Creates a storage policy assignment for an enterprise or user."
+        },
+        {
+          "info": {
+            "name": "Box Get storage policy assignment",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/storage_policy_assignments/:storage_policy_assignment_id",
+            "params": [
+              {
+                "name": "storage_policy_assignment_id",
+                "value": "932483",
+                "type": "path",
+                "description": "The ID of the storage policy assignment."
+              }
+            ]
+          },
+          "docs": "Fetches a specific storage policy assignment."
+        },
+        {
+          "info": {
+            "name": "Box Update storage policy assignment",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "{{baseUrl}}/storage_policy_assignments/:storage_policy_assignment_id",
+            "params": [
+              {
+                "name": "storage_policy_assignment_id",
+                "value": "932483",
+                "type": "path",
+                "description": "The ID of the storage policy assignment."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Updates a specific storage policy assignment."
+        },
+        {
+          "info": {
+            "name": "Box Unassign storage policy",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "{{baseUrl}}/storage_policy_assignments/:storage_policy_assignment_id",
+            "params": [
+              {
+                "name": "storage_policy_assignment_id",
+                "value": "932483",
+                "type": "path",
+                "description": "The ID of the storage policy assignment."
+              }
+            ]
+          },
+          "docs": "Delete a storage policy assignment.\n\nDeleting a storage policy assignment on a user\nwill have the user inherit the enterprise's default\nstorage policy.\n\nThere is a rate limit for calling this endpoint of only\ntwice per user in a 24 hour time frame."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

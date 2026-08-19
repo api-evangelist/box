@@ -1,0 +1,113 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Box Authorize Authorization Task Assignments API",
+    "version": "1.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Task Assignments",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Box List task assignments",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/tasks/:task_id/assignments",
+            "params": [
+              {
+                "name": "task_id",
+                "value": "12345",
+                "type": "path",
+                "description": "The ID of the task."
+              }
+            ]
+          },
+          "docs": "Lists all of the assignments for a given task."
+        },
+        {
+          "info": {
+            "name": "Box Assign task",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/task_assignments",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Assigns a task to a user.\n\nA task can be assigned to more than one user by creating multiple\nassignments."
+        },
+        {
+          "info": {
+            "name": "Box Get task assignment",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/task_assignments/:task_assignment_id",
+            "params": [
+              {
+                "name": "task_assignment_id",
+                "value": "12345",
+                "type": "path",
+                "description": "The ID of the task assignment."
+              }
+            ]
+          },
+          "docs": "Retrieves information about a task assignment."
+        },
+        {
+          "info": {
+            "name": "Box Update task assignment",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "{{baseUrl}}/task_assignments/:task_assignment_id",
+            "params": [
+              {
+                "name": "task_assignment_id",
+                "value": "12345",
+                "type": "path",
+                "description": "The ID of the task assignment."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Updates a task assignment. This endpoint can be\nused to update the state of a task assigned to a user."
+        },
+        {
+          "info": {
+            "name": "Box Unassign task",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "{{baseUrl}}/task_assignments/:task_assignment_id",
+            "params": [
+              {
+                "name": "task_assignment_id",
+                "value": "12345",
+                "type": "path",
+                "description": "The ID of the task assignment."
+              }
+            ]
+          },
+          "docs": "Deletes a specific task assignment."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

@@ -1,0 +1,182 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Box Authorize Authorization Retention Policy Assignments API",
+    "version": "1.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Retention Policy Assignments",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Box List retention policy assignments",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/retention_policies/:retention_policy_id/assignments",
+            "params": [
+              {
+                "name": "retention_policy_id",
+                "value": "982312",
+                "type": "path",
+                "description": "The ID of the retention policy."
+              },
+              {
+                "name": "type",
+                "value": "metadata_template",
+                "type": "query",
+                "description": "The type of the retention policy assignment to retrieve."
+              },
+              {
+                "name": "fields",
+                "value": "id,type,name",
+                "type": "query",
+                "description": "A comma-separated list of attributes to include in the\nresponse. This can be used to request fields that are\nnot normally returned in a standard response.\n\nBe aware that specifying this parameter will have the\neffect that none of the standard fields are returned in\nthe response unless explicitly specified, instead only\nfields for the mini representation are returned, additional\nto the fields requested."
+              },
+              {
+                "name": "marker",
+                "value": "JV9IRGZmieiBasejOG9yDCRNgd2ymoZIbjsxbJMjIs3kioVii",
+                "type": "query",
+                "description": "Defines the position marker at which to begin returning results. This is\nused when paginating using marker-based pagination."
+              },
+              {
+                "name": "limit",
+                "value": "1000",
+                "type": "query",
+                "description": "The maximum number of items to return per page."
+              }
+            ]
+          },
+          "docs": "Returns a list of all retention policy assignments associated with a specified\nretention policy."
+        },
+        {
+          "info": {
+            "name": "Box Assign retention policy",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/retention_policy_assignments",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Assigns a retention policy to an item."
+        },
+        {
+          "info": {
+            "name": "Box Get retention policy assignment",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/retention_policy_assignments/:retention_policy_assignment_id",
+            "params": [
+              {
+                "name": "retention_policy_assignment_id",
+                "value": "1233123",
+                "type": "path",
+                "description": "The ID of the retention policy assignment."
+              },
+              {
+                "name": "fields",
+                "value": "id,type,name",
+                "type": "query",
+                "description": "A comma-separated list of attributes to include in the\nresponse. This can be used to request fields that are\nnot normally returned in a standard response.\n\nBe aware that specifying this parameter will have the\neffect that none of the standard fields are returned in\nthe response unless explicitly specified, instead only\nfields for the mini representation are returned, additional\nto the fields requested."
+              }
+            ]
+          },
+          "docs": "Retrieves a retention policy assignment"
+        },
+        {
+          "info": {
+            "name": "Box Remove retention policy assignment",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "{{baseUrl}}/retention_policy_assignments/:retention_policy_assignment_id",
+            "params": [
+              {
+                "name": "retention_policy_assignment_id",
+                "value": "1233123",
+                "type": "path",
+                "description": "The ID of the retention policy assignment."
+              }
+            ]
+          },
+          "docs": "Removes a retention policy assignment\napplied to content."
+        },
+        {
+          "info": {
+            "name": "Box Get files under retention",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/retention_policy_assignments/:retention_policy_assignment_id/files_under_retention",
+            "params": [
+              {
+                "name": "retention_policy_assignment_id",
+                "value": "1233123",
+                "type": "path",
+                "description": "The ID of the retention policy assignment."
+              },
+              {
+                "name": "marker",
+                "value": "JV9IRGZmieiBasejOG9yDCRNgd2ymoZIbjsxbJMjIs3kioVii",
+                "type": "query",
+                "description": "Defines the position marker at which to begin returning results. This is\nused when paginating using marker-based pagination.\n\nThis requires `usemarker` to be set to `true`."
+              },
+              {
+                "name": "limit",
+                "value": "1000",
+                "type": "query",
+                "description": "The maximum number of items to return per page."
+              }
+            ]
+          },
+          "docs": "Returns a list of files under retention for a retention policy assignment."
+        },
+        {
+          "info": {
+            "name": "Box Get file versions under retention",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/retention_policy_assignments/:retention_policy_assignment_id/file_versions_under_retention",
+            "params": [
+              {
+                "name": "retention_policy_assignment_id",
+                "value": "1233123",
+                "type": "path",
+                "description": "The ID of the retention policy assignment."
+              },
+              {
+                "name": "marker",
+                "value": "JV9IRGZmieiBasejOG9yDCRNgd2ymoZIbjsxbJMjIs3kioVii",
+                "type": "query",
+                "description": "Defines the position marker at which to begin returning results. This is\nused when paginating using marker-based pagination.\n\nThis requires `usemarker` to be set to `true`."
+              },
+              {
+                "name": "limit",
+                "value": "1000",
+                "type": "query",
+                "description": "The maximum number of items to return per page."
+              }
+            ]
+          },
+          "docs": "Returns a list of file versions under retention for a retention policy\nassignment."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

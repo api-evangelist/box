@@ -1,0 +1,823 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Box Authorize Authorization Folders API",
+    "version": "1.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Folders",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Box Get folder information",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/folders/:folder_id",
+            "headers": [
+              {
+                "name": "if-none-match",
+                "value": "1"
+              },
+              {
+                "name": "boxapi",
+                "value": "shared_link=[link]&shared_link_password=[password]"
+              }
+            ],
+            "params": [
+              {
+                "name": "folder_id",
+                "value": "12345",
+                "type": "path",
+                "description": "The unique identifier that represent a folder.\n\nThe ID for any folder can be determined\nby visiting this folder in the web application\nand copying the ID from the URL. For example,\nfor the URL `https://*.app.box.com/folder/123`\nthe `folder_id` is `123`.\n\nThe root folder of a Box account is\nalways represented by the ID `0`."
+              },
+              {
+                "name": "fields",
+                "value": "id,type,name",
+                "type": "query",
+                "description": "A comma-separated list of attributes to include in the\nresponse. This can be used to request fields that are\nnot normally returned in a standard response.\n\nBe aware that specifying this parameter will have the\neffect that none of the standard fields are returned in\nthe response unless explicitly specified, instead only\nfields for the mini representation are returned, additional\nto the fields requested.\n\nAdditionally this field can be used to query any metadata\napplied to the file by specifying the `metadata` field as well\nas the scope and key of the template to retrieve, for example\n`?field=metadata.enterprise_12345.contractTemplate`."
+              },
+              {
+                "name": "sort",
+                "value": "id",
+                "type": "query",
+                "description": "Defines the **second** attribute by which items\nare sorted.\n\nThe folder type affects the way the items\nare sorted:\n\n  * **Standard folder**:\n  Items are always sorted by\n  their `type` first, with\n  folders listed before files,\n  and files listed\n  before web links.\n\n  * **Root folder**:\n  This parameter is not supported\n  for marker-based pagination\n  on the root folder\n\n  (the folder with an `id` of `0`).\n\n  * **Shared folder with parent path\n  to the associated folder visible to\n  the collaborator**:\n  Items are always sorted by\n  their `type` first, with\n  folders listed before files,\n  and files listed\n  before web links."
+              },
+              {
+                "name": "direction",
+                "value": "ASC",
+                "type": "query",
+                "description": "The direction to sort results in. This can be either in alphabetical ascending\n(`ASC`) or descending (`DESC`) order."
+              },
+              {
+                "name": "offset",
+                "value": "1000",
+                "type": "query",
+                "description": "The offset of the item at which to begin the response.\n\nQueries with offset parameter value\nexceeding 10000 will be rejected\nwith a 400 response."
+              },
+              {
+                "name": "limit",
+                "value": "1000",
+                "type": "query",
+                "description": "The maximum number of items to return per page."
+              }
+            ]
+          },
+          "docs": "Retrieves details for a folder, including the first 100 entries\nin the folder.\n\nPassing `sort`, `direction`, `offset`, and `limit`\nparameters in query allows you to manage the\nlist of returned\n[folder items](r://folder--full#param-item-collection).\n\nTo fetch more items within the folder, use the\n[Get items in a folder](e://get-folders-id-items) endpoint."
+        },
+        {
+          "info": {
+            "name": "Box Restore folder",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/folders/:folder_id",
+            "params": [
+              {
+                "name": "folder_id",
+                "value": "12345",
+                "type": "path",
+                "description": "The unique identifier that represent a folder.\n\nThe ID for any folder can be determined\nby visiting this folder in the web application\nand copying the ID from the URL. For example,\nfor the URL `https://*.app.box.com/folder/123`\nthe `folder_id` is `123`.\n\nThe root folder of a Box account is\nalways represented by the ID `0`."
+              },
+              {
+                "name": "fields",
+                "value": "id,type,name",
+                "type": "query",
+                "description": "A comma-separated list of attributes to include in the\nresponse. This can be used to request fields that are\nnot normally returned in a standard response.\n\nBe aware that specifying this parameter will have the\neffect that none of the standard fields are returned in\nthe response unless explicitly specified, instead only\nfields for the mini representation are returned, additional\nto the fields requested."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Restores a folder that has been moved to the trash.\n\nAn optional new parent ID can be provided to restore the folder to in case the\noriginal folder has been deleted.\n\n# Folder locking\n\nDuring this operation, part of the file tree will be locked, mainly\nthe source folder and all of its descendants, as well as the destination\nfolder.\n\nFor the duration of the operation, no other move, copy, delete, or restore\noperation can performed on any of the locked folders."
+        },
+        {
+          "info": {
+            "name": "Box Update folder",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "{{baseUrl}}/folders/:folder_id",
+            "headers": [
+              {
+                "name": "if-match",
+                "value": "1"
+              }
+            ],
+            "params": [
+              {
+                "name": "folder_id",
+                "value": "12345",
+                "type": "path",
+                "description": "The unique identifier that represent a folder.\n\nThe ID for any folder can be determined\nby visiting this folder in the web application\nand copying the ID from the URL. For example,\nfor the URL `https://*.app.box.com/folder/123`\nthe `folder_id` is `123`.\n\nThe root folder of a Box account is\nalways represented by the ID `0`."
+              },
+              {
+                "name": "fields",
+                "value": "id,type,name",
+                "type": "query",
+                "description": "A comma-separated list of attributes to include in the\nresponse. This can be used to request fields that are\nnot normally returned in a standard response.\n\nBe aware that specifying this parameter will have the\neffect that none of the standard fields are returned in\nthe response unless explicitly specified, instead only\nfields for the mini representation are returned, additional\nto the fields requested."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Updates a folder. This can be also be used to move the folder,\ncreate shared links, update collaborations, and more."
+        },
+        {
+          "info": {
+            "name": "Box Delete folder",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "{{baseUrl}}/folders/:folder_id",
+            "headers": [
+              {
+                "name": "if-match",
+                "value": "1"
+              }
+            ],
+            "params": [
+              {
+                "name": "folder_id",
+                "value": "12345",
+                "type": "path",
+                "description": "The unique identifier that represent a folder.\n\nThe ID for any folder can be determined\nby visiting this folder in the web application\nand copying the ID from the URL. For example,\nfor the URL `https://*.app.box.com/folder/123`\nthe `folder_id` is `123`.\n\nThe root folder of a Box account is\nalways represented by the ID `0`."
+              },
+              {
+                "name": "recursive",
+                "value": "true",
+                "type": "query",
+                "description": "Delete a folder that is not empty by recursively deleting the\nfolder and all of its content."
+              }
+            ]
+          },
+          "docs": "Deletes a folder, either permanently or by moving it to\nthe trash."
+        },
+        {
+          "info": {
+            "name": "Box List items in folder",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/folders/:folder_id/items",
+            "headers": [
+              {
+                "name": "boxapi",
+                "value": "shared_link=[link]&shared_link_password=[password]"
+              }
+            ],
+            "params": [
+              {
+                "name": "folder_id",
+                "value": "12345",
+                "type": "path",
+                "description": "The unique identifier that represent a folder.\n\nThe ID for any folder can be determined\nby visiting this folder in the web application\nand copying the ID from the URL. For example,\nfor the URL `https://*.app.box.com/folder/123`\nthe `folder_id` is `123`.\n\nThe root folder of a Box account is\nalways represented by the ID `0`."
+              },
+              {
+                "name": "fields",
+                "value": "id,type,name",
+                "type": "query",
+                "description": "A comma-separated list of attributes to include in the\nresponse. This can be used to request fields that are\nnot normally returned in a standard response.\n\nBe aware that specifying this parameter will have the\neffect that none of the standard fields are returned in\nthe response unless explicitly specified, instead only\nfields for the mini representation are returned, additional\nto the fields requested.\n\nAdditionally this field can be used to query any metadata\napplied to the file by specifying the `metadata` field as well\nas the scope and key of the template to retrieve, for example\n`?field=metadata.enterprise_12345.contractTemplate`."
+              },
+              {
+                "name": "usemarker",
+                "value": "true",
+                "type": "query",
+                "description": "Specifies whether to use marker-based pagination instead of\noffset-based pagination. Only one pagination method can\nbe used at a time.\n\nBy setting this value to true, the API will return a `marker` field\nthat can be passed as a parameter to this endpoint to get the next\npage of the response."
+              },
+              {
+                "name": "marker",
+                "value": "JV9IRGZmieiBasejOG9yDCRNgd2ymoZIbjsxbJMjIs3kioVii",
+                "type": "query",
+                "description": "Defines the position marker at which to begin returning results. This is\nused when paginating using marker-based pagination.\n\nThis requires `usemarker` to be set to `true`."
+              },
+              {
+                "name": "offset",
+                "value": "1000",
+                "type": "query",
+                "description": "The offset of the item at which to begin the response.\n\nQueries with offset parameter value\nexceeding 10000 will be rejected\nwith a 400 response."
+              },
+              {
+                "name": "limit",
+                "value": "1000",
+                "type": "query",
+                "description": "The maximum number of items to return per page."
+              },
+              {
+                "name": "sort",
+                "value": "id",
+                "type": "query",
+                "description": "Defines the **second** attribute by which items\nare sorted.\n\nThe folder type affects the way the items\nare sorted:\n\n  * **Standard folder**:\n  Items are always sorted by\n  their `type` first, with\n  folders listed before files,\n  and files listed\n  before web links.\n\n  * **Root folder**:\n  This parameter is not supported\n  for marker-based pagination\n  on the root folder\n\n  (the folder with an `id` of `0`).\n\n  * **Shared folder with parent path\n  to the associated folder visible to\n  the collaborator**:\n  Items are always sorted by\n  their `type` first, with\n  folders listed before files,\n  and files listed\n  before web links."
+              },
+              {
+                "name": "direction",
+                "value": "ASC",
+                "type": "query",
+                "description": "The direction to sort results in. This can be either in alphabetical ascending\n(`ASC`) or descending (`DESC`) order."
+              }
+            ]
+          },
+          "docs": "Retrieves a page of items in a folder. These items can be files,\nfolders, and web links.\n\nTo request more information about the folder itself, like its size,\nuse the [Get a folder](#get-folders-id) endpoint instead."
+        },
+        {
+          "info": {
+            "name": "Box Create folder",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/folders",
+            "params": [
+              {
+                "name": "fields",
+                "value": "id,type,name",
+                "type": "query",
+                "description": "A comma-separated list of attributes to include in the\nresponse. This can be used to request fields that are\nnot normally returned in a standard response.\n\nBe aware that specifying this parameter will have the\neffect that none of the standard fields are returned in\nthe response unless explicitly specified, instead only\nfields for the mini representation are returned, additional\nto the fields requested."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Creates a new empty folder within the specified parent folder."
+        },
+        {
+          "info": {
+            "name": "Box Copy folder",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/folders/:folder_id/copy",
+            "params": [
+              {
+                "name": "folder_id",
+                "value": "0",
+                "type": "path",
+                "description": "The unique identifier of the folder to copy.\n\nThe ID for any folder can be determined\nby visiting this folder in the web application\nand copying the ID from the URL. For example,\nfor the URL `https://*.app.box.com/folder/123`\nthe `folder_id` is `123`.\n\nThe root folder with the ID `0` can not be copied."
+              },
+              {
+                "name": "fields",
+                "value": "id,type,name",
+                "type": "query",
+                "description": "A comma-separated list of attributes to include in the\nresponse. This can be used to request fields that are\nnot normally returned in a standard response.\n\nBe aware that specifying this parameter will have the\neffect that none of the standard fields are returned in\nthe response unless explicitly specified, instead only\nfields for the mini representation are returned, additional\nto the fields requested."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Creates a copy of a folder within a destination folder.\n\nThe original folder will not be changed."
+        },
+        {
+          "info": {
+            "name": "Box List folder collaborations",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/folders/:folder_id/collaborations",
+            "params": [
+              {
+                "name": "folder_id",
+                "value": "12345",
+                "type": "path",
+                "description": "The unique identifier that represent a folder.\n\nThe ID for any folder can be determined\nby visiting this folder in the web application\nand copying the ID from the URL. For example,\nfor the URL `https://*.app.box.com/folder/123`\nthe `folder_id` is `123`."
+              },
+              {
+                "name": "fields",
+                "value": "id,type,name",
+                "type": "query",
+                "description": "A comma-separated list of attributes to include in the\nresponse. This can be used to request fields that are\nnot normally returned in a standard response.\n\nBe aware that specifying this parameter will have the\neffect that none of the standard fields are returned in\nthe response unless explicitly specified, instead only\nfields for the mini representation are returned, additional\nto the fields requested."
+              }
+            ]
+          },
+          "docs": "Retrieves a list of pending and active collaborations for a\nfolder. This returns all the users that have access to the folder\nor have been invited to the folder."
+        },
+        {
+          "info": {
+            "name": "Box Get trashed folder",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/folders/:folder_id/trash",
+            "params": [
+              {
+                "name": "folder_id",
+                "value": "12345",
+                "type": "path",
+                "description": "The unique identifier that represent a folder.\n\nThe ID for any folder can be determined\nby visiting this folder in the web application\nand copying the ID from the URL. For example,\nfor the URL `https://*.app.box.com/folder/123`\nthe `folder_id` is `123`.\n\nThe root folder of a Box account is\nalways represented by the ID `0`."
+              },
+              {
+                "name": "fields",
+                "value": "id,type,name",
+                "type": "query",
+                "description": "A comma-separated list of attributes to include in the\nresponse. This can be used to request fields that are\nnot normally returned in a standard response.\n\nBe aware that specifying this parameter will have the\neffect that none of the standard fields are returned in\nthe response unless explicitly specified, instead only\nfields for the mini representation are returned, additional\nto the fields requested."
+              }
+            ]
+          },
+          "docs": "Retrieves a folder that has been moved to the trash.\n\nPlease note that only if the folder itself has been moved to the\ntrash can it be retrieved with this API call. If instead one of\nits parent folders was moved to the trash, only that folder\ncan be inspected using the\n[`GET /folders/:id/trash`](e://get_folders_id_trash) API.\n\nTo list all items that have been moved to the trash, please\nuse the [`GET /folders/trash/items`](e://get-folders-trash-items/)\nAPI."
+        },
+        {
+          "info": {
+            "name": "Box Permanently remove folder",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "{{baseUrl}}/folders/:folder_id/trash",
+            "params": [
+              {
+                "name": "folder_id",
+                "value": "12345",
+                "type": "path",
+                "description": "The unique identifier that represent a folder.\n\nThe ID for any folder can be determined\nby visiting this folder in the web application\nand copying the ID from the URL. For example,\nfor the URL `https://*.app.box.com/folder/123`\nthe `folder_id` is `123`.\n\nThe root folder of a Box account is\nalways represented by the ID `0`."
+              }
+            ]
+          },
+          "docs": "Permanently deletes a folder that is in the trash.\nThis action cannot be undone."
+        },
+        {
+          "info": {
+            "name": "Box List metadata instances on folder",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/folders/:folder_id/metadata",
+            "params": [
+              {
+                "name": "folder_id",
+                "value": "12345",
+                "type": "path",
+                "description": "The unique identifier that represent a folder.\n\nThe ID for any folder can be determined\nby visiting this folder in the web application\nand copying the ID from the URL. For example,\nfor the URL `https://*.app.box.com/folder/123`\nthe `folder_id` is `123`.\n\nThe root folder of a Box account is\nalways represented by the ID `0`."
+              }
+            ]
+          },
+          "docs": "Retrieves all metadata for a given folder. This can not be used on the root\nfolder with ID `0`."
+        },
+        {
+          "info": {
+            "name": "Box Get classification on folder",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/folders/:folder_id/metadata/enterprise/securityClassification-6VMVochwUWo",
+            "params": [
+              {
+                "name": "folder_id",
+                "value": "12345",
+                "type": "path",
+                "description": "The unique identifier that represent a folder.\n\nThe ID for any folder can be determined\nby visiting this folder in the web application\nand copying the ID from the URL. For example,\nfor the URL `https://*.app.box.com/folder/123`\nthe `folder_id` is `123`.\n\nThe root folder of a Box account is\nalways represented by the ID `0`."
+              }
+            ]
+          },
+          "docs": "Retrieves the classification metadata instance that\nhas been applied to a folder.\n\nThis API can also be called by including the enterprise ID in the\nURL explicitly, for example\n`/folders/:id//enterprise_12345/securityClassification-6VMVochwUWo`."
+        },
+        {
+          "info": {
+            "name": "Box Add classification to folder",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/folders/:folder_id/metadata/enterprise/securityClassification-6VMVochwUWo",
+            "params": [
+              {
+                "name": "folder_id",
+                "value": "12345",
+                "type": "path",
+                "description": "The unique identifier that represent a folder.\n\nThe ID for any folder can be determined\nby visiting this folder in the web application\nand copying the ID from the URL. For example,\nfor the URL `https://*.app.box.com/folder/123`\nthe `folder_id` is `123`.\n\nThe root folder of a Box account is\nalways represented by the ID `0`."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Adds a classification to a folder by specifying the label of the\nclassification to add.\n\nThis API can also be called by including the enterprise ID in the\nURL explicitly, for example\n`/folders/:id//enterprise_12345/securityClassification-6VMVochwUWo`."
+        },
+        {
+          "info": {
+            "name": "Box Update classification on folder",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "{{baseUrl}}/folders/:folder_id/metadata/enterprise/securityClassification-6VMVochwUWo",
+            "params": [
+              {
+                "name": "folder_id",
+                "value": "12345",
+                "type": "path",
+                "description": "The unique identifier that represent a folder.\n\nThe ID for any folder can be determined\nby visiting this folder in the web application\nand copying the ID from the URL. For example,\nfor the URL `https://*.app.box.com/folder/123`\nthe `folder_id` is `123`.\n\nThe root folder of a Box account is\nalways represented by the ID `0`."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Updates a classification on a folder.\n\nThe classification can only be updated if a classification has already been\napplied to the folder before. When editing classifications, only values are\ndefined for the enterprise will be accepted."
+        },
+        {
+          "info": {
+            "name": "Box Remove classification from folder",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "{{baseUrl}}/folders/:folder_id/metadata/enterprise/securityClassification-6VMVochwUWo",
+            "params": [
+              {
+                "name": "folder_id",
+                "value": "12345",
+                "type": "path",
+                "description": "The unique identifier that represent a folder.\n\nThe ID for any folder can be determined\nby visiting this folder in the web application\nand copying the ID from the URL. For example,\nfor the URL `https://*.app.box.com/folder/123`\nthe `folder_id` is `123`.\n\nThe root folder of a Box account is\nalways represented by the ID `0`."
+              }
+            ]
+          },
+          "docs": "Removes any classifications from a folder.\n\nThis API can also be called by including the enterprise ID in the\nURL explicitly, for example\n`/folders/:id//enterprise_12345/securityClassification-6VMVochwUWo`."
+        },
+        {
+          "info": {
+            "name": "Box Get metadata instance on folder",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/folders/:folder_id/metadata/:scope/:template_key",
+            "params": [
+              {
+                "name": "folder_id",
+                "value": "12345",
+                "type": "path",
+                "description": "The unique identifier that represent a folder.\n\nThe ID for any folder can be determined\nby visiting this folder in the web application\nand copying the ID from the URL. For example,\nfor the URL `https://*.app.box.com/folder/123`\nthe `folder_id` is `123`.\n\nThe root folder of a Box account is\nalways represented by the ID `0`."
+              },
+              {
+                "name": "scope",
+                "value": "global",
+                "type": "path",
+                "description": "The scope of the metadata template"
+              },
+              {
+                "name": "template_key",
+                "value": "properties",
+                "type": "path",
+                "description": "The name of the metadata template"
+              }
+            ]
+          },
+          "docs": "Retrieves the instance of a metadata template that has been applied to a\nfolder. This can not be used on the root folder with ID `0`."
+        },
+        {
+          "info": {
+            "name": "Box Create metadata instance on folder",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/folders/:folder_id/metadata/:scope/:template_key",
+            "params": [
+              {
+                "name": "folder_id",
+                "value": "12345",
+                "type": "path",
+                "description": "The unique identifier that represent a folder.\n\nThe ID for any folder can be determined\nby visiting this folder in the web application\nand copying the ID from the URL. For example,\nfor the URL `https://*.app.box.com/folder/123`\nthe `folder_id` is `123`.\n\nThe root folder of a Box account is\nalways represented by the ID `0`."
+              },
+              {
+                "name": "scope",
+                "value": "global",
+                "type": "path",
+                "description": "The scope of the metadata template"
+              },
+              {
+                "name": "template_key",
+                "value": "properties",
+                "type": "path",
+                "description": "The name of the metadata template"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Applies an instance of a metadata template to a folder.\n\nIn most cases only values that are present in the metadata template\nwill be accepted, except for the `global.properties` template which accepts\nany key-value pair.\n\nTo display the metadata template in the Box web app the enterprise needs to be\nconfigured to enable **Cascading Folder Level Metadata** for the user in the\nadmin console."
+        },
+        {
+          "info": {
+            "name": "Box Update metadata instance on folder",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "{{baseUrl}}/folders/:folder_id/metadata/:scope/:template_key",
+            "params": [
+              {
+                "name": "folder_id",
+                "value": "12345",
+                "type": "path",
+                "description": "The unique identifier that represent a folder.\n\nThe ID for any folder can be determined\nby visiting this folder in the web application\nand copying the ID from the URL. For example,\nfor the URL `https://*.app.box.com/folder/123`\nthe `folder_id` is `123`.\n\nThe root folder of a Box account is\nalways represented by the ID `0`."
+              },
+              {
+                "name": "scope",
+                "value": "global",
+                "type": "path",
+                "description": "The scope of the metadata template"
+              },
+              {
+                "name": "template_key",
+                "value": "properties",
+                "type": "path",
+                "description": "The name of the metadata template"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Updates a piece of metadata on a folder.\n\nThe metadata instance can only be updated if the template has already been\napplied to the folder before. When editing metadata, only values that match\nthe metadata template schema will be accepted.\n\nThe update is applied atomically. If any errors occur during the\napplication of the operations, the metadata instance will not be changed."
+        },
+        {
+          "info": {
+            "name": "Box Remove metadata instance from folder",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "{{baseUrl}}/folders/:folder_id/metadata/:scope/:template_key",
+            "params": [
+              {
+                "name": "folder_id",
+                "value": "12345",
+                "type": "path",
+                "description": "The unique identifier that represent a folder.\n\nThe ID for any folder can be determined\nby visiting this folder in the web application\nand copying the ID from the URL. For example,\nfor the URL `https://*.app.box.com/folder/123`\nthe `folder_id` is `123`.\n\nThe root folder of a Box account is\nalways represented by the ID `0`."
+              },
+              {
+                "name": "scope",
+                "value": "global",
+                "type": "path",
+                "description": "The scope of the metadata template"
+              },
+              {
+                "name": "template_key",
+                "value": "properties",
+                "type": "path",
+                "description": "The name of the metadata template"
+              }
+            ]
+          },
+          "docs": "Deletes a piece of folder metadata."
+        },
+        {
+          "info": {
+            "name": "Box List trashed items",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/folders/trash/items",
+            "params": [
+              {
+                "name": "fields",
+                "value": "id,type,name",
+                "type": "query",
+                "description": "A comma-separated list of attributes to include in the\nresponse. This can be used to request fields that are\nnot normally returned in a standard response.\n\nBe aware that specifying this parameter will have the\neffect that none of the standard fields are returned in\nthe response unless explicitly specified, instead only\nfields for the mini representation are returned, additional\nto the fields requested."
+              },
+              {
+                "name": "limit",
+                "value": "1000",
+                "type": "query",
+                "description": "The maximum number of items to return per page."
+              },
+              {
+                "name": "offset",
+                "value": "1000",
+                "type": "query",
+                "description": "The offset of the item at which to begin the response.\n\nQueries with offset parameter value\nexceeding 10000 will be rejected\nwith a 400 response."
+              },
+              {
+                "name": "usemarker",
+                "value": "true",
+                "type": "query",
+                "description": "Specifies whether to use marker-based pagination instead of\noffset-based pagination. Only one pagination method can\nbe used at a time.\n\nBy setting this value to true, the API will return a `marker` field\nthat can be passed as a parameter to this endpoint to get the next\npage of the response."
+              },
+              {
+                "name": "marker",
+                "value": "JV9IRGZmieiBasejOG9yDCRNgd2ymoZIbjsxbJMjIs3kioVii",
+                "type": "query",
+                "description": "Defines the position marker at which to begin returning results. This is\nused when paginating using marker-based pagination.\n\nThis requires `usemarker` to be set to `true`."
+              },
+              {
+                "name": "direction",
+                "value": "ASC",
+                "type": "query",
+                "description": "The direction to sort results in. This can be either in alphabetical ascending\n(`ASC`) or descending (`DESC`) order."
+              },
+              {
+                "name": "sort",
+                "value": "name",
+                "type": "query",
+                "description": "Defines the **second** attribute by which items\nare sorted.\n\nItems are always sorted by their `type` first, with\nfolders listed before files, and files listed\nbefore web links.\n\nThis parameter is not supported when using marker-based pagination."
+              }
+            ]
+          },
+          "docs": "Retrieves the files and folders that have been moved\nto the trash.\n\nAny attribute in the full files or folders objects can be passed\nin with the `fields` parameter to retrieve those specific\nattributes that are not returned by default.\n\nThis endpoint defaults to use offset-based pagination, yet also supports\nmarker-based pagination using the `marker` parameter."
+        },
+        {
+          "info": {
+            "name": "Box Get watermark for folder",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/folders/:folder_id/watermark",
+            "params": [
+              {
+                "name": "folder_id",
+                "value": "12345",
+                "type": "path",
+                "description": "The unique identifier that represent a folder.\n\nThe ID for any folder can be determined\nby visiting this folder in the web application\nand copying the ID from the URL. For example,\nfor the URL `https://*.app.box.com/folder/123`\nthe `folder_id` is `123`.\n\nThe root folder of a Box account is\nalways represented by the ID `0`."
+              }
+            ]
+          },
+          "docs": "Retrieve the watermark for a folder."
+        },
+        {
+          "info": {
+            "name": "Box Apply watermark to folder",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "{{baseUrl}}/folders/:folder_id/watermark",
+            "params": [
+              {
+                "name": "folder_id",
+                "value": "12345",
+                "type": "path",
+                "description": "The unique identifier that represent a folder.\n\nThe ID for any folder can be determined\nby visiting this folder in the web application\nand copying the ID from the URL. For example,\nfor the URL `https://*.app.box.com/folder/123`\nthe `folder_id` is `123`.\n\nThe root folder of a Box account is\nalways represented by the ID `0`."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Applies or update a watermark on a folder."
+        },
+        {
+          "info": {
+            "name": "Box Remove watermark from folder",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "{{baseUrl}}/folders/:folder_id/watermark",
+            "params": [
+              {
+                "name": "folder_id",
+                "value": "12345",
+                "type": "path",
+                "description": "The unique identifier that represent a folder.\n\nThe ID for any folder can be determined\nby visiting this folder in the web application\nand copying the ID from the URL. For example,\nfor the URL `https://*.app.box.com/folder/123`\nthe `folder_id` is `123`.\n\nThe root folder of a Box account is\nalways represented by the ID `0`."
+              }
+            ]
+          },
+          "docs": "Removes the watermark from a folder."
+        },
+        {
+          "info": {
+            "name": "Box Get shared link for folder",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/folders/:folder_id#get_shared_link",
+            "params": [
+              {
+                "name": "folder_id",
+                "value": "12345",
+                "type": "path",
+                "description": "The unique identifier that represent a folder.\n\nThe ID for any folder can be determined\nby visiting this folder in the web application\nand copying the ID from the URL. For example,\nfor the URL `https://*.app.box.com/folder/123`\nthe `folder_id` is `123`.\n\nThe root folder of a Box account is\nalways represented by the ID `0`."
+              },
+              {
+                "name": "fields",
+                "value": "shared_link",
+                "type": "query",
+                "description": "Explicitly request the `shared_link` fields\nto be returned for this item."
+              }
+            ]
+          },
+          "docs": "Gets the information for a shared link on a folder."
+        },
+        {
+          "info": {
+            "name": "Box Add shared link to folder",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "{{baseUrl}}/folders/:folder_id#add_shared_link",
+            "params": [
+              {
+                "name": "folder_id",
+                "value": "12345",
+                "type": "path",
+                "description": "The unique identifier that represent a folder.\n\nThe ID for any folder can be determined\nby visiting this folder in the web application\nand copying the ID from the URL. For example,\nfor the URL `https://*.app.box.com/folder/123`\nthe `folder_id` is `123`.\n\nThe root folder of a Box account is\nalways represented by the ID `0`."
+              },
+              {
+                "name": "fields",
+                "value": "shared_link",
+                "type": "query",
+                "description": "Explicitly request the `shared_link` fields\nto be returned for this item."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Adds a shared link to a folder."
+        },
+        {
+          "info": {
+            "name": "Box Update shared link on folder",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "{{baseUrl}}/folders/:folder_id#update_shared_link",
+            "params": [
+              {
+                "name": "folder_id",
+                "value": "12345",
+                "type": "path",
+                "description": "The unique identifier that represent a folder.\n\nThe ID for any folder can be determined\nby visiting this folder in the web application\nand copying the ID from the URL. For example,\nfor the URL `https://*.app.box.com/folder/123`\nthe `folder_id` is `123`.\n\nThe root folder of a Box account is\nalways represented by the ID `0`."
+              },
+              {
+                "name": "fields",
+                "value": "shared_link",
+                "type": "query",
+                "description": "Explicitly request the `shared_link` fields\nto be returned for this item."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Updates a shared link on a folder."
+        },
+        {
+          "info": {
+            "name": "Box Remove shared link from folder",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "{{baseUrl}}/folders/:folder_id#remove_shared_link",
+            "params": [
+              {
+                "name": "folder_id",
+                "value": "12345",
+                "type": "path",
+                "description": "The unique identifier that represent a folder.\n\nThe ID for any folder can be determined\nby visiting this folder in the web application\nand copying the ID from the URL. For example,\nfor the URL `https://*.app.box.com/folder/123`\nthe `folder_id` is `123`.\n\nThe root folder of a Box account is\nalways represented by the ID `0`."
+              },
+              {
+                "name": "fields",
+                "value": "shared_link",
+                "type": "query",
+                "description": "Explicitly request the `shared_link` fields\nto be returned for this item."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Removes a shared link from a folder."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

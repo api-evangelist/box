@@ -1,0 +1,832 @@
+{
+  "item": [
+    {
+      "id": "d05653bb-6572-4304-9a44-157c5ce6ebe0",
+      "name": "Uploads",
+      "description": {
+        "content": "The direct file upload API supports files\nup to 50MB in size and sends all\nthe binary data to the Box API in 1 API request.",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "a975b390-3364-4ed1-a38e-050f0b964ec6",
+          "name": "Box Upload file version",
+          "request": {
+            "name": "Box Upload file version",
+            "description": {
+              "content": "Update a file's content. For file sizes over 50MB we recommend\nusing the Chunk Upload APIs.\n\n# Request body order\n\nThe `attributes` part of the body must come **before** the\n`file` part. Requests that do not follow this format when\nuploading the file will receive a HTTP `400` error with a\n`metadata_after_file_contents` error code.",
+              "type": "text/plain"
+            },
+            "url": {
+              "protocol": "https",
+              "path": [
+                "api",
+                "2.0",
+                "files",
+                ":file_id",
+                "content"
+              ],
+              "host": [
+                "upload",
+                "box",
+                "com"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "fields",
+                  "value": "<string>,<string>",
+                  "description": "A comma-separated list of attributes to include in the\nresponse. This can be used to request fields that are\nnot normally returned in a standard response.\n\nBe aware that specifying this parameter will have the\neffect that none of the standard fields are returned in\nthe response unless explicitly specified, instead only\nfields for the mini representation are returned, additional\nto the fields requested."
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "file_id",
+                  "description": "(Required) The unique identifier that represents a file.\n\nThe ID for any file can be determined\nby visiting a file in the web application\nand copying the ID from the URL. For example,\nfor the URL `https://*.app.box.com/files/123`\nthe `file_id` is `123`."
+                }
+              ]
+            },
+            "header": [
+              {
+                "disabled": false,
+                "description": "Ensures this item hasn't recently changed before\nmaking changes.\n\nPass in the item's last observed `etag` value\ninto this header and the endpoint will fail\nwith a `412 Precondition Failed` if it\nhas changed since.",
+                "key": "if-match",
+                "value": "<string>"
+              },
+              {
+                "disabled": false,
+                "description": "An optional header containing the SHA1 hash of the file to\nensure that the file was not corrupted in transit.",
+                "key": "content-md5",
+                "value": "<string>"
+              },
+              {
+                "key": "Content-Type",
+                "value": "multipart/form-data"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "attributes",
+                  "value": "{\"name\":\"<string>\",\"content_modified_at\":\"<dateTime>\"}",
+                  "type": "text",
+                  "description": "(Required) The additional attributes of the file being uploaded. Mainly the\nname and the parent folder. These attributes are part of the multi\npart request body and are in JSON format.\n\n<Message warning>\n\n  The `attributes` part of the body must come **before** the\n  `file` part. Requests that do not follow this format when\n  uploading the file will receive a HTTP `400` error with a\n  `metadata_after_file_contents` error code.\n\n</Message>"
+                },
+                {
+                  "key": "file",
+                  "type": "file",
+                  "description": "(Required) The content of the file to upload to Box.\n\n<Message warning>\n\n  The `attributes` part of the body must come **before** the\n  `file` part. Requests that do not follow this format when\n  uploading the file will receive a HTTP `400` error with a\n  `metadata_after_file_contents` error code.\n\n</Message>"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "0c8ee3ea-032b-44ed-9ebd-ddf1a5246f2a",
+              "name": "Returns the new file object in a list.",
+              "originalRequest": {
+                "url": {
+                  "protocol": "https",
+                  "path": [
+                    "api",
+                    "2.0",
+                    "files",
+                    ":file_id",
+                    "content"
+                  ],
+                  "host": [
+                    "upload",
+                    "box",
+                    "com"
+                  ],
+                  "query": [
+                    {
+                      "key": "fields",
+                      "value": "id,type,name"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "file_id",
+                      "description": "(Required) The unique identifier that represents a file.\n\nThe ID for any file can be determined\nby visiting a file in the web application\nand copying the ID from the URL. For example,\nfor the URL `https://*.app.box.com/files/123`\nthe `file_id` is `123`."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "Ensures this item hasn't recently changed before\nmaking changes.\n\nPass in the item's last observed `etag` value\ninto this header and the endpoint will fail\nwith a `412 Precondition Failed` if it\nhas changed since.",
+                    "key": "if-match",
+                    "value": "1"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "An optional header containing the SHA1 hash of the file to\nensure that the file was not corrupted in transit.",
+                    "key": "content-md5",
+                    "value": "134b65991ed521fcfe4724b7d814ab8ded5185dc"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "formdata",
+                  "formdata": [
+                    {
+                      "description": {
+                        "content": "(Required) The additional attributes of the file being uploaded. Mainly the\nname and the parent folder. These attributes are part of the multi\npart request body and are in JSON format.\n\n<Message warning>\n\n  The `attributes` part of the body must come **before** the\n  `file` part. Requests that do not follow this format when\n  uploading the file will receive a HTTP `400` error with a\n  `metadata_after_file_contents` error code.\n\n</Message>",
+                        "type": "text/plain"
+                      },
+                      "key": "attributes",
+                      "value": "{\"name\":\"Photo 2.0.png\",\"content_modified_at\":\"2012-12-12T10:53:43-08:00\"}",
+                      "type": "text"
+                    },
+                    {
+                      "description": {
+                        "content": "(Required) The content of the file to upload to Box.\n\n<Message warning>\n\n  The `attributes` part of the body must come **before** the\n  `file` part. Requests that do not follow this format when\n  uploading the file will receive a HTTP `400` error with a\n  `metadata_after_file_contents` error code.\n\n</Message>",
+                        "type": "text/plain"
+                      },
+                      "key": "file",
+                      "value": "<binary>",
+                      "type": "text"
+                    }
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"total_count\": 1,\n  \"entries\": [\n    {\n      \"id\": {\n        \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n      },\n      \"type\": {\n        \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n      },\n      \"etag\": {\n        \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n      },\n      \"sequence_id\": {\n        \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n      },\n      \"name\": \"Contract.pdf\",\n      \"sha1\": \"85136C79CBF9FE36BB9D05D0639C70C265C18D37\",\n      \"file_version\": {\n        \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n      },\n      \"description\": \"Contract for Q1 renewal\",\n      \"size\": 629644,\n      \"path_collection\": {\n        \"total_count\": 1,\n        \"entries\": [\n          {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        ]\n      },\n      \"created_at\": \"2012-12-12T10:53:43-08:00\",\n      \"modified_at\": \"2012-12-12T10:53:43-08:00\",\n      \"trashed_at\": \"2012-12-12T10:53:43-08:00\",\n      \"purged_at\": \"2012-12-12T10:53:43-08:00\",\n      \"content_created_at\": \"2012-12-12T10:53:43-08:00\",\n      \"content_modified_at\": \"2012-12-12T10:53:43-08:00\",\n      \"created_by\": {\n        \"value\": \"<Error: Too many levels of nesting to fake this schema>\",\n        \"description\": \"The user who created this file\"\n      },\n      \"modified_by\": {\n        \"value\": \"<Error: Too many levels of nesting to fake this schema>\",\n        \"description\": \"The user who last modified this file\",\n        \"nullable\": false\n      },\n      \"owned_by\": {\n        \"value\": \"<Error: Too many levels of nesting to fake this schema>\",\n        \"description\": \"The user who owns this file\",\n        \"nullable\": false\n      },\n      \"shared_link\": {\n        \"url\": \"https://www.box.com/s/vspke7y05sb214wjokpk\",\n        \"effective_access\": \"company\",\n        \"effective_permission\": \"can_download\",\n        \"is_password_enabled\": true,\n        \"download_count\": 3,\n        \"preview_count\": 3,\n        \"download_url\": \"https://www.box.com/shared/static/rh935iit6ewrmw0unyul.jpeg\",\n        \"vanity_url\": \"https://acme.app.box.com/v/my_url/\",\n        \"vanity_name\": \"my_url\",\n        \"access\": \"open\",\n        \"unshared_at\": \"2018-04-13T13:53:23-07:00\",\n        \"permissions\": {\n          \"can_download\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"can_preview\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"can_edit\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        }\n      },\n      \"parent\": {\n        \"nullable\": true,\n        \"value\": \"<Error: Too many levels of nesting to fake this schema>\",\n        \"description\": \"The folder that this file is located within.\"\n      },\n      \"item_status\": \"active\",\n      \"version_number\": \"1\",\n      \"comment_count\": 10,\n      \"permissions\": {\n        \"can_annotate\": true,\n        \"can_comment\": true,\n        \"can_delete\": true,\n        \"can_download\": true,\n        \"can_invite_collaborator\": true,\n        \"can_preview\": true,\n        \"can_rename\": true,\n        \"can_set_share_access\": true,\n        \"can_share\": true,\n        \"can_upload\": true,\n        \"can_view_annotations_all\": true,\n        \"can_view_annotations_self\": true\n      },\n      \"tags\": [\n        \"approved\"\n      ],\n      \"lock\": {\n        \"id\": \"11446498\",\n        \"type\": \"lock\",\n        \"created_by\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\",\n          \"description\": \"The user who created the lock.\"\n        },\n        \"created_at\": \"2012-12-12T10:53:43-08:00\",\n        \"expired_at\": \"2012-12-12T10:53:43-08:00\",\n        \"is_download_prevented\": true,\n        \"app_type\": \"office_wopiplus\"\n      },\n      \"extension\": \"pdf\",\n      \"is_package\": true,\n      \"expiring_embed_link\": {\n        \"access_token\": \"c3FIOG9vSGV4VHo4QzAyg5T1JvNnJoZ3ExaVNyQWw6WjRsanRKZG5lQk9qUE1BVQ\",\n        \"expires_in\": 3600,\n        \"token_type\": \"bearer\",\n        \"restricted_to\": [\n          {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        ],\n        \"url\": \"https://cloud.app.box.com/preview/expiring_embed/...\"\n      },\n      \"watermark_info\": {\n        \"is_watermarked\": true\n      },\n      \"is_accessible_via_shared_link\": true,\n      \"allowed_invitee_roles\": [\n        \"editor\"\n      ],\n      \"is_externally_owned\": true,\n      \"has_collaborations\": true,\n      \"metadata\": {\n        \"enterprise_27335\": {\n          \"marketingCollateral\": {\n            \"$canEdit\": true,\n            \"$id\": \"01234500-12f1-1234-aa12-b1d234cb567e\",\n            \"$parent\": \"folder_59449484661\",\n            \"$scope\": \"enterprise_27335\",\n            \"$template\": \"marketingCollateral\",\n            \"$type\": \"properties-6bcba49f-ca6d-4d2a-a758-57fe6edf44d0\",\n            \"$typeVersion\": 2,\n            \"$version\": 1\n          }\n        }\n      },\n      \"expires_at\": \"2012-12-12T10:53:43-08:00\",\n      \"representations\": {\n        \"entries\": [\n          {\n            \"content\": {\n              \"url_template\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            },\n            \"info\": {\n              \"url\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            },\n            \"properties\": {\n              \"dimensions\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"paged\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"thumb\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            },\n            \"representation\": \"png\",\n            \"status\": {\n              \"state\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            }\n          },\n          {\n            \"content\": {\n              \"url_template\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            },\n            \"info\": {\n              \"url\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            },\n            \"properties\": {\n              \"dimensions\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"paged\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"thumb\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            },\n            \"representation\": \"png\",\n            \"status\": {\n              \"state\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            }\n          }\n        ]\n      },\n      \"classification\": {\n        \"name\": \"Top Secret\",\n        \"definition\": \"Content that should not be shared outside the company.\",\n        \"color\": \"#FF0000\"\n      },\n      \"uploader_display_name\": \"Ellis Wiggins\",\n      \"disposition_at\": \"2012-12-12T10:53:43-08:00\",\n      \"shared_link_permission_options\": [\n        \"can_preview\"\n      ]\n    },\n    {\n      \"id\": {\n        \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n      },\n      \"type\": {\n        \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n      },\n      \"etag\": {\n        \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n      },\n      \"sequence_id\": {\n        \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n      },\n      \"name\": \"Contract.pdf\",\n      \"sha1\": \"85136C79CBF9FE36BB9D05D0639C70C265C18D37\",\n      \"file_version\": {\n        \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n      },\n      \"description\": \"Contract for Q1 renewal\",\n      \"size\": 629644,\n      \"path_collection\": {\n        \"total_count\": 1,\n        \"entries\": [\n          {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        ]\n      },\n      \"created_at\": \"2012-12-12T10:53:43-08:00\",\n      \"modified_at\": \"2012-12-12T10:53:43-08:00\",\n      \"trashed_at\": \"2012-12-12T10:53:43-08:00\",\n      \"purged_at\": \"2012-12-12T10:53:43-08:00\",\n      \"content_created_at\": \"2012-12-12T10:53:43-08:00\",\n      \"content_modified_at\": \"2012-12-12T10:53:43-08:00\",\n      \"created_by\": {\n        \"value\": \"<Error: Too many levels of nesting to fake this schema>\",\n        \"description\": \"The user who created this file\"\n      },\n      \"modified_by\": {\n        \"value\": \"<Error: Too many levels of nesting to fake this schema>\",\n        \"description\": \"The user who last modified this file\",\n        \"nullable\": false\n      },\n      \"owned_by\": {\n        \"value\": \"<Error: Too many levels of nesting to fake this schema>\",\n        \"description\": \"The user who owns this file\",\n        \"nullable\": false\n      },\n      \"shared_link\": {\n        \"url\": \"https://www.box.com/s/vspke7y05sb214wjokpk\",\n        \"effective_access\": \"company\",\n        \"effective_permission\": \"can_download\",\n        \"is_password_enabled\": true,\n        \"download_count\": 3,\n        \"preview_count\": 3,\n        \"download_url\": \"https://www.box.com/shared/static/rh935iit6ewrmw0unyul.jpeg\",\n        \"vanity_url\": \"https://acme.app.box.com/v/my_url/\",\n        \"vanity_name\": \"my_url\",\n        \"access\": \"open\",\n        \"unshared_at\": \"2018-04-13T13:53:23-07:00\",\n        \"permissions\": {\n          \"can_download\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"can_preview\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"can_edit\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        }\n      },\n      \"parent\": {\n        \"nullable\": true,\n        \"value\": \"<Error: Too many levels of nesting to fake this schema>\",\n        \"description\": \"The folder that this file is located within.\"\n      },\n      \"item_status\": \"active\",\n      \"version_number\": \"1\",\n      \"comment_count\": 10,\n      \"permissions\": {\n        \"can_annotate\": true,\n        \"can_comment\": true,\n        \"can_delete\": true,\n        \"can_download\": true,\n        \"can_invite_collaborator\": true,\n        \"can_preview\": true,\n        \"can_rename\": true,\n        \"can_set_share_access\": true,\n        \"can_share\": true,\n        \"can_upload\": true,\n        \"can_view_annotations_all\": true,\n        \"can_view_annotations_self\": true\n      },\n      \"tags\": [\n        \"approved\"\n      ],\n      \"lock\": {\n        \"id\": \"11446498\",\n        \"type\": \"lock\",\n        \"created_by\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\",\n          \"description\": \"The user who created the lock.\"\n        },\n        \"created_at\": \"2012-12-12T10:53:43-08:00\",\n        \"expired_at\": \"2012-12-12T10:53:43-08:00\",\n        \"is_download_prevented\": true,\n        \"app_type\": \"office_wopiplus\"\n      },\n      \"extension\": \"pdf\",\n      \"is_package\": true,\n      \"expiring_embed_link\": {\n        \"access_token\": \"c3FIOG9vSGV4VHo4QzAyg5T1JvNnJoZ3ExaVNyQWw6WjRsanRKZG5lQk9qUE1BVQ\",\n        \"expires_in\": 3600,\n        \"token_type\": \"bearer\",\n        \"restricted_to\": [\n          {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        ],\n        \"url\": \"https://cloud.app.box.com/preview/expiring_embed/...\"\n      },\n      \"watermark_info\": {\n        \"is_watermarked\": true\n      },\n      \"is_accessible_via_shared_link\": true,\n      \"allowed_invitee_roles\": [\n        \"editor\"\n      ],\n      \"is_externally_owned\": true,\n      \"has_collaborations\": true,\n      \"metadata\": {\n        \"enterprise_27335\": {\n          \"marketingCollateral\": {\n            \"$canEdit\": true,\n            \"$id\": \"01234500-12f1-1234-aa12-b1d234cb567e\",\n            \"$parent\": \"folder_59449484661\",\n            \"$scope\": \"enterprise_27335\",\n            \"$template\": \"marketingCollateral\",\n            \"$type\": \"properties-6bcba49f-ca6d-4d2a-a758-57fe6edf44d0\",\n            \"$typeVersion\": 2,\n            \"$version\": 1\n          }\n        }\n      },\n      \"expires_at\": \"2012-12-12T10:53:43-08:00\",\n      \"representations\": {\n        \"entries\": [\n          {\n            \"content\": {\n              \"url_template\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            },\n            \"info\": {\n              \"url\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            },\n            \"properties\": {\n              \"dimensions\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"paged\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"thumb\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            },\n            \"representation\": \"png\",\n            \"status\": {\n              \"state\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            }\n          },\n          {\n            \"content\": {\n              \"url_template\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            },\n            \"info\": {\n              \"url\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            },\n            \"properties\": {\n              \"dimensions\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"paged\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"thumb\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            },\n            \"representation\": \"png\",\n            \"status\": {\n              \"state\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            }\n          }\n        ]\n      },\n      \"classification\": {\n        \"name\": \"Top Secret\",\n        \"definition\": \"Content that should not be shared outside the company.\",\n        \"color\": \"#FF0000\"\n      },\n      \"uploader_display_name\": \"Ellis Wiggins\",\n      \"disposition_at\": \"2012-12-12T10:53:43-08:00\",\n      \"shared_link_permission_options\": [\n        \"can_preview\"\n      ]\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "b1617f3f-3a84-46bd-8cc2-5a8e3586eeca",
+              "name": "Returns an error when the `If-Match` header does not match\nthe current `etag` value of the file. This indicates that the file\nhas changed since it was last requested.",
+              "originalRequest": {
+                "url": {
+                  "protocol": "https",
+                  "path": [
+                    "api",
+                    "2.0",
+                    "files",
+                    ":file_id",
+                    "content"
+                  ],
+                  "host": [
+                    "upload",
+                    "box",
+                    "com"
+                  ],
+                  "query": [
+                    {
+                      "key": "fields",
+                      "value": "id,type,name"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "file_id",
+                      "description": "(Required) The unique identifier that represents a file.\n\nThe ID for any file can be determined\nby visiting a file in the web application\nand copying the ID from the URL. For example,\nfor the URL `https://*.app.box.com/files/123`\nthe `file_id` is `123`."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "Ensures this item hasn't recently changed before\nmaking changes.\n\nPass in the item's last observed `etag` value\ninto this header and the endpoint will fail\nwith a `412 Precondition Failed` if it\nhas changed since.",
+                    "key": "if-match",
+                    "value": "1"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "An optional header containing the SHA1 hash of the file to\nensure that the file was not corrupted in transit.",
+                    "key": "content-md5",
+                    "value": "134b65991ed521fcfe4724b7d814ab8ded5185dc"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "formdata",
+                  "formdata": [
+                    {
+                      "description": {
+                        "content": "(Required) The additional attributes of the file being uploaded. Mainly the\nname and the parent folder. These attributes are part of the multi\npart request body and are in JSON format.\n\n<Message warning>\n\n  The `attributes` part of the body must come **before** the\n  `file` part. Requests that do not follow this format when\n  uploading the file will receive a HTTP `400` error with a\n  `metadata_after_file_contents` error code.\n\n</Message>",
+                        "type": "text/plain"
+                      },
+                      "key": "attributes",
+                      "value": "{\"name\":\"Photo 2.0.png\",\"content_modified_at\":\"2012-12-12T10:53:43-08:00\"}",
+                      "type": "text"
+                    },
+                    {
+                      "description": {
+                        "content": "(Required) The content of the file to upload to Box.\n\n<Message warning>\n\n  The `attributes` part of the body must come **before** the\n  `file` part. Requests that do not follow this format when\n  uploading the file will receive a HTTP `400` error with a\n  `metadata_after_file_contents` error code.\n\n</Message>",
+                        "type": "text/plain"
+                      },
+                      "key": "file",
+                      "value": "<binary>",
+                      "type": "text"
+                    }
+                  ]
+                }
+              },
+              "status": "Precondition Failed",
+              "code": 412,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"type\": \"error\",\n  \"status\": 400,\n  \"code\": \"item_name_invalid\",\n  \"message\": \"Method Not Allowed\",\n  \"context_info\": {\n    \"message\": \"Something went wrong.\"\n  },\n  \"help_url\": \"https://developer.box.com/guides/api-calls/permissions-and-errors/common-errors/\",\n  \"request_id\": \"abcdef123456\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "5a89ec23-f89e-4faa-b947-baab595b1ce9",
+              "name": "An unexpected client error.",
+              "originalRequest": {
+                "url": {
+                  "protocol": "https",
+                  "path": [
+                    "api",
+                    "2.0",
+                    "files",
+                    ":file_id",
+                    "content"
+                  ],
+                  "host": [
+                    "upload",
+                    "box",
+                    "com"
+                  ],
+                  "query": [
+                    {
+                      "key": "fields",
+                      "value": "id,type,name"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "file_id",
+                      "description": "(Required) The unique identifier that represents a file.\n\nThe ID for any file can be determined\nby visiting a file in the web application\nand copying the ID from the URL. For example,\nfor the URL `https://*.app.box.com/files/123`\nthe `file_id` is `123`."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "Ensures this item hasn't recently changed before\nmaking changes.\n\nPass in the item's last observed `etag` value\ninto this header and the endpoint will fail\nwith a `412 Precondition Failed` if it\nhas changed since.",
+                    "key": "if-match",
+                    "value": "1"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "An optional header containing the SHA1 hash of the file to\nensure that the file was not corrupted in transit.",
+                    "key": "content-md5",
+                    "value": "134b65991ed521fcfe4724b7d814ab8ded5185dc"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "formdata",
+                  "formdata": [
+                    {
+                      "description": {
+                        "content": "(Required) The additional attributes of the file being uploaded. Mainly the\nname and the parent folder. These attributes are part of the multi\npart request body and are in JSON format.\n\n<Message warning>\n\n  The `attributes` part of the body must come **before** the\n  `file` part. Requests that do not follow this format when\n  uploading the file will receive a HTTP `400` error with a\n  `metadata_after_file_contents` error code.\n\n</Message>",
+                        "type": "text/plain"
+                      },
+                      "key": "attributes",
+                      "value": "{\"name\":\"Photo 2.0.png\",\"content_modified_at\":\"2012-12-12T10:53:43-08:00\"}",
+                      "type": "text"
+                    },
+                    {
+                      "description": {
+                        "content": "(Required) The content of the file to upload to Box.\n\n<Message warning>\n\n  The `attributes` part of the body must come **before** the\n  `file` part. Requests that do not follow this format when\n  uploading the file will receive a HTTP `400` error with a\n  `metadata_after_file_contents` error code.\n\n</Message>",
+                        "type": "text/plain"
+                      },
+                      "key": "file",
+                      "value": "<binary>",
+                      "type": "text"
+                    }
+                  ]
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"type\": \"error\",\n  \"status\": 400,\n  \"code\": \"item_name_invalid\",\n  \"message\": \"Method Not Allowed\",\n  \"context_info\": {\n    \"message\": \"Something went wrong.\"\n  },\n  \"help_url\": \"https://developer.box.com/guides/api-calls/permissions-and-errors/common-errors/\",\n  \"request_id\": \"abcdef123456\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "28e404b2-c7c7-453e-9ecd-956eeeeea5b0",
+          "name": "Box Upload file",
+          "request": {
+            "name": "Box Upload file",
+            "description": {
+              "content": "Uploads a small file to Box. For file sizes over 50MB we recommend\nusing the Chunk Upload APIs.\n\n# Request body order\n\nThe `attributes` part of the body must come **before** the\n`file` part. Requests that do not follow this format when\nuploading the file will receive a HTTP `400` error with a\n`metadata_after_file_contents` error code.",
+              "type": "text/plain"
+            },
+            "url": {
+              "protocol": "https",
+              "path": [
+                "api",
+                "2.0",
+                "files",
+                "content"
+              ],
+              "host": [
+                "upload",
+                "box",
+                "com"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "fields",
+                  "value": "<string>,<string>",
+                  "description": "A comma-separated list of attributes to include in the\nresponse. This can be used to request fields that are\nnot normally returned in a standard response.\n\nBe aware that specifying this parameter will have the\neffect that none of the standard fields are returned in\nthe response unless explicitly specified, instead only\nfields for the mini representation are returned, additional\nto the fields requested."
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "disabled": false,
+                "description": "An optional header containing the SHA1 hash of the file to\nensure that the file was not corrupted in transit.",
+                "key": "content-md5",
+                "value": "<string>"
+              },
+              {
+                "key": "Content-Type",
+                "value": "multipart/form-data"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "attributes",
+                  "value": "{\"name\":\"<string>\",\"parent\":{\"id\":\"<string>\"},\"content_created_at\":\"<dateTime>\",\"content_modified_at\":\"<dateTime>\"}",
+                  "type": "text",
+                  "description": "(Required) The additional attributes of the file being uploaded. Mainly the\nname and the parent folder. These attributes are part of the multi\npart request body and are in JSON format.\n\n<Message warning>\n\n  The `attributes` part of the body must come **before** the\n  `file` part. Requests that do not follow this format when\n  uploading the file will receive a HTTP `400` error with a\n  `metadata_after_file_contents` error code.\n\n</Message>"
+                },
+                {
+                  "key": "file",
+                  "type": "file",
+                  "description": "(Required) The content of the file to upload to Box.\n\n<Message warning>\n\n  The `attributes` part of the body must come **before** the\n  `file` part. Requests that do not follow this format when\n  uploading the file will receive a HTTP `400` error with a\n  `metadata_after_file_contents` error code.\n\n</Message>"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "77617cc8-bf53-46d6-9024-24ac47cfc744",
+              "name": "Returns the new file object in a list.",
+              "originalRequest": {
+                "url": {
+                  "protocol": "https",
+                  "path": [
+                    "api",
+                    "2.0",
+                    "files",
+                    "content"
+                  ],
+                  "host": [
+                    "upload",
+                    "box",
+                    "com"
+                  ],
+                  "query": [
+                    {
+                      "key": "fields",
+                      "value": "id,type,name"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "An optional header containing the SHA1 hash of the file to\nensure that the file was not corrupted in transit.",
+                    "key": "content-md5",
+                    "value": "134b65991ed521fcfe4724b7d814ab8ded5185dc"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "formdata",
+                  "formdata": [
+                    {
+                      "description": {
+                        "content": "(Required) The additional attributes of the file being uploaded. Mainly the\nname and the parent folder. These attributes are part of the multi\npart request body and are in JSON format.\n\n<Message warning>\n\n  The `attributes` part of the body must come **before** the\n  `file` part. Requests that do not follow this format when\n  uploading the file will receive a HTTP `400` error with a\n  `metadata_after_file_contents` error code.\n\n</Message>",
+                        "type": "text/plain"
+                      },
+                      "key": "attributes",
+                      "value": "{\"name\":\"Photo.png\",\"parent\":{\"id\":\"124132\"},\"content_created_at\":\"2012-12-12T10:53:43-08:00\",\"content_modified_at\":\"2012-12-12T10:53:43-08:00\"}",
+                      "type": "text"
+                    },
+                    {
+                      "description": {
+                        "content": "(Required) The content of the file to upload to Box.\n\n<Message warning>\n\n  The `attributes` part of the body must come **before** the\n  `file` part. Requests that do not follow this format when\n  uploading the file will receive a HTTP `400` error with a\n  `metadata_after_file_contents` error code.\n\n</Message>",
+                        "type": "text/plain"
+                      },
+                      "key": "file",
+                      "value": "<binary>",
+                      "type": "text"
+                    }
+                  ]
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"total_count\": 1,\n  \"entries\": [\n    {\n      \"id\": {\n        \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n      },\n      \"type\": {\n        \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n      },\n      \"etag\": {\n        \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n      },\n      \"sequence_id\": {\n        \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n      },\n      \"name\": \"Contract.pdf\",\n      \"sha1\": \"85136C79CBF9FE36BB9D05D0639C70C265C18D37\",\n      \"file_version\": {\n        \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n      },\n      \"description\": \"Contract for Q1 renewal\",\n      \"size\": 629644,\n      \"path_collection\": {\n        \"total_count\": 1,\n        \"entries\": [\n          {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        ]\n      },\n      \"created_at\": \"2012-12-12T10:53:43-08:00\",\n      \"modified_at\": \"2012-12-12T10:53:43-08:00\",\n      \"trashed_at\": \"2012-12-12T10:53:43-08:00\",\n      \"purged_at\": \"2012-12-12T10:53:43-08:00\",\n      \"content_created_at\": \"2012-12-12T10:53:43-08:00\",\n      \"content_modified_at\": \"2012-12-12T10:53:43-08:00\",\n      \"created_by\": {\n        \"value\": \"<Error: Too many levels of nesting to fake this schema>\",\n        \"description\": \"The user who created this file\"\n      },\n      \"modified_by\": {\n        \"value\": \"<Error: Too many levels of nesting to fake this schema>\",\n        \"description\": \"The user who last modified this file\",\n        \"nullable\": false\n      },\n      \"owned_by\": {\n        \"value\": \"<Error: Too many levels of nesting to fake this schema>\",\n        \"description\": \"The user who owns this file\",\n        \"nullable\": false\n      },\n      \"shared_link\": {\n        \"url\": \"https://www.box.com/s/vspke7y05sb214wjokpk\",\n        \"effective_access\": \"company\",\n        \"effective_permission\": \"can_download\",\n        \"is_password_enabled\": true,\n        \"download_count\": 3,\n        \"preview_count\": 3,\n        \"download_url\": \"https://www.box.com/shared/static/rh935iit6ewrmw0unyul.jpeg\",\n        \"vanity_url\": \"https://acme.app.box.com/v/my_url/\",\n        \"vanity_name\": \"my_url\",\n        \"access\": \"open\",\n        \"unshared_at\": \"2018-04-13T13:53:23-07:00\",\n        \"permissions\": {\n          \"can_download\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"can_preview\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"can_edit\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        }\n      },\n      \"parent\": {\n        \"nullable\": true,\n        \"value\": \"<Error: Too many levels of nesting to fake this schema>\",\n        \"description\": \"The folder that this file is located within.\"\n      },\n      \"item_status\": \"active\",\n      \"version_number\": \"1\",\n      \"comment_count\": 10,\n      \"permissions\": {\n        \"can_annotate\": true,\n        \"can_comment\": true,\n        \"can_delete\": true,\n        \"can_download\": true,\n        \"can_invite_collaborator\": true,\n        \"can_preview\": true,\n        \"can_rename\": true,\n        \"can_set_share_access\": true,\n        \"can_share\": true,\n        \"can_upload\": true,\n        \"can_view_annotations_all\": true,\n        \"can_view_annotations_self\": true\n      },\n      \"tags\": [\n        \"approved\"\n      ],\n      \"lock\": {\n        \"id\": \"11446498\",\n        \"type\": \"lock\",\n        \"created_by\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\",\n          \"description\": \"The user who created the lock.\"\n        },\n        \"created_at\": \"2012-12-12T10:53:43-08:00\",\n        \"expired_at\": \"2012-12-12T10:53:43-08:00\",\n        \"is_download_prevented\": true,\n        \"app_type\": \"office_wopiplus\"\n      },\n      \"extension\": \"pdf\",\n      \"is_package\": true,\n      \"expiring_embed_link\": {\n        \"access_token\": \"c3FIOG9vSGV4VHo4QzAyg5T1JvNnJoZ3ExaVNyQWw6WjRsanRKZG5lQk9qUE1BVQ\",\n        \"expires_in\": 3600,\n        \"token_type\": \"bearer\",\n        \"restricted_to\": [\n          {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        ],\n        \"url\": \"https://cloud.app.box.com/preview/expiring_embed/...\"\n      },\n      \"watermark_info\": {\n        \"is_watermarked\": true\n      },\n      \"is_accessible_via_shared_link\": true,\n      \"allowed_invitee_roles\": [\n        \"editor\"\n      ],\n      \"is_externally_owned\": true,\n      \"has_collaborations\": true,\n      \"metadata\": {\n        \"enterprise_27335\": {\n          \"marketingCollateral\": {\n            \"$canEdit\": true,\n            \"$id\": \"01234500-12f1-1234-aa12-b1d234cb567e\",\n            \"$parent\": \"folder_59449484661\",\n            \"$scope\": \"enterprise_27335\",\n            \"$template\": \"marketingCollateral\",\n            \"$type\": \"properties-6bcba49f-ca6d-4d2a-a758-57fe6edf44d0\",\n            \"$typeVersion\": 2,\n            \"$version\": 1\n          }\n        }\n      },\n      \"expires_at\": \"2012-12-12T10:53:43-08:00\",\n      \"representations\": {\n        \"entries\": [\n          {\n            \"content\": {\n              \"url_template\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            },\n            \"info\": {\n              \"url\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            },\n            \"properties\": {\n              \"dimensions\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"paged\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"thumb\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            },\n            \"representation\": \"png\",\n            \"status\": {\n              \"state\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            }\n          },\n          {\n            \"content\": {\n              \"url_template\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            },\n            \"info\": {\n              \"url\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            },\n            \"properties\": {\n              \"dimensions\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"paged\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"thumb\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            },\n            \"representation\": \"png\",\n            \"status\": {\n              \"state\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            }\n          }\n        ]\n      },\n      \"classification\": {\n        \"name\": \"Top Secret\",\n        \"definition\": \"Content that should not be shared outside the company.\",\n        \"color\": \"#FF0000\"\n      },\n      \"uploader_display_name\": \"Ellis Wiggins\",\n      \"disposition_at\": \"2012-12-12T10:53:43-08:00\",\n      \"shared_link_permission_options\": [\n        \"can_preview\"\n      ]\n    },\n    {\n      \"id\": {\n        \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n      },\n      \"type\": {\n        \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n      },\n      \"etag\": {\n        \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n      },\n      \"sequence_id\": {\n        \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n      },\n      \"name\": \"Contract.pdf\",\n      \"sha1\": \"85136C79CBF9FE36BB9D05D0639C70C265C18D37\",\n      \"file_version\": {\n        \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n      },\n      \"description\": \"Contract for Q1 renewal\",\n      \"size\": 629644,\n      \"path_collection\": {\n        \"total_count\": 1,\n        \"entries\": [\n          {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        ]\n      },\n      \"created_at\": \"2012-12-12T10:53:43-08:00\",\n      \"modified_at\": \"2012-12-12T10:53:43-08:00\",\n      \"trashed_at\": \"2012-12-12T10:53:43-08:00\",\n      \"purged_at\": \"2012-12-12T10:53:43-08:00\",\n      \"content_created_at\": \"2012-12-12T10:53:43-08:00\",\n      \"content_modified_at\": \"2012-12-12T10:53:43-08:00\",\n      \"created_by\": {\n        \"value\": \"<Error: Too many levels of nesting to fake this schema>\",\n        \"description\": \"The user who created this file\"\n      },\n      \"modified_by\": {\n        \"value\": \"<Error: Too many levels of nesting to fake this schema>\",\n        \"description\": \"The user who last modified this file\",\n        \"nullable\": false\n      },\n      \"owned_by\": {\n        \"value\": \"<Error: Too many levels of nesting to fake this schema>\",\n        \"description\": \"The user who owns this file\",\n        \"nullable\": false\n      },\n      \"shared_link\": {\n        \"url\": \"https://www.box.com/s/vspke7y05sb214wjokpk\",\n        \"effective_access\": \"company\",\n        \"effective_permission\": \"can_download\",\n        \"is_password_enabled\": true,\n        \"download_count\": 3,\n        \"preview_count\": 3,\n        \"download_url\": \"https://www.box.com/shared/static/rh935iit6ewrmw0unyul.jpeg\",\n        \"vanity_url\": \"https://acme.app.box.com/v/my_url/\",\n        \"vanity_name\": \"my_url\",\n        \"access\": \"open\",\n        \"unshared_at\": \"2018-04-13T13:53:23-07:00\",\n        \"permissions\": {\n          \"can_download\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"can_preview\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"can_edit\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        }\n      },\n      \"parent\": {\n        \"nullable\": true,\n        \"value\": \"<Error: Too many levels of nesting to fake this schema>\",\n        \"description\": \"The folder that this file is located within.\"\n      },\n      \"item_status\": \"active\",\n      \"version_number\": \"1\",\n      \"comment_count\": 10,\n      \"permissions\": {\n        \"can_annotate\": true,\n        \"can_comment\": true,\n        \"can_delete\": true,\n        \"can_download\": true,\n        \"can_invite_collaborator\": true,\n        \"can_preview\": true,\n        \"can_rename\": true,\n        \"can_set_share_access\": true,\n        \"can_share\": true,\n        \"can_upload\": true,\n        \"can_view_annotations_all\": true,\n        \"can_view_annotations_self\": true\n      },\n      \"tags\": [\n        \"approved\"\n      ],\n      \"lock\": {\n        \"id\": \"11446498\",\n        \"type\": \"lock\",\n        \"created_by\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\",\n          \"description\": \"The user who created the lock.\"\n        },\n        \"created_at\": \"2012-12-12T10:53:43-08:00\",\n        \"expired_at\": \"2012-12-12T10:53:43-08:00\",\n        \"is_download_prevented\": true,\n        \"app_type\": \"office_wopiplus\"\n      },\n      \"extension\": \"pdf\",\n      \"is_package\": true,\n      \"expiring_embed_link\": {\n        \"access_token\": \"c3FIOG9vSGV4VHo4QzAyg5T1JvNnJoZ3ExaVNyQWw6WjRsanRKZG5lQk9qUE1BVQ\",\n        \"expires_in\": 3600,\n        \"token_type\": \"bearer\",\n        \"restricted_to\": [\n          {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        ],\n        \"url\": \"https://cloud.app.box.com/preview/expiring_embed/...\"\n      },\n      \"watermark_info\": {\n        \"is_watermarked\": true\n      },\n      \"is_accessible_via_shared_link\": true,\n      \"allowed_invitee_roles\": [\n        \"editor\"\n      ],\n      \"is_externally_owned\": true,\n      \"has_collaborations\": true,\n      \"metadata\": {\n        \"enterprise_27335\": {\n          \"marketingCollateral\": {\n            \"$canEdit\": true,\n            \"$id\": \"01234500-12f1-1234-aa12-b1d234cb567e\",\n            \"$parent\": \"folder_59449484661\",\n            \"$scope\": \"enterprise_27335\",\n            \"$template\": \"marketingCollateral\",\n            \"$type\": \"properties-6bcba49f-ca6d-4d2a-a758-57fe6edf44d0\",\n            \"$typeVersion\": 2,\n            \"$version\": 1\n          }\n        }\n      },\n      \"expires_at\": \"2012-12-12T10:53:43-08:00\",\n      \"representations\": {\n        \"entries\": [\n          {\n            \"content\": {\n              \"url_template\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            },\n            \"info\": {\n              \"url\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            },\n            \"properties\": {\n              \"dimensions\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"paged\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"thumb\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            },\n            \"representation\": \"png\",\n            \"status\": {\n              \"state\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            }\n          },\n          {\n            \"content\": {\n              \"url_template\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            },\n            \"info\": {\n              \"url\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            },\n            \"properties\": {\n              \"dimensions\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"paged\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"thumb\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            },\n            \"representation\": \"png\",\n            \"status\": {\n              \"state\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            }\n          }\n        ]\n      },\n      \"classification\": {\n        \"name\": \"Top Secret\",\n        \"definition\": \"Content that should not be shared outside the company.\",\n        \"color\": \"#FF0000\"\n      },\n      \"uploader_display_name\": \"Ellis Wiggins\",\n      \"disposition_at\": \"2012-12-12T10:53:43-08:00\",\n      \"shared_link_permission_options\": [\n        \"can_preview\"\n      ]\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "f3ef23b6-e3df-48c9-b5e2-40b69f1cdc8c",
+              "name": "Returns an error if some of the parameters are missing or\nnot valid.\n* `bad_request` when a parameter is missing or incorrect.\n* `item_name_too_long` when the folder name is too long.\n* `item_name_invalid` when the folder name contains\n  non-valid characters.",
+              "originalRequest": {
+                "url": {
+                  "protocol": "https",
+                  "path": [
+                    "api",
+                    "2.0",
+                    "files",
+                    "content"
+                  ],
+                  "host": [
+                    "upload",
+                    "box",
+                    "com"
+                  ],
+                  "query": [
+                    {
+                      "key": "fields",
+                      "value": "id,type,name"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "An optional header containing the SHA1 hash of the file to\nensure that the file was not corrupted in transit.",
+                    "key": "content-md5",
+                    "value": "134b65991ed521fcfe4724b7d814ab8ded5185dc"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "formdata",
+                  "formdata": [
+                    {
+                      "description": {
+                        "content": "(Required) The additional attributes of the file being uploaded. Mainly the\nname and the parent folder. These attributes are part of the multi\npart request body and are in JSON format.\n\n<Message warning>\n\n  The `attributes` part of the body must come **before** the\n  `file` part. Requests that do not follow this format when\n  uploading the file will receive a HTTP `400` error with a\n  `metadata_after_file_contents` error code.\n\n</Message>",
+                        "type": "text/plain"
+                      },
+                      "key": "attributes",
+                      "value": "{\"name\":\"Photo.png\",\"parent\":{\"id\":\"124132\"},\"content_created_at\":\"2012-12-12T10:53:43-08:00\",\"content_modified_at\":\"2012-12-12T10:53:43-08:00\"}",
+                      "type": "text"
+                    },
+                    {
+                      "description": {
+                        "content": "(Required) The content of the file to upload to Box.\n\n<Message warning>\n\n  The `attributes` part of the body must come **before** the\n  `file` part. Requests that do not follow this format when\n  uploading the file will receive a HTTP `400` error with a\n  `metadata_after_file_contents` error code.\n\n</Message>",
+                        "type": "text/plain"
+                      },
+                      "key": "file",
+                      "value": "<binary>",
+                      "type": "text"
+                    }
+                  ]
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"type\": \"error\",\n  \"status\": 400,\n  \"code\": \"item_name_invalid\",\n  \"message\": \"Method Not Allowed\",\n  \"context_info\": {\n    \"message\": \"Something went wrong.\"\n  },\n  \"help_url\": \"https://developer.box.com/guides/api-calls/permissions-and-errors/common-errors/\",\n  \"request_id\": \"abcdef123456\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "7121ce68-b980-41a9-ab7c-d0948874e5f9",
+              "name": "Returns an error if the parent folder\ndoes not exist or if the user\nis not authorized to access the parent folder.",
+              "originalRequest": {
+                "url": {
+                  "protocol": "https",
+                  "path": [
+                    "api",
+                    "2.0",
+                    "files",
+                    "content"
+                  ],
+                  "host": [
+                    "upload",
+                    "box",
+                    "com"
+                  ],
+                  "query": [
+                    {
+                      "key": "fields",
+                      "value": "id,type,name"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "An optional header containing the SHA1 hash of the file to\nensure that the file was not corrupted in transit.",
+                    "key": "content-md5",
+                    "value": "134b65991ed521fcfe4724b7d814ab8ded5185dc"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "formdata",
+                  "formdata": [
+                    {
+                      "description": {
+                        "content": "(Required) The additional attributes of the file being uploaded. Mainly the\nname and the parent folder. These attributes are part of the multi\npart request body and are in JSON format.\n\n<Message warning>\n\n  The `attributes` part of the body must come **before** the\n  `file` part. Requests that do not follow this format when\n  uploading the file will receive a HTTP `400` error with a\n  `metadata_after_file_contents` error code.\n\n</Message>",
+                        "type": "text/plain"
+                      },
+                      "key": "attributes",
+                      "value": "{\"name\":\"Photo.png\",\"parent\":{\"id\":\"124132\"},\"content_created_at\":\"2012-12-12T10:53:43-08:00\",\"content_modified_at\":\"2012-12-12T10:53:43-08:00\"}",
+                      "type": "text"
+                    },
+                    {
+                      "description": {
+                        "content": "(Required) The content of the file to upload to Box.\n\n<Message warning>\n\n  The `attributes` part of the body must come **before** the\n  `file` part. Requests that do not follow this format when\n  uploading the file will receive a HTTP `400` error with a\n  `metadata_after_file_contents` error code.\n\n</Message>",
+                        "type": "text/plain"
+                      },
+                      "key": "file",
+                      "value": "<binary>",
+                      "type": "text"
+                    }
+                  ]
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"type\": \"error\",\n  \"status\": 400,\n  \"code\": \"item_name_invalid\",\n  \"message\": \"Method Not Allowed\",\n  \"context_info\": {\n    \"message\": \"Something went wrong.\"\n  },\n  \"help_url\": \"https://developer.box.com/guides/api-calls/permissions-and-errors/common-errors/\",\n  \"request_id\": \"abcdef123456\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "e04d6219-6192-4dc0-9f91-229ccfa5f8bc",
+              "name": "Returns an error if the file already exists,\nor the account has run out of disk space.",
+              "originalRequest": {
+                "url": {
+                  "protocol": "https",
+                  "path": [
+                    "api",
+                    "2.0",
+                    "files",
+                    "content"
+                  ],
+                  "host": [
+                    "upload",
+                    "box",
+                    "com"
+                  ],
+                  "query": [
+                    {
+                      "key": "fields",
+                      "value": "id,type,name"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "An optional header containing the SHA1 hash of the file to\nensure that the file was not corrupted in transit.",
+                    "key": "content-md5",
+                    "value": "134b65991ed521fcfe4724b7d814ab8ded5185dc"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "formdata",
+                  "formdata": [
+                    {
+                      "description": {
+                        "content": "(Required) The additional attributes of the file being uploaded. Mainly the\nname and the parent folder. These attributes are part of the multi\npart request body and are in JSON format.\n\n<Message warning>\n\n  The `attributes` part of the body must come **before** the\n  `file` part. Requests that do not follow this format when\n  uploading the file will receive a HTTP `400` error with a\n  `metadata_after_file_contents` error code.\n\n</Message>",
+                        "type": "text/plain"
+                      },
+                      "key": "attributes",
+                      "value": "{\"name\":\"Photo.png\",\"parent\":{\"id\":\"124132\"},\"content_created_at\":\"2012-12-12T10:53:43-08:00\",\"content_modified_at\":\"2012-12-12T10:53:43-08:00\"}",
+                      "type": "text"
+                    },
+                    {
+                      "description": {
+                        "content": "(Required) The content of the file to upload to Box.\n\n<Message warning>\n\n  The `attributes` part of the body must come **before** the\n  `file` part. Requests that do not follow this format when\n  uploading the file will receive a HTTP `400` error with a\n  `metadata_after_file_contents` error code.\n\n</Message>",
+                        "type": "text/plain"
+                      },
+                      "key": "file",
+                      "value": "<binary>",
+                      "type": "text"
+                    }
+                  ]
+                }
+              },
+              "status": "Conflict",
+              "code": 409,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"type\": \"error\",\n  \"status\": 400,\n  \"code\": \"item_name_invalid\",\n  \"message\": \"Method Not Allowed\",\n  \"context_info\": {\n    \"message\": \"Something went wrong.\"\n  },\n  \"help_url\": \"https://developer.box.com/guides/api-calls/permissions-and-errors/common-errors/\",\n  \"request_id\": \"abcdef123456\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "305b1c72-9168-468c-829e-7d67e47c48d1",
+              "name": "An unexpected client error.",
+              "originalRequest": {
+                "url": {
+                  "protocol": "https",
+                  "path": [
+                    "api",
+                    "2.0",
+                    "files",
+                    "content"
+                  ],
+                  "host": [
+                    "upload",
+                    "box",
+                    "com"
+                  ],
+                  "query": [
+                    {
+                      "key": "fields",
+                      "value": "id,type,name"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "An optional header containing the SHA1 hash of the file to\nensure that the file was not corrupted in transit.",
+                    "key": "content-md5",
+                    "value": "134b65991ed521fcfe4724b7d814ab8ded5185dc"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "formdata",
+                  "formdata": [
+                    {
+                      "description": {
+                        "content": "(Required) The additional attributes of the file being uploaded. Mainly the\nname and the parent folder. These attributes are part of the multi\npart request body and are in JSON format.\n\n<Message warning>\n\n  The `attributes` part of the body must come **before** the\n  `file` part. Requests that do not follow this format when\n  uploading the file will receive a HTTP `400` error with a\n  `metadata_after_file_contents` error code.\n\n</Message>",
+                        "type": "text/plain"
+                      },
+                      "key": "attributes",
+                      "value": "{\"name\":\"Photo.png\",\"parent\":{\"id\":\"124132\"},\"content_created_at\":\"2012-12-12T10:53:43-08:00\",\"content_modified_at\":\"2012-12-12T10:53:43-08:00\"}",
+                      "type": "text"
+                    },
+                    {
+                      "description": {
+                        "content": "(Required) The content of the file to upload to Box.\n\n<Message warning>\n\n  The `attributes` part of the body must come **before** the\n  `file` part. Requests that do not follow this format when\n  uploading the file will receive a HTTP `400` error with a\n  `metadata_after_file_contents` error code.\n\n</Message>",
+                        "type": "text/plain"
+                      },
+                      "key": "file",
+                      "value": "<binary>",
+                      "type": "text"
+                    }
+                  ]
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"type\": \"error\",\n  \"status\": 400,\n  \"code\": \"item_name_invalid\",\n  \"message\": \"Method Not Allowed\",\n  \"context_info\": {\n    \"message\": \"Something went wrong.\"\n  },\n  \"help_url\": \"https://developer.box.com/guides/api-calls/permissions-and-errors/common-errors/\",\n  \"request_id\": \"abcdef123456\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "/",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "0866f296-bd26-49f5-96cb-fc55efc0065d",
+    "name": "Box Authorize Authorization Uploads API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "Needs a description.",
+      "type": "text/plain"
+    }
+  }
+}

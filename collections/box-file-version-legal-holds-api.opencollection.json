@@ -1,0 +1,68 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Box Authorize Authorization File Version Legal Holds API",
+    "version": "1.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "File Version Legal Holds",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Box Get file version legal hold",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/file_version_legal_holds/:file_version_legal_hold_id",
+            "params": [
+              {
+                "name": "file_version_legal_hold_id",
+                "value": "2348213",
+                "type": "path",
+                "description": "The ID of the file version legal hold"
+              }
+            ]
+          },
+          "docs": "Retrieves information about the legal hold policies\nassigned to a file version."
+        },
+        {
+          "info": {
+            "name": "Box List file version legal holds",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/file_version_legal_holds",
+            "params": [
+              {
+                "name": "policy_id",
+                "value": "133870",
+                "type": "query",
+                "description": "The ID of the legal hold policy to get the file version legal\nholds for."
+              },
+              {
+                "name": "marker",
+                "value": "JV9IRGZmieiBasejOG9yDCRNgd2ymoZIbjsxbJMjIs3kioVii",
+                "type": "query",
+                "description": "Defines the position marker at which to begin returning results. This is\nused when paginating using marker-based pagination.\n\nThis requires `usemarker` to be set to `true`."
+              },
+              {
+                "name": "limit",
+                "value": "1000",
+                "type": "query",
+                "description": "The maximum number of items to return per page."
+              }
+            ]
+          },
+          "docs": "Get a list of file versions on legal hold for a legal hold\nassignment.\n\nDue to ongoing re-architecture efforts this API might not return all file\nversions for this policy ID.\n\nInstead, this API will only return file versions held in the legacy\narchitecture. Two new endpoints will available to request any file versions\nheld in the new architecture.\n\nFor file versions held in the new architecture, the `GET\n/legal_hold_policy_assignments/:id/file_versions_on_hold` API can be used to\nreturn all past"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

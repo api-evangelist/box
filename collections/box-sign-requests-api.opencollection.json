@@ -1,0 +1,115 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Box Authorize Authorization Sign Requests API",
+    "version": "1.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Sign Requests",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Box Cancel sign request",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/sign_requests/:sign_request_id/cancel",
+            "params": [
+              {
+                "name": "sign_request_id",
+                "value": "33243242",
+                "type": "path",
+                "description": "The ID of the sign request"
+              }
+            ]
+          },
+          "docs": "Cancels a sign request."
+        },
+        {
+          "info": {
+            "name": "Box Resend sign request",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/sign_requests/:sign_request_id/resend",
+            "params": [
+              {
+                "name": "sign_request_id",
+                "value": "33243242",
+                "type": "path",
+                "description": "The ID of the sign request"
+              }
+            ]
+          },
+          "docs": "Resends a sign request email to all outstanding signers."
+        },
+        {
+          "info": {
+            "name": "Box Get sign request by ID",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/sign_requests/:sign_request_id",
+            "params": [
+              {
+                "name": "sign_request_id",
+                "value": "33243242",
+                "type": "path",
+                "description": "The ID of the sign request"
+              }
+            ]
+          },
+          "docs": "Gets a sign request by ID."
+        },
+        {
+          "info": {
+            "name": "Box List sign requests",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/sign_requests",
+            "params": [
+              {
+                "name": "marker",
+                "value": "JV9IRGZmieiBasejOG9yDCRNgd2ymoZIbjsxbJMjIs3kioVii",
+                "type": "query",
+                "description": "Defines the position marker at which to begin returning results. This is\nused when paginating using marker-based pagination.\n\nThis requires `usemarker` to be set to `true`."
+              },
+              {
+                "name": "limit",
+                "value": "1000",
+                "type": "query",
+                "description": "The maximum number of items to return per page."
+              }
+            ]
+          },
+          "docs": "Gets sign requests created by a user. If the `sign_files` and/or\n`parent_folder` are deleted, the sign request will not return in the list."
+        },
+        {
+          "info": {
+            "name": "Box Create sign request",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/sign_requests",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Creates a sign request. This involves preparing a document for signing and\nsending the sign request to signers."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

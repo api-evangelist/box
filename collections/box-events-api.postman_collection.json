@@ -1,0 +1,329 @@
+{
+  "item": [
+    {
+      "id": "c27efe6d-e398-441e-a57c-78aa7fb7203c",
+      "name": "Events",
+      "description": {
+        "content": "Events provide a way for an\napplication to subscribe to\nany actions performed by\nany user, users, or service in an enterprise.",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "26d71f25-eecf-47a5-87dc-4f20182c2b12",
+          "name": "Box Get events long poll endpoint",
+          "request": {
+            "name": "Box Get events long poll endpoint",
+            "description": {
+              "content": "Returns a list of real-time servers that can be used for long-polling updates\nto the [event stream](#get-events).\n\nLong polling is the concept where a HTTP request is kept open until the\nserver sends a response, then repeating the process over and over to receive\nupdated responses.\n\nLong polling the event stream can only be used for user events, not for\nenterprise events.\n\nTo use long polling, first use this endpoint to retrieve a list of long poll\nURLs. Next, make a long poll request to any of the provided URLs.\n\nWhen an event occurs in monitored account a response with the value\n`new_change` will be sent. The response contains no other details as\nit only serves as a prompt to take further action such as sending a\nrequest to the [events endpoint](#get-events) with the last known\n`stream_position`.\n\nAfter the server sends this response it closes the connection. You must now\nrepeat the long poll process to begin listening for events again.\n\nIf no events occur for a while and the connection times out you will\nreceive a response with the value `reconnect`. When you receive this response\nyou’ll make another call to this endpoint to restart the process.\n\nIf you receive no events in `retry_timeout` seconds then you will need to\nmake another request to the real-time server (one of the URLs in the response\nfor this endpoint). This might be necessary due to network errors.\n\nFinally, if you receive a `max_retries` error when making a request to the\nreal-time server, you should start over by making a call to this endpoint\nfirst.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "events"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "OPTIONS",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "7d341589-4f62-4282-b723-3c1246ade197",
+              "name": "Returns a paginated array of servers that can be used\ninstead of the regular endpoints for long-polling events.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "events"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "OPTIONS",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"chunk_size\": 1,\n  \"entries\": [\n    {\n      \"type\": \"realtime_server\",\n      \"url\": \"http://2.realtime.services.box.net/subscribe?channel=cc807c9c4869ffb1c81a&stream_type=all\",\n      \"ttl\": 10,\n      \"max_retries\": 10,\n      \"retry_timeout\": 610\n    },\n    {\n      \"type\": \"realtime_server\",\n      \"url\": \"http://2.realtime.services.box.net/subscribe?channel=cc807c9c4869ffb1c81a&stream_type=all\",\n      \"ttl\": 10,\n      \"max_retries\": 10,\n      \"retry_timeout\": 610\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "e05d02f3-895f-42ea-b7dd-a3596edfc8dc",
+              "name": "An unexpected client error.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "events"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "OPTIONS",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"type\": \"error\",\n  \"status\": 400,\n  \"code\": \"item_name_invalid\",\n  \"message\": \"Method Not Allowed\",\n  \"context_info\": {\n    \"message\": \"Something went wrong.\"\n  },\n  \"help_url\": \"https://developer.box.com/guides/api-calls/permissions-and-errors/common-errors/\",\n  \"request_id\": \"abcdef123456\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "b864e773-731d-4302-a4c5-8de891f6b08d",
+          "name": "Box List user and enterprise events",
+          "request": {
+            "name": "Box List user and enterprise events",
+            "description": {
+              "content": "Returns up to a year of past events for a given user\nor for the entire enterprise.\n\nBy default this returns events for the authenticated user. To retrieve events\nfor the entire enterprise, set the `stream_type` to `admin_logs_streaming`\nfor live monitoring of new events, or `admin_logs` for querying across\nhistorical events. The user making the API call will\nneed to have admin privileges, and the application will need to have the\nscope `manage enterprise properties` checked.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "events"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "stream_type",
+                  "value": "all",
+                  "description": "Defines the type of events that are returned\n\n* `all` returns everything for a user and is the default\n* `changes` returns events that may cause file tree changes\n  such as file updates or collaborations.\n* `sync` is similar to `changes` but only applies to synced folders\n* `admin_logs` returns all events for an entire enterprise and\n  requires the user making the API call to have admin permissions. This\n  stream type is for programmatically pulling from a 1 year history of\n  events across all users within the enterprise and within a\n  `created_after` and `created_before` time frame. The complete history\n  of events will be returned in chronological order based on the event\n  time, but latency will be much higher than `admin_logs_streaming`.\n* `admin_logs_streaming` returns all events for an entire enterprise and\n  requires the user making the API call to have admin permissions. This\n  stream type is for polling for recent events across all users within\n  the enterprise. Latency will be much lower than `admin_logs`, but\n  events will not be returned in chronological order and may\n  contain duplicates."
+                },
+                {
+                  "disabled": false,
+                  "key": "stream_position",
+                  "value": "<string>",
+                  "description": "The location in the event stream to start receiving events from.\n\n* `now` will return an empty list events and\nthe latest stream position for initialization.\n* `0` or `null` will return all events."
+                },
+                {
+                  "disabled": false,
+                  "key": "limit",
+                  "value": "100",
+                  "description": "Limits the number of events returned\n\nNote: Sometimes, the events less than the limit requested can be returned\neven when there may be more events remaining. This is primarily done in\nthe case where a number of events have already been retrieved and these\nretrieved events are returned rather than delaying for an unknown amount\nof time to see if there are any more results."
+                },
+                {
+                  "disabled": false,
+                  "key": "event_type",
+                  "value": "<string>,<string>",
+                  "description": "A comma-separated list of events to filter by. This can only be used when\nrequesting the events with a `stream_type` of `admin_logs` or\n`adming_logs_streaming`. For any other `stream_type` this value will be\nignored."
+                },
+                {
+                  "disabled": false,
+                  "key": "created_after",
+                  "value": "<dateTime>",
+                  "description": "The lower bound date and time to return events for. This can only be used\nwhen requesting the events with a `stream_type` of `admin_logs`. For any\nother `stream_type` this value will be ignored."
+                },
+                {
+                  "disabled": false,
+                  "key": "created_before",
+                  "value": "<dateTime>",
+                  "description": "The upper bound date and time to return events for. This can only be used\nwhen requesting the events with a `stream_type` of `admin_logs`. For any\nother `stream_type` this value will be ignored."
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "214c747e-c2ac-4aa6-8f71-4b4c58b9b9fe",
+              "name": "Returns a list of event objects.\n\nEvents objects are returned in pages, with each page (chunk)\nincluding a list of event objects. The response includes a\n`chunk_size` parameter indicating how many events were returned in this\nchunk, as well as the next `stream_position` that can be\nqueried.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "events"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "stream_type",
+                      "value": "all"
+                    },
+                    {
+                      "key": "stream_position",
+                      "value": "1348790499819"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "50"
+                    },
+                    {
+                      "key": "event_type",
+                      "value": "ACCESS_GRANTED"
+                    },
+                    {
+                      "key": "created_after",
+                      "value": "2012-12-12T10:53:43-08:00"
+                    },
+                    {
+                      "key": "created_before",
+                      "value": "2013-12-12T10:53:43-08:00"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"chunk_size\": 2,\n  \"next_stream_position\": \"1152922976252290886\",\n  \"entries\": [\n    {\n      \"type\": \"event\",\n      \"created_at\": \"2022-12-12T10:53:43-08:00\",\n      \"recorded_at\": \"2022-12-12T10:54:43-08:00\",\n      \"event_id\": \"f82c3ba03e41f7e8a7608363cc6c0390183c3f83\",\n      \"created_by\": {\n        \"type\": \"user\",\n        \"id\": \"11446498\",\n        \"name\": \"Aaron Levie\",\n        \"login\": \"ceo@example.com\"\n      },\n      \"event_type\": \"FILE_MARKED_MALICIOUS\",\n      \"session_id\": \"70090280850c8d2a1933c1\",\n      \"source\": {\n        \"created_at\": \"2012-12-12T10:53:43-08:00\",\n        \"modified_at\": \"2012-12-12T10:53:43-08:00\",\n        \"language\": \"en\",\n        \"timezone\": \"Africa/Bujumbura\",\n        \"space_amount\": 11345156112,\n        \"space_used\": 1237009912,\n        \"max_upload_size\": 2147483648,\n        \"status\": \"active\",\n        \"job_title\": \"CEO\",\n        \"phone\": \"6509241374\",\n        \"address\": \"900 Jefferson Ave, Redwood City, CA 94063\",\n        \"avatar_url\": \"https://www.box.com/api/avatar/large/181216415\",\n        \"notification_email\": {\n          \"email\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"is_confirmed\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        }\n      },\n      \"additional_details\": {\n        \"key\": \"value\"\n      }\n    },\n    {\n      \"type\": \"event\",\n      \"created_at\": \"2022-12-12T10:53:43-08:00\",\n      \"recorded_at\": \"2022-12-12T10:54:43-08:00\",\n      \"event_id\": \"f82c3ba03e41f7e8a7608363cc6c0390183c3f83\",\n      \"created_by\": {\n        \"type\": \"user\",\n        \"id\": \"11446498\",\n        \"name\": \"Aaron Levie\",\n        \"login\": \"ceo@example.com\"\n      },\n      \"event_type\": \"FILE_MARKED_MALICIOUS\",\n      \"session_id\": \"70090280850c8d2a1933c1\",\n      \"source\": {\n        \"created_at\": \"2012-12-12T10:53:43-08:00\",\n        \"modified_at\": \"2012-12-12T10:53:43-08:00\",\n        \"language\": \"en\",\n        \"timezone\": \"Africa/Bujumbura\",\n        \"space_amount\": 11345156112,\n        \"space_used\": 1237009912,\n        \"max_upload_size\": 2147483648,\n        \"status\": \"active\",\n        \"job_title\": \"CEO\",\n        \"phone\": \"6509241374\",\n        \"address\": \"900 Jefferson Ave, Redwood City, CA 94063\",\n        \"avatar_url\": \"https://www.box.com/api/avatar/large/181216415\",\n        \"notification_email\": {\n          \"email\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"is_confirmed\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        }\n      },\n      \"additional_details\": {\n        \"key\": \"value\"\n      }\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "9dfdaf56-ccc9-42c0-8f5a-a571b27a3ea7",
+              "name": "An unexpected client error.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "events"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "stream_type",
+                      "value": "all"
+                    },
+                    {
+                      "key": "stream_position",
+                      "value": "1348790499819"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "50"
+                    },
+                    {
+                      "key": "event_type",
+                      "value": "ACCESS_GRANTED"
+                    },
+                    {
+                      "key": "created_after",
+                      "value": "2012-12-12T10:53:43-08:00"
+                    },
+                    {
+                      "key": "created_before",
+                      "value": "2013-12-12T10:53:43-08:00"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"type\": \"error\",\n  \"status\": 400,\n  \"code\": \"item_name_invalid\",\n  \"message\": \"Method Not Allowed\",\n  \"context_info\": {\n    \"message\": \"Something went wrong.\"\n  },\n  \"help_url\": \"https://developer.box.com/guides/api-calls/permissions-and-errors/common-errors/\",\n  \"request_id\": \"abcdef123456\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "/",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "c1f43f82-8eb4-4b08-9239-901c36d67c2f",
+    "name": "Box Authorize Authorization Events API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "Needs a description.",
+      "type": "text/plain"
+    }
+  }
+}

@@ -1,0 +1,191 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Box Authorize Authorization Uploads (Chunked) API",
+    "version": "1.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Uploads (Chunked)",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Box Create upload session",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/files/upload_sessions",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Creates an upload session for a new file."
+        },
+        {
+          "info": {
+            "name": "Box Create upload session for existing file",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/files/:file_id/upload_sessions",
+            "params": [
+              {
+                "name": "file_id",
+                "value": "12345",
+                "type": "path",
+                "description": "The unique identifier that represents a file.\n\nThe ID for any file can be determined\nby visiting a file in the web application\nand copying the ID from the URL. For example,\nfor the URL `https://*.app.box.com/files/123`\nthe `file_id` is `123`."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Creates an upload session for an existing file."
+        },
+        {
+          "info": {
+            "name": "Box Get upload session",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/files/upload_sessions/:upload_session_id",
+            "params": [
+              {
+                "name": "upload_session_id",
+                "value": "D5E3F7A",
+                "type": "path",
+                "description": "The ID of the upload session."
+              }
+            ]
+          },
+          "docs": "Return information about an upload session."
+        },
+        {
+          "info": {
+            "name": "Box Upload part of file",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "{{baseUrl}}/files/upload_sessions/:upload_session_id",
+            "headers": [
+              {
+                "name": "digest",
+                "value": "sha=fpRyg5eVQletdZqEKaFlqwBXJzM="
+              },
+              {
+                "name": "content-range",
+                "value": "bytes 8388608-16777215/445856194"
+              }
+            ],
+            "params": [
+              {
+                "name": "upload_session_id",
+                "value": "D5E3F7A",
+                "type": "path",
+                "description": "The ID of the upload session."
+              }
+            ]
+          },
+          "docs": "Updates a chunk of an upload session for a file."
+        },
+        {
+          "info": {
+            "name": "Box Remove upload session",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "{{baseUrl}}/files/upload_sessions/:upload_session_id",
+            "params": [
+              {
+                "name": "upload_session_id",
+                "value": "D5E3F7A",
+                "type": "path",
+                "description": "The ID of the upload session."
+              }
+            ]
+          },
+          "docs": "Abort an upload session and discard all data uploaded.\n\nThis cannot be reversed."
+        },
+        {
+          "info": {
+            "name": "Box List parts",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/files/upload_sessions/:upload_session_id/parts",
+            "params": [
+              {
+                "name": "upload_session_id",
+                "value": "D5E3F7A",
+                "type": "path",
+                "description": "The ID of the upload session."
+              },
+              {
+                "name": "offset",
+                "value": "1000",
+                "type": "query",
+                "description": "The offset of the item at which to begin the response.\n\nQueries with offset parameter value\nexceeding 10000 will be rejected\nwith a 400 response."
+              },
+              {
+                "name": "limit",
+                "value": "1000",
+                "type": "query",
+                "description": "The maximum number of items to return per page."
+              }
+            ]
+          },
+          "docs": "Return a list of the chunks uploaded to the upload\nsession so far."
+        },
+        {
+          "info": {
+            "name": "Box Commit upload session",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/files/upload_sessions/:upload_session_id/commit",
+            "headers": [
+              {
+                "name": "digest",
+                "value": "sha=fpRyg5eVQletdZqEKaFlqwBXJzM="
+              },
+              {
+                "name": "if-match",
+                "value": "1"
+              },
+              {
+                "name": "if-none-match",
+                "value": "1"
+              }
+            ],
+            "params": [
+              {
+                "name": "upload_session_id",
+                "value": "D5E3F7A",
+                "type": "path",
+                "description": "The ID of the upload session."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Close an upload session and create a file from the\nuploaded chunks."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

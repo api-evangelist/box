@@ -1,0 +1,151 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Box Authorize Authorization Collaborations API",
+    "version": "1.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Collaborations",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Box Get collaboration",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/collaborations/:collaboration_id",
+            "params": [
+              {
+                "name": "collaboration_id",
+                "value": "1234",
+                "type": "path",
+                "description": "The ID of the collaboration"
+              },
+              {
+                "name": "fields",
+                "value": "id,type,name",
+                "type": "query",
+                "description": "A comma-separated list of attributes to include in the\nresponse. This can be used to request fields that are\nnot normally returned in a standard response.\n\nBe aware that specifying this parameter will have the\neffect that none of the standard fields are returned in\nthe response unless explicitly specified, instead only\nfields for the mini representation are returned, additional\nto the fields requested."
+              }
+            ]
+          },
+          "docs": "Retrieves a single collaboration."
+        },
+        {
+          "info": {
+            "name": "Box Update collaboration",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "{{baseUrl}}/collaborations/:collaboration_id",
+            "params": [
+              {
+                "name": "collaboration_id",
+                "value": "1234",
+                "type": "path",
+                "description": "The ID of the collaboration"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Updates a collaboration.\nCan be used to change the owner of an item, or to\naccept collaboration invites."
+        },
+        {
+          "info": {
+            "name": "Box Remove collaboration",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "{{baseUrl}}/collaborations/:collaboration_id",
+            "params": [
+              {
+                "name": "collaboration_id",
+                "value": "1234",
+                "type": "path",
+                "description": "The ID of the collaboration"
+              }
+            ]
+          },
+          "docs": "Deletes a single collaboration."
+        },
+        {
+          "info": {
+            "name": "Box List pending collaborations",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/collaborations",
+            "params": [
+              {
+                "name": "status",
+                "value": "pending",
+                "type": "query",
+                "description": "The status of the collaborations to retrieve"
+              },
+              {
+                "name": "fields",
+                "value": "id,type,name",
+                "type": "query",
+                "description": "A comma-separated list of attributes to include in the\nresponse. This can be used to request fields that are\nnot normally returned in a standard response.\n\nBe aware that specifying this parameter will have the\neffect that none of the standard fields are returned in\nthe response unless explicitly specified, instead only\nfields for the mini representation are returned, additional\nto the fields requested."
+              },
+              {
+                "name": "offset",
+                "value": "1000",
+                "type": "query",
+                "description": "The offset of the item at which to begin the response.\n\nQueries with offset parameter value\nexceeding 10000 will be rejected\nwith a 400 response."
+              },
+              {
+                "name": "limit",
+                "value": "1000",
+                "type": "query",
+                "description": "The maximum number of items to return per page."
+              }
+            ]
+          },
+          "docs": "Retrieves all pending collaboration invites for this user."
+        },
+        {
+          "info": {
+            "name": "Box Create collaboration",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/collaborations",
+            "params": [
+              {
+                "name": "fields",
+                "value": "id,type,name",
+                "type": "query",
+                "description": "A comma-separated list of attributes to include in the\nresponse. This can be used to request fields that are\nnot normally returned in a standard response.\n\nBe aware that specifying this parameter will have the\neffect that none of the standard fields are returned in\nthe response unless explicitly specified, instead only\nfields for the mini representation are returned, additional\nto the fields requested."
+              },
+              {
+                "name": "notify",
+                "value": "true",
+                "type": "query",
+                "description": "Determines if users should receive email notification\nfor the action performed."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Adds a collaboration for a single user or a single group to a file\nor folder.\n\nCollaborations can be created using email address, user IDs, or a\ngroup IDs.\n\nIf a collaboration is being created with a group, access to\nthis endpoint is dependent on the group's ability to be invited.\n\nIf collaboration is in `pending` status, the following fields\nare redacted:\n- `login` and `name` are hidden if a collaboration was created\nusing `user_id`,\n-  `name` is hidden if a collaboration was created using `log"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

@@ -1,0 +1,159 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Box Authorize Authorization Shared Links (Files) API",
+    "version": "1.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Shared Links (Files)",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Box Find file for shared link",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/shared_items",
+            "headers": [
+              {
+                "name": "if-none-match",
+                "value": "1"
+              },
+              {
+                "name": "boxapi",
+                "value": "shared_link=[link]&shared_link_password=[password]"
+              }
+            ],
+            "params": [
+              {
+                "name": "fields",
+                "value": "id,type,name",
+                "type": "query",
+                "description": "A comma-separated list of attributes to include in the\nresponse. This can be used to request fields that are\nnot normally returned in a standard response.\n\nBe aware that specifying this parameter will have the\neffect that none of the standard fields are returned in\nthe response unless explicitly specified, instead only\nfields for the mini representation are returned, additional\nto the fields requested."
+              }
+            ]
+          },
+          "docs": "Returns the file represented by a shared link.\n\nA shared file can be represented by a shared link,\nwhich can originate within the current enterprise or within another.\n\nThis endpoint allows an application to retrieve information about a\nshared file when only given a shared link.\n\nThe `shared_link_permission_options` array field can be returned\nby requesting it in the `fields` query parameter."
+        },
+        {
+          "info": {
+            "name": "Box Get shared link for file",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/files/:file_id#get_shared_link",
+            "params": [
+              {
+                "name": "file_id",
+                "value": "12345",
+                "type": "path",
+                "description": "The unique identifier that represents a file.\n\nThe ID for any file can be determined\nby visiting a file in the web application\nand copying the ID from the URL. For example,\nfor the URL `https://*.app.box.com/files/123`\nthe `file_id` is `123`."
+              },
+              {
+                "name": "fields",
+                "value": "shared_link",
+                "type": "query",
+                "description": "Explicitly request the `shared_link` fields\nto be returned for this item."
+              }
+            ]
+          },
+          "docs": "Gets the information for a shared link on a file."
+        },
+        {
+          "info": {
+            "name": "Box Add shared link to file",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "{{baseUrl}}/files/:file_id#add_shared_link",
+            "params": [
+              {
+                "name": "file_id",
+                "value": "12345",
+                "type": "path",
+                "description": "The unique identifier that represents a file.\n\nThe ID for any file can be determined\nby visiting a file in the web application\nand copying the ID from the URL. For example,\nfor the URL `https://*.app.box.com/files/123`\nthe `file_id` is `123`."
+              },
+              {
+                "name": "fields",
+                "value": "shared_link",
+                "type": "query",
+                "description": "Explicitly request the `shared_link` fields\nto be returned for this item."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Adds a shared link to a file."
+        },
+        {
+          "info": {
+            "name": "Box Update shared link on file",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "{{baseUrl}}/files/:file_id#update_shared_link",
+            "params": [
+              {
+                "name": "file_id",
+                "value": "12345",
+                "type": "path",
+                "description": "The unique identifier that represents a file.\n\nThe ID for any file can be determined\nby visiting a file in the web application\nand copying the ID from the URL. For example,\nfor the URL `https://*.app.box.com/files/123`\nthe `file_id` is `123`."
+              },
+              {
+                "name": "fields",
+                "value": "shared_link",
+                "type": "query",
+                "description": "Explicitly request the `shared_link` fields\nto be returned for this item."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Updates a shared link on a file."
+        },
+        {
+          "info": {
+            "name": "Box Remove shared link from file",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "{{baseUrl}}/files/:file_id#remove_shared_link",
+            "params": [
+              {
+                "name": "file_id",
+                "value": "12345",
+                "type": "path",
+                "description": "The unique identifier that represents a file.\n\nThe ID for any file can be determined\nby visiting a file in the web application\nand copying the ID from the URL. For example,\nfor the URL `https://*.app.box.com/files/123`\nthe `file_id` is `123`."
+              },
+              {
+                "name": "fields",
+                "value": "shared_link",
+                "type": "query",
+                "description": "Explicitly request the `shared_link` fields\nto be returned for this item."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Removes a shared link from a file."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

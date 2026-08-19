@@ -1,0 +1,293 @@
+{
+  "item": [
+    {
+      "id": "ec78d885-3ccd-4c36-901a-e26cfde6d35c",
+      "name": "Transfer Folders",
+      "description": {
+        "content": "API designed to move all of the items\n(files, folders and workflows)\nowned by a user into another user's account.",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "472dd4d9-eb77-44b8-af81-e74d50f1c064",
+          "name": "Box Transfer owned folders",
+          "request": {
+            "name": "Box Transfer owned folders",
+            "description": {
+              "content": "Move all of the items (files, folders and workflows) owned by a user into\nanother user's account\n\nOnly the root folder (`0`) can be transferred.\n\nFolders can only be moved across users by users with administrative\npermissions.\n\nAll existing shared links and folder-level collaborations are transferred\nduring the operation. Please note that while collaborations at the individual\nfile-level are transferred during the operation, the collaborations are\ndeleted when the original user is deleted.\n\nThis call will be performed synchronously which might lead to a slow response\nwhen the source user has a large number of items in all of its folders.\n\nIf the destination path has a metadata cascade policy attached to any of\nthe parent folders, a metadata cascade operation will be kicked off\nasynchronously.\n\nThere is currently no way to check for when this operation is finished.\n\nThe destination folder's name will be in the format `{User}'s Files and\nFolders`, where `{User}` is the display name of the user.\n\nTo make this API call your application will need to have the \"Read and write\nall files and folders stored in Box\" scope enabled.\n\nPlease make sure the destination user has access to `Relay` or `Relay Lite`,\nand has access to the files and folders involved in the workflows being\ntransferred.\n\nAdmins will receive an email when the operation is completed.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "users",
+                ":user_id",
+                "folders",
+                "0"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "fields",
+                  "value": "<string>,<string>",
+                  "description": "A comma-separated list of attributes to include in the\nresponse. This can be used to request fields that are\nnot normally returned in a standard response.\n\nBe aware that specifying this parameter will have the\neffect that none of the standard fields are returned in\nthe response unless explicitly specified, instead only\nfields for the mini representation are returned, additional\nto the fields requested."
+                },
+                {
+                  "disabled": false,
+                  "key": "notify",
+                  "value": "<boolean>",
+                  "description": "Determines if users should receive email notification\nfor the action performed."
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "user_id",
+                  "description": "(Required) The ID of the user."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "PUT",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"owned_by\": {\n    \"id\": \"<string>\"\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "47571ddd-d0db-4115-bfc8-a47f89e398f0",
+              "name": "Returns the information for the newly created\ndestination folder.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "users",
+                    ":user_id",
+                    "folders",
+                    "0"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "fields",
+                      "value": "id,type,name"
+                    },
+                    {
+                      "key": "notify",
+                      "value": "true"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "user_id",
+                      "description": "(Required) The ID of the user."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"owned_by\": {\n    \"id\": \"1232234\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": \"12345\",\n  \"type\": \"folder\",\n  \"etag\": \"1\",\n  \"sequence_id\": \"3\",\n  \"name\": \"Contracts\",\n  \"created_at\": \"2012-12-12T10:53:43-08:00\",\n  \"modified_at\": \"2012-12-12T10:53:43-08:00\",\n  \"description\": \"Legal contracts for the new ACME deal\",\n  \"size\": 629644,\n  \"path_collection\": {\n    \"total_count\": 1,\n    \"entries\": [\n      {\n        \"sequence_id\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"name\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        }\n      },\n      {\n        \"sequence_id\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"name\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        }\n      }\n    ]\n  },\n  \"created_by\": {\n    \"type\": \"user\",\n    \"id\": \"11446498\",\n    \"name\": \"Aaron Levie\",\n    \"login\": \"ceo@example.com\"\n  },\n  \"modified_by\": {\n    \"type\": \"user\",\n    \"id\": \"11446498\",\n    \"name\": \"Aaron Levie\",\n    \"login\": \"ceo@example.com\"\n  },\n  \"trashed_at\": \"2012-12-12T10:53:43-08:00\",\n  \"purged_at\": \"2012-12-12T10:53:43-08:00\",\n  \"content_created_at\": \"2012-12-12T10:53:43-08:00\",\n  \"content_modified_at\": \"2012-12-12T10:53:43-08:00\",\n  \"owned_by\": {\n    \"type\": \"user\",\n    \"id\": \"11446498\",\n    \"name\": \"Aaron Levie\",\n    \"login\": \"ceo@example.com\"\n  },\n  \"shared_link\": {\n    \"url\": \"https://www.box.com/s/vspke7y05sb214wjokpk\",\n    \"effective_access\": \"company\",\n    \"effective_permission\": \"can_download\",\n    \"is_password_enabled\": true,\n    \"download_count\": 3,\n    \"preview_count\": 3,\n    \"download_url\": \"https://www.box.com/shared/static/rh935iit6ewrmw0unyul.jpeg\",\n    \"vanity_url\": \"https://acme.app.box.com/v/my_url/\",\n    \"vanity_name\": \"my_url\",\n    \"access\": \"open\",\n    \"unshared_at\": \"2018-04-13T13:53:23-07:00\",\n    \"permissions\": {\n      \"can_download\": true,\n      \"can_preview\": true,\n      \"can_edit\": false\n    }\n  },\n  \"folder_upload_email\": {\n    \"access\": \"open\",\n    \"email\": \"upload.Contracts.asd7asd@u.box.com\"\n  },\n  \"parent\": {\n    \"id\": \"12345\",\n    \"type\": \"folder\",\n    \"etag\": \"1\",\n    \"sequence_id\": \"3\",\n    \"name\": \"Contracts\"\n  },\n  \"item_status\": \"active\",\n  \"item_collection\": {\n    \"total_count\": 5000,\n    \"limit\": 1000,\n    \"offset\": 2000,\n    \"order\": [\n      {\n        \"by\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"direction\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        }\n      },\n      {\n        \"by\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"direction\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        }\n      }\n    ],\n    \"entries\": [\n      {\n        \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n      },\n      {\n        \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n      }\n    ]\n  },\n  \"sync_state\": \"synced\",\n  \"has_collaborations\": true,\n  \"permissions\": {\n    \"can_delete\": true,\n    \"can_download\": true,\n    \"can_invite_collaborator\": true,\n    \"can_rename\": true,\n    \"can_set_share_access\": true,\n    \"can_share\": true,\n    \"can_upload\": true\n  },\n  \"tags\": [\n    \"approved\"\n  ],\n  \"can_non_owners_invite\": true,\n  \"is_externally_owned\": true,\n  \"metadata\": {\n    \"enterprise_27335\": {\n      \"marketingCollateral\": {\n        \"$canEdit\": true,\n        \"$id\": \"01234500-12f1-1234-aa12-b1d234cb567e\",\n        \"$parent\": \"folder_59449484661\",\n        \"$scope\": \"enterprise_27335\",\n        \"$template\": \"marketingCollateral\",\n        \"$type\": \"properties-6bcba49f-ca6d-4d2a-a758-57fe6edf44d0\",\n        \"$typeVersion\": 2,\n        \"$version\": 1\n      }\n    }\n  },\n  \"is_collaboration_restricted_to_enterprise\": true,\n  \"allowed_shared_link_access_levels\": [\n    \"open\"\n  ],\n  \"allowed_invitee_roles\": [\n    \"editor\"\n  ],\n  \"watermark_info\": {\n    \"is_watermarked\": true\n  },\n  \"is_accessible_via_shared_link\": true,\n  \"can_non_owners_view_collaborators\": true,\n  \"classification\": {\n    \"name\": \"Top Secret\",\n    \"definition\": \"Content that should not be shared outside the company.\",\n    \"color\": \"#FF0000\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "6fdb24f8-5b94-40f2-a3b8-889d15205c0f",
+              "name": "Returns an error when folder ownership cannot be\ntransferred to another user.\n\n* `forbidden_by_policy`: Returned if ownership transfer\n is forbidden due to information barrier restrictions.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "users",
+                    ":user_id",
+                    "folders",
+                    "0"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "fields",
+                      "value": "id,type,name"
+                    },
+                    {
+                      "key": "notify",
+                      "value": "true"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "user_id",
+                      "description": "(Required) The ID of the user."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"owned_by\": {\n    \"id\": \"1232234\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"type\": \"error\",\n  \"status\": 400,\n  \"code\": \"item_name_invalid\",\n  \"message\": \"Method Not Allowed\",\n  \"context_info\": {\n    \"message\": \"Something went wrong.\"\n  },\n  \"help_url\": \"https://developer.box.com/guides/api-calls/permissions-and-errors/common-errors/\",\n  \"request_id\": \"abcdef123456\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "7e4f908a-8d60-4825-9aca-5cafa2dd22f1",
+              "name": "An unexpected client error.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "users",
+                    ":user_id",
+                    "folders",
+                    "0"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "fields",
+                      "value": "id,type,name"
+                    },
+                    {
+                      "key": "notify",
+                      "value": "true"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "user_id",
+                      "description": "(Required) The ID of the user."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"owned_by\": {\n    \"id\": \"1232234\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"type\": \"error\",\n  \"status\": 400,\n  \"code\": \"item_name_invalid\",\n  \"message\": \"Method Not Allowed\",\n  \"context_info\": {\n    \"message\": \"Something went wrong.\"\n  },\n  \"help_url\": \"https://developer.box.com/guides/api-calls/permissions-and-errors/common-errors/\",\n  \"request_id\": \"abcdef123456\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "/",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "9bfedfc9-0048-49b9-919f-bd16cf81a762",
+    "name": "Box Authorize Authorization Transfer Folders API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "Needs a description.",
+      "type": "text/plain"
+    }
+  }
+}

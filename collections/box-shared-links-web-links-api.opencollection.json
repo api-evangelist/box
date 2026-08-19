@@ -1,0 +1,159 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Box Authorize Authorization Shared Links (Web Links) API",
+    "version": "1.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Shared Links (Web Links)",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Box Find web link for shared link",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/shared_items#web_links",
+            "headers": [
+              {
+                "name": "if-none-match",
+                "value": "1"
+              },
+              {
+                "name": "boxapi",
+                "value": "shared_link=[link]&shared_link_password=[password]"
+              }
+            ],
+            "params": [
+              {
+                "name": "fields",
+                "value": "id,type,name",
+                "type": "query",
+                "description": "A comma-separated list of attributes to include in the\nresponse. This can be used to request fields that are\nnot normally returned in a standard response.\n\nBe aware that specifying this parameter will have the\neffect that none of the standard fields are returned in\nthe response unless explicitly specified, instead only\nfields for the mini representation are returned, additional\nto the fields requested."
+              }
+            ]
+          },
+          "docs": "Returns the web link represented by a shared link.\n\nA shared web link can be represented by a shared link,\nwhich can originate within the current enterprise or within another.\n\nThis endpoint allows an application to retrieve information about a\nshared web link when only given a shared link."
+        },
+        {
+          "info": {
+            "name": "Box Get shared link for web link",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/web_links/:web_link_id#get_shared_link",
+            "params": [
+              {
+                "name": "web_link_id",
+                "value": "12345",
+                "type": "path",
+                "description": "The ID of the web link."
+              },
+              {
+                "name": "fields",
+                "value": "shared_link",
+                "type": "query",
+                "description": "Explicitly request the `shared_link` fields\nto be returned for this item."
+              }
+            ]
+          },
+          "docs": "Gets the information for a shared link on a web link."
+        },
+        {
+          "info": {
+            "name": "Box Add shared link to web link",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "{{baseUrl}}/web_links/:web_link_id#add_shared_link",
+            "params": [
+              {
+                "name": "web_link_id",
+                "value": "12345",
+                "type": "path",
+                "description": "The ID of the web link."
+              },
+              {
+                "name": "fields",
+                "value": "shared_link",
+                "type": "query",
+                "description": "Explicitly request the `shared_link` fields\nto be returned for this item."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Adds a shared link to a web link."
+        },
+        {
+          "info": {
+            "name": "Box Update shared link on web link",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "{{baseUrl}}/web_links/:web_link_id#update_shared_link",
+            "params": [
+              {
+                "name": "web_link_id",
+                "value": "12345",
+                "type": "path",
+                "description": "The ID of the web link."
+              },
+              {
+                "name": "fields",
+                "value": "shared_link",
+                "type": "query",
+                "description": "Explicitly request the `shared_link` fields\nto be returned for this item."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Updates a shared link on a web link."
+        },
+        {
+          "info": {
+            "name": "Box Remove shared link from web link",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "{{baseUrl}}/web_links/:web_link_id#remove_shared_link",
+            "params": [
+              {
+                "name": "web_link_id",
+                "value": "12345",
+                "type": "path",
+                "description": "The ID of the web link."
+              },
+              {
+                "name": "fields",
+                "value": "shared_link",
+                "type": "query",
+                "description": "Explicitly request the `shared_link` fields\nto be returned for this item."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Removes a shared link from a web link."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

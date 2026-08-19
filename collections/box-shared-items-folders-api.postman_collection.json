@@ -1,0 +1,242 @@
+{
+  "item": [
+    {
+      "id": "2b97e6ca-dad4-4ccb-985c-ce1ba2e802e1",
+      "name": "Shared Items#folders",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "a4c5e3e1-b1d2-4ba2-8f5a-69842e2c3306",
+          "name": "Box Find folder for shared link",
+          "request": {
+            "name": "Box Find folder for shared link",
+            "description": {
+              "content": "Return the folder represented by a shared link.\n\nA shared folder can be represented by a shared link,\nwhich can originate within the current enterprise or within another.\n\nThis endpoint allows an application to retrieve information about a\nshared folder when only given a shared link.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "shared_items"
+              ],
+              "hash": "folders",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "fields",
+                  "value": "<string>,<string>",
+                  "description": "A comma-separated list of attributes to include in the\nresponse. This can be used to request fields that are\nnot normally returned in a standard response.\n\nBe aware that specifying this parameter will have the\neffect that none of the standard fields are returned in\nthe response unless explicitly specified, instead only\nfields for the mini representation are returned, additional\nto the fields requested."
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "disabled": false,
+                "description": "Ensures an item is only returned if it has changed.\n\nPass in the item's last observed `etag` value\ninto this header and the endpoint will fail\nwith a `304 Not Modified` if the item has not\nchanged since.",
+                "key": "if-none-match",
+                "value": "<string>"
+              },
+              {
+                "disabled": false,
+                "description": "(Required) A header containing the shared link and optional password for the\nshared link.\n\nThe format for this header is as follows.\n\n`shared_link=[link]&shared_link_password=[password]`",
+                "key": "boxapi",
+                "value": "<string>"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "ed405ac1-ad5e-47a8-b830-b7d2ec1e5693",
+              "name": "Returns a full folder resource if the shared link is valid and\nthe user has access to it.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "shared_items"
+                  ],
+                  "hash": "folders",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "fields",
+                      "value": "id,type,name"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "Ensures an item is only returned if it has changed.\n\nPass in the item's last observed `etag` value\ninto this header and the endpoint will fail\nwith a `304 Not Modified` if the item has not\nchanged since.",
+                    "key": "if-none-match",
+                    "value": "1"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) A header containing the shared link and optional password for the\nshared link.\n\nThe format for this header is as follows.\n\n`shared_link=[link]&shared_link_password=[password]`",
+                    "key": "boxapi",
+                    "value": "shared_link=[link]&shared_link_password=[password]"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"sync_state\": \"synced\",\n  \"has_collaborations\": true,\n  \"permissions\": {\n    \"can_delete\": true,\n    \"can_download\": true,\n    \"can_invite_collaborator\": true,\n    \"can_rename\": true,\n    \"can_set_share_access\": true,\n    \"can_share\": true,\n    \"can_upload\": true\n  },\n  \"tags\": [\n    \"approved\"\n  ],\n  \"can_non_owners_invite\": true,\n  \"is_externally_owned\": true,\n  \"metadata\": {\n    \"enterprise_27335\": {\n      \"marketingCollateral\": {\n        \"$canEdit\": true,\n        \"$id\": \"01234500-12f1-1234-aa12-b1d234cb567e\",\n        \"$parent\": \"folder_59449484661\",\n        \"$scope\": \"enterprise_27335\",\n        \"$template\": \"marketingCollateral\",\n        \"$type\": \"properties-6bcba49f-ca6d-4d2a-a758-57fe6edf44d0\",\n        \"$typeVersion\": 2,\n        \"$version\": 1\n      }\n    }\n  },\n  \"is_collaboration_restricted_to_enterprise\": true,\n  \"allowed_shared_link_access_levels\": [\n    \"open\"\n  ],\n  \"allowed_invitee_roles\": [\n    \"editor\"\n  ],\n  \"watermark_info\": {\n    \"is_watermarked\": true\n  },\n  \"is_accessible_via_shared_link\": true,\n  \"can_non_owners_view_collaborators\": true,\n  \"classification\": {\n    \"name\": \"Top Secret\",\n    \"definition\": \"Content that should not be shared outside the company.\",\n    \"color\": \"#FF0000\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "1a7378e5-dc08-4ac3-bf7c-acbae6a67eb1",
+              "name": "Returns an empty response when the `If-None-Match` header matches\nthe current `etag` value of the folder. This indicates that the folder\nhas not changed since it was last requested.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "shared_items"
+                  ],
+                  "hash": "folders",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "fields",
+                      "value": "id,type,name"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "Ensures an item is only returned if it has changed.\n\nPass in the item's last observed `etag` value\ninto this header and the endpoint will fail\nwith a `304 Not Modified` if the item has not\nchanged since.",
+                    "key": "if-none-match",
+                    "value": "1"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) A header containing the shared link and optional password for the\nshared link.\n\nThe format for this header is as follows.\n\n`shared_link=[link]&shared_link_password=[password]`",
+                    "key": "boxapi",
+                    "value": "shared_link=[link]&shared_link_password=[password]"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Modified",
+              "code": 304,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "c868b389-222d-4452-9928-621156720548",
+              "name": "An unexpected client error.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "shared_items"
+                  ],
+                  "hash": "folders",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "fields",
+                      "value": "id,type,name"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "Ensures an item is only returned if it has changed.\n\nPass in the item's last observed `etag` value\ninto this header and the endpoint will fail\nwith a `304 Not Modified` if the item has not\nchanged since.",
+                    "key": "if-none-match",
+                    "value": "1"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) A header containing the shared link and optional password for the\nshared link.\n\nThe format for this header is as follows.\n\n`shared_link=[link]&shared_link_password=[password]`",
+                    "key": "boxapi",
+                    "value": "shared_link=[link]&shared_link_password=[password]"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"type\": \"error\",\n  \"status\": 400,\n  \"code\": \"item_name_invalid\",\n  \"message\": \"Method Not Allowed\",\n  \"context_info\": {\n    \"message\": \"Something went wrong.\"\n  },\n  \"help_url\": \"https://developer.box.com/guides/api-calls/permissions-and-errors/common-errors/\",\n  \"request_id\": \"abcdef123456\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "/",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "a710f089-04ca-44be-9890-122b19f56cd6",
+    "name": "Box Authorize Authorization Shared Items#folders API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "Needs a description.",
+      "type": "text/plain"
+    }
+  }
+}

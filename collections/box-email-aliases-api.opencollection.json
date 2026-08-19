@@ -1,0 +1,85 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Box Authorize Authorization Email Aliases API",
+    "version": "1.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Email Aliases",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Box List user's email aliases",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/users/:user_id/email_aliases",
+            "params": [
+              {
+                "name": "user_id",
+                "value": "12345",
+                "type": "path",
+                "description": "The ID of the user."
+              }
+            ]
+          },
+          "docs": "Retrieves all email aliases for a user. The collection\ndoes not include the primary login for the user."
+        },
+        {
+          "info": {
+            "name": "Box Create email alias",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/users/:user_id/email_aliases",
+            "params": [
+              {
+                "name": "user_id",
+                "value": "12345",
+                "type": "path",
+                "description": "The ID of the user."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Adds a new email alias to a user account.."
+        },
+        {
+          "info": {
+            "name": "Box Remove email alias",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "{{baseUrl}}/users/:user_id/email_aliases/:email_alias_id",
+            "params": [
+              {
+                "name": "user_id",
+                "value": "12345",
+                "type": "path",
+                "description": "The ID of the user."
+              },
+              {
+                "name": "email_alias_id",
+                "value": "23432",
+                "type": "path",
+                "description": "The ID of the email alias."
+              }
+            ]
+          },
+          "docs": "Removes an email alias from a user."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

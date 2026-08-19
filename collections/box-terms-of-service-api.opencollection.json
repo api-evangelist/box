@@ -1,0 +1,94 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Box Authorize Authorization Terms of Service API",
+    "version": "1.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Terms of Service",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Box List terms of services",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/terms_of_services",
+            "params": [
+              {
+                "name": "tos_type",
+                "value": "managed",
+                "type": "query",
+                "description": "Limits the results to the terms of service of the given type."
+              }
+            ]
+          },
+          "docs": "Returns the current terms of service text and settings\nfor the enterprise."
+        },
+        {
+          "info": {
+            "name": "Box Create terms of service",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/terms_of_services",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Creates a terms of service for a given enterprise\nand type of user."
+        },
+        {
+          "info": {
+            "name": "Box Get terms of service",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/terms_of_services/:terms_of_service_id",
+            "params": [
+              {
+                "name": "terms_of_service_id",
+                "value": "324234",
+                "type": "path",
+                "description": "The ID of the terms of service."
+              }
+            ]
+          },
+          "docs": "Fetches a specific terms of service."
+        },
+        {
+          "info": {
+            "name": "Box Update terms of service",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "{{baseUrl}}/terms_of_services/:terms_of_service_id",
+            "params": [
+              {
+                "name": "terms_of_service_id",
+                "value": "324234",
+                "type": "path",
+                "description": "The ID of the terms of service."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Updates a specific terms of service."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

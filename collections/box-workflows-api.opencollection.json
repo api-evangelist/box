@@ -1,0 +1,78 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Box Authorize Authorization Workflows API",
+    "version": "1.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Workflows",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Box List workflows",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/workflows",
+            "params": [
+              {
+                "name": "folder_id",
+                "value": "12345",
+                "type": "query",
+                "description": "The unique identifier that represent a folder.\n\nThe ID for any folder can be determined\nby visiting this folder in the web application\nand copying the ID from the URL. For example,\nfor the URL `https://*.app.box.com/folder/123`\nthe `folder_id` is `123`.\n\nThe root folder of a Box account is\nalways represented by the ID `0`."
+              },
+              {
+                "name": "trigger_type",
+                "value": "WORKFLOW_MANUAL_START",
+                "type": "query",
+                "description": "Type of trigger to search for."
+              },
+              {
+                "name": "limit",
+                "value": "1000",
+                "type": "query",
+                "description": "The maximum number of items to return per page."
+              },
+              {
+                "name": "marker",
+                "value": "JV9IRGZmieiBasejOG9yDCRNgd2ymoZIbjsxbJMjIs3kioVii",
+                "type": "query",
+                "description": "Defines the position marker at which to begin returning results. This is\nused when paginating using marker-based pagination.\n\nThis requires `usemarker` to be set to `true`."
+              }
+            ]
+          },
+          "docs": "Returns list of workflows that act on a given `folder ID`, and\nhave a flow with a trigger type of `WORKFLOW_MANUAL_START`.\n\nYou application must be authorized to use the `Manage Box Relay` application\nscope within the developer console in to use this endpoint."
+        },
+        {
+          "info": {
+            "name": "Box Starts workflow based on request body",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/workflows/:workflow_id/start",
+            "params": [
+              {
+                "name": "workflow_id",
+                "value": "12345",
+                "type": "path",
+                "description": "The ID of the workflow."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Initiates a flow with a trigger type of `WORKFLOW_MANUAL_START`.\n\nYou application must be authorized to use the `Manage Box Relay` application\nscope within the developer console."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

@@ -1,0 +1,560 @@
+{
+  "item": [
+    {
+      "id": "70ecef55-5a7d-4923-9c65-6126094b910c",
+      "name": "Collaboration Whitelist Entries",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "6b668058-4862-45cb-8ade-4c988abe4eed",
+          "name": "Box List allowed collaboration domains",
+          "request": {
+            "name": "Box List allowed collaboration domains",
+            "description": {
+              "content": "Returns the list domains that have been deemed safe to create collaborations\nfor within the current enterprise.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "collaboration_whitelist_entries"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "marker",
+                  "value": "<string>",
+                  "description": "Defines the position marker at which to begin returning results. This is\nused when paginating using marker-based pagination.\n\nThis requires `usemarker` to be set to `true`."
+                },
+                {
+                  "disabled": false,
+                  "key": "limit",
+                  "value": "<long>",
+                  "description": "The maximum number of items to return per page."
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "81bb9aed-9103-419c-a29a-7a449875d79d",
+              "name": "Returns a collection of domains that are allowed for collaboration.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "collaboration_whitelist_entries"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "marker",
+                      "value": "JV9IRGZmieiBasejOG9yDCRNgd2ymoZIbjsxbJMjIs3kioVii"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "1000"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"limit\": 1000,\n  \"next_marker\": \"JV9IRGZmieiBasejOG9yDCRNgd2ymoZIbjsxbJMjIs3kioVii\",\n  \"prev_marker\": \"JV9IRGZmieiBasejOG9yDCRNgd2ymoZIbjsxbJMjIs3kioVih\",\n  \"entries\": [\n    {\n      \"id\": \"11446498\",\n      \"type\": \"collaboration_whitelist_entry\",\n      \"domain\": \"example.com\",\n      \"direction\": \"both\",\n      \"enterprise\": {\n        \"id\": \"11446498\",\n        \"type\": \"enterprise\",\n        \"name\": \"Acme Inc.\"\n      },\n      \"created_at\": \"2012-12-12T10:53:43-08:00\"\n    },\n    {\n      \"id\": \"11446498\",\n      \"type\": \"collaboration_whitelist_entry\",\n      \"domain\": \"example.com\",\n      \"direction\": \"both\",\n      \"enterprise\": {\n        \"id\": \"11446498\",\n        \"type\": \"enterprise\",\n        \"name\": \"Acme Inc.\"\n      },\n      \"created_at\": \"2012-12-12T10:53:43-08:00\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "1ce28507-2969-41d4-8de8-23d06647fb33",
+              "name": "An unexpected client error.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "collaboration_whitelist_entries"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "marker",
+                      "value": "JV9IRGZmieiBasejOG9yDCRNgd2ymoZIbjsxbJMjIs3kioVii"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "1000"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"type\": \"error\",\n  \"status\": 400,\n  \"code\": \"item_name_invalid\",\n  \"message\": \"Method Not Allowed\",\n  \"context_info\": {\n    \"message\": \"Something went wrong.\"\n  },\n  \"help_url\": \"https://developer.box.com/guides/api-calls/permissions-and-errors/common-errors/\",\n  \"request_id\": \"abcdef123456\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "122abaa3-03cc-4f9d-bf13-f95eb1eec4d5",
+          "name": "Box Add domain to list of allowed collaboration domains",
+          "request": {
+            "name": "Box Add domain to list of allowed collaboration domains",
+            "description": {
+              "content": "Creates a new entry in the list of allowed domains to allow\ncollaboration for.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "collaboration_whitelist_entries"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"domain\": \"<string>\",\n  \"direction\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "58d09190-ec59-40aa-9881-2bec5fb7c82f",
+              "name": "Returns a new entry on the list of allowed domains.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "collaboration_whitelist_entries"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"domain\": \"example.com\",\n  \"direction\": \"inbound\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": \"11446498\",\n  \"type\": \"collaboration_whitelist_entry\",\n  \"domain\": \"example.com\",\n  \"direction\": \"both\",\n  \"enterprise\": {\n    \"id\": \"11446498\",\n    \"type\": \"enterprise\",\n    \"name\": \"Acme Inc.\"\n  },\n  \"created_at\": \"2012-12-12T10:53:43-08:00\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "181d76d2-ecb2-459d-95db-22f7b60fdaae",
+              "name": "An unexpected client error.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "collaboration_whitelist_entries"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"domain\": \"example.com\",\n  \"direction\": \"inbound\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"type\": \"error\",\n  \"status\": 400,\n  \"code\": \"item_name_invalid\",\n  \"message\": \"Method Not Allowed\",\n  \"context_info\": {\n    \"message\": \"Something went wrong.\"\n  },\n  \"help_url\": \"https://developer.box.com/guides/api-calls/permissions-and-errors/common-errors/\",\n  \"request_id\": \"abcdef123456\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "50396725-3756-40b8-8d4a-c992b72bce5d",
+          "name": "Box Get allowed collaboration domain",
+          "request": {
+            "name": "Box Get allowed collaboration domain",
+            "description": {
+              "content": "Returns a domain that has been deemed safe to create collaborations\nfor within the current enterprise.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "collaboration_whitelist_entries",
+                ":collaboration_whitelist_entry_id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "collaboration_whitelist_entry_id",
+                  "description": "(Required) The ID of the entry in the list."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "5b225551-7d1e-456d-890b-96d25d6e05b8",
+              "name": "Returns an entry on the list of allowed domains.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "collaboration_whitelist_entries",
+                    ":collaboration_whitelist_entry_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "collaboration_whitelist_entry_id",
+                      "description": "(Required) The ID of the entry in the list."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": \"11446498\",\n  \"type\": \"collaboration_whitelist_entry\",\n  \"domain\": \"example.com\",\n  \"direction\": \"both\",\n  \"enterprise\": {\n    \"id\": \"11446498\",\n    \"type\": \"enterprise\",\n    \"name\": \"Acme Inc.\"\n  },\n  \"created_at\": \"2012-12-12T10:53:43-08:00\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "6bc03c58-ab7f-4a1e-a7bd-ef7352beb517",
+              "name": "An unexpected client error.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "collaboration_whitelist_entries",
+                    ":collaboration_whitelist_entry_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "collaboration_whitelist_entry_id",
+                      "description": "(Required) The ID of the entry in the list."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"type\": \"error\",\n  \"status\": 400,\n  \"code\": \"item_name_invalid\",\n  \"message\": \"Method Not Allowed\",\n  \"context_info\": {\n    \"message\": \"Something went wrong.\"\n  },\n  \"help_url\": \"https://developer.box.com/guides/api-calls/permissions-and-errors/common-errors/\",\n  \"request_id\": \"abcdef123456\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "586dcae7-b24c-48f0-af1b-cd412bc4a3eb",
+          "name": "Box Remove domain from list of allowed collaboration domains",
+          "request": {
+            "name": "Box Remove domain from list of allowed collaboration domains",
+            "description": {
+              "content": "Removes a domain from the list of domains that have been deemed safe to create\ncollaborations for within the current enterprise.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "collaboration_whitelist_entries",
+                ":collaboration_whitelist_entry_id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "collaboration_whitelist_entry_id",
+                  "description": "(Required) The ID of the entry in the list."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "DELETE",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "4979b500-0cd5-4b90-b9dc-9d74b52d8c6a",
+              "name": "A blank response is returned if the entry was\nsuccessfully deleted.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "collaboration_whitelist_entries",
+                    ":collaboration_whitelist_entry_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "collaboration_whitelist_entry_id",
+                      "description": "(Required) The ID of the entry in the list."
+                    }
+                  ]
+                },
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "No Content",
+              "code": 204,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "26fdcd11-ce15-44de-b7ca-e1c4e7a58839",
+              "name": "An unexpected client error.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "collaboration_whitelist_entries",
+                    ":collaboration_whitelist_entry_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "collaboration_whitelist_entry_id",
+                      "description": "(Required) The ID of the entry in the list."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"type\": \"error\",\n  \"status\": 400,\n  \"code\": \"item_name_invalid\",\n  \"message\": \"Method Not Allowed\",\n  \"context_info\": {\n    \"message\": \"Something went wrong.\"\n  },\n  \"help_url\": \"https://developer.box.com/guides/api-calls/permissions-and-errors/common-errors/\",\n  \"request_id\": \"abcdef123456\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "/",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "d6ded77b-83a4-4371-9c45-fdd290d3198d",
+    "name": "Box Authorize Authorization Collaboration Whitelist Entries API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "Needs a description.",
+      "type": "text/plain"
+    }
+  }
+}

@@ -1,0 +1,71 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Box Authorize Authorization Folder Locks API",
+    "version": "1.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Folder Locks",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Box List folder locks",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/folder_locks",
+            "params": [
+              {
+                "name": "folder_id",
+                "value": "12345",
+                "type": "query",
+                "description": "The unique identifier that represent a folder.\n\nThe ID for any folder can be determined\nby visiting this folder in the web application\nand copying the ID from the URL. For example,\nfor the URL `https://*.app.box.com/folder/123`\nthe `folder_id` is `123`.\n\nThe root folder of a Box account is\nalways represented by the ID `0`."
+              }
+            ]
+          },
+          "docs": "Retrieves folder lock details for a given folder.\n\nYou must be authenticated as the owner or co-owner of the folder to\nuse this endpoint."
+        },
+        {
+          "info": {
+            "name": "Box Create folder lock",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/folder_locks",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Creates a folder lock on a folder, preventing it from being moved and/or\ndeleted.\n\nYou must be authenticated as the owner or co-owner of the folder to\nuse this endpoint."
+        },
+        {
+          "info": {
+            "name": "Box Delete folder lock",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "{{baseUrl}}/folder_locks/:folder_lock_id",
+            "params": [
+              {
+                "name": "folder_lock_id",
+                "value": "12345",
+                "type": "path",
+                "description": "The ID of the folder lock."
+              }
+            ]
+          },
+          "docs": "Deletes a folder lock on a given folder.\n\nYou must be authenticated as the owner or co-owner of the folder to\nuse this endpoint."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

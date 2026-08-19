@@ -1,0 +1,119 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Box Authorize Authorization Webhooks API",
+    "version": "1.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Webhooks",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Box List all webhooks",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/webhooks",
+            "params": [
+              {
+                "name": "marker",
+                "value": "JV9IRGZmieiBasejOG9yDCRNgd2ymoZIbjsxbJMjIs3kioVii",
+                "type": "query",
+                "description": "Defines the position marker at which to begin returning results. This is\nused when paginating using marker-based pagination.\n\nThis requires `usemarker` to be set to `true`."
+              },
+              {
+                "name": "limit",
+                "value": "1000",
+                "type": "query",
+                "description": "The maximum number of items to return per page."
+              }
+            ]
+          },
+          "docs": "Returns all defined webhooks for the requesting application.\n\nThis API only returns webhooks that are applied to files or folders that are\nowned by the authenticated user. This means that an admin can not see webhooks\ncreated by a service account unless the admin has access to those folders, and\nvice versa."
+        },
+        {
+          "info": {
+            "name": "Box Create webhook",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/webhooks",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Creates a webhook."
+        },
+        {
+          "info": {
+            "name": "Box Get webhook",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/webhooks/:webhook_id",
+            "params": [
+              {
+                "name": "webhook_id",
+                "value": "3321123",
+                "type": "path",
+                "description": "The ID of the webhook."
+              }
+            ]
+          },
+          "docs": "Retrieves a specific webhook"
+        },
+        {
+          "info": {
+            "name": "Box Update webhook",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "{{baseUrl}}/webhooks/:webhook_id",
+            "params": [
+              {
+                "name": "webhook_id",
+                "value": "3321123",
+                "type": "path",
+                "description": "The ID of the webhook."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Updates a webhook."
+        },
+        {
+          "info": {
+            "name": "Box Remove webhook",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "{{baseUrl}}/webhooks/:webhook_id",
+            "params": [
+              {
+                "name": "webhook_id",
+                "value": "3321123",
+                "type": "path",
+                "description": "The ID of the webhook."
+              }
+            ]
+          },
+          "docs": "Deletes a webhook."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

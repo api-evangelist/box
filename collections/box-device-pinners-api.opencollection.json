@@ -1,0 +1,93 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Box Authorize Authorization Device Pinners API",
+    "version": "1.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Device Pinners",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Box Get device pin",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/device_pinners/:device_pinner_id",
+            "params": [
+              {
+                "name": "device_pinner_id",
+                "value": "2324234",
+                "type": "path",
+                "description": "The ID of the device pin"
+              }
+            ]
+          },
+          "docs": "Retrieves information about an individual device pin."
+        },
+        {
+          "info": {
+            "name": "Box Remove device pin",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "{{baseUrl}}/device_pinners/:device_pinner_id",
+            "params": [
+              {
+                "name": "device_pinner_id",
+                "value": "2324234",
+                "type": "path",
+                "description": "The ID of the device pin"
+              }
+            ]
+          },
+          "docs": "Deletes an individual device pin."
+        },
+        {
+          "info": {
+            "name": "Box List enterprise device pins",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/enterprises/:enterprise_id/device_pinners",
+            "params": [
+              {
+                "name": "enterprise_id",
+                "value": "3442311",
+                "type": "path",
+                "description": "The ID of the enterprise"
+              },
+              {
+                "name": "marker",
+                "value": "JV9IRGZmieiBasejOG9yDCRNgd2ymoZIbjsxbJMjIs3kioVii",
+                "type": "query",
+                "description": "Defines the position marker at which to begin returning results. This is\nused when paginating using marker-based pagination.\n\nThis requires `usemarker` to be set to `true`."
+              },
+              {
+                "name": "limit",
+                "value": "1000",
+                "type": "query",
+                "description": "The maximum number of items to return per page."
+              },
+              {
+                "name": "direction",
+                "value": "ASC",
+                "type": "query",
+                "description": "The direction to sort results in. This can be either in alphabetical ascending\n(`ASC`) or descending (`DESC`) order."
+              }
+            ]
+          },
+          "docs": "Retrieves all the device pins within an enterprise.\n\nThe user must have admin privileges, and the application\nneeds the \"manage enterprise\" scope to make this call."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

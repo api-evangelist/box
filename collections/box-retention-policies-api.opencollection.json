@@ -1,0 +1,192 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Box Authorize Authorization Retention Policies API",
+    "version": "1.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Retention Policies",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Box List retention policies",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/retention_policies",
+            "params": [
+              {
+                "name": "policy_name",
+                "value": "Sales Policy",
+                "type": "query",
+                "description": "Filters results by a case sensitive prefix of the name of\nretention policies."
+              },
+              {
+                "name": "policy_type",
+                "value": "finite",
+                "type": "query",
+                "description": "Filters results by the type of retention policy."
+              },
+              {
+                "name": "created_by_user_id",
+                "value": "21312321",
+                "type": "query",
+                "description": "Filters results by the ID of the user who created policy."
+              },
+              {
+                "name": "fields",
+                "value": "id,type,name",
+                "type": "query",
+                "description": "A comma-separated list of attributes to include in the\nresponse. This can be used to request fields that are\nnot normally returned in a standard response.\n\nBe aware that specifying this parameter will have the\neffect that none of the standard fields are returned in\nthe response unless explicitly specified, instead only\nfields for the mini representation are returned, additional\nto the fields requested."
+              },
+              {
+                "name": "limit",
+                "value": "1000",
+                "type": "query",
+                "description": "The maximum number of items to return per page."
+              },
+              {
+                "name": "marker",
+                "value": "JV9IRGZmieiBasejOG9yDCRNgd2ymoZIbjsxbJMjIs3kioVii",
+                "type": "query",
+                "description": "Defines the position marker at which to begin returning results. This is\nused when paginating using marker-based pagination."
+              }
+            ]
+          },
+          "docs": "Retrieves all of the retention policies for an enterprise."
+        },
+        {
+          "info": {
+            "name": "Box Create retention policy",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/retention_policies",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Creates a retention policy."
+        },
+        {
+          "info": {
+            "name": "Box Get retention policy",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/retention_policies/:retention_policy_id",
+            "params": [
+              {
+                "name": "retention_policy_id",
+                "value": "982312",
+                "type": "path",
+                "description": "The ID of the retention policy."
+              },
+              {
+                "name": "fields",
+                "value": "id,type,name",
+                "type": "query",
+                "description": "A comma-separated list of attributes to include in the\nresponse. This can be used to request fields that are\nnot normally returned in a standard response.\n\nBe aware that specifying this parameter will have the\neffect that none of the standard fields are returned in\nthe response unless explicitly specified, instead only\nfields for the mini representation are returned, additional\nto the fields requested."
+              }
+            ]
+          },
+          "docs": "Retrieves a retention policy."
+        },
+        {
+          "info": {
+            "name": "Box Update retention policy",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "{{baseUrl}}/retention_policies/:retention_policy_id",
+            "params": [
+              {
+                "name": "retention_policy_id",
+                "value": "982312",
+                "type": "path",
+                "description": "The ID of the retention policy."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Updates a retention policy."
+        },
+        {
+          "info": {
+            "name": "Box Delete retention policy",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "{{baseUrl}}/retention_policies/:retention_policy_id",
+            "params": [
+              {
+                "name": "retention_policy_id",
+                "value": "982312",
+                "type": "path",
+                "description": "The ID of the retention policy."
+              }
+            ]
+          },
+          "docs": "Permanently deletes a retention policy."
+        },
+        {
+          "info": {
+            "name": "Box List retention policy assignments",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/retention_policies/:retention_policy_id/assignments",
+            "params": [
+              {
+                "name": "retention_policy_id",
+                "value": "982312",
+                "type": "path",
+                "description": "The ID of the retention policy."
+              },
+              {
+                "name": "type",
+                "value": "metadata_template",
+                "type": "query",
+                "description": "The type of the retention policy assignment to retrieve."
+              },
+              {
+                "name": "fields",
+                "value": "id,type,name",
+                "type": "query",
+                "description": "A comma-separated list of attributes to include in the\nresponse. This can be used to request fields that are\nnot normally returned in a standard response.\n\nBe aware that specifying this parameter will have the\neffect that none of the standard fields are returned in\nthe response unless explicitly specified, instead only\nfields for the mini representation are returned, additional\nto the fields requested."
+              },
+              {
+                "name": "marker",
+                "value": "JV9IRGZmieiBasejOG9yDCRNgd2ymoZIbjsxbJMjIs3kioVii",
+                "type": "query",
+                "description": "Defines the position marker at which to begin returning results. This is\nused when paginating using marker-based pagination."
+              },
+              {
+                "name": "limit",
+                "value": "1000",
+                "type": "query",
+                "description": "The maximum number of items to return per page."
+              }
+            ]
+          },
+          "docs": "Returns a list of all retention policy assignments associated with a specified\nretention policy."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

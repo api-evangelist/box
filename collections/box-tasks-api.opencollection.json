@@ -1,0 +1,132 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Box Authorize Authorization Tasks API",
+    "version": "1.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Tasks",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Box List tasks on file",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/files/:file_id/tasks",
+            "params": [
+              {
+                "name": "file_id",
+                "value": "12345",
+                "type": "path",
+                "description": "The unique identifier that represents a file.\n\nThe ID for any file can be determined\nby visiting a file in the web application\nand copying the ID from the URL. For example,\nfor the URL `https://*.app.box.com/files/123`\nthe `file_id` is `123`."
+              }
+            ]
+          },
+          "docs": "Retrieves a list of all the tasks for a file. This\nendpoint does not support pagination."
+        },
+        {
+          "info": {
+            "name": "Box Create task",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/tasks",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Creates a single task on a file. This task is not assigned to any user and\nwill need to be assigned separately."
+        },
+        {
+          "info": {
+            "name": "Box Get task",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/tasks/:task_id",
+            "params": [
+              {
+                "name": "task_id",
+                "value": "12345",
+                "type": "path",
+                "description": "The ID of the task."
+              }
+            ]
+          },
+          "docs": "Retrieves information about a specific task."
+        },
+        {
+          "info": {
+            "name": "Box Update task",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "{{baseUrl}}/tasks/:task_id",
+            "params": [
+              {
+                "name": "task_id",
+                "value": "12345",
+                "type": "path",
+                "description": "The ID of the task."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Updates a task. This can be used to update a task's configuration, or to\nupdate its completion state."
+        },
+        {
+          "info": {
+            "name": "Box Remove task",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "{{baseUrl}}/tasks/:task_id",
+            "params": [
+              {
+                "name": "task_id",
+                "value": "12345",
+                "type": "path",
+                "description": "The ID of the task."
+              }
+            ]
+          },
+          "docs": "Removes a task from a file."
+        },
+        {
+          "info": {
+            "name": "Box List task assignments",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/tasks/:task_id/assignments",
+            "params": [
+              {
+                "name": "task_id",
+                "value": "12345",
+                "type": "path",
+                "description": "The ID of the task."
+              }
+            ]
+          },
+          "docs": "Lists all of the assignments for a given task."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

@@ -1,0 +1,581 @@
+{
+  "item": [
+    {
+      "id": "9aa47f97-9a9f-4ff3-a72a-3744325e08b0",
+      "name": "Terms of Service",
+      "description": {
+        "content": "A set of endpoints used to\nmanage terms of service agreements.",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "84dc534c-5dc6-408c-84db-d19c3fca6429",
+          "name": "Box List terms of services",
+          "request": {
+            "name": "Box List terms of services",
+            "description": {
+              "content": "Returns the current terms of service text and settings\nfor the enterprise.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "terms_of_services"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "tos_type",
+                  "value": "<string>",
+                  "description": "Limits the results to the terms of service of the given type."
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "6f1fc734-5eea-4370-8e84-f0f00c061e3e",
+              "name": "Returns a collection of terms of service text and settings for the\nenterprise.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "terms_of_services"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "tos_type",
+                      "value": "managed"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"total_count\": 2,\n  \"entries\": [\n    {\n      \"id\": \"11446498\",\n      \"type\": \"terms_of_service\",\n      \"status\": \"enabled\",\n      \"enterprise\": {\n        \"id\": \"11446498\",\n        \"type\": \"enterprise\",\n        \"name\": \"Acme Inc.\"\n      },\n      \"tos_type\": \"managed\",\n      \"text\": \"By using this service, you agree to ...\",\n      \"created_at\": \"2012-12-12T10:53:43-08:00\",\n      \"modified_at\": \"2012-12-12T10:53:43-08:00\"\n    },\n    {\n      \"id\": \"11446498\",\n      \"type\": \"terms_of_service\",\n      \"status\": \"enabled\",\n      \"enterprise\": {\n        \"id\": \"11446498\",\n        \"type\": \"enterprise\",\n        \"name\": \"Acme Inc.\"\n      },\n      \"tos_type\": \"managed\",\n      \"text\": \"By using this service, you agree to ...\",\n      \"created_at\": \"2012-12-12T10:53:43-08:00\",\n      \"modified_at\": \"2012-12-12T10:53:43-08:00\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "04d5d36e-140b-4b0c-b876-578774e6a453",
+              "name": "An unexpected client error.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "terms_of_services"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "tos_type",
+                      "value": "managed"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"type\": \"error\",\n  \"status\": 400,\n  \"code\": \"item_name_invalid\",\n  \"message\": \"Method Not Allowed\",\n  \"context_info\": {\n    \"message\": \"Something went wrong.\"\n  },\n  \"help_url\": \"https://developer.box.com/guides/api-calls/permissions-and-errors/common-errors/\",\n  \"request_id\": \"abcdef123456\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "e8cfbd39-7d2c-4f6c-87fb-b577f5d1e4d4",
+          "name": "Box Create terms of service",
+          "request": {
+            "name": "Box Create terms of service",
+            "description": {
+              "content": "Creates a terms of service for a given enterprise\nand type of user.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "terms_of_services"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"status\": \"<string>\",\n  \"text\": \"<string>\",\n  \"tos_type\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "a7f5d028-e40a-4482-b870-6b82f9199bb3",
+              "name": "Returns a new task object",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "terms_of_services"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"status\": \"enabled\",\n  \"text\": \"By collaborating on this file you are accepting...\",\n  \"tos_type\": \"managed\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": \"11446498\",\n  \"type\": \"terms_of_service\",\n  \"status\": \"enabled\",\n  \"enterprise\": {\n    \"id\": \"11446498\",\n    \"type\": \"enterprise\",\n    \"name\": \"Acme Inc.\"\n  },\n  \"tos_type\": \"managed\",\n  \"text\": \"By using this service, you agree to ...\",\n  \"created_at\": \"2012-12-12T10:53:43-08:00\",\n  \"modified_at\": \"2012-12-12T10:53:43-08:00\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "b6efb696-ac97-4e02-b7f1-dd03ac9a651a",
+              "name": "An unexpected client error.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "terms_of_services"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"status\": \"enabled\",\n  \"text\": \"By collaborating on this file you are accepting...\",\n  \"tos_type\": \"managed\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"type\": \"error\",\n  \"status\": 400,\n  \"code\": \"item_name_invalid\",\n  \"message\": \"Method Not Allowed\",\n  \"context_info\": {\n    \"message\": \"Something went wrong.\"\n  },\n  \"help_url\": \"https://developer.box.com/guides/api-calls/permissions-and-errors/common-errors/\",\n  \"request_id\": \"abcdef123456\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "1e62e5ec-ac8b-44c6-bd72-9343313aabeb",
+          "name": "Box Get terms of service",
+          "request": {
+            "name": "Box Get terms of service",
+            "description": {
+              "content": "Fetches a specific terms of service.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "terms_of_services",
+                ":terms_of_service_id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "terms_of_service_id",
+                  "description": "(Required) The ID of the terms of service."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "b4f88fb9-c8a6-4aef-a172-4023d84ba52d",
+              "name": "Returns a terms of service object.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "terms_of_services",
+                    ":terms_of_service_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "terms_of_service_id",
+                      "description": "(Required) The ID of the terms of service."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": \"11446498\",\n  \"type\": \"terms_of_service\",\n  \"status\": \"enabled\",\n  \"enterprise\": {\n    \"id\": \"11446498\",\n    \"type\": \"enterprise\",\n    \"name\": \"Acme Inc.\"\n  },\n  \"tos_type\": \"managed\",\n  \"text\": \"By using this service, you agree to ...\",\n  \"created_at\": \"2012-12-12T10:53:43-08:00\",\n  \"modified_at\": \"2012-12-12T10:53:43-08:00\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "538b84a9-e3e4-4051-91bd-22250229d04c",
+              "name": "An unexpected client error.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "terms_of_services",
+                    ":terms_of_service_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "terms_of_service_id",
+                      "description": "(Required) The ID of the terms of service."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"type\": \"error\",\n  \"status\": 400,\n  \"code\": \"item_name_invalid\",\n  \"message\": \"Method Not Allowed\",\n  \"context_info\": {\n    \"message\": \"Something went wrong.\"\n  },\n  \"help_url\": \"https://developer.box.com/guides/api-calls/permissions-and-errors/common-errors/\",\n  \"request_id\": \"abcdef123456\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "abf5b8b8-3bca-4e95-b0fc-0cd99abf7d79",
+          "name": "Box Update terms of service",
+          "request": {
+            "name": "Box Update terms of service",
+            "description": {
+              "content": "Updates a specific terms of service.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "terms_of_services",
+                ":terms_of_service_id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "terms_of_service_id",
+                  "description": "(Required) The ID of the terms of service."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "PUT",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"status\": \"<string>\",\n  \"text\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "11515f8f-0043-43c3-acd9-6a35d18efe88",
+              "name": "Returns an updated terms of service object.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "terms_of_services",
+                    ":terms_of_service_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "terms_of_service_id",
+                      "description": "(Required) The ID of the terms of service."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"status\": \"enabled\",\n  \"text\": \"By collaborating on this file you are accepting...\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": \"11446498\",\n  \"type\": \"terms_of_service\",\n  \"status\": \"enabled\",\n  \"enterprise\": {\n    \"id\": \"11446498\",\n    \"type\": \"enterprise\",\n    \"name\": \"Acme Inc.\"\n  },\n  \"tos_type\": \"managed\",\n  \"text\": \"By using this service, you agree to ...\",\n  \"created_at\": \"2012-12-12T10:53:43-08:00\",\n  \"modified_at\": \"2012-12-12T10:53:43-08:00\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "b7f88bf3-58d7-4cff-95a7-3328eb49a3cf",
+              "name": "An unexpected client error.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "terms_of_services",
+                    ":terms_of_service_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "terms_of_service_id",
+                      "description": "(Required) The ID of the terms of service."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"status\": \"enabled\",\n  \"text\": \"By collaborating on this file you are accepting...\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"type\": \"error\",\n  \"status\": 400,\n  \"code\": \"item_name_invalid\",\n  \"message\": \"Method Not Allowed\",\n  \"context_info\": {\n    \"message\": \"Something went wrong.\"\n  },\n  \"help_url\": \"https://developer.box.com/guides/api-calls/permissions-and-errors/common-errors/\",\n  \"request_id\": \"abcdef123456\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "/",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "ccb27993-6f6e-418d-9ef7-3a8e0e965c5d",
+    "name": "Box Authorize Authorization Terms of Service API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "Needs a description.",
+      "type": "text/plain"
+    }
+  }
+}

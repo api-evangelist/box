@@ -1,0 +1,85 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Box Authorize Authorization User Avatars API",
+    "version": "1.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "User Avatars",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Box Get user avatar",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/users/:user_id/avatar",
+            "params": [
+              {
+                "name": "user_id",
+                "value": "12345",
+                "type": "path",
+                "description": "The ID of the user."
+              }
+            ]
+          },
+          "docs": "Retrieves an image of a the user's avatar."
+        },
+        {
+          "info": {
+            "name": "Box Add or update user avatar",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/users/:user_id/avatar",
+            "params": [
+              {
+                "name": "user_id",
+                "value": "12345",
+                "type": "path",
+                "description": "The ID of the user."
+              }
+            ],
+            "body": {
+              "type": "multipart-form",
+              "data": [
+                {
+                  "name": "pic",
+                  "type": "text",
+                  "value": ""
+                }
+              ]
+            }
+          },
+          "docs": "Adds or updates a user avatar."
+        },
+        {
+          "info": {
+            "name": "Box Delete user avatar",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "{{baseUrl}}/users/:user_id/avatar",
+            "params": [
+              {
+                "name": "user_id",
+                "value": "12345",
+                "type": "path",
+                "description": "The ID of the user."
+              }
+            ]
+          },
+          "docs": "Removes an existing user avatar.\nYou cannot reverse this operation."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

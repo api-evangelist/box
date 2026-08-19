@@ -1,0 +1,1480 @@
+{
+  "item": [
+    {
+      "id": "b2e9993a-adbd-43d5-b832-e15ae9c2687f",
+      "name": "Authorization",
+      "description": {
+        "content": "A set of endpoints used to\nmanage user authorization process.",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "3a24ef9e-fd06-4666-b5c3-761ea8667156",
+          "name": "Box Authorize user",
+          "request": {
+            "name": "Box Authorize user",
+            "description": {
+              "content": "Authorize a user by sending them through the [Box](https://box.com)\nwebsite and request their permission to act on their behalf.\n\nThis is the first step when authenticating a user using\nOAuth 2.0. To request a user's authorization to use the Box APIs\non their behalf you will need to send a user to the URL with this\nformat.",
+              "type": "text/plain"
+            },
+            "url": {
+              "protocol": "https",
+              "path": [
+                "api",
+                "oauth2",
+                "authorize"
+              ],
+              "host": [
+                "account",
+                "box",
+                "com"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "response_type",
+                  "value": "<token>",
+                  "description": "(Required) The type of response we'd like to receive."
+                },
+                {
+                  "disabled": false,
+                  "key": "client_id",
+                  "value": "<string>",
+                  "description": "(Required) The Client ID of the application that is requesting to authenticate\nthe user. To get the Client ID for your application, log in to your\nBox developer console and click the **Edit Application** link for\nthe application you're working with. In the OAuth 2.0 Parameters section\nof the configuration page, find the item labelled `client_id`. The\ntext of that item is your application's Client ID."
+                },
+                {
+                  "disabled": false,
+                  "key": "redirect_uri",
+                  "value": "<url>",
+                  "description": "The URI to which Box redirects the browser after the user has granted\nor denied the application permission. This URI match one of the redirect\nURIs in the configuration of your application. It must be a\nvalid HTTPS URI and it needs to be able to handle the redirection to\ncomplete the next step in the OAuth 2.0 flow.\nAlthough this parameter is optional, it must be a part of the\nauthorization URL if you configured multiple redirect URIs\nfor the application in the developer console. A missing parameter causes\na `redirect_uri_missing` error after the user grants application access."
+                },
+                {
+                  "disabled": false,
+                  "key": "state",
+                  "value": "<string>",
+                  "description": "A custom string of your choice. Box will pass the same string to\nthe redirect URL when authentication is complete. This parameter\ncan be used to identify a user on redirect, as well as protect\nagainst hijacked sessions and other exploits."
+                },
+                {
+                  "disabled": false,
+                  "key": "scope",
+                  "value": "<string>",
+                  "description": "A space-separated list of application scopes you'd like to\nauthenticate the user for. This defaults to all the scopes configured\nfor the application in its configuration page."
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "text/html"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "759cb6b9-743a-4112-bdb0-720f46029e54",
+              "name": "Does not return any data, but rather should be used in the browser.",
+              "originalRequest": {
+                "url": {
+                  "protocol": "https",
+                  "path": [
+                    "api",
+                    "oauth2",
+                    "authorize"
+                  ],
+                  "host": [
+                    "account",
+                    "box",
+                    "com"
+                  ],
+                  "query": [
+                    {
+                      "key": "response_type",
+                      "value": "code"
+                    },
+                    {
+                      "key": "client_id",
+                      "value": "ly1nj6n11vionaie65emwzk575hnnmrk"
+                    },
+                    {
+                      "key": "redirect_uri",
+                      "value": "http://example.com/auth/callback"
+                    },
+                    {
+                      "key": "state",
+                      "value": "my_state"
+                    },
+                    {
+                      "key": "scope",
+                      "value": "admin_readwrite"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "text/html"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/html"
+                }
+              ],
+              "body": "string",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "818a9540-8a08-41b4-86d1-165191af48bc",
+              "name": "Does not return any data, but rather should be used in the browser.",
+              "originalRequest": {
+                "url": {
+                  "protocol": "https",
+                  "path": [
+                    "api",
+                    "oauth2",
+                    "authorize"
+                  ],
+                  "host": [
+                    "account",
+                    "box",
+                    "com"
+                  ],
+                  "query": [
+                    {
+                      "key": "response_type",
+                      "value": "code"
+                    },
+                    {
+                      "key": "client_id",
+                      "value": "ly1nj6n11vionaie65emwzk575hnnmrk"
+                    },
+                    {
+                      "key": "redirect_uri",
+                      "value": "http://example.com/auth/callback"
+                    },
+                    {
+                      "key": "state",
+                      "value": "my_state"
+                    },
+                    {
+                      "key": "scope",
+                      "value": "admin_readwrite"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "text/html"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/html"
+                }
+              ],
+              "body": "string",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "8583b04f-4c0a-4db9-8959-379d30afde98",
+          "name": "Box Request access token",
+          "request": {
+            "name": "Box Request access token",
+            "description": {
+              "content": "Request an Access Token using either a client-side obtained OAuth 2.0\nauthorization code or a server-side JWT assertion.\n\nAn Access Token is a string that enables Box to verify that a\nrequest belongs to an authorized session. In the normal order of\noperations you will begin by requesting authentication from the\n[authorize](#get-authorize) endpoint and Box will send you an\nauthorization code.\n\nYou will then send this code to this endpoint to exchange it for\nan Access Token. The returned Access Token can then be used to to make\nBox API calls.",
+              "type": "text/plain"
+            },
+            "url": {
+              "protocol": "https",
+              "path": [
+                "oauth2",
+                "token"
+              ],
+              "host": [
+                "api",
+                "box",
+                "com"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/x-www-form-urlencoded"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "urlencoded",
+              "urlencoded": [
+                {
+                  "disabled": false,
+                  "key": "grant_type",
+                  "value": "<urn>",
+                  "description": "(Required) The type of request being made, either using a client-side obtained\nauthorization code, a refresh token, a JWT assertion, client credentials\ngrant or another access token for the purpose of downscoping a token."
+                },
+                {
+                  "disabled": false,
+                  "key": "client_id",
+                  "value": "<string>",
+                  "description": "The Client ID of the application requesting an access token.\n\nUsed in combination with `authorization_code`, `client_credentials`, or\n`urn:ietf:params:oauth:grant-type:jwt-bearer` as the `grant_type`."
+                },
+                {
+                  "disabled": false,
+                  "key": "client_secret",
+                  "value": "<string>",
+                  "description": "The client secret of the application requesting an access token.\n\nUsed in combination with `authorization_code`, `client_credentials`, or\n`urn:ietf:params:oauth:grant-type:jwt-bearer` as the `grant_type`."
+                },
+                {
+                  "disabled": false,
+                  "key": "code",
+                  "value": "<token>",
+                  "description": "The client-side authorization code passed to your application by\nBox in the browser redirect after the user has successfully\ngranted your application permission to make API calls on their\nbehalf.\n\nUsed in combination with `authorization_code` as the `grant_type`."
+                },
+                {
+                  "disabled": false,
+                  "key": "refresh_token",
+                  "value": "<token>",
+                  "description": "A refresh token used to get a new access token with.\n\nUsed in combination with `refresh_token` as the `grant_type`."
+                },
+                {
+                  "disabled": false,
+                  "key": "assertion",
+                  "value": "<jwt>",
+                  "description": "A JWT assertion for which to request a new access token.\n\nUsed in combination with `urn:ietf:params:oauth:grant-type:jwt-bearer`\nas the `grant_type`."
+                },
+                {
+                  "disabled": false,
+                  "key": "subject_token",
+                  "value": "<token>",
+                  "description": "The token to exchange for a downscoped token. This can be a regular\naccess token, a JWT assertion, or an app token.\n\nUsed in combination with `urn:ietf:params:oauth:grant-type:token-exchange`\nas the `grant_type`."
+                },
+                {
+                  "disabled": false,
+                  "key": "subject_token_type",
+                  "value": "<string>",
+                  "description": "The type of `subject_token` passed in.\n\nUsed in combination with `urn:ietf:params:oauth:grant-type:token-exchange`\nas the `grant_type`."
+                },
+                {
+                  "disabled": false,
+                  "key": "actor_token",
+                  "value": "<token>",
+                  "description": "The token used to create an annotator token.\nThis is a JWT assertion.\n\nUsed in combination with `urn:ietf:params:oauth:grant-type:token-exchange`\nas the `grant_type`."
+                },
+                {
+                  "disabled": false,
+                  "key": "actor_token_type",
+                  "value": "<urn>",
+                  "description": "The type of `actor_token` passed in.\n\nUsed in combination with `urn:ietf:params:oauth:grant-type:token-exchange`\nas the `grant_type`."
+                },
+                {
+                  "disabled": false,
+                  "key": "scope",
+                  "value": "<space_delimited_list>",
+                  "description": "The space-delimited list of scopes that you want apply to the\nnew access token.\n\nThe `subject_token` will need to have all of these scopes or\nthe call will error with **401 Unauthorized**."
+                },
+                {
+                  "disabled": false,
+                  "key": "resource",
+                  "value": "<url>",
+                  "description": "Full URL for the file that the token should be generated for."
+                },
+                {
+                  "disabled": false,
+                  "key": "box_subject_type",
+                  "value": "<string>",
+                  "description": "Used in combination with `client_credentials` as the `grant_type`."
+                },
+                {
+                  "disabled": false,
+                  "key": "box_subject_id",
+                  "value": "<string>",
+                  "description": "Used in combination with `client_credentials` as the `grant_type`.\nValue is determined by `box_subject_type`. If `user` use user ID and if\n`enterprise` use enterprise ID."
+                },
+                {
+                  "disabled": false,
+                  "key": "box_shared_link",
+                  "value": "<url>",
+                  "description": "Full URL of the shared link on the file or folder\nthat the token should be generated for."
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "50e04744-9484-40c6-ab8f-d64b4e9e41e3",
+              "name": "Returns a new Access Token that can be used to make authenticated\nAPI calls by passing along the token in a authorization header as\nfollows `Authorization: Bearer <Token>`.",
+              "originalRequest": {
+                "url": {
+                  "protocol": "https",
+                  "path": [
+                    "oauth2",
+                    "token"
+                  ],
+                  "host": [
+                    "api",
+                    "box",
+                    "com"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "urlencoded",
+                  "urlencoded": [
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "(Required) The type of request being made, either using a client-side obtained\nauthorization code, a refresh token, a JWT assertion, client credentials\ngrant or another access token for the purpose of downscoping a token.",
+                        "type": "text/plain"
+                      },
+                      "key": "grant_type",
+                      "value": "authorization_code"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "The Client ID of the application requesting an access token.\n\nUsed in combination with `authorization_code`, `client_credentials`, or\n`urn:ietf:params:oauth:grant-type:jwt-bearer` as the `grant_type`.",
+                        "type": "text/plain"
+                      },
+                      "key": "client_id",
+                      "value": "ly1nj6n11vionaie65emwzk575hnnmrk"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "The client secret of the application requesting an access token.\n\nUsed in combination with `authorization_code`, `client_credentials`, or\n`urn:ietf:params:oauth:grant-type:jwt-bearer` as the `grant_type`.",
+                        "type": "text/plain"
+                      },
+                      "key": "client_secret",
+                      "value": "hOzsTeFlT6ko0dme22uGbQal04SBPYc1"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "The client-side authorization code passed to your application by\nBox in the browser redirect after the user has successfully\ngranted your application permission to make API calls on their\nbehalf.\n\nUsed in combination with `authorization_code` as the `grant_type`.",
+                        "type": "text/plain"
+                      },
+                      "key": "code",
+                      "value": "n22JPxrh18m4Y0wIZPIqYZK7VRrsMTWW"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "A refresh token used to get a new access token with.\n\nUsed in combination with `refresh_token` as the `grant_type`.",
+                        "type": "text/plain"
+                      },
+                      "key": "refresh_token",
+                      "value": "c3FIOG9vSGV4VHo4QzAyg5T1JvNnJoZ3ExaVNyQWw6WjRsanRKZG5lQk9qUE1BVQ"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "A JWT assertion for which to request a new access token.\n\nUsed in combination with `urn:ietf:params:oauth:grant-type:jwt-bearer`\nas the `grant_type`.",
+                        "type": "text/plain"
+                      },
+                      "key": "assertion",
+                      "value": "xxxxx.yyyyy.zzzzz"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "The token to exchange for a downscoped token. This can be a regular\naccess token, a JWT assertion, or an app token.\n\nUsed in combination with `urn:ietf:params:oauth:grant-type:token-exchange`\nas the `grant_type`.",
+                        "type": "text/plain"
+                      },
+                      "key": "subject_token",
+                      "value": "c3FIOG9vSGV4VHo4QzAyg5T1JvNnJoZ3ExaVNyQWw6WjRsanRKZG5lQk9qUE1BVQ"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "The type of `subject_token` passed in.\n\nUsed in combination with `urn:ietf:params:oauth:grant-type:token-exchange`\nas the `grant_type`.",
+                        "type": "text/plain"
+                      },
+                      "key": "subject_token_type",
+                      "value": "urn:ietf:params:oauth:token-type:access_token"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "The token used to create an annotator token.\nThis is a JWT assertion.\n\nUsed in combination with `urn:ietf:params:oauth:grant-type:token-exchange`\nas the `grant_type`.",
+                        "type": "text/plain"
+                      },
+                      "key": "actor_token",
+                      "value": "c3FIOG9vSGV4VHo4QzAyg5T1JvNnJoZ3ExaVNyQWw6WjRsanRKZG5lQk9qUE1BVQ"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "The type of `actor_token` passed in.\n\nUsed in combination with `urn:ietf:params:oauth:grant-type:token-exchange`\nas the `grant_type`.",
+                        "type": "text/plain"
+                      },
+                      "key": "actor_token_type",
+                      "value": "urn:ietf:params:oauth:token-type:id_token"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "The space-delimited list of scopes that you want apply to the\nnew access token.\n\nThe `subject_token` will need to have all of these scopes or\nthe call will error with **401 Unauthorized**.",
+                        "type": "text/plain"
+                      },
+                      "key": "scope",
+                      "value": "item_upload item_preview base_explorer"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "Full URL for the file that the token should be generated for.",
+                        "type": "text/plain"
+                      },
+                      "key": "resource",
+                      "value": "https://api.box.com/2.0/files/123456"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "Used in combination with `client_credentials` as the `grant_type`.",
+                        "type": "text/plain"
+                      },
+                      "key": "box_subject_type",
+                      "value": "enterprise"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "Used in combination with `client_credentials` as the `grant_type`.\nValue is determined by `box_subject_type`. If `user` use user ID and if\n`enterprise` use enterprise ID.",
+                        "type": "text/plain"
+                      },
+                      "key": "box_subject_id",
+                      "value": "123456789"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "Full URL of the shared link on the file or folder\nthat the token should be generated for.",
+                        "type": "text/plain"
+                      },
+                      "key": "box_shared_link",
+                      "value": "https://cloud.box.com/s/123456"
+                    }
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"access_token\": \"c3FIOG9vSGV4VHo4QzAyg5T1JvNnJoZ3ExaVNyQWw6WjRsanRKZG5lQk9qUE1BVQ\",\n  \"expires_in\": 3600,\n  \"token_type\": \"bearer\",\n  \"restricted_to\": [\n    {\n      \"scope\": \"item_download\",\n      \"object\": {\n        \"id\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"type\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"etag\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"sequence_id\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"name\": \"Contracts\"\n      }\n    },\n    {\n      \"scope\": \"item_download\",\n      \"object\": {\n        \"id\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"type\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"etag\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"sequence_id\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"name\": \"Contracts\"\n      }\n    }\n  ],\n  \"refresh_token\": \"c3FIOG9vSGV4VHo4QzAyg5T1JvNnJoZ3ExaVNyQWw6WjRsanRKZG5lQk9qUE1BVQ\",\n  \"issued_token_type\": \"urn:ietf:params:oauth:token-type:access_token\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "aa11756e-e185-403f-88e9-1e211895f286",
+              "name": "An authentication error.",
+              "originalRequest": {
+                "url": {
+                  "protocol": "https",
+                  "path": [
+                    "oauth2",
+                    "token"
+                  ],
+                  "host": [
+                    "api",
+                    "box",
+                    "com"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "urlencoded",
+                  "urlencoded": [
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "(Required) The type of request being made, either using a client-side obtained\nauthorization code, a refresh token, a JWT assertion, client credentials\ngrant or another access token for the purpose of downscoping a token.",
+                        "type": "text/plain"
+                      },
+                      "key": "grant_type",
+                      "value": "authorization_code"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "The Client ID of the application requesting an access token.\n\nUsed in combination with `authorization_code`, `client_credentials`, or\n`urn:ietf:params:oauth:grant-type:jwt-bearer` as the `grant_type`.",
+                        "type": "text/plain"
+                      },
+                      "key": "client_id",
+                      "value": "ly1nj6n11vionaie65emwzk575hnnmrk"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "The client secret of the application requesting an access token.\n\nUsed in combination with `authorization_code`, `client_credentials`, or\n`urn:ietf:params:oauth:grant-type:jwt-bearer` as the `grant_type`.",
+                        "type": "text/plain"
+                      },
+                      "key": "client_secret",
+                      "value": "hOzsTeFlT6ko0dme22uGbQal04SBPYc1"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "The client-side authorization code passed to your application by\nBox in the browser redirect after the user has successfully\ngranted your application permission to make API calls on their\nbehalf.\n\nUsed in combination with `authorization_code` as the `grant_type`.",
+                        "type": "text/plain"
+                      },
+                      "key": "code",
+                      "value": "n22JPxrh18m4Y0wIZPIqYZK7VRrsMTWW"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "A refresh token used to get a new access token with.\n\nUsed in combination with `refresh_token` as the `grant_type`.",
+                        "type": "text/plain"
+                      },
+                      "key": "refresh_token",
+                      "value": "c3FIOG9vSGV4VHo4QzAyg5T1JvNnJoZ3ExaVNyQWw6WjRsanRKZG5lQk9qUE1BVQ"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "A JWT assertion for which to request a new access token.\n\nUsed in combination with `urn:ietf:params:oauth:grant-type:jwt-bearer`\nas the `grant_type`.",
+                        "type": "text/plain"
+                      },
+                      "key": "assertion",
+                      "value": "xxxxx.yyyyy.zzzzz"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "The token to exchange for a downscoped token. This can be a regular\naccess token, a JWT assertion, or an app token.\n\nUsed in combination with `urn:ietf:params:oauth:grant-type:token-exchange`\nas the `grant_type`.",
+                        "type": "text/plain"
+                      },
+                      "key": "subject_token",
+                      "value": "c3FIOG9vSGV4VHo4QzAyg5T1JvNnJoZ3ExaVNyQWw6WjRsanRKZG5lQk9qUE1BVQ"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "The type of `subject_token` passed in.\n\nUsed in combination with `urn:ietf:params:oauth:grant-type:token-exchange`\nas the `grant_type`.",
+                        "type": "text/plain"
+                      },
+                      "key": "subject_token_type",
+                      "value": "urn:ietf:params:oauth:token-type:access_token"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "The token used to create an annotator token.\nThis is a JWT assertion.\n\nUsed in combination with `urn:ietf:params:oauth:grant-type:token-exchange`\nas the `grant_type`.",
+                        "type": "text/plain"
+                      },
+                      "key": "actor_token",
+                      "value": "c3FIOG9vSGV4VHo4QzAyg5T1JvNnJoZ3ExaVNyQWw6WjRsanRKZG5lQk9qUE1BVQ"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "The type of `actor_token` passed in.\n\nUsed in combination with `urn:ietf:params:oauth:grant-type:token-exchange`\nas the `grant_type`.",
+                        "type": "text/plain"
+                      },
+                      "key": "actor_token_type",
+                      "value": "urn:ietf:params:oauth:token-type:id_token"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "The space-delimited list of scopes that you want apply to the\nnew access token.\n\nThe `subject_token` will need to have all of these scopes or\nthe call will error with **401 Unauthorized**.",
+                        "type": "text/plain"
+                      },
+                      "key": "scope",
+                      "value": "item_upload item_preview base_explorer"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "Full URL for the file that the token should be generated for.",
+                        "type": "text/plain"
+                      },
+                      "key": "resource",
+                      "value": "https://api.box.com/2.0/files/123456"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "Used in combination with `client_credentials` as the `grant_type`.",
+                        "type": "text/plain"
+                      },
+                      "key": "box_subject_type",
+                      "value": "enterprise"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "Used in combination with `client_credentials` as the `grant_type`.\nValue is determined by `box_subject_type`. If `user` use user ID and if\n`enterprise` use enterprise ID.",
+                        "type": "text/plain"
+                      },
+                      "key": "box_subject_id",
+                      "value": "123456789"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "Full URL of the shared link on the file or folder\nthat the token should be generated for.",
+                        "type": "text/plain"
+                      },
+                      "key": "box_shared_link",
+                      "value": "https://cloud.box.com/s/123456"
+                    }
+                  ]
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": \"invalid_client\",\n  \"error_description\": \"The client credentials are not valid\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "2324ddba-e635-4857-8ce2-c3fdf9ada56b",
+              "name": "An authentication error.",
+              "originalRequest": {
+                "url": {
+                  "protocol": "https",
+                  "path": [
+                    "oauth2",
+                    "token"
+                  ],
+                  "host": [
+                    "api",
+                    "box",
+                    "com"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "urlencoded",
+                  "urlencoded": [
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "(Required) The type of request being made, either using a client-side obtained\nauthorization code, a refresh token, a JWT assertion, client credentials\ngrant or another access token for the purpose of downscoping a token.",
+                        "type": "text/plain"
+                      },
+                      "key": "grant_type",
+                      "value": "authorization_code"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "The Client ID of the application requesting an access token.\n\nUsed in combination with `authorization_code`, `client_credentials`, or\n`urn:ietf:params:oauth:grant-type:jwt-bearer` as the `grant_type`.",
+                        "type": "text/plain"
+                      },
+                      "key": "client_id",
+                      "value": "ly1nj6n11vionaie65emwzk575hnnmrk"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "The client secret of the application requesting an access token.\n\nUsed in combination with `authorization_code`, `client_credentials`, or\n`urn:ietf:params:oauth:grant-type:jwt-bearer` as the `grant_type`.",
+                        "type": "text/plain"
+                      },
+                      "key": "client_secret",
+                      "value": "hOzsTeFlT6ko0dme22uGbQal04SBPYc1"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "The client-side authorization code passed to your application by\nBox in the browser redirect after the user has successfully\ngranted your application permission to make API calls on their\nbehalf.\n\nUsed in combination with `authorization_code` as the `grant_type`.",
+                        "type": "text/plain"
+                      },
+                      "key": "code",
+                      "value": "n22JPxrh18m4Y0wIZPIqYZK7VRrsMTWW"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "A refresh token used to get a new access token with.\n\nUsed in combination with `refresh_token` as the `grant_type`.",
+                        "type": "text/plain"
+                      },
+                      "key": "refresh_token",
+                      "value": "c3FIOG9vSGV4VHo4QzAyg5T1JvNnJoZ3ExaVNyQWw6WjRsanRKZG5lQk9qUE1BVQ"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "A JWT assertion for which to request a new access token.\n\nUsed in combination with `urn:ietf:params:oauth:grant-type:jwt-bearer`\nas the `grant_type`.",
+                        "type": "text/plain"
+                      },
+                      "key": "assertion",
+                      "value": "xxxxx.yyyyy.zzzzz"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "The token to exchange for a downscoped token. This can be a regular\naccess token, a JWT assertion, or an app token.\n\nUsed in combination with `urn:ietf:params:oauth:grant-type:token-exchange`\nas the `grant_type`.",
+                        "type": "text/plain"
+                      },
+                      "key": "subject_token",
+                      "value": "c3FIOG9vSGV4VHo4QzAyg5T1JvNnJoZ3ExaVNyQWw6WjRsanRKZG5lQk9qUE1BVQ"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "The type of `subject_token` passed in.\n\nUsed in combination with `urn:ietf:params:oauth:grant-type:token-exchange`\nas the `grant_type`.",
+                        "type": "text/plain"
+                      },
+                      "key": "subject_token_type",
+                      "value": "urn:ietf:params:oauth:token-type:access_token"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "The token used to create an annotator token.\nThis is a JWT assertion.\n\nUsed in combination with `urn:ietf:params:oauth:grant-type:token-exchange`\nas the `grant_type`.",
+                        "type": "text/plain"
+                      },
+                      "key": "actor_token",
+                      "value": "c3FIOG9vSGV4VHo4QzAyg5T1JvNnJoZ3ExaVNyQWw6WjRsanRKZG5lQk9qUE1BVQ"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "The type of `actor_token` passed in.\n\nUsed in combination with `urn:ietf:params:oauth:grant-type:token-exchange`\nas the `grant_type`.",
+                        "type": "text/plain"
+                      },
+                      "key": "actor_token_type",
+                      "value": "urn:ietf:params:oauth:token-type:id_token"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "The space-delimited list of scopes that you want apply to the\nnew access token.\n\nThe `subject_token` will need to have all of these scopes or\nthe call will error with **401 Unauthorized**.",
+                        "type": "text/plain"
+                      },
+                      "key": "scope",
+                      "value": "item_upload item_preview base_explorer"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "Full URL for the file that the token should be generated for.",
+                        "type": "text/plain"
+                      },
+                      "key": "resource",
+                      "value": "https://api.box.com/2.0/files/123456"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "Used in combination with `client_credentials` as the `grant_type`.",
+                        "type": "text/plain"
+                      },
+                      "key": "box_subject_type",
+                      "value": "enterprise"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "Used in combination with `client_credentials` as the `grant_type`.\nValue is determined by `box_subject_type`. If `user` use user ID and if\n`enterprise` use enterprise ID.",
+                        "type": "text/plain"
+                      },
+                      "key": "box_subject_id",
+                      "value": "123456789"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "Full URL of the shared link on the file or folder\nthat the token should be generated for.",
+                        "type": "text/plain"
+                      },
+                      "key": "box_shared_link",
+                      "value": "https://cloud.box.com/s/123456"
+                    }
+                  ]
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": \"invalid_client\",\n  \"error_description\": \"The client credentials are not valid\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "83447100-3143-400d-be7d-a1a9b2f8d8b1",
+          "name": "Box Refresh access token",
+          "request": {
+            "name": "Box Refresh access token",
+            "description": {
+              "content": "Refresh an Access Token using its client ID, secret, and refresh token.",
+              "type": "text/plain"
+            },
+            "url": {
+              "protocol": "https",
+              "path": [
+                "oauth2",
+                "token"
+              ],
+              "hash": "refresh",
+              "host": [
+                "api",
+                "box",
+                "com"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/x-www-form-urlencoded"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "urlencoded",
+              "urlencoded": [
+                {
+                  "disabled": false,
+                  "key": "grant_type",
+                  "value": "<urn>",
+                  "description": "(Required) The type of request being made, in this case a refresh request."
+                },
+                {
+                  "disabled": false,
+                  "key": "client_id",
+                  "value": "<string>",
+                  "description": "(Required) The client ID of the application requesting to refresh the token."
+                },
+                {
+                  "disabled": false,
+                  "key": "client_secret",
+                  "value": "<string>",
+                  "description": "(Required) The client secret of the application requesting to refresh the token."
+                },
+                {
+                  "disabled": false,
+                  "key": "refresh_token",
+                  "value": "<token>",
+                  "description": "(Required) The refresh token to refresh."
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "bdc1015e-2a75-467f-a332-44aa1d02b980",
+              "name": "Returns a new Access Token that can be used to make authenticated\nAPI calls by passing along the token in a authorization header as\nfollows `Authorization: Bearer <Token>`.",
+              "originalRequest": {
+                "url": {
+                  "protocol": "https",
+                  "path": [
+                    "oauth2",
+                    "token"
+                  ],
+                  "hash": "refresh",
+                  "host": [
+                    "api",
+                    "box",
+                    "com"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "urlencoded",
+                  "urlencoded": [
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "(Required) The type of request being made, in this case a refresh request.",
+                        "type": "text/plain"
+                      },
+                      "key": "grant_type",
+                      "value": "refresh_token"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "(Required) The client ID of the application requesting to refresh the token.",
+                        "type": "text/plain"
+                      },
+                      "key": "client_id",
+                      "value": "ly1nj6n11vionaie65emwzk575hnnmrk"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "(Required) The client secret of the application requesting to refresh the token.",
+                        "type": "text/plain"
+                      },
+                      "key": "client_secret",
+                      "value": "hOzsTeFlT6ko0dme22uGbQal04SBPYc1"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "(Required) The refresh token to refresh.",
+                        "type": "text/plain"
+                      },
+                      "key": "refresh_token",
+                      "value": "c3FIOG9vSGV4VHo4QzAyg5T1JvNnJoZ3ExaVNyQWw6WjRsanRKZG5lQk9qUE1BVQ"
+                    }
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"access_token\": \"c3FIOG9vSGV4VHo4QzAyg5T1JvNnJoZ3ExaVNyQWw6WjRsanRKZG5lQk9qUE1BVQ\",\n  \"expires_in\": 3600,\n  \"token_type\": \"bearer\",\n  \"restricted_to\": [\n    {\n      \"scope\": \"item_download\",\n      \"object\": {\n        \"id\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"type\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"etag\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"sequence_id\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"name\": \"Contracts\"\n      }\n    },\n    {\n      \"scope\": \"item_download\",\n      \"object\": {\n        \"id\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"type\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"etag\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"sequence_id\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"name\": \"Contracts\"\n      }\n    }\n  ],\n  \"refresh_token\": \"c3FIOG9vSGV4VHo4QzAyg5T1JvNnJoZ3ExaVNyQWw6WjRsanRKZG5lQk9qUE1BVQ\",\n  \"issued_token_type\": \"urn:ietf:params:oauth:token-type:access_token\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "fb80c87b-8d29-49bd-b9d7-3d18491d8dc9",
+              "name": "An authentication error.",
+              "originalRequest": {
+                "url": {
+                  "protocol": "https",
+                  "path": [
+                    "oauth2",
+                    "token"
+                  ],
+                  "hash": "refresh",
+                  "host": [
+                    "api",
+                    "box",
+                    "com"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "urlencoded",
+                  "urlencoded": [
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "(Required) The type of request being made, in this case a refresh request.",
+                        "type": "text/plain"
+                      },
+                      "key": "grant_type",
+                      "value": "refresh_token"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "(Required) The client ID of the application requesting to refresh the token.",
+                        "type": "text/plain"
+                      },
+                      "key": "client_id",
+                      "value": "ly1nj6n11vionaie65emwzk575hnnmrk"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "(Required) The client secret of the application requesting to refresh the token.",
+                        "type": "text/plain"
+                      },
+                      "key": "client_secret",
+                      "value": "hOzsTeFlT6ko0dme22uGbQal04SBPYc1"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "(Required) The refresh token to refresh.",
+                        "type": "text/plain"
+                      },
+                      "key": "refresh_token",
+                      "value": "c3FIOG9vSGV4VHo4QzAyg5T1JvNnJoZ3ExaVNyQWw6WjRsanRKZG5lQk9qUE1BVQ"
+                    }
+                  ]
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": \"invalid_client\",\n  \"error_description\": \"The client credentials are not valid\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "7c6c7e39-28c1-4cd6-ba6a-74099e83fe06",
+              "name": "An authentication error.",
+              "originalRequest": {
+                "url": {
+                  "protocol": "https",
+                  "path": [
+                    "oauth2",
+                    "token"
+                  ],
+                  "hash": "refresh",
+                  "host": [
+                    "api",
+                    "box",
+                    "com"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "urlencoded",
+                  "urlencoded": [
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "(Required) The type of request being made, in this case a refresh request.",
+                        "type": "text/plain"
+                      },
+                      "key": "grant_type",
+                      "value": "refresh_token"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "(Required) The client ID of the application requesting to refresh the token.",
+                        "type": "text/plain"
+                      },
+                      "key": "client_id",
+                      "value": "ly1nj6n11vionaie65emwzk575hnnmrk"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "(Required) The client secret of the application requesting to refresh the token.",
+                        "type": "text/plain"
+                      },
+                      "key": "client_secret",
+                      "value": "hOzsTeFlT6ko0dme22uGbQal04SBPYc1"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "(Required) The refresh token to refresh.",
+                        "type": "text/plain"
+                      },
+                      "key": "refresh_token",
+                      "value": "c3FIOG9vSGV4VHo4QzAyg5T1JvNnJoZ3ExaVNyQWw6WjRsanRKZG5lQk9qUE1BVQ"
+                    }
+                  ]
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": \"invalid_client\",\n  \"error_description\": \"The client credentials are not valid\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "b89c5d2c-6e1c-4855-9483-276c176e0dae",
+          "name": "Box Revoke access token",
+          "request": {
+            "name": "Box Revoke access token",
+            "description": {
+              "content": "Revoke an active Access Token, effectively logging a user out\nthat has been previously authenticated.",
+              "type": "text/plain"
+            },
+            "url": {
+              "protocol": "https",
+              "path": [
+                "oauth2",
+                "revoke"
+              ],
+              "host": [
+                "api",
+                "box",
+                "com"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/x-www-form-urlencoded"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "urlencoded",
+              "urlencoded": [
+                {
+                  "disabled": false,
+                  "key": "client_id",
+                  "value": "<string>",
+                  "description": "The Client ID of the application requesting to revoke the\naccess token."
+                },
+                {
+                  "disabled": false,
+                  "key": "client_secret",
+                  "value": "<string>",
+                  "description": "The client secret of the application requesting to revoke\nan access token."
+                },
+                {
+                  "disabled": false,
+                  "key": "token",
+                  "value": "<token>",
+                  "description": "The access token to revoke."
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "e6900996-9f69-457f-994f-62a988d5a7ce",
+              "name": "Returns an empty response when the token was successfully revoked.",
+              "originalRequest": {
+                "url": {
+                  "protocol": "https",
+                  "path": [
+                    "oauth2",
+                    "revoke"
+                  ],
+                  "host": [
+                    "api",
+                    "box",
+                    "com"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "method": "POST",
+                "body": {
+                  "mode": "urlencoded",
+                  "urlencoded": [
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "The Client ID of the application requesting to revoke the\naccess token.",
+                        "type": "text/plain"
+                      },
+                      "key": "client_id",
+                      "value": "ly1nj6n11vionaie65emwzk575hnnmrk"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "The client secret of the application requesting to revoke\nan access token.",
+                        "type": "text/plain"
+                      },
+                      "key": "client_secret",
+                      "value": "hOzsTeFlT6ko0dme22uGbQal04SBPYc1"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "The access token to revoke.",
+                        "type": "text/plain"
+                      },
+                      "key": "token",
+                      "value": "n22JPxrh18m4Y0wIZPIqYZK7VRrsMTWW"
+                    }
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "0cc44732-f82d-42cc-9137-39136be1ff41",
+              "name": "An authentication error.",
+              "originalRequest": {
+                "url": {
+                  "protocol": "https",
+                  "path": [
+                    "oauth2",
+                    "revoke"
+                  ],
+                  "host": [
+                    "api",
+                    "box",
+                    "com"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "urlencoded",
+                  "urlencoded": [
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "The Client ID of the application requesting to revoke the\naccess token.",
+                        "type": "text/plain"
+                      },
+                      "key": "client_id",
+                      "value": "ly1nj6n11vionaie65emwzk575hnnmrk"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "The client secret of the application requesting to revoke\nan access token.",
+                        "type": "text/plain"
+                      },
+                      "key": "client_secret",
+                      "value": "hOzsTeFlT6ko0dme22uGbQal04SBPYc1"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "The access token to revoke.",
+                        "type": "text/plain"
+                      },
+                      "key": "token",
+                      "value": "n22JPxrh18m4Y0wIZPIqYZK7VRrsMTWW"
+                    }
+                  ]
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": \"invalid_client\",\n  \"error_description\": \"The client credentials are not valid\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "c6600151-6edb-40ec-ab88-d388a6c0d023",
+              "name": "An authentication error.",
+              "originalRequest": {
+                "url": {
+                  "protocol": "https",
+                  "path": [
+                    "oauth2",
+                    "revoke"
+                  ],
+                  "host": [
+                    "api",
+                    "box",
+                    "com"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "urlencoded",
+                  "urlencoded": [
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "The Client ID of the application requesting to revoke the\naccess token.",
+                        "type": "text/plain"
+                      },
+                      "key": "client_id",
+                      "value": "ly1nj6n11vionaie65emwzk575hnnmrk"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "The client secret of the application requesting to revoke\nan access token.",
+                        "type": "text/plain"
+                      },
+                      "key": "client_secret",
+                      "value": "hOzsTeFlT6ko0dme22uGbQal04SBPYc1"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "The access token to revoke.",
+                        "type": "text/plain"
+                      },
+                      "key": "token",
+                      "value": "n22JPxrh18m4Y0wIZPIqYZK7VRrsMTWW"
+                    }
+                  ]
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": \"invalid_client\",\n  \"error_description\": \"The client credentials are not valid\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "/",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "79758ac5-2f9c-43ba-9b63-2d33be22a2ba",
+    "name": "Box Authorize Authorization API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "Needs a description.",
+      "type": "text/plain"
+    }
+  }
+}

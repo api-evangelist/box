@@ -1,0 +1,131 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Box Authorize Authorization Legal Hold Policies API",
+    "version": "1.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Legal Hold Policies",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Box List all legal hold policies",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/legal_hold_policies",
+            "params": [
+              {
+                "name": "policy_name",
+                "value": "Sales Policy",
+                "type": "query",
+                "description": "Limits results to policies for which the names start with\nthis search term. This is a case-insensitive prefix."
+              },
+              {
+                "name": "fields",
+                "value": "id,type,name",
+                "type": "query",
+                "description": "A comma-separated list of attributes to include in the\nresponse. This can be used to request fields that are\nnot normally returned in a standard response.\n\nBe aware that specifying this parameter will have the\neffect that none of the standard fields are returned in\nthe response unless explicitly specified, instead only\nfields for the mini representation are returned, additional\nto the fields requested."
+              },
+              {
+                "name": "marker",
+                "value": "JV9IRGZmieiBasejOG9yDCRNgd2ymoZIbjsxbJMjIs3kioVii",
+                "type": "query",
+                "description": "Defines the position marker at which to begin returning results. This is\nused when paginating using marker-based pagination.\n\nThis requires `usemarker` to be set to `true`."
+              },
+              {
+                "name": "limit",
+                "value": "1000",
+                "type": "query",
+                "description": "The maximum number of items to return per page."
+              }
+            ]
+          },
+          "docs": "Retrieves a list of legal hold policies that belong to\nan enterprise."
+        },
+        {
+          "info": {
+            "name": "Box Create legal hold policy",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/legal_hold_policies",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Create a new legal hold policy."
+        },
+        {
+          "info": {
+            "name": "Box Get legal hold policy",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/legal_hold_policies/:legal_hold_policy_id",
+            "params": [
+              {
+                "name": "legal_hold_policy_id",
+                "value": "324432",
+                "type": "path",
+                "description": "The ID of the legal hold policy"
+              }
+            ]
+          },
+          "docs": "Retrieve a legal hold policy."
+        },
+        {
+          "info": {
+            "name": "Box Update legal hold policy",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "{{baseUrl}}/legal_hold_policies/:legal_hold_policy_id",
+            "params": [
+              {
+                "name": "legal_hold_policy_id",
+                "value": "324432",
+                "type": "path",
+                "description": "The ID of the legal hold policy"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Update legal hold policy."
+        },
+        {
+          "info": {
+            "name": "Box Remove legal hold policy",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "{{baseUrl}}/legal_hold_policies/:legal_hold_policy_id",
+            "params": [
+              {
+                "name": "legal_hold_policy_id",
+                "value": "324432",
+                "type": "path",
+                "description": "The ID of the legal hold policy"
+              }
+            ]
+          },
+          "docs": "Delete an existing legal hold policy.\n\nThis is an asynchronous process. The policy will not be\nfully deleted yet when the response returns."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

@@ -1,0 +1,169 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Box Authorize Authorization Metadata Instances (Files) API",
+    "version": "1.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Metadata Instances (Files)",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Box List metadata instances on file",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/files/:file_id/metadata",
+            "params": [
+              {
+                "name": "file_id",
+                "value": "12345",
+                "type": "path",
+                "description": "The unique identifier that represents a file.\n\nThe ID for any file can be determined\nby visiting a file in the web application\nand copying the ID from the URL. For example,\nfor the URL `https://*.app.box.com/files/123`\nthe `file_id` is `123`."
+              }
+            ]
+          },
+          "docs": "Retrieves all metadata for a given file."
+        },
+        {
+          "info": {
+            "name": "Box Get metadata instance on file",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/files/:file_id/metadata/:scope/:template_key",
+            "params": [
+              {
+                "name": "file_id",
+                "value": "12345",
+                "type": "path",
+                "description": "The unique identifier that represents a file.\n\nThe ID for any file can be determined\nby visiting a file in the web application\nand copying the ID from the URL. For example,\nfor the URL `https://*.app.box.com/files/123`\nthe `file_id` is `123`."
+              },
+              {
+                "name": "scope",
+                "value": "global",
+                "type": "path",
+                "description": "The scope of the metadata template"
+              },
+              {
+                "name": "template_key",
+                "value": "properties",
+                "type": "path",
+                "description": "The name of the metadata template"
+              }
+            ]
+          },
+          "docs": "Retrieves the instance of a metadata template that has been applied to a\nfile."
+        },
+        {
+          "info": {
+            "name": "Box Create metadata instance on file",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/files/:file_id/metadata/:scope/:template_key",
+            "params": [
+              {
+                "name": "file_id",
+                "value": "12345",
+                "type": "path",
+                "description": "The unique identifier that represents a file.\n\nThe ID for any file can be determined\nby visiting a file in the web application\nand copying the ID from the URL. For example,\nfor the URL `https://*.app.box.com/files/123`\nthe `file_id` is `123`."
+              },
+              {
+                "name": "scope",
+                "value": "global",
+                "type": "path",
+                "description": "The scope of the metadata template"
+              },
+              {
+                "name": "template_key",
+                "value": "properties",
+                "type": "path",
+                "description": "The name of the metadata template"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Applies an instance of a metadata template to a file.\n\nIn most cases only values that are present in the metadata template\nwill be accepted, except for the `global.properties` template which accepts\nany key-value pair."
+        },
+        {
+          "info": {
+            "name": "Box Update metadata instance on file",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "{{baseUrl}}/files/:file_id/metadata/:scope/:template_key",
+            "params": [
+              {
+                "name": "file_id",
+                "value": "12345",
+                "type": "path",
+                "description": "The unique identifier that represents a file.\n\nThe ID for any file can be determined\nby visiting a file in the web application\nand copying the ID from the URL. For example,\nfor the URL `https://*.app.box.com/files/123`\nthe `file_id` is `123`."
+              },
+              {
+                "name": "scope",
+                "value": "global",
+                "type": "path",
+                "description": "The scope of the metadata template"
+              },
+              {
+                "name": "template_key",
+                "value": "properties",
+                "type": "path",
+                "description": "The name of the metadata template"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Updates a piece of metadata on a file.\n\nThe metadata instance can only be updated if the template has already been\napplied to the file before. When editing metadata, only values that match\nthe metadata template schema will be accepted.\n\nThe update is applied atomically. If any errors occur during the\napplication of the operations, the metadata instance will not be changed."
+        },
+        {
+          "info": {
+            "name": "Box Remove metadata instance from file",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "{{baseUrl}}/files/:file_id/metadata/:scope/:template_key",
+            "params": [
+              {
+                "name": "file_id",
+                "value": "12345",
+                "type": "path",
+                "description": "The unique identifier that represents a file.\n\nThe ID for any file can be determined\nby visiting a file in the web application\nand copying the ID from the URL. For example,\nfor the URL `https://*.app.box.com/files/123`\nthe `file_id` is `123`."
+              },
+              {
+                "name": "scope",
+                "value": "global",
+                "type": "path",
+                "description": "The scope of the metadata template"
+              },
+              {
+                "name": "template_key",
+                "value": "properties",
+                "type": "path",
+                "description": "The name of the metadata template"
+              }
+            ]
+          },
+          "docs": "Deletes a piece of file metadata."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

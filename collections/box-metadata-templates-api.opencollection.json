@@ -1,0 +1,256 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Box Authorize Authorization Metadata Templates API",
+    "version": "1.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Metadata Templates",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Box Find metadata template by instance ID",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/metadata_templates",
+            "params": [
+              {
+                "name": "metadata_instance_id",
+                "value": "01234500-12f1-1234-aa12-b1d234cb567e",
+                "type": "query",
+                "description": "The ID of an instance of the metadata template to find."
+              }
+            ]
+          },
+          "docs": "Finds a metadata template by searching for the ID of an instance of the\ntemplate."
+        },
+        {
+          "info": {
+            "name": "Box Get metadata template by name",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/metadata_templates/:scope/:template_key/schema",
+            "params": [
+              {
+                "name": "scope",
+                "value": "global",
+                "type": "path",
+                "description": "The scope of the metadata template"
+              },
+              {
+                "name": "template_key",
+                "value": "properties",
+                "type": "path",
+                "description": "The name of the metadata template"
+              }
+            ]
+          },
+          "docs": "Retrieves a metadata template by its `scope` and `templateKey` values.\n\nTo find the `scope` and `templateKey` for a template, list all templates for\nan enterprise or globally, or list all templates applied to a file or folder."
+        },
+        {
+          "info": {
+            "name": "Box Update metadata template",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "{{baseUrl}}/metadata_templates/:scope/:template_key/schema",
+            "params": [
+              {
+                "name": "scope",
+                "value": "global",
+                "type": "path",
+                "description": "The scope of the metadata template"
+              },
+              {
+                "name": "template_key",
+                "value": "properties",
+                "type": "path",
+                "description": "The name of the metadata template"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Updates a metadata template.\n\nThe metadata template can only be updated if the template\nalready exists.\n\nThe update is applied atomically. If any errors occur during the\napplication of the operations, the metadata template will not be changed."
+        },
+        {
+          "info": {
+            "name": "Box Remove metadata template",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "{{baseUrl}}/metadata_templates/:scope/:template_key/schema",
+            "params": [
+              {
+                "name": "scope",
+                "value": "global",
+                "type": "path",
+                "description": "The scope of the metadata template"
+              },
+              {
+                "name": "template_key",
+                "value": "properties",
+                "type": "path",
+                "description": "The name of the metadata template"
+              }
+            ]
+          },
+          "docs": "Delete a metadata template and its instances.\nThis deletion is permanent and can not be reversed."
+        },
+        {
+          "info": {
+            "name": "Box Get metadata template by ID",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/metadata_templates/:template_id",
+            "params": [
+              {
+                "name": "template_id",
+                "value": "f7a9891f",
+                "type": "path",
+                "description": "The ID of the template"
+              }
+            ]
+          },
+          "docs": "Retrieves a metadata template by its ID."
+        },
+        {
+          "info": {
+            "name": "Box List all global metadata templates",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/metadata_templates/global",
+            "params": [
+              {
+                "name": "marker",
+                "value": "JV9IRGZmieiBasejOG9yDCRNgd2ymoZIbjsxbJMjIs3kioVii",
+                "type": "query",
+                "description": "Defines the position marker at which to begin returning results. This is\nused when paginating using marker-based pagination.\n\nThis requires `usemarker` to be set to `true`."
+              },
+              {
+                "name": "limit",
+                "value": "1000",
+                "type": "query",
+                "description": "The maximum number of items to return per page."
+              }
+            ]
+          },
+          "docs": "Used to retrieve all generic, global metadata templates available to all\nenterprises using Box."
+        },
+        {
+          "info": {
+            "name": "Box List all metadata templates for enterprise",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/metadata_templates/enterprise",
+            "params": [
+              {
+                "name": "marker",
+                "value": "JV9IRGZmieiBasejOG9yDCRNgd2ymoZIbjsxbJMjIs3kioVii",
+                "type": "query",
+                "description": "Defines the position marker at which to begin returning results. This is\nused when paginating using marker-based pagination.\n\nThis requires `usemarker` to be set to `true`."
+              },
+              {
+                "name": "limit",
+                "value": "1000",
+                "type": "query",
+                "description": "The maximum number of items to return per page."
+              }
+            ]
+          },
+          "docs": "Used to retrieve all metadata templates created to be used specifically within\nthe user's enterprise"
+        },
+        {
+          "info": {
+            "name": "Box Create metadata template",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/metadata_templates/schema",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Creates a new metadata template that can be applied to\nfiles and folders."
+        },
+        {
+          "info": {
+            "name": "Box List all classifications",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/metadata_templates/enterprise/securityClassification-6VMVochwUWo/schema"
+          },
+          "docs": "Retrieves the classification metadata template and lists all the\nclassifications available to this enterprise.\n\nThis API can also be called by including the enterprise ID in the\nURL explicitly, for example\n`/metadata_templates/enterprise_12345/securityClassification-6VMVochwUWo/schema`."
+        },
+        {
+          "info": {
+            "name": "Box Add classification",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "{{baseUrl}}/metadata_templates/enterprise/securityClassification-6VMVochwUWo/schema#add",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Adds one or more new classifications to the list of classifications\navailable to the enterprise.\n\nThis API can also be called by including the enterprise ID in the\nURL explicitly, for example\n`/metadata_templates/enterprise_12345/securityClassification-6VMVochwUWo/schema`."
+        },
+        {
+          "info": {
+            "name": "Box Update classification",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "{{baseUrl}}/metadata_templates/enterprise/securityClassification-6VMVochwUWo/schema#update",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Updates the labels and descriptions of one or more classifications\navailable to the enterprise.\n\nThis API can also be called by including the enterprise ID in the\nURL explicitly, for example\n`/metadata_templates/enterprise_12345/securityClassification-6VMVochwUWo/schema`."
+        },
+        {
+          "info": {
+            "name": "Box Add initial classifications",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/metadata_templates/schema#classifications",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "When an enterprise does not yet have any classifications, this API call\ninitializes the classification template with an initial set of\nclassifications.\n\nIf an enterprise already has a classification, the template will already\nexist and instead an API call should be made to add additional\nclassifications."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

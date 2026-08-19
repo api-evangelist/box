@@ -1,0 +1,59 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Box Authorize Authorization Downloads API",
+    "version": "1.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Downloads",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Box Download file",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/files/:file_id/content",
+            "headers": [
+              {
+                "name": "range",
+                "value": "bytes=0-1024"
+              },
+              {
+                "name": "boxapi",
+                "value": "shared_link=[link]&shared_link_password=[password]"
+              }
+            ],
+            "params": [
+              {
+                "name": "file_id",
+                "value": "12345",
+                "type": "path",
+                "description": "The unique identifier that represents a file.\n\nThe ID for any file can be determined\nby visiting a file in the web application\nand copying the ID from the URL. For example,\nfor the URL `https://*.app.box.com/files/123`\nthe `file_id` is `123`."
+              },
+              {
+                "name": "version",
+                "value": "4",
+                "type": "query",
+                "description": "The file version to download"
+              },
+              {
+                "name": "access_token",
+                "value": "c3FIOG9vSGV4VHo4QzAyg5T1JvNnJoZ3ExaVNyQWw6WjRsanRKZG5lQk9qUE1BVQ",
+                "type": "query",
+                "description": "An optional access token that can be used to pre-authenticate this request, which means that a download link can be shared with a browser or a third party service without them needing to know how to handle the authentication.\nWhen using this parameter, please make sure that the access token is sufficiently scoped down to only allow read access to that file and no other files or folders."
+              }
+            ]
+          },
+          "docs": "Returns the contents of a file in binary format."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

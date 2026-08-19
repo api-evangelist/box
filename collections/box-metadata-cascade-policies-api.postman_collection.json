@@ -1,0 +1,1215 @@
+{
+  "item": [
+    {
+      "id": "a399e8d5-4554-42c2-8865-c8a638f830ad",
+      "name": "Metadata Cascade Policies",
+      "description": {
+        "content": "A metadata cascade policy describes how metadata\ninstances applied to a folder should be applied\nto any item within that folder.",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "d45669c1-dcfc-4cf9-8040-c20eb444f4aa",
+          "name": "Box List metadata cascade policies",
+          "request": {
+            "name": "Box List metadata cascade policies",
+            "description": {
+              "content": "Retrieves a list of all the metadata cascade policies\nthat are applied to a given folder. This can not be used on the root\nfolder with ID `0`.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "metadata_cascade_policies"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "folder_id",
+                  "value": "<string>",
+                  "description": "(Required) Specifies which folder to return policies for. This can not be used on the\nroot folder with ID `0`."
+                },
+                {
+                  "disabled": false,
+                  "key": "owner_enterprise_id",
+                  "value": "<string>",
+                  "description": "The ID of the enterprise ID for which to find metadata\ncascade policies. If not specified, it defaults to the\ncurrent enterprise."
+                },
+                {
+                  "disabled": false,
+                  "key": "marker",
+                  "value": "<string>",
+                  "description": "Defines the position marker at which to begin returning results. This is\nused when paginating using marker-based pagination.\n\nThis requires `usemarker` to be set to `true`."
+                },
+                {
+                  "disabled": false,
+                  "key": "offset",
+                  "value": "0",
+                  "description": "The offset of the item at which to begin the response.\n\nQueries with offset parameter value\nexceeding 10000 will be rejected\nwith a 400 response."
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "41477b61-ca82-4cb8-bb14-e551c61e60d7",
+              "name": "Returns a list of metadata cascade policies",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "metadata_cascade_policies"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "folder_id",
+                      "value": "31232"
+                    },
+                    {
+                      "key": "owner_enterprise_id",
+                      "value": "31232"
+                    },
+                    {
+                      "key": "marker",
+                      "value": "JV9IRGZmieiBasejOG9yDCRNgd2ymoZIbjsxbJMjIs3kioVii"
+                    },
+                    {
+                      "key": "offset",
+                      "value": "1000"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"limit\": 1000,\n  \"next_marker\": \"JV9IRGZmieiBasejOG9yDCRNgd2ymoZIbjsxbJMjIs3kioVii\",\n  \"prev_marker\": \"JV9IRGZmieiBasejOG9yDCRNgd2ymoZIbjsxbJMjIs3kioVih\",\n  \"entries\": [\n    {\n      \"id\": \"6fd4ff89-8fc1-42cf-8b29-1890dedd26d7\",\n      \"type\": \"metadata_cascade_policy\",\n      \"owner_enterprise\": {\n        \"type\": \"enterprise\",\n        \"id\": \"690678\"\n      },\n      \"parent\": {\n        \"type\": \"folder\",\n        \"id\": \"1234567\"\n      },\n      \"scope\": \"enterprise_123456\",\n      \"templateKey\": \"productInfo\"\n    },\n    {\n      \"id\": \"6fd4ff89-8fc1-42cf-8b29-1890dedd26d7\",\n      \"type\": \"metadata_cascade_policy\",\n      \"owner_enterprise\": {\n        \"type\": \"enterprise\",\n        \"id\": \"690678\"\n      },\n      \"parent\": {\n        \"type\": \"folder\",\n        \"id\": \"1234567\"\n      },\n      \"scope\": \"enterprise_123456\",\n      \"templateKey\": \"productInfo\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "2d6f4800-e845-4f49-9ca7-17f424006279",
+              "name": "Returns an error when any of the parameters are not in a valid format.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "metadata_cascade_policies"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "folder_id",
+                      "value": "31232"
+                    },
+                    {
+                      "key": "owner_enterprise_id",
+                      "value": "31232"
+                    },
+                    {
+                      "key": "marker",
+                      "value": "JV9IRGZmieiBasejOG9yDCRNgd2ymoZIbjsxbJMjIs3kioVii"
+                    },
+                    {
+                      "key": "offset",
+                      "value": "1000"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"type\": \"error\",\n  \"status\": 400,\n  \"code\": \"item_name_invalid\",\n  \"message\": \"Method Not Allowed\",\n  \"context_info\": {\n    \"message\": \"Something went wrong.\"\n  },\n  \"help_url\": \"https://developer.box.com/guides/api-calls/permissions-and-errors/common-errors/\",\n  \"request_id\": \"abcdef123456\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "9460f0e6-3ab4-4f0e-947a-6e04f189a17c",
+              "name": "Returns an error when the folder can not be accessed. This error often\nhappens when accessing the root folder with ID `0`.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "metadata_cascade_policies"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "folder_id",
+                      "value": "31232"
+                    },
+                    {
+                      "key": "owner_enterprise_id",
+                      "value": "31232"
+                    },
+                    {
+                      "key": "marker",
+                      "value": "JV9IRGZmieiBasejOG9yDCRNgd2ymoZIbjsxbJMjIs3kioVii"
+                    },
+                    {
+                      "key": "offset",
+                      "value": "1000"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"type\": \"error\",\n  \"status\": 400,\n  \"code\": \"item_name_invalid\",\n  \"message\": \"Method Not Allowed\",\n  \"context_info\": {\n    \"message\": \"Something went wrong.\"\n  },\n  \"help_url\": \"https://developer.box.com/guides/api-calls/permissions-and-errors/common-errors/\",\n  \"request_id\": \"abcdef123456\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "fb3e0906-2084-4a5a-8bb8-ad8a588b14a2",
+              "name": "Returns an error when the folder can not be found or the user does not\nhave access to the folder.\n\n* `not_found` - The folder could not be found or the user does not have\n  access to the folder.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "metadata_cascade_policies"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "folder_id",
+                      "value": "31232"
+                    },
+                    {
+                      "key": "owner_enterprise_id",
+                      "value": "31232"
+                    },
+                    {
+                      "key": "marker",
+                      "value": "JV9IRGZmieiBasejOG9yDCRNgd2ymoZIbjsxbJMjIs3kioVii"
+                    },
+                    {
+                      "key": "offset",
+                      "value": "1000"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"type\": \"error\",\n  \"status\": 400,\n  \"code\": \"item_name_invalid\",\n  \"message\": \"Method Not Allowed\",\n  \"context_info\": {\n    \"message\": \"Something went wrong.\"\n  },\n  \"help_url\": \"https://developer.box.com/guides/api-calls/permissions-and-errors/common-errors/\",\n  \"request_id\": \"abcdef123456\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "f319c70c-baaa-46fd-815b-aec169134fdd",
+              "name": "An unexpected client error.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "metadata_cascade_policies"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "folder_id",
+                      "value": "31232"
+                    },
+                    {
+                      "key": "owner_enterprise_id",
+                      "value": "31232"
+                    },
+                    {
+                      "key": "marker",
+                      "value": "JV9IRGZmieiBasejOG9yDCRNgd2ymoZIbjsxbJMjIs3kioVii"
+                    },
+                    {
+                      "key": "offset",
+                      "value": "1000"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"type\": \"error\",\n  \"status\": 400,\n  \"code\": \"item_name_invalid\",\n  \"message\": \"Method Not Allowed\",\n  \"context_info\": {\n    \"message\": \"Something went wrong.\"\n  },\n  \"help_url\": \"https://developer.box.com/guides/api-calls/permissions-and-errors/common-errors/\",\n  \"request_id\": \"abcdef123456\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "16bdd25b-59dd-4779-9a07-3fa35c270a43",
+          "name": "Box Create metadata cascade policy",
+          "request": {
+            "name": "Box Create metadata cascade policy",
+            "description": {
+              "content": "Creates a new metadata cascade policy that applies a given\nmetadata template to a given folder and automatically\ncascades it down to any files within that folder.\n\nIn order for the policy to be applied a metadata instance must first\nbe applied to the folder the policy is to be applied to.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "metadata_cascade_policies"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"folder_id\": \"<string>\",\n  \"scope\": \"<string>\",\n  \"templateKey\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "b97e8c2a-570c-4614-aa5a-9984bf63a307",
+              "name": "Returns a new of metadata cascade policy",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "metadata_cascade_policies"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"folder_id\": \"1234567\",\n  \"scope\": \"enterprise\",\n  \"templateKey\": \"productInfo\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": \"6fd4ff89-8fc1-42cf-8b29-1890dedd26d7\",\n  \"type\": \"metadata_cascade_policy\",\n  \"owner_enterprise\": {\n    \"type\": \"enterprise\",\n    \"id\": \"690678\"\n  },\n  \"parent\": {\n    \"type\": \"folder\",\n    \"id\": \"1234567\"\n  },\n  \"scope\": \"enterprise_123456\",\n  \"templateKey\": \"productInfo\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "3983d874-3cdf-47cd-8a55-0f3435e85c7d",
+              "name": "Returns an error when any of the parameters are not in a valid format.\n\n* `bad_request` - Either the `scope`, `templateKey`, or `folder_id` are\nnot in a valid format.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "metadata_cascade_policies"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"folder_id\": \"1234567\",\n  \"scope\": \"enterprise\",\n  \"templateKey\": \"productInfo\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"type\": \"error\",\n  \"status\": 400,\n  \"code\": \"item_name_invalid\",\n  \"message\": \"Method Not Allowed\",\n  \"context_info\": {\n    \"message\": \"Something went wrong.\"\n  },\n  \"help_url\": \"https://developer.box.com/guides/api-calls/permissions-and-errors/common-errors/\",\n  \"request_id\": \"abcdef123456\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "e56bfcfc-d92e-4383-9c99-b11c4b7e23bc",
+              "name": "Returns an error when trying to apply a policy to a restricted folder, for\nexample the root folder with ID `0`.\n\n* `forbidden` - Although the folder ID was valid and the user has access\nto the folder, the policy could not be applied to this folder.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "metadata_cascade_policies"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"folder_id\": \"1234567\",\n  \"scope\": \"enterprise\",\n  \"templateKey\": \"productInfo\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"type\": \"error\",\n  \"status\": 400,\n  \"code\": \"item_name_invalid\",\n  \"message\": \"Method Not Allowed\",\n  \"context_info\": {\n    \"message\": \"Something went wrong.\"\n  },\n  \"help_url\": \"https://developer.box.com/guides/api-calls/permissions-and-errors/common-errors/\",\n  \"request_id\": \"abcdef123456\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "bf0ca919-f1c4-4fb1-bc63-b71a50bc8952",
+              "name": "Returns an error when the template or folder can not be found, or when the\nuser does not have access to the folder or template.\n\n* `instance_tuple_not_found` - The template could not be found or the user\ndoes not have access to the template.\n* `not_found` - The folder could not be found or the user\ndoes not have access to the folder.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "metadata_cascade_policies"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"folder_id\": \"1234567\",\n  \"scope\": \"enterprise\",\n  \"templateKey\": \"productInfo\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"type\": \"error\",\n  \"status\": 400,\n  \"code\": \"item_name_invalid\",\n  \"message\": \"Method Not Allowed\",\n  \"context_info\": {\n    \"message\": \"Something went wrong.\"\n  },\n  \"help_url\": \"https://developer.box.com/guides/api-calls/permissions-and-errors/common-errors/\",\n  \"request_id\": \"abcdef123456\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "c83d9d96-0a6f-42f2-9edb-4752c0ec6baf",
+              "name": "Returns an error when a policy for this folder and template is already in\nplace.\n\n* `tuple_already_exists` - A cascade policy for this combination of\n`folder_id`, `scope` and `templateKey` already exists.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "metadata_cascade_policies"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"folder_id\": \"1234567\",\n  \"scope\": \"enterprise\",\n  \"templateKey\": \"productInfo\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Conflict",
+              "code": 409,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"type\": \"error\",\n  \"status\": 400,\n  \"code\": \"item_name_invalid\",\n  \"message\": \"Method Not Allowed\",\n  \"context_info\": {\n    \"message\": \"Something went wrong.\",\n    \"conflicts\": [\n      {\n        \"id\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"type\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"etag\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"sequence_id\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"name\": \"Contract.pdf\",\n        \"sha1\": \"85136C79CBF9FE36BB9D05D0639C70C265C18D37\",\n        \"file_version\": {\n          \"sha1\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        }\n      },\n      {\n        \"id\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"type\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"etag\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"sequence_id\": {\n          \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n        },\n        \"name\": \"Contract.pdf\",\n        \"sha1\": \"85136C79CBF9FE36BB9D05D0639C70C265C18D37\",\n        \"file_version\": {\n          \"sha1\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        }\n      }\n    ]\n  },\n  \"help_url\": \"https://developer.box.com/guides/api-calls/permissions-and-errors/common-errors/\",\n  \"request_id\": \"abcdef123456\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "a8c6348c-26ff-44cb-af2e-80be982cbd8e",
+              "name": "An unexpected client error.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "metadata_cascade_policies"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"folder_id\": \"1234567\",\n  \"scope\": \"enterprise\",\n  \"templateKey\": \"productInfo\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"type\": \"error\",\n  \"status\": 400,\n  \"code\": \"item_name_invalid\",\n  \"message\": \"Method Not Allowed\",\n  \"context_info\": {\n    \"message\": \"Something went wrong.\"\n  },\n  \"help_url\": \"https://developer.box.com/guides/api-calls/permissions-and-errors/common-errors/\",\n  \"request_id\": \"abcdef123456\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "0fc74b24-61ed-4040-b29e-746fa6b9e752",
+          "name": "Box Get metadata cascade policy",
+          "request": {
+            "name": "Box Get metadata cascade policy",
+            "description": {
+              "content": "Retrieve a specific metadata cascade policy assigned to a folder.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "metadata_cascade_policies",
+                ":metadata_cascade_policy_id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "metadata_cascade_policy_id",
+                  "description": "(Required) The ID of the metadata cascade policy."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "8e35ae07-1da7-41f9-92f5-3237043531e4",
+              "name": "Returns a metadata cascade policy",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "metadata_cascade_policies",
+                    ":metadata_cascade_policy_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "metadata_cascade_policy_id",
+                      "description": "(Required) The ID of the metadata cascade policy."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": \"6fd4ff89-8fc1-42cf-8b29-1890dedd26d7\",\n  \"type\": \"metadata_cascade_policy\",\n  \"owner_enterprise\": {\n    \"type\": \"enterprise\",\n    \"id\": \"690678\"\n  },\n  \"parent\": {\n    \"type\": \"folder\",\n    \"id\": \"1234567\"\n  },\n  \"scope\": \"enterprise_123456\",\n  \"templateKey\": \"productInfo\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "8ae1d54f-185e-40a2-b4f3-77d5e3129bf5",
+              "name": "Returns an error when the policy can not be found or the user does not\nhave access to the folder.\n\n* `instance_not_found` - The policy could not be found\n* `not_found` - The folder could not be found or the user does not have\n  access to the folder.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "metadata_cascade_policies",
+                    ":metadata_cascade_policy_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "metadata_cascade_policy_id",
+                      "description": "(Required) The ID of the metadata cascade policy."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"type\": \"error\",\n  \"status\": 400,\n  \"code\": \"item_name_invalid\",\n  \"message\": \"Method Not Allowed\",\n  \"context_info\": {\n    \"message\": \"Something went wrong.\"\n  },\n  \"help_url\": \"https://developer.box.com/guides/api-calls/permissions-and-errors/common-errors/\",\n  \"request_id\": \"abcdef123456\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "09d80fd4-3f8d-4284-8479-3b1c801857d7",
+              "name": "An unexpected client error.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "metadata_cascade_policies",
+                    ":metadata_cascade_policy_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "metadata_cascade_policy_id",
+                      "description": "(Required) The ID of the metadata cascade policy."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"type\": \"error\",\n  \"status\": 400,\n  \"code\": \"item_name_invalid\",\n  \"message\": \"Method Not Allowed\",\n  \"context_info\": {\n    \"message\": \"Something went wrong.\"\n  },\n  \"help_url\": \"https://developer.box.com/guides/api-calls/permissions-and-errors/common-errors/\",\n  \"request_id\": \"abcdef123456\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "acf4c1bd-5efa-4679-8a97-2b5a770f7006",
+          "name": "Box Remove metadata cascade policy",
+          "request": {
+            "name": "Box Remove metadata cascade policy",
+            "description": {
+              "content": "Deletes a metadata cascade policy.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "metadata_cascade_policies",
+                ":metadata_cascade_policy_id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "metadata_cascade_policy_id",
+                  "description": "(Required) The ID of the metadata cascade policy."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "DELETE",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "f274407c-5fab-4eb7-8f31-1ef959b5c016",
+              "name": "Returns an empty response when the policy\nis successfully deleted.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "metadata_cascade_policies",
+                    ":metadata_cascade_policy_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "metadata_cascade_policy_id",
+                      "description": "(Required) The ID of the metadata cascade policy."
+                    }
+                  ]
+                },
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "No Content",
+              "code": 204,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "151b8a79-63f5-45a6-81f2-9b0e2b94c88c",
+              "name": "Returns an error when the policy can not be found or the user does not\nhave access to the folder.\n\n* `instance_not_found` - The policy could not be found\n* `not_found` - The folder could not be found or the user does not have\n  access to the folder.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "metadata_cascade_policies",
+                    ":metadata_cascade_policy_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "metadata_cascade_policy_id",
+                      "description": "(Required) The ID of the metadata cascade policy."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"type\": \"error\",\n  \"status\": 400,\n  \"code\": \"item_name_invalid\",\n  \"message\": \"Method Not Allowed\",\n  \"context_info\": {\n    \"message\": \"Something went wrong.\"\n  },\n  \"help_url\": \"https://developer.box.com/guides/api-calls/permissions-and-errors/common-errors/\",\n  \"request_id\": \"abcdef123456\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "8ab464b3-f139-4281-8da0-b87a25073d21",
+              "name": "An unexpected client error.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "metadata_cascade_policies",
+                    ":metadata_cascade_policy_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "metadata_cascade_policy_id",
+                      "description": "(Required) The ID of the metadata cascade policy."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"type\": \"error\",\n  \"status\": 400,\n  \"code\": \"item_name_invalid\",\n  \"message\": \"Method Not Allowed\",\n  \"context_info\": {\n    \"message\": \"Something went wrong.\"\n  },\n  \"help_url\": \"https://developer.box.com/guides/api-calls/permissions-and-errors/common-errors/\",\n  \"request_id\": \"abcdef123456\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "57f57bc9-3440-4c94-a6d9-bc5302310905",
+          "name": "Box Force-apply metadata cascade policy to folder",
+          "request": {
+            "name": "Box Force-apply metadata cascade policy to folder",
+            "description": {
+              "content": "Force the metadata on a folder with a metadata cascade policy to be applied to\nall of its children. This can be used after creating a new cascade policy to\nenforce the metadata to be cascaded down to all existing files within that\nfolder.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "metadata_cascade_policies",
+                ":metadata_cascade_policy_id",
+                "apply"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "metadata_cascade_policy_id",
+                  "description": "(Required) The ID of the cascade policy to force-apply."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"conflict_resolution\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "20cfddcf-cd77-4b31-8b55-dd48018c32ed",
+              "name": "Returns an empty response when the API call was successful. The metadata\ncascade operation will be performed asynchronously.\n\nThe API call will return directly, before the cascade operation\nis complete. There is currently no API to check for the status of this\noperation.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "metadata_cascade_policies",
+                    ":metadata_cascade_policy_id",
+                    "apply"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "metadata_cascade_policy_id",
+                      "description": "(Required) The ID of the cascade policy to force-apply."
+                    }
+                  ]
+                },
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"conflict_resolution\": \"none\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Accepted",
+              "code": 202,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "680ef747-61fa-4372-96c2-14ae5a7909af",
+              "name": "Returns an error when the policy can not be found or the user does not\nhave access to the folder.\n\n* `instance_not_found` - The policy could not be found\n* `not_found` - The folder could not be found or the user does not have\n  access to the folder.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "metadata_cascade_policies",
+                    ":metadata_cascade_policy_id",
+                    "apply"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "metadata_cascade_policy_id",
+                      "description": "(Required) The ID of the cascade policy to force-apply."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"conflict_resolution\": \"none\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"type\": \"error\",\n  \"status\": 400,\n  \"code\": \"item_name_invalid\",\n  \"message\": \"Method Not Allowed\",\n  \"context_info\": {\n    \"message\": \"Something went wrong.\"\n  },\n  \"help_url\": \"https://developer.box.com/guides/api-calls/permissions-and-errors/common-errors/\",\n  \"request_id\": \"abcdef123456\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "73cb030a-e541-4e1b-a7f8-85d9c0226ab5",
+              "name": "An unexpected client error.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "metadata_cascade_policies",
+                    ":metadata_cascade_policy_id",
+                    "apply"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "metadata_cascade_policy_id",
+                      "description": "(Required) The ID of the cascade policy to force-apply."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"conflict_resolution\": \"none\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"type\": \"error\",\n  \"status\": 400,\n  \"code\": \"item_name_invalid\",\n  \"message\": \"Method Not Allowed\",\n  \"context_info\": {\n    \"message\": \"Something went wrong.\"\n  },\n  \"help_url\": \"https://developer.box.com/guides/api-calls/permissions-and-errors/common-errors/\",\n  \"request_id\": \"abcdef123456\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "/",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "5ada6ce8-0216-4731-9dba-0c48a2336a20",
+    "name": "Box Authorize Authorization Metadata Cascade Policies API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "Needs a description.",
+      "type": "text/plain"
+    }
+  }
+}
