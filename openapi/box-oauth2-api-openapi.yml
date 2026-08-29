@@ -1,7 +1,6 @@
-openapi: 3.1.0
+openapi: 3.2.0
 info:
-  version: "1.0"
-  title: Box Authorize Authorization Oauth2 API
+  title: Box Oauth2 API
   description: Needs a description.
 tags:
 - name: Oauth2
@@ -143,6 +142,21 @@ paths:
                 $ref: '#/components/schemas/OAuth2Error'
 components:
   schemas:
+    OAuth2Error:
+      title: OAuth 2.0 error
+      type: object
+      x-box-resource-id: oauth2_error
+      x-box-tag: authorization
+      description: An OAuth 2.0 error
+      properties:
+        error:
+          type: string
+          example: invalid_client
+          description: The type of the error returned.
+        error_description:
+          type: string
+          example: The client credentials are not valid
+          description: The type of the error returned.
     AccessToken:
       title: Access token
       type: object
@@ -191,18 +205,3 @@ components:
           description: 'The type of downscoped access token returned. This is only
 
             returned if an access token has been downscoped.'
-    OAuth2Error:
-      title: OAuth 2.0 error
-      type: object
-      x-box-resource-id: oauth2_error
-      x-box-tag: authorization
-      description: An OAuth 2.0 error
-      properties:
-        error:
-          type: string
-          example: invalid_client
-          description: The type of the error returned.
-        error_description:
-          type: string
-          example: The client credentials are not valid
-          description: The type of the error returned.

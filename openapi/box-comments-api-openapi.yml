@@ -1,8 +1,13 @@
-openapi: 3.1.0
+openapi: 3.2.0
 info:
-  version: "1.0"
-  title: Box Authorize Authorization Comments API
-  description: Needs a description.
+  title: Box Comments API
+  x-refined-note:
+  - x-box-commit-hash differs across the merged source definitions and was not carried
+  version: '1.0'
+  description: 'Operations tagged Comments across 2 of this provider''s published API definitions: box-openapi-original.yml, comments-openapi-original.yml. Each path carries the servers of the definition it was published in.'
+servers:
+- url: https://api.box.com/2.0
+  description: Box Platform API server
 tags:
 - name: Comments
   description: 'Comments are messages generated users on files,
@@ -109,6 +114,11 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ClientError'
+      security:
+      - OAuth2Security: []
+    servers:
+    - url: https://api.box.com/2.0
+      description: Box Platform API server
   /comments/{comment_id}:
     get:
       operationId: get_comments_id
@@ -168,6 +178,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ClientError'
+      security:
+      - OAuth2Security: []
     put:
       operationId: put_comments_id
       summary: Box Update comment
@@ -234,6 +246,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ClientError'
+      security:
+      - OAuth2Security: []
     delete:
       operationId: delete_comments_id
       summary: Box Remove comment
@@ -258,6 +272,11 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ClientError'
+      security:
+      - OAuth2Security: []
+    servers:
+    - url: https://api.box.com/2.0
+      description: Box Platform API server
   /comments:
     post:
       operationId: post_comments
@@ -375,8 +394,63 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ClientError'
+      security:
+      - OAuth2Security: []
+    servers:
+    - url: https://api.box.com/2.0
+      description: Box Platform API server
 components:
   schemas:
+    Comment:
+      title: Comment
+      type: object
+      description: Standard representation of a comment.
+      x-box-resource-id: comment
+      x-box-variant: standard
+      allOf:
+      - $ref: '#/components/schemas/Comment--Base'
+      - properties:
+          is_reply_comment:
+            type: boolean
+            description: 'Whether or not this comment is a reply to another
+
+              comment'
+            example: true
+          message:
+            type: string
+            example: '@Aaron Levie these tigers are cool!'
+            description: The text of the comment, as provided by the user
+          created_by:
+            allOf:
+            - $ref: '#/components/schemas/User--Mini'
+            - description: 'A mini user object representing the author of the
+
+                comment'
+          created_at:
+            type: string
+            format: date-time
+            description: The time this comment was created
+            example: '2012-12-12T10:53:43-08:00'
+          modified_at:
+            type: string
+            format: date-time
+            description: The time this comment was last modified
+            example: '2012-12-12T10:53:43-08:00'
+          item:
+            allOf:
+            - title: Reference
+              description: The bare basic reference for an object
+              type: object
+              properties:
+                id:
+                  type: string
+                  description: The unique identifier for this object
+                  example: '11446498'
+                type:
+                  type: string
+                  description: The type for this object
+                  example: file
+            - description: The file this comment was placed on
     Comments:
       title: Comments
       type: object
@@ -451,56 +525,117 @@ components:
             description: A list of comments
             items:
               $ref: '#/components/schemas/Comment--Full'
-    Comment:
-      title: Comment
+    Comment--Full:
+      title: Comment (Full)
       type: object
-      description: Standard representation of a comment.
-      x-box-resource-id: comment
-      x-box-variant: standard
+      x-box-resource-id: comment--full
+      x-box-variant: full
+      description: 'Comments are messages created on files. Comments
+
+        can be made independently or created as responses to other
+
+        comments'
       allOf:
-      - $ref: '#/components/schemas/Comment--Base'
+      - $ref: '#/components/schemas/Comment'
       - properties:
-          is_reply_comment:
-            type: boolean
-            description: 'Whether or not this comment is a reply to another
+          tagged_message:
+            type: string
+            example: '@[1234567:Aaron Levie] these tigers are cool!'
+            description: 'The string representing the comment text with
 
-              comment'
-            example: true
-          message:
-            type: string
-            example: '@Aaron Levie these tigers are cool!'
-            description: The text of the comment, as provided by the user
-          created_by:
-            allOf:
-            - $ref: '#/components/schemas/User--Mini'
-            - description: 'A mini user object representing the author of the
+              @mentions included. @mention format is @[id:username]
 
-                comment'
-          created_at:
+              where `id` is user''s Box ID and `username` is
+
+              their display name.'
+    ClientError:
+      title: Client error
+      type: object
+      x-box-resource-id: client_error
+      description: A generic error
+      properties:
+        type:
+          description: error
+          example: error
+          type: string
+          enum:
+          - error
+        status:
+          description: The HTTP status of the response.
+          example: 400
+          type: integer
+          format: int32
+        code:
+          description: A Box-specific error code
+          example: item_name_invalid
+          type: string
+          enum:
+          - created
+          - accepted
+          - no_content
+          - redirect
+          - not_modified
+          - bad_request
+          - unauthorized
+          - forbidden
+          - not_found
+          - method_not_allowed
+          - conflict
+          - precondition_failed
+          - too_many_requests
+          - internal_server_error
+          - unavailable
+          - item_name_invalid
+          - insufficient_scope
+        message:
+          description: A short message describing the error.
+          example: Method Not Allowed
+          type: string
+        context_info:
+          description: 'A free-form object that contains additional context
+
+            about the error. The possible fields are defined on
+
+            a per-endpoint basis. `message` is only one example.'
+          type:
+          - object
+          - 'null'
+          properties:
+            message:
+              type: string
+              description: More details on the error.
+              example: Something went wrong.
+        help_url:
+          description: A URL that links to more information about why this error occurred.
+          example: https://developer.box.com/guides/api-calls/permissions-and-errors/common-errors/
+          type: string
+        request_id:
+          description: 'A unique identifier for this response, which can be used
+
+            when contacting Box support.'
+          type: string
+          example: abcdef123456
+    User--Mini:
+      title: User (Mini)
+      type: object
+      x-box-resource-id: user--mini
+      x-box-variant: mini
+      description: 'A mini representation of a user, as can be returned when nested within other
+
+        resources.'
+      allOf:
+      - $ref: '#/components/schemas/User--Base'
+      - properties:
+          name:
             type: string
-            format: date-time
-            description: The time this comment was created
-            example: '2012-12-12T10:53:43-08:00'
-          modified_at:
+            description: The display name of this user
+            example: Aaron Levie
+            maxLength: 50
+          login:
             type: string
-            format: date-time
-            description: The time this comment was last modified
-            example: '2012-12-12T10:53:43-08:00'
-          item:
-            allOf:
-            - title: Reference
-              description: The bare basic reference for an object
-              type: object
-              properties:
-                id:
-                  type: string
-                  description: The unique identifier for this object
-                  example: '11446498'
-                type:
-                  type: string
-                  description: The type for this object
-                  example: file
-            - description: The file this comment was placed on
+            format: email
+            description: The primary email address of this user
+            example: ceo@example.com
     User--Base:
       title: User (Base)
       type: object
@@ -527,55 +662,8 @@ components:
           type: string
           description: '`user`'
           example: user
-          nullable: false
           enum:
           - user
-    User--Mini:
-      title: User (Mini)
-      type: object
-      x-box-resource-id: user--mini
-      x-box-variant: mini
-      description: 'A mini representation of a user, as can be returned when nested within other
-
-        resources.'
-      allOf:
-      - $ref: '#/components/schemas/User--Base'
-      - properties:
-          name:
-            type: string
-            description: The display name of this user
-            example: Aaron Levie
-            maxLength: 50
-            nullable: false
-          login:
-            type: string
-            format: email
-            description: The primary email address of this user
-            example: ceo@example.com
-            nullable: false
-    Comment--Full:
-      title: Comment (Full)
-      type: object
-      x-box-resource-id: comment--full
-      x-box-variant: full
-      description: 'Comments are messages created on files. Comments
-
-        can be made independently or created as responses to other
-
-        comments'
-      allOf:
-      - $ref: '#/components/schemas/Comment'
-      - properties:
-          tagged_message:
-            type: string
-            example: '@[1234567:Aaron Levie] these tigers are cool!'
-            description: 'The string representing the comment text with
-
-              @mentions included. @mention format is @[id:username]
-
-              where `id` is user''s Box ID and `username` is
-
-              their display name.'
     Comment--Base:
       title: Comment (Base)
       type: object
@@ -599,7 +687,7 @@ components:
           example: comment
           enum:
           - comment
-    ClientError:
+    ClientError_2:
       title: Client error
       type: object
       x-box-resource-id: client_error
@@ -670,3 +758,26 @@ components:
           type: string
           example: abcdef123456
           nullable: false
+  securitySchemes:
+    OAuth2Security:
+      type: oauth2
+      flows:
+        authorizationCode:
+          authorizationUrl: https://account.box.com/api/oauth2/authorize
+          tokenUrl: https://api.box.com/oauth2/token
+          scopes:
+            root_readonly: Read all files and folders stored in Box
+            root_readwrite: Read and write all files and folders stored in Box
+            manage_app_users: Provision and manage app users
+            manage_managed_users: Provision and manage managed users
+            manage_groups: Manage an enterprise's groups
+            manage_webhook: Create webhooks programmatically through the API
+            manage_enterprise_properties: Manage enterprise properties
+            manage_data_retention: Manage data retention polices
+            manage_legal_hold: Manage Legal Holds
+externalDocs:
+  description: Box Developer Documentation
+  url: https://developer.box.com
+x-refined-from:
+- box-openapi-original.yml
+- comments-openapi-original.yml

@@ -1,8 +1,22 @@
-openapi: 3.1.0
+openapi: 3.2.0
 info:
-  version: "1.0"
-  title: Box Authorize Authorization Trashed Folders API
-  description: Needs a description.
+  title: Box Platform Trashed Folders API
+  description: '[Box Platform](https://box.dev) provides functionality to provide access to content stored within [Box](https://box.com). It provides endpoints for basic manipulation of files and folders, management of users within an enterprise, as well as more complex topics such as legal holds and retention policies.'
+  termsOfService: https://cloud.app.box.com/s/rmwxu64h1ipr41u49w3bbuvbsa29wku9
+  contact:
+    name: Box, Inc
+    url: https://box.dev
+    email: devrel@box.com
+  license:
+    name: Apache-2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0
+  version: 2.0.0
+  x-box-commit-hash: '5819125043'
+servers:
+- url: https://api.box.com/2.0
+  description: Box Platform API server
+security:
+- OAuth2Security: []
 tags:
 - name: Trashed Folders
   description: 'Folders that were deleted and
@@ -62,7 +76,6 @@ paths:
         required: true
         schema:
           type: string
-          nullable: false
       - name: fields
         description: 'A comma-separated list of attributes to include in the
 
@@ -207,7 +220,6 @@ paths:
         required: true
         schema:
           type: string
-          nullable: false
       - name: fields
         description: 'A comma-separated list of attributes to include in the
 
@@ -304,7 +316,6 @@ paths:
         required: true
         schema:
           type: string
-          nullable: false
       responses:
         '204':
           description: 'Returns an empty response when the folder was
@@ -324,641 +335,6 @@ paths:
                 $ref: '#/components/schemas/ClientError'
 components:
   schemas:
-    TrashFolderRestored:
-      title: Trashed Folder (Restored)
-      type: object
-      x-box-resource-id: trash_folder_restored
-      x-box-tag: trashed_folders
-      description: Represents a folder restored from the trash.
-      properties:
-        id:
-          type: string
-          nullable: false
-          description: 'The unique identifier that represent a folder.
-
-
-            The ID for any folder can be determined
-
-            by visiting a folder in the web application
-
-            and copying the ID from the URL. For example,
-
-            for the URL `https://*.app.box.com/folders/123`
-
-            the `folder_id` is `123`.'
-          example: '123456789'
-        etag:
-          type: string
-          nullable: true
-          example: '1'
-          description: 'The HTTP `etag` of this folder. This can be used within some API
-
-            endpoints in the `If-Match` and `If-None-Match` headers to only
-
-            perform changes on the folder if (no) changes have happened.'
-        type:
-          type: string
-          description: '`folder`'
-          example: folder
-          enum:
-          - folder
-          nullable: false
-        sequence_id:
-          allOf:
-          - type: string
-            example: '3'
-            nullable: true
-            description: 'A numeric identifier that represents the most recent user event
-
-              that has been applied to this item.
-
-
-              This can be used in combination with the `GET /events`-endpoint
-
-              to filter out user events that would have occurred before this
-
-              identifier was read.
-
-
-              An example would be where a Box Drive-like application
-
-              would fetch an item via the API, and then listen to incoming
-
-              user events for changes to the item. The application would
-
-              ignore any user events where the `sequence_id` in the event
-
-              is smaller than or equal to the `sequence_id` in the originally
-
-              fetched resource.'
-          - nullable: false
-        name:
-          type: string
-          description: The name of the folder.
-          example: Contracts
-          nullable: false
-        created_at:
-          type: string
-          format: date-time
-          nullable: true
-          description: 'The date and time when the folder was created. This value may
-
-            be `null` for some folders such as the root folder or the trash
-
-            folder.'
-          example: '2012-12-12T10:53:43-08:00'
-        modified_at:
-          type: string
-          format: date-time
-          description: 'The date and time when the folder was last updated. This value may
-
-            be `null` for some folders such as the root folder or the trash
-
-            folder.'
-          example: '2012-12-12T10:53:43-08:00'
-          nullable: true
-        description:
-          allOf:
-          - type: string
-            description: The optional description of this folder
-            maxLength: 256
-            example: Legal contracts for the new ACME deal
-            nullable: false
-          - nullable: false
-        size:
-          type: integer
-          format: int64
-          description: 'The folder size in bytes.
-
-
-            Be careful parsing this integer as its
-
-            value can get very large.'
-          example: 629644
-          nullable: false
-        path_collection:
-          allOf:
-          - title: Path collection
-            description: A list of parent folders for an item.
-            type: object
-            required:
-            - total_count
-            - entries
-            properties:
-              total_count:
-                description: The number of folders in this list.
-                example: 1
-                type: integer
-                format: int64
-                nullable: false
-              entries:
-                type: array
-                description: The parent folders for this item
-                nullable: false
-                items:
-                  $ref: '#/components/schemas/Folder--Mini'
-          - description: 'The tree of folders that this file is contained in,
-
-              starting at the root.'
-          - nullable: false
-        created_by:
-          allOf:
-          - $ref: '#/components/schemas/User--Mini'
-          - description: The user who created this folder
-          - nullable: false
-        modified_by:
-          allOf:
-          - $ref: '#/components/schemas/User--Mini'
-          - description: The user who last modified this folder.
-          - nullable: false
-        trashed_at:
-          type: string
-          description: 'The time at which this folder was put in the
-
-            trash - becomes `null` after restore.'
-          example: null
-          nullable: true
-        purged_at:
-          type: string
-          description: 'The time at which this folder is expected to be purged
-
-            from the trash  - becomes `null` after restore.'
-          example: null
-          nullable: true
-        content_created_at:
-          type: string
-          format: date-time
-          nullable: true
-          description: 'The date and time at which this folder was originally
-
-            created.'
-          example: '2012-12-12T10:53:43-08:00'
-        content_modified_at:
-          type: string
-          format: date-time
-          nullable: true
-          description: The date and time at which this folder was last updated.
-          example: '2012-12-12T10:53:43-08:00'
-        owned_by:
-          allOf:
-          - $ref: '#/components/schemas/User--Mini'
-          - description: The user who owns this folder.
-          - nullable: false
-        shared_link:
-          type: string
-          description: 'The shared link for this file. This will
-
-            be `null` if a folder had been trashed, even though the original shared
-
-            link does become active again.'
-          example: null
-          nullable: true
-        folder_upload_email:
-          type: string
-          description: 'The folder upload email for this folder. This will
-
-            be `null` if a folder has been trashed, even though the original upload
-
-            email does become active again.'
-          example: null
-          nullable: true
-        parent:
-          allOf:
-          - $ref: '#/components/schemas/Folder--Mini'
-          - description: 'The optional folder that this folder is located within.
-
-
-              This value may be `null` for some folders such as the
-
-              root folder or the trash folder.'
-          - nullable: true
-        item_status:
-          type: string
-          description: 'Defines if this item has been deleted or not.
-
-
-            * `active` when the item has is not in the trash
-
-            * `trashed` when the item has been moved to the trash but not deleted
-
-            * `deleted` when the item has been permanently deleted.'
-          enum:
-          - active
-          - trashed
-          - deleted
-          nullable: false
-          example: active
-    Folder--Base:
-      title: Folder (Base)
-      type: object
-      x-box-resource-id: folder--base
-      x-box-sanitized: true
-      x-box-tag: folders
-      x-box-variants:
-      - base
-      - mini
-      - standard
-      - full
-      x-box-variant: base
-      description: 'The bare basic representation of a folder, the minimal
-
-        amount of fields returned when using the `fields` query
-
-        parameter.'
-      required:
-      - id
-      - type
-      properties:
-        id:
-          type: string
-          nullable: false
-          description: 'The unique identifier that represent a folder.
-
-
-            The ID for any folder can be determined
-
-            by visiting a folder in the web application
-
-            and copying the ID from the URL. For example,
-
-            for the URL `https://*.app.box.com/folders/123`
-
-            the `folder_id` is `123`.'
-          example: '12345'
-        etag:
-          type: string
-          nullable: true
-          example: '1'
-          description: 'The HTTP `etag` of this folder. This can be used within some API
-
-            endpoints in the `If-Match` and `If-None-Match` headers to only
-
-            perform changes on the folder if (no) changes have happened.'
-        type:
-          type: string
-          description: '`folder`'
-          example: folder
-          enum:
-          - folder
-          nullable: false
-    User--Base:
-      title: User (Base)
-      type: object
-      x-box-resource-id: user--base
-      x-box-tag: users
-      x-box-variants:
-      - base
-      - mini
-      - standard
-      - full
-      x-box-variant: base
-      description: 'A mini representation of a user, used when
-
-        nested within another resource.'
-      required:
-      - type
-      - id
-      properties:
-        id:
-          type: string
-          description: The unique identifier for this user
-          example: '11446498'
-        type:
-          type: string
-          description: '`user`'
-          example: user
-          nullable: false
-          enum:
-          - user
-    Folder--Mini:
-      title: Folder (Mini)
-      type: object
-      x-box-resource-id: folder--mini
-      x-box-variant: mini
-      description: 'A mini representation of a file version, used when
-
-        nested under another resource.'
-      allOf:
-      - $ref: '#/components/schemas/Folder--Base'
-      - properties:
-          sequence_id:
-            allOf:
-            - type: string
-              example: '3'
-              nullable: true
-              description: 'A numeric identifier that represents the most recent user event
-
-                that has been applied to this item.
-
-
-                This can be used in combination with the `GET /events`-endpoint
-
-                to filter out user events that would have occurred before this
-
-                identifier was read.
-
-
-                An example would be where a Box Drive-like application
-
-                would fetch an item via the API, and then listen to incoming
-
-                user events for changes to the item. The application would
-
-                ignore any user events where the `sequence_id` in the event
-
-                is smaller than or equal to the `sequence_id` in the originally
-
-                fetched resource.'
-            - nullable: false
-          name:
-            type: string
-            description: The name of the folder.
-            example: Contracts
-            nullable: false
-    User--Mini:
-      title: User (Mini)
-      type: object
-      x-box-resource-id: user--mini
-      x-box-variant: mini
-      description: 'A mini representation of a user, as can be returned when nested within other
-
-        resources.'
-      allOf:
-      - $ref: '#/components/schemas/User--Base'
-      - properties:
-          name:
-            type: string
-            description: The display name of this user
-            example: Aaron Levie
-            maxLength: 50
-            nullable: false
-          login:
-            type: string
-            format: email
-            description: The primary email address of this user
-            example: ceo@example.com
-            nullable: false
-    TrashFolder:
-      title: Trashed Folder
-      type: object
-      x-box-resource-id: trash_folder
-      x-box-tag: trashed_folders
-      description: Represents a trashed folder.
-      required:
-      - id
-      - type
-      - name
-      - description
-      - size
-      - path_collection
-      - created_by
-      - modified_by
-      - owned_by
-      - item_status
-      properties:
-        id:
-          type: string
-          nullable: false
-          description: 'The unique identifier that represent a folder.
-
-
-            The ID for any folder can be determined
-
-            by visiting a folder in the web application
-
-            and copying the ID from the URL. For example,
-
-            for the URL `https://*.app.box.com/folders/123`
-
-            the `folder_id` is `123`.'
-          example: '123456789'
-        etag:
-          type: string
-          nullable: true
-          example: '1'
-          description: 'The HTTP `etag` of this folder. This can be used within some API
-
-            endpoints in the `If-Match` and `If-None-Match` headers to only
-
-            perform changes on the folder if (no) changes have happened.'
-        type:
-          type: string
-          description: '`folder`'
-          example: folder
-          enum:
-          - folder
-          nullable: false
-        sequence_id:
-          allOf:
-          - type: string
-            example: '3'
-            nullable: true
-            description: 'A numeric identifier that represents the most recent user event
-
-              that has been applied to this item.
-
-
-              This can be used in combination with the `GET /events`-endpoint
-
-              to filter out user events that would have occurred before this
-
-              identifier was read.
-
-
-              An example would be where a Box Drive-like application
-
-              would fetch an item via the API, and then listen to incoming
-
-              user events for changes to the item. The application would
-
-              ignore any user events where the `sequence_id` in the event
-
-              is smaller than or equal to the `sequence_id` in the originally
-
-              fetched resource.'
-          - nullable: false
-        name:
-          type: string
-          description: The name of the folder.
-          example: Contracts
-          nullable: false
-        created_at:
-          type: string
-          format: date-time
-          nullable: true
-          description: 'The date and time when the folder was created. This value may
-
-            be `null` for some folders such as the root folder or the trash
-
-            folder.'
-          example: '2012-12-12T10:53:43-08:00'
-        modified_at:
-          type: string
-          format: date-time
-          description: 'The date and time when the folder was last updated. This value may
-
-            be `null` for some folders such as the root folder or the trash
-
-            folder.'
-          example: '2012-12-12T10:53:43-08:00'
-          nullable: true
-        description:
-          allOf:
-          - type: string
-            description: The optional description of this folder
-            maxLength: 256
-            example: Legal contracts for the new ACME deal
-            nullable: false
-          - nullable: false
-        size:
-          type: integer
-          format: int64
-          description: 'The folder size in bytes.
-
-
-            Be careful parsing this integer as its
-
-            value can get very large.'
-          example: 629644
-          nullable: false
-        path_collection:
-          allOf:
-          - title: Path collection (Trash)
-            description: A list of parent folders for an item in the trash.
-            type: object
-            required:
-            - total_count
-            - entries
-            properties:
-              total_count:
-                description: The number of folders in this list.
-                example: 1
-                type: integer
-                format: int64
-                nullable: false
-              entries:
-                description: Array of folders for this item's path collection
-                type: array
-                items:
-                  type: object
-                  description: The parent folder for this item
-                  properties:
-                    type:
-                      type: string
-                      description: '`folder`'
-                      enum:
-                      - folder
-                      example: folder
-                    id:
-                      type: string
-                      description: The unique identifier that represent a folder.
-                      example: '123456789'
-                    sequence_id:
-                      type: string
-                      nullable: true
-                      example: null
-                      description: This field is null for the Trash folder
-                    etag:
-                      type: string
-                      nullable: true
-                      example: null
-                      description: This field is null for the Trash folder
-                    name:
-                      type: string
-                      description: The name of the Trash folder.
-                      example: Trash
-                      nullable: false
-          - description: 'The tree of folders that this file is contained in,
-
-              starting at the root.'
-          - nullable: false
-        created_by:
-          allOf:
-          - $ref: '#/components/schemas/User--Mini'
-          - description: The user who created this folder
-          - nullable: false
-        modified_by:
-          allOf:
-          - $ref: '#/components/schemas/User--Mini'
-          - description: The user who last modified this folder.
-          - nullable: false
-        trashed_at:
-          type: string
-          format: date-time
-          description: The time at which this folder was put in the trash.
-          example: '2012-12-12T10:53:43-08:00'
-          nullable: true
-        purged_at:
-          type: string
-          format: date-time
-          description: 'The time at which this folder is expected to be purged
-
-            from the trash.'
-          example: '2012-12-12T10:53:43-08:00'
-          nullable: true
-        content_created_at:
-          type: string
-          format: date-time
-          nullable: true
-          description: 'The date and time at which this folder was originally
-
-            created.'
-          example: '2012-12-12T10:53:43-08:00'
-        content_modified_at:
-          type: string
-          format: date-time
-          nullable: true
-          description: The date and time at which this folder was last updated.
-          example: '2012-12-12T10:53:43-08:00'
-        owned_by:
-          allOf:
-          - $ref: '#/components/schemas/User--Mini'
-          - description: The user who owns this folder.
-          - nullable: false
-        shared_link:
-          type: string
-          description: 'The shared link for this folder. This will
-
-            be `null` if a folder has been trashed, since the link will no longer
-
-            be active.'
-          example: null
-          nullable: true
-        folder_upload_email:
-          type: string
-          description: 'The folder upload email for this folder. This will
-
-            be `null` if a folder has been trashed, since the upload will no longer
-
-            work.'
-          example: null
-          nullable: true
-        parent:
-          allOf:
-          - $ref: '#/components/schemas/Folder--Mini'
-          - description: 'The optional folder that this folder is located within.
-
-
-              This value may be `null` for some folders such as the
-
-              root folder or the trash folder.'
-          - nullable: true
-        item_status:
-          type: string
-          description: 'Defines if this item has been deleted or not.
-
-
-            * `active` when the item has is not in the trash
-
-            * `trashed` when the item has been moved to the trash but not deleted
-
-            * `deleted` when the item has been permanently deleted.'
-          enum:
-          - active
-          - trashed
-          - deleted
-          nullable: false
-          example: trashed
     ClientError:
       title: Client error
       type: object
@@ -971,13 +347,11 @@ components:
           type: string
           enum:
           - error
-          nullable: false
         status:
           description: The HTTP status of the response.
           example: 400
           type: integer
           format: int32
-          nullable: false
         code:
           description: A Box-specific error code
           example: item_name_invalid
@@ -1004,15 +378,15 @@ components:
           description: A short message describing the error.
           example: Method Not Allowed
           type: string
-          nullable: false
         context_info:
           description: 'A free-form object that contains additional context
 
             about the error. The possible fields are defined on
 
             a per-endpoint basis. `message` is only one example.'
-          type: object
-          nullable: true
+          type:
+          - object
+          - 'null'
           properties:
             message:
               type: string
@@ -1022,11 +396,666 @@ components:
           description: A URL that links to more information about why this error occurred.
           example: https://developer.box.com/guides/api-calls/permissions-and-errors/common-errors/
           type: string
-          nullable: false
         request_id:
           description: 'A unique identifier for this response, which can be used
 
             when contacting Box support.'
           type: string
           example: abcdef123456
-          nullable: false
+    User--Mini:
+      title: User (Mini)
+      type: object
+      x-box-resource-id: user--mini
+      x-box-variant: mini
+      description: 'A mini representation of a user, as can be returned when nested within other
+
+        resources.'
+      allOf:
+      - $ref: '#/components/schemas/User--Base'
+      - properties:
+          name:
+            type: string
+            description: The display name of this user
+            example: Aaron Levie
+            maxLength: 50
+          login:
+            type: string
+            format: email
+            description: The primary email address of this user
+            example: ceo@example.com
+    Folder--Mini:
+      title: Folder (Mini)
+      type: object
+      x-box-resource-id: folder--mini
+      x-box-variant: mini
+      description: 'A mini representation of a file version, used when
+
+        nested under another resource.'
+      allOf:
+      - $ref: '#/components/schemas/Folder--Base'
+      - properties:
+          sequence_id:
+            allOf:
+            - type:
+              - string
+              - 'null'
+              example: '3'
+              description: 'A numeric identifier that represents the most recent user event
+
+                that has been applied to this item.
+
+
+                This can be used in combination with the `GET /events`-endpoint
+
+                to filter out user events that would have occurred before this
+
+                identifier was read.
+
+
+                An example would be where a Box Drive-like application
+
+                would fetch an item via the API, and then listen to incoming
+
+                user events for changes to the item. The application would
+
+                ignore any user events where the `sequence_id` in the event
+
+                is smaller than or equal to the `sequence_id` in the originally
+
+                fetched resource.'
+            - {}
+          name:
+            type: string
+            description: The name of the folder.
+            example: Contracts
+    TrashFolderRestored:
+      title: Trashed Folder (Restored)
+      type: object
+      x-box-resource-id: trash_folder_restored
+      x-box-tag: trashed_folders
+      description: Represents a folder restored from the trash.
+      properties:
+        id:
+          type: string
+          description: 'The unique identifier that represent a folder.
+
+
+            The ID for any folder can be determined
+
+            by visiting a folder in the web application
+
+            and copying the ID from the URL. For example,
+
+            for the URL `https://*.app.box.com/folders/123`
+
+            the `folder_id` is `123`.'
+          example: '123456789'
+        etag:
+          type:
+          - string
+          - 'null'
+          example: '1'
+          description: 'The HTTP `etag` of this folder. This can be used within some API
+
+            endpoints in the `If-Match` and `If-None-Match` headers to only
+
+            perform changes on the folder if (no) changes have happened.'
+        type:
+          type: string
+          description: '`folder`'
+          example: folder
+          enum:
+          - folder
+        sequence_id:
+          allOf:
+          - type:
+            - string
+            - 'null'
+            example: '3'
+            description: 'A numeric identifier that represents the most recent user event
+
+              that has been applied to this item.
+
+
+              This can be used in combination with the `GET /events`-endpoint
+
+              to filter out user events that would have occurred before this
+
+              identifier was read.
+
+
+              An example would be where a Box Drive-like application
+
+              would fetch an item via the API, and then listen to incoming
+
+              user events for changes to the item. The application would
+
+              ignore any user events where the `sequence_id` in the event
+
+              is smaller than or equal to the `sequence_id` in the originally
+
+              fetched resource.'
+          - {}
+        name:
+          type: string
+          description: The name of the folder.
+          example: Contracts
+        created_at:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: 'The date and time when the folder was created. This value may
+
+            be `null` for some folders such as the root folder or the trash
+
+            folder.'
+          example: '2012-12-12T10:53:43-08:00'
+        modified_at:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: 'The date and time when the folder was last updated. This value may
+
+            be `null` for some folders such as the root folder or the trash
+
+            folder.'
+          example: '2012-12-12T10:53:43-08:00'
+        description:
+          allOf:
+          - type: string
+            description: The optional description of this folder
+            maxLength: 256
+            example: Legal contracts for the new ACME deal
+          - {}
+        size:
+          type: integer
+          format: int64
+          description: 'The folder size in bytes.
+
+
+            Be careful parsing this integer as its
+
+            value can get very large.'
+          example: 629644
+        path_collection:
+          allOf:
+          - title: Path collection
+            description: A list of parent folders for an item.
+            type: object
+            required:
+            - total_count
+            - entries
+            properties:
+              total_count:
+                description: The number of folders in this list.
+                example: 1
+                type: integer
+                format: int64
+              entries:
+                type: array
+                description: The parent folders for this item
+                items:
+                  $ref: '#/components/schemas/Folder--Mini'
+          - description: 'The tree of folders that this file is contained in,
+
+              starting at the root.'
+          - {}
+        created_by:
+          allOf:
+          - $ref: '#/components/schemas/User--Mini'
+          - description: The user who created this folder
+          - {}
+        modified_by:
+          allOf:
+          - $ref: '#/components/schemas/User--Mini'
+          - description: The user who last modified this folder.
+          - {}
+        trashed_at:
+          type:
+          - string
+          - 'null'
+          description: 'The time at which this folder was put in the
+
+            trash - becomes `null` after restore.'
+          example: null
+        purged_at:
+          type:
+          - string
+          - 'null'
+          description: 'The time at which this folder is expected to be purged
+
+            from the trash  - becomes `null` after restore.'
+          example: null
+        content_created_at:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: 'The date and time at which this folder was originally
+
+            created.'
+          example: '2012-12-12T10:53:43-08:00'
+        content_modified_at:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: The date and time at which this folder was last updated.
+          example: '2012-12-12T10:53:43-08:00'
+        owned_by:
+          allOf:
+          - $ref: '#/components/schemas/User--Mini'
+          - description: The user who owns this folder.
+          - {}
+        shared_link:
+          type:
+          - string
+          - 'null'
+          description: 'The shared link for this file. This will
+
+            be `null` if a folder had been trashed, even though the original shared
+
+            link does become active again.'
+          example: null
+        folder_upload_email:
+          type:
+          - string
+          - 'null'
+          description: 'The folder upload email for this folder. This will
+
+            be `null` if a folder has been trashed, even though the original upload
+
+            email does become active again.'
+          example: null
+        parent:
+          allOf:
+          - $ref: '#/components/schemas/Folder--Mini'
+          - description: 'The optional folder that this folder is located within.
+
+
+              This value may be `null` for some folders such as the
+
+              root folder or the trash folder.'
+          - {}
+        item_status:
+          type: string
+          description: 'Defines if this item has been deleted or not.
+
+
+            * `active` when the item has is not in the trash
+
+            * `trashed` when the item has been moved to the trash but not deleted
+
+            * `deleted` when the item has been permanently deleted.'
+          enum:
+          - active
+          - trashed
+          - deleted
+          example: active
+    User--Base:
+      title: User (Base)
+      type: object
+      x-box-resource-id: user--base
+      x-box-tag: users
+      x-box-variants:
+      - base
+      - mini
+      - standard
+      - full
+      x-box-variant: base
+      description: 'A mini representation of a user, used when
+
+        nested within another resource.'
+      required:
+      - type
+      - id
+      properties:
+        id:
+          type: string
+          description: The unique identifier for this user
+          example: '11446498'
+        type:
+          type: string
+          description: '`user`'
+          example: user
+          enum:
+          - user
+    Folder--Base:
+      title: Folder (Base)
+      type: object
+      x-box-resource-id: folder--base
+      x-box-sanitized: true
+      x-box-tag: folders
+      x-box-variants:
+      - base
+      - mini
+      - standard
+      - full
+      x-box-variant: base
+      description: 'The bare basic representation of a folder, the minimal
+
+        amount of fields returned when using the `fields` query
+
+        parameter.'
+      required:
+      - id
+      - type
+      properties:
+        id:
+          type: string
+          description: 'The unique identifier that represent a folder.
+
+
+            The ID for any folder can be determined
+
+            by visiting a folder in the web application
+
+            and copying the ID from the URL. For example,
+
+            for the URL `https://*.app.box.com/folders/123`
+
+            the `folder_id` is `123`.'
+          example: '12345'
+        etag:
+          type:
+          - string
+          - 'null'
+          example: '1'
+          description: 'The HTTP `etag` of this folder. This can be used within some API
+
+            endpoints in the `If-Match` and `If-None-Match` headers to only
+
+            perform changes on the folder if (no) changes have happened.'
+        type:
+          type: string
+          description: '`folder`'
+          example: folder
+          enum:
+          - folder
+    TrashFolder:
+      title: Trashed Folder
+      type: object
+      x-box-resource-id: trash_folder
+      x-box-tag: trashed_folders
+      description: Represents a trashed folder.
+      required:
+      - id
+      - type
+      - name
+      - description
+      - size
+      - path_collection
+      - created_by
+      - modified_by
+      - owned_by
+      - item_status
+      properties:
+        id:
+          type: string
+          description: 'The unique identifier that represent a folder.
+
+
+            The ID for any folder can be determined
+
+            by visiting a folder in the web application
+
+            and copying the ID from the URL. For example,
+
+            for the URL `https://*.app.box.com/folders/123`
+
+            the `folder_id` is `123`.'
+          example: '123456789'
+        etag:
+          type:
+          - string
+          - 'null'
+          example: '1'
+          description: 'The HTTP `etag` of this folder. This can be used within some API
+
+            endpoints in the `If-Match` and `If-None-Match` headers to only
+
+            perform changes on the folder if (no) changes have happened.'
+        type:
+          type: string
+          description: '`folder`'
+          example: folder
+          enum:
+          - folder
+        sequence_id:
+          allOf:
+          - type:
+            - string
+            - 'null'
+            example: '3'
+            description: 'A numeric identifier that represents the most recent user event
+
+              that has been applied to this item.
+
+
+              This can be used in combination with the `GET /events`-endpoint
+
+              to filter out user events that would have occurred before this
+
+              identifier was read.
+
+
+              An example would be where a Box Drive-like application
+
+              would fetch an item via the API, and then listen to incoming
+
+              user events for changes to the item. The application would
+
+              ignore any user events where the `sequence_id` in the event
+
+              is smaller than or equal to the `sequence_id` in the originally
+
+              fetched resource.'
+          - {}
+        name:
+          type: string
+          description: The name of the folder.
+          example: Contracts
+        created_at:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: 'The date and time when the folder was created. This value may
+
+            be `null` for some folders such as the root folder or the trash
+
+            folder.'
+          example: '2012-12-12T10:53:43-08:00'
+        modified_at:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: 'The date and time when the folder was last updated. This value may
+
+            be `null` for some folders such as the root folder or the trash
+
+            folder.'
+          example: '2012-12-12T10:53:43-08:00'
+        description:
+          allOf:
+          - type: string
+            description: The optional description of this folder
+            maxLength: 256
+            example: Legal contracts for the new ACME deal
+          - {}
+        size:
+          type: integer
+          format: int64
+          description: 'The folder size in bytes.
+
+
+            Be careful parsing this integer as its
+
+            value can get very large.'
+          example: 629644
+        path_collection:
+          allOf:
+          - title: Path collection (Trash)
+            description: A list of parent folders for an item in the trash.
+            type: object
+            required:
+            - total_count
+            - entries
+            properties:
+              total_count:
+                description: The number of folders in this list.
+                example: 1
+                type: integer
+                format: int64
+              entries:
+                description: Array of folders for this item's path collection
+                type: array
+                items:
+                  type: object
+                  description: The parent folder for this item
+                  properties:
+                    type:
+                      type: string
+                      description: '`folder`'
+                      enum:
+                      - folder
+                      example: folder
+                    id:
+                      type: string
+                      description: The unique identifier that represent a folder.
+                      example: '123456789'
+                    sequence_id:
+                      type:
+                      - string
+                      - 'null'
+                      example: null
+                      description: This field is null for the Trash folder
+                    etag:
+                      type:
+                      - string
+                      - 'null'
+                      example: null
+                      description: This field is null for the Trash folder
+                    name:
+                      type: string
+                      description: The name of the Trash folder.
+                      example: Trash
+          - description: 'The tree of folders that this file is contained in,
+
+              starting at the root.'
+          - {}
+        created_by:
+          allOf:
+          - $ref: '#/components/schemas/User--Mini'
+          - description: The user who created this folder
+          - {}
+        modified_by:
+          allOf:
+          - $ref: '#/components/schemas/User--Mini'
+          - description: The user who last modified this folder.
+          - {}
+        trashed_at:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: The time at which this folder was put in the trash.
+          example: '2012-12-12T10:53:43-08:00'
+        purged_at:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: 'The time at which this folder is expected to be purged
+
+            from the trash.'
+          example: '2012-12-12T10:53:43-08:00'
+        content_created_at:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: 'The date and time at which this folder was originally
+
+            created.'
+          example: '2012-12-12T10:53:43-08:00'
+        content_modified_at:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: The date and time at which this folder was last updated.
+          example: '2012-12-12T10:53:43-08:00'
+        owned_by:
+          allOf:
+          - $ref: '#/components/schemas/User--Mini'
+          - description: The user who owns this folder.
+          - {}
+        shared_link:
+          type:
+          - string
+          - 'null'
+          description: 'The shared link for this folder. This will
+
+            be `null` if a folder has been trashed, since the link will no longer
+
+            be active.'
+          example: null
+        folder_upload_email:
+          type:
+          - string
+          - 'null'
+          description: 'The folder upload email for this folder. This will
+
+            be `null` if a folder has been trashed, since the upload will no longer
+
+            work.'
+          example: null
+        parent:
+          allOf:
+          - $ref: '#/components/schemas/Folder--Mini'
+          - description: 'The optional folder that this folder is located within.
+
+
+              This value may be `null` for some folders such as the
+
+              root folder or the trash folder.'
+          - {}
+        item_status:
+          type: string
+          description: 'Defines if this item has been deleted or not.
+
+
+            * `active` when the item has is not in the trash
+
+            * `trashed` when the item has been moved to the trash but not deleted
+
+            * `deleted` when the item has been permanently deleted.'
+          enum:
+          - active
+          - trashed
+          - deleted
+          example: trashed
+  securitySchemes:
+    OAuth2Security:
+      type: oauth2
+      flows:
+        authorizationCode:
+          authorizationUrl: https://account.box.com/api/oauth2/authorize
+          tokenUrl: https://api.box.com/oauth2/token
+          scopes:
+            root_readonly: Read all files and folders stored in Box
+            root_readwrite: Read and write all files and folders stored in Box
+            manage_app_users: Provision and manage app users
+            manage_managed_users: Provision and manage managed users
+            manage_groups: Manage an enterprise's groups
+            manage_webhook: Create webhooks programmatically through the API
+            manage_enterprise_properties: Manage enterprise properties
+            manage_data_retention: Manage data retention polices
+            manage_legal_hold: Manage Legal Holds
+externalDocs:
+  description: Box Developer Documentation
+  url: https://developer.box.com

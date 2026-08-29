@@ -1,8 +1,13 @@
-openapi: 3.1.0
+openapi: 3.2.0
 info:
-  version: "1.0"
-  title: Box Authorize Authorization Terms of Service User Statuses API
-  description: Needs a description.
+  title: Box Terms of Service User Statuses API
+  x-refined-note:
+  - x-box-commit-hash differs across the merged source definitions and was not carried
+  version: '1.0'
+  description: 'Operations tagged Terms of Service User Statuses across 2 of this provider''s published API definitions: box-openapi-original.yml, terms-of-service-user-statuses-openapi-original.yml. Each path carries the servers of the definition it was published in.'
+servers:
+- url: https://api.box.com/2.0
+  description: Box Platform API server
 tags:
 - name: Terms of Service User Statuses
   description: 'A set of endpoints used to
@@ -52,6 +57,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ClientError'
+      security:
+      - OAuth2Security: []
     post:
       operationId: post_terms_of_service_user_statuses
       summary: Box Create terms of service status for new user
@@ -120,6 +127,11 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ClientError'
+      security:
+      - OAuth2Security: []
+    servers:
+    - url: https://api.box.com/2.0
+      description: Box Platform API server
   /terms_of_service_user_statuses/{terms_of_service_user_status_id}:
     put:
       operationId: put_terms_of_service_user_statuses_id
@@ -161,6 +173,11 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ClientError'
+      security:
+      - OAuth2Security: []
+    servers:
+    - url: https://api.box.com/2.0
+      description: Box Platform API server
 components:
   schemas:
     TermsOfServiceUserStatuses:
@@ -206,35 +223,94 @@ components:
           example: terms_of_service
           enum:
           - terms_of_service
-    User--Base:
-      title: User (Base)
+    ClientError:
+      title: Client error
       type: object
-      x-box-resource-id: user--base
-      x-box-tag: users
-      x-box-variants:
-      - base
-      - mini
-      - standard
-      - full
-      x-box-variant: base
-      description: 'A mini representation of a user, used when
-
-        nested within another resource.'
-      required:
-      - type
-      - id
+      x-box-resource-id: client_error
+      description: A generic error
       properties:
-        id:
-          type: string
-          description: The unique identifier for this user
-          example: '11446498'
         type:
+          description: error
+          example: error
           type: string
-          description: '`user`'
-          example: user
-          nullable: false
           enum:
-          - user
+          - error
+        status:
+          description: The HTTP status of the response.
+          example: 400
+          type: integer
+          format: int32
+        code:
+          description: A Box-specific error code
+          example: item_name_invalid
+          type: string
+          enum:
+          - created
+          - accepted
+          - no_content
+          - redirect
+          - not_modified
+          - bad_request
+          - unauthorized
+          - forbidden
+          - not_found
+          - method_not_allowed
+          - conflict
+          - precondition_failed
+          - too_many_requests
+          - internal_server_error
+          - unavailable
+          - item_name_invalid
+          - insufficient_scope
+        message:
+          description: A short message describing the error.
+          example: Method Not Allowed
+          type: string
+        context_info:
+          description: 'A free-form object that contains additional context
+
+            about the error. The possible fields are defined on
+
+            a per-endpoint basis. `message` is only one example.'
+          type:
+          - object
+          - 'null'
+          properties:
+            message:
+              type: string
+              description: More details on the error.
+              example: Something went wrong.
+        help_url:
+          description: A URL that links to more information about why this error occurred.
+          example: https://developer.box.com/guides/api-calls/permissions-and-errors/common-errors/
+          type: string
+        request_id:
+          description: 'A unique identifier for this response, which can be used
+
+            when contacting Box support.'
+          type: string
+          example: abcdef123456
+    User--Mini:
+      title: User (Mini)
+      type: object
+      x-box-resource-id: user--mini
+      x-box-variant: mini
+      description: 'A mini representation of a user, as can be returned when nested within other
+
+        resources.'
+      allOf:
+      - $ref: '#/components/schemas/User--Base'
+      - properties:
+          name:
+            type: string
+            description: The display name of this user
+            example: Aaron Levie
+            maxLength: 50
+          login:
+            type: string
+            format: email
+            description: The primary email address of this user
+            example: ceo@example.com
     TermsOfServiceUserStatus:
       title: Terms of service user status
       type: object
@@ -277,30 +353,35 @@ components:
           format: date-time
           description: When the legal item was modified.
           example: '2012-12-12T10:53:43-08:00'
-    User--Mini:
-      title: User (Mini)
+    User--Base:
+      title: User (Base)
       type: object
-      x-box-resource-id: user--mini
-      x-box-variant: mini
-      description: 'A mini representation of a user, as can be returned when nested within other
+      x-box-resource-id: user--base
+      x-box-tag: users
+      x-box-variants:
+      - base
+      - mini
+      - standard
+      - full
+      x-box-variant: base
+      description: 'A mini representation of a user, used when
 
-        resources.'
-      allOf:
-      - $ref: '#/components/schemas/User--Base'
-      - properties:
-          name:
-            type: string
-            description: The display name of this user
-            example: Aaron Levie
-            maxLength: 50
-            nullable: false
-          login:
-            type: string
-            format: email
-            description: The primary email address of this user
-            example: ceo@example.com
-            nullable: false
-    ClientError:
+        nested within another resource.'
+      required:
+      - type
+      - id
+      properties:
+        id:
+          type: string
+          description: The unique identifier for this user
+          example: '11446498'
+        type:
+          type: string
+          description: '`user`'
+          example: user
+          enum:
+          - user
+    ClientError_2:
       title: Client error
       type: object
       x-box-resource-id: client_error
@@ -371,3 +452,26 @@ components:
           type: string
           example: abcdef123456
           nullable: false
+  securitySchemes:
+    OAuth2Security:
+      type: oauth2
+      flows:
+        authorizationCode:
+          authorizationUrl: https://account.box.com/api/oauth2/authorize
+          tokenUrl: https://api.box.com/oauth2/token
+          scopes:
+            root_readonly: Read all files and folders stored in Box
+            root_readwrite: Read and write all files and folders stored in Box
+            manage_app_users: Provision and manage app users
+            manage_managed_users: Provision and manage managed users
+            manage_groups: Manage an enterprise's groups
+            manage_webhook: Create webhooks programmatically through the API
+            manage_enterprise_properties: Manage enterprise properties
+            manage_data_retention: Manage data retention polices
+            manage_legal_hold: Manage Legal Holds
+externalDocs:
+  description: Box Developer Documentation
+  url: https://developer.box.com
+x-refined-from:
+- box-openapi-original.yml
+- terms-of-service-user-statuses-openapi-original.yml

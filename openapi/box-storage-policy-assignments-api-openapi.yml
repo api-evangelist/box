@@ -1,7 +1,6 @@
-openapi: 3.1.0
+openapi: 3.2.0
 info:
-  version: "1.0"
-  title: Box Authorize Authorization Storage Policy Assignments API
+  title: Box Storage Policy Assignments API
   description: Needs a description.
 tags:
 - name: Storage Policy Assignments
@@ -251,45 +250,6 @@ paths:
                 $ref: '#/components/schemas/ClientError'
 components:
   schemas:
-    StoragePolicyAssignment:
-      title: Storage policy assignment
-      type: object
-      x-box-resource-id: storage_policy_assignment
-      x-box-tag: storage_policy_assignments
-      description: The assignment of a storage policy to a user or enterprise
-      required:
-      - id
-      - type
-      properties:
-        id:
-          type: string
-          description: The unique identifier for a storage policy assignment.
-          example: ZW50ZXJwcmlzZV8xMjM0NTY3ODkw
-        type:
-          type: string
-          description: '`storage_policy_assignment`'
-          example: storage_policy_assignment
-          enum:
-          - storage_policy_assignment
-        storage_policy:
-          allOf:
-          - $ref: '#/components/schemas/StoragePolicy--Mini'
-          - description: The assigned storage policy
-        assigned_to:
-          allOf:
-          - title: Reference
-            description: The bare basic reference for an object
-            type: object
-            properties:
-              id:
-                type: string
-                description: The unique identifier for this object
-                example: '11446498'
-              type:
-                type: string
-                description: The type for this object
-                example: file
-          - description: The enterprise or use the policy is assigned to
     ClientError:
       title: Client error
       type: object
@@ -361,6 +321,45 @@ components:
           type: string
           example: abcdef123456
           nullable: false
+    StoragePolicyAssignment:
+      title: Storage policy assignment
+      type: object
+      x-box-resource-id: storage_policy_assignment
+      x-box-tag: storage_policy_assignments
+      description: The assignment of a storage policy to a user or enterprise
+      required:
+      - id
+      - type
+      properties:
+        id:
+          type: string
+          description: The unique identifier for a storage policy assignment.
+          example: ZW50ZXJwcmlzZV8xMjM0NTY3ODkw
+        type:
+          type: string
+          description: '`storage_policy_assignment`'
+          example: storage_policy_assignment
+          enum:
+          - storage_policy_assignment
+        storage_policy:
+          allOf:
+          - $ref: '#/components/schemas/StoragePolicy--Mini'
+          - description: The assigned storage policy
+        assigned_to:
+          allOf:
+          - title: Reference
+            description: The bare basic reference for an object
+            type: object
+            properties:
+              id:
+                type: string
+                description: The unique identifier for this object
+                example: '11446498'
+              type:
+                type: string
+                description: The type for this object
+                example: file
+          - description: The enterprise or use the policy is assigned to
     StoragePolicyAssignments:
       title: Storage policy assignments
       type: object

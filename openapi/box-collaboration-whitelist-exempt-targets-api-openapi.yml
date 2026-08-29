@@ -1,7 +1,6 @@
-openapi: 3.1.0
+openapi: 3.2.0
 info:
-  version: "1.0"
-  title: Box Authorize Authorization Collaboration Whitelist Exempt Targets API
+  title: Box Collaboration Whitelist Exempt Targets API
   description: Needs a description.
 tags:
 - name: Collaboration Whitelist Exempt Targets
@@ -152,49 +151,6 @@ paths:
                 $ref: '#/components/schemas/ClientError'
 components:
   schemas:
-    CollaborationAllowlistExemptTargets:
-      title: Allowed collaboration domains user exemptions
-      type: object
-      x-box-resource-id: collaboration_allowlist_exempt_targets
-      x-box-tag: collaboration_allowlist_exempt_targets
-      description: 'A list of users exempt from any of the restrictions
-
-        imposed by the list of allowed collaboration domains for this enterprise.'
-      allOf:
-      - type: object
-        description: 'The part of an API response that describes marker
-
-          based pagination'
-        properties:
-          limit:
-            description: 'The limit that was used for these entries. This will be the same as the
-
-              `limit` query parameter unless that value exceeded the maximum value
-
-              allowed. The maximum value varies by API.'
-            example: 1000
-            type: integer
-            format: int64
-          next_marker:
-            description: The marker for the start of the next page of results.
-            example: JV9IRGZmieiBasejOG9yDCRNgd2ymoZIbjsxbJMjIs3kioVii
-            type: string
-            nullable: true
-          prev_marker:
-            description: The marker for the start of the previous page of results.
-            example: JV9IRGZmieiBasejOG9yDCRNgd2ymoZIbjsxbJMjIs3kioVih
-            type: string
-            nullable: true
-      - properties:
-          entries:
-            type: array
-            description: 'A list of users exempt from any of the restrictions
-
-              imposed by the list of allowed collaboration domains
-
-              for this enterprise.'
-            items:
-              $ref: '#/components/schemas/CollaborationAllowlistExemptTarget'
     ClientError:
       title: Client error
       type: object
@@ -266,6 +222,49 @@ components:
           type: string
           example: abcdef123456
           nullable: false
+    CollaborationAllowlistExemptTargets:
+      title: Allowed collaboration domains user exemptions
+      type: object
+      x-box-resource-id: collaboration_allowlist_exempt_targets
+      x-box-tag: collaboration_allowlist_exempt_targets
+      description: 'A list of users exempt from any of the restrictions
+
+        imposed by the list of allowed collaboration domains for this enterprise.'
+      allOf:
+      - type: object
+        description: 'The part of an API response that describes marker
+
+          based pagination'
+        properties:
+          limit:
+            description: 'The limit that was used for these entries. This will be the same as the
+
+              `limit` query parameter unless that value exceeded the maximum value
+
+              allowed. The maximum value varies by API.'
+            example: 1000
+            type: integer
+            format: int64
+          next_marker:
+            description: The marker for the start of the next page of results.
+            example: JV9IRGZmieiBasejOG9yDCRNgd2ymoZIbjsxbJMjIs3kioVii
+            type: string
+            nullable: true
+          prev_marker:
+            description: The marker for the start of the previous page of results.
+            example: JV9IRGZmieiBasejOG9yDCRNgd2ymoZIbjsxbJMjIs3kioVih
+            type: string
+            nullable: true
+      - properties:
+          entries:
+            type: array
+            description: 'A list of users exempt from any of the restrictions
+
+              imposed by the list of allowed collaboration domains
+
+              for this enterprise.'
+            items:
+              $ref: '#/components/schemas/CollaborationAllowlistExemptTarget'
     CollaborationAllowlistExemptTarget:
       title: Allowed collaboration domains user exemption
       type: object

@@ -1,8 +1,13 @@
-openapi: 3.1.0
+openapi: 3.2.0
 info:
-  version: "1.0"
-  title: Box Authorize Authorization File Version Legal Holds API
-  description: Needs a description.
+  title: Box File Version Legal Holds API
+  x-refined-note:
+  - x-box-commit-hash differs across the merged source definitions and was not carried
+  version: '1.0'
+  description: 'Operations tagged File Version Legal Holds across 2 of this provider''s published API definitions: box-openapi-original.yml, file-version-legal-holds-openapi-original.yml. Each path carries the servers of the definition it was published in.'
+servers:
+- url: https://api.box.com/2.0
+  description: Box Platform API server
 tags:
 - name: File Version Legal Holds
   description: 'A legal hold is a process that an enterprise
@@ -49,6 +54,11 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ClientError'
+      security:
+      - OAuth2Security: []
+    servers:
+    - url: https://api.box.com/2.0
+      description: Box Platform API server
   /file_version_legal_holds:
     get:
       operationId: get_file_version_legal_holds
@@ -136,6 +146,11 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ClientError'
+      security:
+      - OAuth2Security: []
+    servers:
+    - url: https://api.box.com/2.0
+      description: Box Platform API server
 components:
   schemas:
     Folder:
@@ -150,9 +165,10 @@ components:
       - $ref: '#/components/schemas/Folder--Mini'
       - properties:
           created_at:
-            type: string
+            type:
+            - string
+            - 'null'
             format: date-time
-            nullable: true
             description: 'The date and time when the folder was created. This value may
 
               be `null` for some folders such as the root folder or the trash
@@ -160,7 +176,9 @@ components:
               folder.'
             example: '2012-12-12T10:53:43-08:00'
           modified_at:
-            type: string
+            type:
+            - string
+            - 'null'
             format: date-time
             description: 'The date and time when the folder was last updated. This value may
 
@@ -168,15 +186,13 @@ components:
 
               folder.'
             example: '2012-12-12T10:53:43-08:00'
-            nullable: true
           description:
             allOf:
             - type: string
               description: The optional description of this folder
               maxLength: 256
               example: Legal contracts for the new ACME deal
-              nullable: false
-            - nullable: false
+            - {}
           size:
             type: integer
             format: int64
@@ -187,7 +203,6 @@ components:
 
               value can get very large.'
             example: 629644
-            nullable: false
           path_collection:
             allOf:
             - title: Path collection
@@ -202,60 +217,62 @@ components:
                   example: 1
                   type: integer
                   format: int64
-                  nullable: false
                 entries:
                   type: array
                   description: The parent folders for this item
-                  nullable: false
                   items:
                     $ref: '#/components/schemas/Folder--Mini'
             - description: 'The tree of folders that this folder is contained in,
 
                 starting at the root.'
-            - nullable: false
+            - {}
           created_by:
             allOf:
             - $ref: '#/components/schemas/User--Mini'
             - description: The user who created this folder
-            - nullable: false
+            - {}
           modified_by:
             allOf:
             - $ref: '#/components/schemas/User--Mini'
             - description: The user who last modified this folder.
-            - nullable: false
+            - {}
           trashed_at:
-            type: string
+            type:
+            - string
+            - 'null'
             format: date-time
             description: The time at which this folder was put in the trash.
             example: '2012-12-12T10:53:43-08:00'
-            nullable: true
           purged_at:
-            type: string
+            type:
+            - string
+            - 'null'
             format: date-time
             description: 'The time at which this folder is expected to be purged
 
               from the trash.'
             example: '2012-12-12T10:53:43-08:00'
-            nullable: true
           content_created_at:
-            type: string
+            type:
+            - string
+            - 'null'
             format: date-time
-            nullable: true
             description: 'The date and time at which this folder was originally
 
               created.'
             example: '2012-12-12T10:53:43-08:00'
           content_modified_at:
-            type: string
+            type:
+            - string
+            - 'null'
             format: date-time
-            nullable: true
             description: The date and time at which this folder was last updated.
             example: '2012-12-12T10:53:43-08:00'
           owned_by:
             allOf:
             - $ref: '#/components/schemas/User--Mini'
             - description: The user who owns this folder.
-            - nullable: false
+            - {}
           shared_link:
             allOf:
             - title: Shared link
@@ -292,9 +309,10 @@ components:
 
                     has been set for this shared link.'
                   example: https://www.box.com/s/vspke7y05sb214wjokpk
-                  nullable: false
                 download_url:
-                  type: string
+                  type:
+                  - string
+                  - 'null'
                   format: url
                   x-box-premium-feature: true
                   description: 'A URL that can be used to download the file. This URL can be used in
@@ -306,20 +324,21 @@ components:
 
                     This property will be `null` for folders.'
                   example: https://www.box.com/shared/static/rh935iit6ewrmw0unyul.jpeg
-                  nullable: true
                 vanity_url:
-                  type: string
+                  type:
+                  - string
+                  - 'null'
                   format: url
                   description: 'The "Custom URL" that can also be used to preview the item on Box.  Custom
 
                     URLs can only be created or modified in the Box Web application.'
                   example: https://acme.app.box.com/v/my_url/
-                  nullable: true
                 vanity_name:
-                  type: string
+                  type:
+                  - string
+                  - 'null'
                   description: The custom name of a shared link, as used in the `vanity_url` field.
                   example: my_url
-                  nullable: true
                 access:
                   type: string
                   description: "The access level for this shared link.\n\n* `open` - provides access to this item to anyone with this link\n* `company` - only provides access to this item to people the same company\n* `collaborators` - only provides access to this item to people who are\n   collaborators on this item\n\nIf this field is omitted when creating the shared link, the access level\nwill be set to the default access level specified by the enterprise admin."
@@ -328,7 +347,6 @@ components:
                   - company
                   - collaborators
                   example: open
-                  nullable: false
                 effective_access:
                   type: string
                   description: 'The effective access level for the shared link. This can be a more
@@ -341,7 +359,6 @@ components:
                   - company
                   - collaborators
                   example: company
-                  nullable: false
                 effective_permission:
                   type: string
                   description: 'The effective permissions for this shared link.
@@ -359,20 +376,19 @@ components:
                   - can_preview
                   - no_access
                   example: can_download
-                  nullable: false
                 unshared_at:
-                  type: string
+                  type:
+                  - string
+                  - 'null'
                   format: date-time
                   description: 'The date and time when this link will be unshared. This field can only be
 
                     set by users with paid accounts.'
                   example: '2018-04-13T13:53:23-07:00'
-                  nullable: true
                 is_password_enabled:
                   type: boolean
                   description: Defines if the shared link requires a password to access the item.
                   example: true
-                  nullable: false
                 permissions:
                   type: object
                   description: 'Defines if this link allows a user to preview, edit, and download an item.
@@ -388,7 +404,6 @@ components:
                     can_download:
                       type: boolean
                       example: true
-                      nullable: false
                       description: 'Defines if the shared link allows for the item to be downloaded. For
 
                         shared links on folders, this also applies to any items in the folder.
@@ -400,7 +415,6 @@ components:
                     can_preview:
                       type: boolean
                       example: true
-                      nullable: false
                       description: 'Defines if the shared link allows for the item to be previewed.
 
 
@@ -410,7 +424,6 @@ components:
                     can_edit:
                       type: boolean
                       example: false
-                      nullable: false
                       description: 'Defines if the shared link allows for the item to be edited.
 
 
@@ -421,26 +434,23 @@ components:
                   type: integer
                   example: 3
                   description: The number of times this item has been downloaded.
-                  nullable: false
                 preview_count:
                   type: integer
                   example: 3
                   description: The number of times this item has been previewed.
-                  nullable: false
             - description: 'The shared link for this folder. This will be
 
                 `null` if no shared link has been created for this
 
                 folder.'
-            nullable: true
           folder_upload_email:
-            type: object
-            nullable: true
+            type:
+            - object
+            - 'null'
             properties:
               access:
                 type: string
                 example: open
-                nullable: false
                 enum:
                 - open
                 - collaborators
@@ -471,7 +481,6 @@ components:
                 type: string
                 format: email
                 example: upload.Contracts.asd7asd@u.box.com
-                nullable: false
           parent:
             allOf:
             - $ref: '#/components/schemas/Folder--Mini'
@@ -481,7 +490,6 @@ components:
                 This value may be `null` for some folders such as the
 
                 root folder or the trash folder.'
-            nullable: true
           item_status:
             type: string
             description: 'Defines if this item has been deleted or not.
@@ -496,7 +504,6 @@ components:
             - active
             - trashed
             - deleted
-            nullable: false
             example: active
           item_collection:
             allOf:
@@ -507,310 +514,119 @@ components:
                 This field can only be requested when querying a folder''s
 
                 information, not when querying a folder''s items.'
-            - nullable: false
-    File:
-      title: File
+            - {}
+    ClientError:
+      title: Client error
       type: object
-      x-box-resource-id: file
-      x-box-variant: standard
-      description: 'A standard representation of a file, as returned from any
+      x-box-resource-id: client_error
+      description: A generic error
+      properties:
+        type:
+          description: error
+          example: error
+          type: string
+          enum:
+          - error
+        status:
+          description: The HTTP status of the response.
+          example: 400
+          type: integer
+          format: int32
+        code:
+          description: A Box-specific error code
+          example: item_name_invalid
+          type: string
+          enum:
+          - created
+          - accepted
+          - no_content
+          - redirect
+          - not_modified
+          - bad_request
+          - unauthorized
+          - forbidden
+          - not_found
+          - method_not_allowed
+          - conflict
+          - precondition_failed
+          - too_many_requests
+          - internal_server_error
+          - unavailable
+          - item_name_invalid
+          - insufficient_scope
+        message:
+          description: A short message describing the error.
+          example: Method Not Allowed
+          type: string
+        context_info:
+          description: 'A free-form object that contains additional context
 
-        file API endpoints by default'
+            about the error. The possible fields are defined on
+
+            a per-endpoint basis. `message` is only one example.'
+          type:
+          - object
+          - 'null'
+          properties:
+            message:
+              type: string
+              description: More details on the error.
+              example: Something went wrong.
+        help_url:
+          description: A URL that links to more information about why this error occurred.
+          example: https://developer.box.com/guides/api-calls/permissions-and-errors/common-errors/
+          type: string
+        request_id:
+          description: 'A unique identifier for this response, which can be used
+
+            when contacting Box support.'
+          type: string
+          example: abcdef123456
+    FileVersion--Mini:
+      title: File version (Mini)
+      type: object
+      x-box-resource-id: file_version--mini
+      x-box-variant: mini
+      description: 'A mini representation of a file version, used when
+
+        nested within another resource.'
       allOf:
-      - $ref: '#/components/schemas/File--Mini'
+      - $ref: '#/components/schemas/FileVersion--Base'
       - properties:
-          description:
+          sha1:
             type: string
-            nullable: false
-            description: The optional description of this file
-            maxLength: 256
-            example: Contract for Q1 renewal
-          size:
-            type: integer
-            nullable: false
-            description: 'The file size in bytes. Be careful parsing this integer as it can
+            description: The SHA1 hash of this version of the file.
+            example: 134b65991ed521fcfe4724b7d814ab8ded5185dc
+    FileVersion--Base:
+      title: File version (Base)
+      type: object
+      x-box-resource-id: file_version--base
+      x-box-sanitized: true
+      x-box-variants:
+      - base
+      - mini
+      - standard
+      - full
+      x-box-variant: base
+      description: 'The bare basic representation of a file version, the minimal
 
-              get very large and cause an integer overflow.'
-            example: 629644
-          path_collection:
-            allOf:
-            - title: Path collection
-              description: A list of parent folders for an item.
-              type: object
-              required:
-              - total_count
-              - entries
-              properties:
-                total_count:
-                  description: The number of folders in this list.
-                  example: 1
-                  type: integer
-                  format: int64
-                  nullable: false
-                entries:
-                  type: array
-                  description: The parent folders for this item
-                  nullable: false
-                  items:
-                    $ref: '#/components/schemas/Folder--Mini'
-            - description: 'The tree of folders that this file is contained in,
+        amount of fields returned when using the `fields` query
 
-                starting at the root.'
-            - nullable: false
-          created_at:
-            type: string
-            format: date-time
-            nullable: false
-            description: The date and time when the file was created on Box.
-            example: '2012-12-12T10:53:43-08:00'
-          modified_at:
-            type: string
-            format: date-time
-            nullable: false
-            description: The date and time when the file was last updated on Box.
-            example: '2012-12-12T10:53:43-08:00'
-          trashed_at:
-            type: string
-            format: date-time
-            description: The time at which this file was put in the trash.
-            example: '2012-12-12T10:53:43-08:00'
-            nullable: true
-          purged_at:
-            type: string
-            format: date-time
-            description: 'The time at which this file is expected to be purged
-
-              from the trash.'
-            example: '2012-12-12T10:53:43-08:00'
-            nullable: true
-          content_created_at:
-            type: string
-            format: date-time
-            nullable: true
-            description: 'The date and time at which this file was originally
-
-              created, which might be before it was uploaded to Box.'
-            example: '2012-12-12T10:53:43-08:00'
-          content_modified_at:
-            type: string
-            format: date-time
-            nullable: true
-            description: 'The date and time at which this file was last updated,
-
-              which might be before it was uploaded to Box.'
-            example: '2012-12-12T10:53:43-08:00'
-          created_by:
-            allOf:
-            - $ref: '#/components/schemas/User--Mini'
-            - description: The user who created this file
-          modified_by:
-            allOf:
-            - $ref: '#/components/schemas/User--Mini'
-            - description: The user who last modified this file
-            - nullable: false
-          owned_by:
-            allOf:
-            - $ref: '#/components/schemas/User--Mini'
-            - description: The user who owns this file
-            - nullable: false
-          shared_link:
-            allOf:
-            - title: Shared link
-              description: 'Shared links provide direct, read-only access to files or folder on Box.
-
-
-                Shared links with open access level allow anyone with the URL
-
-                to access the item, while shared links with company or collaborators access
-
-                levels can only be accessed by appropriately authenticated Box users.'
-              type: object
-              required:
-              - url
-              - accessed
-              - effective_access
-              - effective_permission
-              - is_password_enabled
-              - download_count
-              - preview_count
-              properties:
-                url:
-                  type: string
-                  format: url
-                  description: 'The URL that can be used to access the item on Box.
-
-
-                    This URL will display the item in Box''s preview UI where the file
-
-                    can be downloaded if allowed.
-
-
-                    This URL will continue to work even when a custom `vanity_url`
-
-                    has been set for this shared link.'
-                  example: https://www.box.com/s/vspke7y05sb214wjokpk
-                  nullable: false
-                download_url:
-                  type: string
-                  format: url
-                  x-box-premium-feature: true
-                  description: 'A URL that can be used to download the file. This URL can be used in
-
-                    a browser to download the file. This URL includes the file
-
-                    extension so that the file will be saved with the right file type.
-
-
-                    This property will be `null` for folders.'
-                  example: https://www.box.com/shared/static/rh935iit6ewrmw0unyul.jpeg
-                  nullable: true
-                vanity_url:
-                  type: string
-                  format: url
-                  description: 'The "Custom URL" that can also be used to preview the item on Box.  Custom
-
-                    URLs can only be created or modified in the Box Web application.'
-                  example: https://acme.app.box.com/v/my_url/
-                  nullable: true
-                vanity_name:
-                  type: string
-                  description: The custom name of a shared link, as used in the `vanity_url` field.
-                  example: my_url
-                  nullable: true
-                access:
-                  type: string
-                  description: "The access level for this shared link.\n\n* `open` - provides access to this item to anyone with this link\n* `company` - only provides access to this item to people the same company\n* `collaborators` - only provides access to this item to people who are\n   collaborators on this item\n\nIf this field is omitted when creating the shared link, the access level\nwill be set to the default access level specified by the enterprise admin."
-                  enum:
-                  - open
-                  - company
-                  - collaborators
-                  example: open
-                  nullable: false
-                effective_access:
-                  type: string
-                  description: 'The effective access level for the shared link. This can be a more
-
-                    restrictive access level than the value in the `access` field when the
-
-                    enterprise settings restrict the allowed access levels.'
-                  enum:
-                  - open
-                  - company
-                  - collaborators
-                  example: company
-                  nullable: false
-                effective_permission:
-                  type: string
-                  description: 'The effective permissions for this shared link.
-
-                    These result in the more restrictive combination of
-
-                    the share link permissions and the item permissions set
-
-                    by the administrator, the owner, and any ancestor item
-
-                    such as a folder.'
-                  enum:
-                  - can_edit
-                  - can_download
-                  - can_preview
-                  - no_access
-                  example: can_download
-                  nullable: false
-                unshared_at:
-                  type: string
-                  format: date-time
-                  description: 'The date and time when this link will be unshared. This field can only be
-
-                    set by users with paid accounts.'
-                  example: '2018-04-13T13:53:23-07:00'
-                  nullable: true
-                is_password_enabled:
-                  type: boolean
-                  description: Defines if the shared link requires a password to access the item.
-                  example: true
-                  nullable: false
-                permissions:
-                  type: object
-                  description: 'Defines if this link allows a user to preview, edit, and download an item.
-
-                    These permissions refer to the shared link only and
-
-                    do not supersede permissions applied to the item itself.'
-                  required:
-                  - can_download
-                  - can_preview
-                  - can_edit
-                  properties:
-                    can_download:
-                      type: boolean
-                      example: true
-                      nullable: false
-                      description: 'Defines if the shared link allows for the item to be downloaded. For
-
-                        shared links on folders, this also applies to any items in the folder.
-
-
-                        This value can be set to `true` when the effective access level is
-
-                        set to `open` or `company`, not `collaborators`.'
-                    can_preview:
-                      type: boolean
-                      example: true
-                      nullable: false
-                      description: 'Defines if the shared link allows for the item to be previewed.
-
-
-                        This value is always `true`. For shared links on folders this also
-
-                        applies to any items in the folder.'
-                    can_edit:
-                      type: boolean
-                      example: false
-                      nullable: false
-                      description: 'Defines if the shared link allows for the item to be edited.
-
-
-                        This value can only be `true` if `can_download` is also `true` and if
-
-                        the item has a type of `file`.'
-                download_count:
-                  type: integer
-                  example: 3
-                  description: The number of times this item has been downloaded.
-                  nullable: false
-                preview_count:
-                  type: integer
-                  example: 3
-                  description: The number of times this item has been previewed.
-                  nullable: false
-            - description: 'The shared link for this file. This will be
-
-                `null` if no shared link has been created for this
-
-                file.'
-            - nullable: true
-          parent:
-            allOf:
-            - $ref: '#/components/schemas/Folder--Mini'
-            - description: The folder that this file is located within.
-            nullable: true
-          item_status:
-            type: string
-            description: 'Defines if this item has been deleted or not.
-
-
-              * `active` when the item has is not in the trash
-
-              * `trashed` when the item has been moved to the trash but not deleted
-
-              * `deleted` when the item has been permanently deleted.'
-            enum:
-            - active
-            - trashed
-            - deleted
-            nullable: false
-            example: active
+        parameter.'
+      required:
+      - id
+      - type
+      properties:
+        id:
+          type: string
+          description: The unique identifier that represent a file version.
+          example: '12345'
+        type:
+          type: string
+          description: '`file_version`'
+          example: file_version
+          enum:
+          - file_version
     User--Base:
       title: User (Base)
       type: object
@@ -837,35 +653,154 @@ components:
           type: string
           description: '`user`'
           example: user
-          nullable: false
           enum:
           - user
-    WebLink:
-      title: Web link
+    LegalHoldPolicy--Mini:
+      title: Legal hold policy (Mini)
       type: object
-      x-box-resource-id: web_link
-      x-box-variant: standard
-      description: 'Web links are objects that point to URLs. These objects
+      x-box-resource-id: legal_hold_policy--mini
+      x-box-tag: legal_hold_policies
+      x-box-variants:
+      - mini
+      - standard
+      x-box-variant: mini
+      description: A mini legal hold policy
+      required:
+      - id
+      - type
+      properties:
+        id:
+          type: string
+          description: The unique identifier for this legal hold policy
+          example: '11446498'
+        type:
+          type: string
+          description: '`legal_hold_policy`'
+          example: legal_hold_policy
+          enum:
+          - legal_hold_policy
+    User--Mini:
+      title: User (Mini)
+      type: object
+      x-box-resource-id: user--mini
+      x-box-variant: mini
+      description: 'A mini representation of a user, as can be returned when nested within other
 
-        are also known as bookmarks within the Box web application.
-
-
-        Web link objects are treated similarly to file objects,
-
-        they will also support most actions that apply to regular files.'
+        resources.'
       allOf:
-      - $ref: '#/components/schemas/WebLink--Mini'
+      - $ref: '#/components/schemas/User--Base'
       - properties:
-          parent:
-            allOf:
-            - $ref: '#/components/schemas/Folder--Mini'
-            - description: The parent object the web link belongs to
+          name:
+            type: string
+            description: The display name of this user
+            example: Aaron Levie
+            maxLength: 50
+          login:
+            type: string
+            format: email
+            description: The primary email address of this user
+            example: ceo@example.com
+    Items:
+      title: Items
+      type: object
+      x-box-resource-id: items
+      x-box-tag: folders
+      description: 'A list of files, folders, and web links in
+
+        their mini representation.'
+      allOf:
+      - type: object
+        description: The part of an API response that describes pagination
+        properties:
+          total_count:
+            description: 'One greater than the offset of the last entry in the entire collection.
+
+              The total number of entries in the collection may be less than
+
+              `total_count`.
+
+
+              This field is only returned for calls that use offset-based pagination.
+
+              For marker-based paginated APIs, this field will be omitted.'
+            example: 5000
+            type: integer
+            format: int64
+          limit:
+            description: 'The limit that was used for these entries. This will be the same as the
+
+              `limit` query parameter unless that value exceeded the maximum value
+
+              allowed. The maximum value varies by API.'
+            example: 1000
+            type: integer
+            format: int64
+          offset:
+            description: 'The 0-based offset of the first entry in this set. This will be the same
+
+              as the `offset` query parameter.
+
+
+              This field is only returned for calls that use offset-based pagination.
+
+              For marker-based paginated APIs, this field will be omitted.'
+            example: 2000
+            type: integer
+            format: int64
+          order:
+            description: 'The order by which items are returned.
+
+
+              This field is only returned for calls that use offset-based pagination.
+
+              For marker-based paginated APIs, this field will be omitted.'
+            type: array
+            items:
+              type: object
+              description: The order in which a pagination is ordered
+              properties:
+                by:
+                  description: The field to order by
+                  example: type
+                  type: string
+                direction:
+                  type: string
+                  description: The direction to order by, either ascending or descending
+                  example: ASC
+                  enum:
+                  - ASC
+                  - DESC
+      - properties:
+          entries:
+            description: The items in this collection.
+            type: array
+            items:
+              oneOf:
+              - $ref: '#/components/schemas/File--Full'
+              - $ref: '#/components/schemas/Folder--Mini'
+              - $ref: '#/components/schemas/WebLink'
+    File:
+      title: File
+      type: object
+      x-box-resource-id: file
+      x-box-variant: standard
+      description: 'A standard representation of a file, as returned from any
+
+        file API endpoints by default'
+      allOf:
+      - $ref: '#/components/schemas/File--Mini'
+      - properties:
           description:
             type: string
-            example: Example page
-            description: 'The description accompanying the web link. This is
+            description: The optional description of this file
+            maxLength: 256
+            example: Contract for Q1 renewal
+          size:
+            type: integer
+            description: 'The file size in bytes. Be careful parsing this integer as it can
 
-              visible within the Box web application.'
+              get very large and cause an integer overflow.'
+            example: 629644
           path_collection:
             allOf:
             - title: Path collection
@@ -880,53 +815,73 @@ components:
                   example: 1
                   type: integer
                   format: int64
-                  nullable: false
                 entries:
                   type: array
                   description: The parent folders for this item
-                  nullable: false
                   items:
                     $ref: '#/components/schemas/Folder--Mini'
-            - description: 'The tree of folders that this web link is contained in,
+            - description: 'The tree of folders that this file is contained in,
 
                 starting at the root.'
-            - nullable: false
+            - {}
           created_at:
             type: string
             format: date-time
-            description: When this file was created on Box’s servers.
+            description: The date and time when the file was created on Box.
             example: '2012-12-12T10:53:43-08:00'
           modified_at:
             type: string
             format: date-time
-            description: 'When this file was last updated on the Box
-
-              servers.'
+            description: The date and time when the file was last updated on Box.
             example: '2012-12-12T10:53:43-08:00'
           trashed_at:
-            type: string
+            type:
+            - string
+            - 'null'
             format: date-time
-            nullable: true
-            description: When this file was moved to the trash.
+            description: The time at which this file was put in the trash.
             example: '2012-12-12T10:53:43-08:00'
           purged_at:
-            type: string
+            type:
+            - string
+            - 'null'
             format: date-time
-            nullable: true
-            description: When this file will be permanently deleted.
+            description: 'The time at which this file is expected to be purged
+
+              from the trash.'
+            example: '2012-12-12T10:53:43-08:00'
+          content_created_at:
+            type:
+            - string
+            - 'null'
+            format: date-time
+            description: 'The date and time at which this file was originally
+
+              created, which might be before it was uploaded to Box.'
+            example: '2012-12-12T10:53:43-08:00'
+          content_modified_at:
+            type:
+            - string
+            - 'null'
+            format: date-time
+            description: 'The date and time at which this file was last updated,
+
+              which might be before it was uploaded to Box.'
             example: '2012-12-12T10:53:43-08:00'
           created_by:
             allOf:
             - $ref: '#/components/schemas/User--Mini'
-            - description: The user who created this web link
+            - description: The user who created this file
           modified_by:
             allOf:
             - $ref: '#/components/schemas/User--Mini'
-            - description: The user who last modified this web link
+            - description: The user who last modified this file
+            - {}
           owned_by:
             allOf:
             - $ref: '#/components/schemas/User--Mini'
-            - description: The user who owns this web link
+            - description: The user who owns this file
+            - {}
           shared_link:
             allOf:
             - title: Shared link
@@ -963,9 +918,10 @@ components:
 
                     has been set for this shared link.'
                   example: https://www.box.com/s/vspke7y05sb214wjokpk
-                  nullable: false
                 download_url:
-                  type: string
+                  type:
+                  - string
+                  - 'null'
                   format: url
                   x-box-premium-feature: true
                   description: 'A URL that can be used to download the file. This URL can be used in
@@ -977,20 +933,21 @@ components:
 
                     This property will be `null` for folders.'
                   example: https://www.box.com/shared/static/rh935iit6ewrmw0unyul.jpeg
-                  nullable: true
                 vanity_url:
-                  type: string
+                  type:
+                  - string
+                  - 'null'
                   format: url
                   description: 'The "Custom URL" that can also be used to preview the item on Box.  Custom
 
                     URLs can only be created or modified in the Box Web application.'
                   example: https://acme.app.box.com/v/my_url/
-                  nullable: true
                 vanity_name:
-                  type: string
+                  type:
+                  - string
+                  - 'null'
                   description: The custom name of a shared link, as used in the `vanity_url` field.
                   example: my_url
-                  nullable: true
                 access:
                   type: string
                   description: "The access level for this shared link.\n\n* `open` - provides access to this item to anyone with this link\n* `company` - only provides access to this item to people the same company\n* `collaborators` - only provides access to this item to people who are\n   collaborators on this item\n\nIf this field is omitted when creating the shared link, the access level\nwill be set to the default access level specified by the enterprise admin."
@@ -999,7 +956,6 @@ components:
                   - company
                   - collaborators
                   example: open
-                  nullable: false
                 effective_access:
                   type: string
                   description: 'The effective access level for the shared link. This can be a more
@@ -1012,7 +968,6 @@ components:
                   - company
                   - collaborators
                   example: company
-                  nullable: false
                 effective_permission:
                   type: string
                   description: 'The effective permissions for this shared link.
@@ -1030,20 +985,19 @@ components:
                   - can_preview
                   - no_access
                   example: can_download
-                  nullable: false
                 unshared_at:
-                  type: string
+                  type:
+                  - string
+                  - 'null'
                   format: date-time
                   description: 'The date and time when this link will be unshared. This field can only be
 
                     set by users with paid accounts.'
                   example: '2018-04-13T13:53:23-07:00'
-                  nullable: true
                 is_password_enabled:
                   type: boolean
                   description: Defines if the shared link requires a password to access the item.
                   example: true
-                  nullable: false
                 permissions:
                   type: object
                   description: 'Defines if this link allows a user to preview, edit, and download an item.
@@ -1059,7 +1013,6 @@ components:
                     can_download:
                       type: boolean
                       example: true
-                      nullable: false
                       description: 'Defines if the shared link allows for the item to be downloaded. For
 
                         shared links on folders, this also applies to any items in the folder.
@@ -1071,7 +1024,6 @@ components:
                     can_preview:
                       type: boolean
                       example: true
-                      nullable: false
                       description: 'Defines if the shared link allows for the item to be previewed.
 
 
@@ -1081,7 +1033,6 @@ components:
                     can_edit:
                       type: boolean
                       example: false
-                      nullable: false
                       description: 'Defines if the shared link allows for the item to be edited.
 
 
@@ -1092,99 +1043,93 @@ components:
                   type: integer
                   example: 3
                   description: The number of times this item has been downloaded.
-                  nullable: false
                 preview_count:
                   type: integer
                   example: 3
                   description: The number of times this item has been previewed.
-                  nullable: false
-            - description: 'The shared link object for this item. Will be
+            - description: 'The shared link for this file. This will be
 
-                `null` if no shared link has been created.'
-            - nullable: true
+                `null` if no shared link has been created for this
+
+                file.'
+            - {}
+          parent:
+            allOf:
+            - $ref: '#/components/schemas/Folder--Mini'
+            - description: The folder that this file is located within.
           item_status:
             type: string
-            example: active
+            description: 'Defines if this item has been deleted or not.
+
+
+              * `active` when the item has is not in the trash
+
+              * `trashed` when the item has been moved to the trash but not deleted
+
+              * `deleted` when the item has been permanently deleted.'
             enum:
             - active
             - trashed
             - deleted
-            description: 'Whether this item is deleted or not. Values include `active`,
+            example: active
+    File--Mini:
+      title: File (Mini)
+      type:
+      - object
+      - 'null'
+      x-box-resource-id: file--mini
+      x-box-variant: mini
+      description: 'A mini representation of a file, used when
 
-              `trashed` if the file has been moved to the trash, and `deleted` if
+        nested under another resource.'
+      allOf:
+      - $ref: '#/components/schemas/File--Base'
+      - properties:
+          sequence_id:
+            allOf:
+            - type:
+              - string
+              - 'null'
+              example: '3'
+              description: 'A numeric identifier that represents the most recent user event
 
-              the file has been permanently deleted'
-    FileVersionLegalHold:
-      title: File version legal hold
-      type: object
-      x-box-resource-id: file_version_legal_hold
-      x-box-tag: file_version_legal_holds
-      description: 'File-Version-Legal-Hold is an entity representing all
+                that has been applied to this item.
 
-        holds on a File Version.'
-      properties:
-        id:
-          type: string
-          description: The unique identifier for this file version legal hold
-          example: '11446498'
-        type:
-          type: string
-          description: '`file_version_legal_hold`'
-          example: file_version_legal_hold
-          enum:
-          - file_version_legal_hold
-        file_version:
-          allOf:
-          - $ref: '#/components/schemas/FileVersion--Mini'
-          - description: The file version that is held
-        file:
-          allOf:
-          - $ref: '#/components/schemas/File--Mini'
-          - description: 'The file for the file version held.
 
-              Note that there is no guarantee that the current
+                This can be used in combination with the `GET /events`-endpoint
 
-              version of this file is held.'
-        legal_hold_policy_assignments:
-          description: List of assignments contributing to this Hold.
-          type: array
-          items:
-            $ref: '#/components/schemas/LegalHoldPolicyAssignment'
-        deleted_at:
-          type: string
-          format: date-time
-          description: 'Time that this File-Version-Legal-Hold was
+                to filter out user events that would have occurred before this
 
-            deleted.'
-          example: '2012-12-12T10:53:43-08:00'
-    FileOrFolderScope:
-      title: File or folder scope
-      type: object
-      description: A relation between a resource (file or folder) and the scopes for which the resource can be accessed
-      properties:
-        scope:
-          type: string
-          description: The scopes for the resource access
-          example: item_download
-          enum:
-          - annotation_edit
-          - annotation_view_all
-          - annotation_view_self
-          - base_explorer
-          - base_picker
-          - base_preview
-          - base_upload
-          - item_delete
-          - item_download
-          - item_preview
-          - item_rename
-          - item_share
-        object:
-          allOf:
-          - oneOf:
-            - $ref: '#/components/schemas/Folder--Mini'
-            - $ref: '#/components/schemas/File--Mini'
-          - description: The file or folder resource
+                identifier was read.
+
+
+                An example would be where a Box Drive-like application
+
+                would fetch an item via the API, and then listen to incoming
+
+                user events for changes to the item. The application would
+
+                ignore any user events where the `sequence_id` in the event
+
+                is smaller than or equal to the `sequence_id` in the originally
+
+                fetched resource.'
+            - {}
+          name:
+            type: string
+            description: The name of the file
+            example: Contract.pdf
+          sha1:
+            type: string
+            format: digest
+            example: 85136C79CBF9FE36BB9D05D0639C70C265C18D37
+            description: 'The SHA1 hash of the file. This can be used to compare the contents
+
+              of a file on Box with a local file.'
+          file_version:
+            allOf:
+            - $ref: '#/components/schemas/FileVersion--Mini'
+            - description: The information about the current version of the file.
     Metadata--Base:
       title: Metadata instance (Base)
       type: object
@@ -1226,193 +1171,6 @@ components:
           description: 'The version of the metadata instance. This version starts at 0 and
 
             increases every time a user-defined property is modified.'
-    LegalHoldPolicy--Mini:
-      title: Legal hold policy (Mini)
-      type: object
-      x-box-resource-id: legal_hold_policy--mini
-      x-box-tag: legal_hold_policies
-      x-box-variants:
-      - mini
-      - standard
-      x-box-variant: mini
-      description: A mini legal hold policy
-      required:
-      - id
-      - type
-      properties:
-        id:
-          type: string
-          description: The unique identifier for this legal hold policy
-          example: '11446498'
-        type:
-          type: string
-          description: '`legal_hold_policy`'
-          example: legal_hold_policy
-          enum:
-          - legal_hold_policy
-    WebLink--Mini:
-      title: Web link (Mini)
-      type: object
-      x-box-resource-id: web_link--mini
-      x-box-variant: mini
-      description: 'Web links are objects that point to URLs. These objects
-
-        are also known as bookmarks within the Box web application.
-
-
-        Web link objects are treated similarly to file objects,
-
-        they will also support most actions that apply to regular files.'
-      allOf:
-      - $ref: '#/components/schemas/WebLink--Base'
-      - properties:
-          url:
-            type: string
-            example: https://www.example.com/example/1234
-            description: The URL this web link points to
-          sequence_id:
-            allOf:
-            - type: string
-              example: '3'
-              nullable: true
-              description: 'A numeric identifier that represents the most recent user event
-
-                that has been applied to this item.
-
-
-                This can be used in combination with the `GET /events`-endpoint
-
-                to filter out user events that would have occurred before this
-
-                identifier was read.
-
-
-                An example would be where a Box Drive-like application
-
-                would fetch an item via the API, and then listen to incoming
-
-                user events for changes to the item. The application would
-
-                ignore any user events where the `sequence_id` in the event
-
-                is smaller than or equal to the `sequence_id` in the originally
-
-                fetched resource.'
-            - nullable: false
-          name:
-            type: string
-            description: The name of the web link
-            example: My Bookmark
-    Metadata:
-      title: Metadata instance
-      type: object
-      x-box-resource-id: metadata
-      x-box-tag: file_metadata
-      x-box-variant: standard
-      description: 'An instance of a metadata template, which has been applied to a file or
-
-        folder.'
-      allOf:
-      - $ref: '#/components/schemas/Metadata--Base'
-    Folder--Mini:
-      title: Folder (Mini)
-      type: object
-      x-box-resource-id: folder--mini
-      x-box-variant: mini
-      description: 'A mini representation of a file version, used when
-
-        nested under another resource.'
-      allOf:
-      - $ref: '#/components/schemas/Folder--Base'
-      - properties:
-          sequence_id:
-            allOf:
-            - type: string
-              example: '3'
-              nullable: true
-              description: 'A numeric identifier that represents the most recent user event
-
-                that has been applied to this item.
-
-
-                This can be used in combination with the `GET /events`-endpoint
-
-                to filter out user events that would have occurred before this
-
-                identifier was read.
-
-
-                An example would be where a Box Drive-like application
-
-                would fetch an item via the API, and then listen to incoming
-
-                user events for changes to the item. The application would
-
-                ignore any user events where the `sequence_id` in the event
-
-                is smaller than or equal to the `sequence_id` in the originally
-
-                fetched resource.'
-            - nullable: false
-          name:
-            type: string
-            description: The name of the folder.
-            example: Contracts
-            nullable: false
-    File--Base:
-      title: File (Base)
-      type: object
-      x-box-resource-id: file--base
-      x-box-sanitized: true
-      x-box-tag: files
-      x-box-variants:
-      - base
-      - mini
-      - standard
-      - full
-      x-box-variant: base
-      nullable: true
-      description: 'The bare basic representation of a file, the minimal
-
-        amount of fields returned when using the `fields` query
-
-        parameter.'
-      required:
-      - id
-      - type
-      properties:
-        id:
-          type: string
-          nullable: false
-          description: 'The unique identifier that represent a file.
-
-
-            The ID for any file can be determined
-
-            by visiting a file in the web application
-
-            and copying the ID from the URL. For example,
-
-            for the URL `https://*.app.box.com/files/123`
-
-            the `file_id` is `123`.'
-          example: '12345'
-        etag:
-          type: string
-          example: '1'
-          nullable: true
-          description: 'The HTTP `etag` of this file. This can be used within some API
-
-            endpoints in the `If-Match` and `If-None-Match` headers to only
-
-            perform changes on the file if (no) changes have happened.'
-        type:
-          type: string
-          description: '`file`'
-          example: file
-          enum:
-          - file
-          nullable: false
     LegalHoldPolicyAssignment--Base:
       title: Legal hold policy assignment (Base)
       type: object
@@ -1444,78 +1202,34 @@ components:
           example: legal_hold_policy_assignment
           enum:
           - legal_hold_policy_assignment
-    FileVersion--Mini:
-      title: File version (Mini)
+    FileOrFolderScope:
+      title: File or folder scope
       type: object
-      x-box-resource-id: file_version--mini
-      x-box-variant: mini
-      description: 'A mini representation of a file version, used when
-
-        nested within another resource.'
-      allOf:
-      - $ref: '#/components/schemas/FileVersion--Base'
-      - properties:
-          sha1:
-            type: string
-            description: The SHA1 hash of this version of the file.
-            example: 134b65991ed521fcfe4724b7d814ab8ded5185dc
-    File--Mini:
-      title: File (Mini)
-      type: object
-      x-box-resource-id: file--mini
-      x-box-variant: mini
-      description: 'A mini representation of a file, used when
-
-        nested under another resource.'
-      nullable: true
-      allOf:
-      - $ref: '#/components/schemas/File--Base'
-      - properties:
-          sequence_id:
-            allOf:
-            - type: string
-              example: '3'
-              nullable: true
-              description: 'A numeric identifier that represents the most recent user event
-
-                that has been applied to this item.
-
-
-                This can be used in combination with the `GET /events`-endpoint
-
-                to filter out user events that would have occurred before this
-
-                identifier was read.
-
-
-                An example would be where a Box Drive-like application
-
-                would fetch an item via the API, and then listen to incoming
-
-                user events for changes to the item. The application would
-
-                ignore any user events where the `sequence_id` in the event
-
-                is smaller than or equal to the `sequence_id` in the originally
-
-                fetched resource.'
-            - nullable: false
-          name:
-            type: string
-            description: The name of the file
-            example: Contract.pdf
-          sha1:
-            type: string
-            format: digest
-            nullable: false
-            example: 85136C79CBF9FE36BB9D05D0639C70C265C18D37
-            description: 'The SHA1 hash of the file. This can be used to compare the contents
-
-              of a file on Box with a local file.'
-          file_version:
-            allOf:
-            - $ref: '#/components/schemas/FileVersion--Mini'
-            - description: The information about the current version of the file.
+      description: A relation between a resource (file or folder) and the scopes for which the resource can be accessed
+      properties:
+        scope:
+          type: string
+          description: The scopes for the resource access
+          example: item_download
+          enum:
+          - annotation_edit
+          - annotation_view_all
+          - annotation_view_self
+          - base_explorer
+          - base_picker
+          - base_preview
+          - base_upload
+          - item_delete
+          - item_download
+          - item_preview
+          - item_rename
+          - item_share
+        object:
+          allOf:
+          - oneOf:
+            - $ref: '#/components/schemas/Folder--Mini'
+            - $ref: '#/components/schemas/File--Mini'
+          - description: The file or folder resource
     File--Full:
       title: File (Full)
       type: object
@@ -1561,12 +1275,10 @@ components:
                     type: boolean
                     description: Specifies if the current user can delete this item.
                     example: true
-                    nullable: false
                   can_download:
                     type: boolean
                     description: Specifies if the current user can download this item.
                     example: true
-                    nullable: false
                   can_invite_collaborator:
                     type: boolean
                     description: 'Specifies if the current user can invite new
@@ -1577,61 +1289,51 @@ components:
 
                       item.'
                     example: true
-                    nullable: false
                   can_rename:
                     type: boolean
                     description: Specifies if the user can rename this item.
                     example: true
-                    nullable: false
                   can_set_share_access:
                     type: boolean
                     description: 'Specifies if the user can change the access level of an
 
                       existing shared link on this item.'
                     example: true
-                    nullable: false
                   can_share:
                     type: boolean
                     description: Specifies if the user can create a shared link for this item.
                     example: true
-                    nullable: false
               - properties:
                   can_annotate:
                     type: boolean
                     description: Specifies if the user can place annotations on this file.
                     example: true
-                    nullable: false
                   can_comment:
                     type: boolean
                     description: Specifies if the user can place comments on this file.
                     example: true
-                    nullable: false
                   can_preview:
                     type: boolean
                     description: Specifies if the user can preview this file.
                     example: true
-                    nullable: false
                   can_upload:
                     type: boolean
                     description: Specifies if the user can upload a new version of this file.
                     example: true
-                    nullable: false
                   can_view_annotations_all:
                     type: boolean
                     description: Specifies if the user view all annotations placed on this file
                     example: true
-                    nullable: false
                   can_view_annotations_self:
                     type: boolean
                     description: 'Specifies if the user view annotations placed by themselves
 
                       on this file'
                     example: true
-                    nullable: false
             - description: 'Describes the permissions that the current user has
 
                 for this file.'
-            - nullable: false
+            - {}
           tags:
             allOf:
             - type: array
@@ -1654,7 +1356,7 @@ components:
                 There is a limit of 100 tags per item, and 10,000
 
                 unique tags per enterprise.'
-            - nullable: false
+            - {}
           lock:
             allOf:
             - title: Lock
@@ -1694,7 +1396,9 @@ components:
                   example: true
                   description: Whether or not the file can be downloaded while locked.
                 app_type:
-                  type: string
+                  type:
+                  - string
+                  - 'null'
                   description: 'If the lock is managed by an application rather than a user, this
 
                     field identifies the type of the application that holds the lock.
@@ -1708,11 +1412,9 @@ components:
                   - office_wopiplus
                   - other
                   example: office_wopiplus
-                  nullable: true
             - description: 'The lock held on this file. If there is no lock, this can either
 
                 be `null` or have a timestamp in the past.'
-            nullable: true
           extension:
             type: string
             example: pdf
@@ -1795,7 +1497,6 @@ components:
                   type: boolean
                   description: Specifies if this item has a watermark applied.
                   example: true
-                  nullable: false
             - description: Details about the watermark applied to this file
           is_accessible_via_shared_link:
             type: boolean
@@ -1812,7 +1513,6 @@ components:
             type: array
             example:
             - editor
-            nullable: false
             description: 'A list of the types of roles that user can be invited at
 
               when sharing this file.'
@@ -1829,14 +1529,12 @@ components:
           is_externally_owned:
             type: boolean
             example: true
-            nullable: false
             description: 'Specifies if this file is owned by a user outside of the
 
               authenticated enterprise.'
           has_collaborations:
             type: boolean
             example: true
-            nullable: false
             description: Specifies if this file has any other collaborators.
           metadata:
             allOf:
@@ -1912,9 +1610,10 @@ components:
 
                 itself is nested in an object with the `scope` as the key.'
           expires_at:
-            type: string
+            type:
+            - string
+            - 'null'
             format: date-time
-            nullable: true
             description: When the file will automatically be deleted
             example: '2012-12-12T10:53:43-08:00'
           representations:
@@ -2023,13 +1722,12 @@ components:
 
                     or co-admin who created the classification in the Box web app.'
             - description: Details about the classification applied to this file.
-            - nullable: true
+            - {}
           uploader_display_name:
             allOf:
             - title: Uploader display name
               type: string
               example: Ellis Wiggins
-              nullable: false
               description: 'The display name of the user that uploaded the file. In most cases this is the
 
                 name of the user logged in at the time of the upload.
@@ -2048,16 +1746,18 @@ components:
 
                 will default to a value of `Someone`.'
           disposition_at:
-            type: string
+            type:
+            - string
+            - 'null'
             format: date-time
-            nullable: true
             description: The retention expiration timestamp for the given file
             example: '2012-12-12T10:53:43-08:00'
           shared_link_permission_options:
-            type: array
+            type:
+            - array
+            - 'null'
             example:
             - can_preview
-            nullable: true
             description: 'A list of the types of roles that user can be invited at
 
               when sharing this file.'
@@ -2067,6 +1767,159 @@ components:
               - can_preview
               - can_download
               - can_edit
+    Folder--Mini:
+      title: Folder (Mini)
+      type: object
+      x-box-resource-id: folder--mini
+      x-box-variant: mini
+      description: 'A mini representation of a file version, used when
+
+        nested under another resource.'
+      allOf:
+      - $ref: '#/components/schemas/Folder--Base'
+      - properties:
+          sequence_id:
+            allOf:
+            - type:
+              - string
+              - 'null'
+              example: '3'
+              description: 'A numeric identifier that represents the most recent user event
+
+                that has been applied to this item.
+
+
+                This can be used in combination with the `GET /events`-endpoint
+
+                to filter out user events that would have occurred before this
+
+                identifier was read.
+
+
+                An example would be where a Box Drive-like application
+
+                would fetch an item via the API, and then listen to incoming
+
+                user events for changes to the item. The application would
+
+                ignore any user events where the `sequence_id` in the event
+
+                is smaller than or equal to the `sequence_id` in the originally
+
+                fetched resource.'
+            - {}
+          name:
+            type: string
+            description: The name of the folder.
+            example: Contracts
+    WebLink--Mini:
+      title: Web link (Mini)
+      type: object
+      x-box-resource-id: web_link--mini
+      x-box-variant: mini
+      description: 'Web links are objects that point to URLs. These objects
+
+        are also known as bookmarks within the Box web application.
+
+
+        Web link objects are treated similarly to file objects,
+
+        they will also support most actions that apply to regular files.'
+      allOf:
+      - $ref: '#/components/schemas/WebLink--Base'
+      - properties:
+          url:
+            type: string
+            example: https://www.example.com/example/1234
+            description: The URL this web link points to
+          sequence_id:
+            allOf:
+            - type:
+              - string
+              - 'null'
+              example: '3'
+              description: 'A numeric identifier that represents the most recent user event
+
+                that has been applied to this item.
+
+
+                This can be used in combination with the `GET /events`-endpoint
+
+                to filter out user events that would have occurred before this
+
+                identifier was read.
+
+
+                An example would be where a Box Drive-like application
+
+                would fetch an item via the API, and then listen to incoming
+
+                user events for changes to the item. The application would
+
+                ignore any user events where the `sequence_id` in the event
+
+                is smaller than or equal to the `sequence_id` in the originally
+
+                fetched resource.'
+            - {}
+          name:
+            type: string
+            description: The name of the web link
+            example: My Bookmark
+    Metadata:
+      title: Metadata instance
+      type: object
+      x-box-resource-id: metadata
+      x-box-tag: file_metadata
+      x-box-variant: standard
+      description: 'An instance of a metadata template, which has been applied to a file or
+
+        folder.'
+      allOf:
+      - $ref: '#/components/schemas/Metadata--Base'
+    FileVersionLegalHold:
+      title: File version legal hold
+      type: object
+      x-box-resource-id: file_version_legal_hold
+      x-box-tag: file_version_legal_holds
+      description: 'File-Version-Legal-Hold is an entity representing all
+
+        holds on a File Version.'
+      properties:
+        id:
+          type: string
+          description: The unique identifier for this file version legal hold
+          example: '11446498'
+        type:
+          type: string
+          description: '`file_version_legal_hold`'
+          example: file_version_legal_hold
+          enum:
+          - file_version_legal_hold
+        file_version:
+          allOf:
+          - $ref: '#/components/schemas/FileVersion--Mini'
+          - description: The file version that is held
+        file:
+          allOf:
+          - $ref: '#/components/schemas/File--Mini'
+          - description: 'The file for the file version held.
+
+              Note that there is no guarantee that the current
+
+              version of this file is held.'
+        legal_hold_policy_assignments:
+          description: List of assignments contributing to this Hold.
+          type: array
+          items:
+            $ref: '#/components/schemas/LegalHoldPolicyAssignment'
+        deleted_at:
+          type: string
+          format: date-time
+          description: 'Time that this File-Version-Legal-Hold was
+
+            deleted.'
+          example: '2012-12-12T10:53:43-08:00'
     LegalHoldPolicyAssignment:
       title: Legal hold policy assignment
       type: object
@@ -2126,6 +1979,58 @@ components:
 
               was not deleted.'
             example: '2012-12-12T10:53:43-08:00'
+    Folder--Base:
+      title: Folder (Base)
+      type: object
+      x-box-resource-id: folder--base
+      x-box-sanitized: true
+      x-box-tag: folders
+      x-box-variants:
+      - base
+      - mini
+      - standard
+      - full
+      x-box-variant: base
+      description: 'The bare basic representation of a folder, the minimal
+
+        amount of fields returned when using the `fields` query
+
+        parameter.'
+      required:
+      - id
+      - type
+      properties:
+        id:
+          type: string
+          description: 'The unique identifier that represent a folder.
+
+
+            The ID for any folder can be determined
+
+            by visiting a folder in the web application
+
+            and copying the ID from the URL. For example,
+
+            for the URL `https://*.app.box.com/folders/123`
+
+            the `folder_id` is `123`.'
+          example: '12345'
+        etag:
+          type:
+          - string
+          - 'null'
+          example: '1'
+          description: 'The HTTP `etag` of this folder. This can be used within some API
+
+            endpoints in the `If-Match` and `If-None-Match` headers to only
+
+            perform changes on the folder if (no) changes have happened.'
+        type:
+          type: string
+          description: '`folder`'
+          example: folder
+          enum:
+          - folder
     WebLink--Base:
       title: Web link (Base)
       type: object
@@ -2164,38 +2069,6 @@ components:
           description: 'The entity tag of this web link. Used with `If-Match`
 
             headers.'
-    FileVersion--Base:
-      title: File version (Base)
-      type: object
-      x-box-resource-id: file_version--base
-      x-box-sanitized: true
-      x-box-variants:
-      - base
-      - mini
-      - standard
-      - full
-      x-box-variant: base
-      description: 'The bare basic representation of a file version, the minimal
-
-        amount of fields returned when using the `fields` query
-
-        parameter.'
-      required:
-      - id
-      - type
-      properties:
-        id:
-          type: string
-          nullable: false
-          description: The unique identifier that represent a file version.
-          example: '12345'
-        type:
-          type: string
-          description: '`file_version`'
-          example: file_version
-          enum:
-          - file_version
-          nullable: false
     FileVersionLegalHolds:
       title: File version legal holds
       type: object
@@ -2220,20 +2093,344 @@ components:
           next_marker:
             description: The marker for the start of the next page of results.
             example: JV9IRGZmieiBasejOG9yDCRNgd2ymoZIbjsxbJMjIs3kioVii
-            type: string
-            nullable: true
+            type:
+            - string
+            - 'null'
           prev_marker:
             description: The marker for the start of the previous page of results.
             example: JV9IRGZmieiBasejOG9yDCRNgd2ymoZIbjsxbJMjIs3kioVih
-            type: string
-            nullable: true
+            type:
+            - string
+            - 'null'
       - properties:
           entries:
             type: array
             description: A list of file version legal holds
             items:
               $ref: '#/components/schemas/FileVersionLegalHold'
-    ClientError:
+    WebLink:
+      title: Web link
+      type: object
+      x-box-resource-id: web_link
+      x-box-variant: standard
+      description: 'Web links are objects that point to URLs. These objects
+
+        are also known as bookmarks within the Box web application.
+
+
+        Web link objects are treated similarly to file objects,
+
+        they will also support most actions that apply to regular files.'
+      allOf:
+      - $ref: '#/components/schemas/WebLink--Mini'
+      - properties:
+          parent:
+            allOf:
+            - $ref: '#/components/schemas/Folder--Mini'
+            - description: The parent object the web link belongs to
+          description:
+            type: string
+            example: Example page
+            description: 'The description accompanying the web link. This is
+
+              visible within the Box web application.'
+          path_collection:
+            allOf:
+            - title: Path collection
+              description: A list of parent folders for an item.
+              type: object
+              required:
+              - total_count
+              - entries
+              properties:
+                total_count:
+                  description: The number of folders in this list.
+                  example: 1
+                  type: integer
+                  format: int64
+                entries:
+                  type: array
+                  description: The parent folders for this item
+                  items:
+                    $ref: '#/components/schemas/Folder--Mini'
+            - description: 'The tree of folders that this web link is contained in,
+
+                starting at the root.'
+            - {}
+          created_at:
+            type: string
+            format: date-time
+            description: When this file was created on Box’s servers.
+            example: '2012-12-12T10:53:43-08:00'
+          modified_at:
+            type: string
+            format: date-time
+            description: 'When this file was last updated on the Box
+
+              servers.'
+            example: '2012-12-12T10:53:43-08:00'
+          trashed_at:
+            type:
+            - string
+            - 'null'
+            format: date-time
+            description: When this file was moved to the trash.
+            example: '2012-12-12T10:53:43-08:00'
+          purged_at:
+            type:
+            - string
+            - 'null'
+            format: date-time
+            description: When this file will be permanently deleted.
+            example: '2012-12-12T10:53:43-08:00'
+          created_by:
+            allOf:
+            - $ref: '#/components/schemas/User--Mini'
+            - description: The user who created this web link
+          modified_by:
+            allOf:
+            - $ref: '#/components/schemas/User--Mini'
+            - description: The user who last modified this web link
+          owned_by:
+            allOf:
+            - $ref: '#/components/schemas/User--Mini'
+            - description: The user who owns this web link
+          shared_link:
+            allOf:
+            - title: Shared link
+              description: 'Shared links provide direct, read-only access to files or folder on Box.
+
+
+                Shared links with open access level allow anyone with the URL
+
+                to access the item, while shared links with company or collaborators access
+
+                levels can only be accessed by appropriately authenticated Box users.'
+              type: object
+              required:
+              - url
+              - accessed
+              - effective_access
+              - effective_permission
+              - is_password_enabled
+              - download_count
+              - preview_count
+              properties:
+                url:
+                  type: string
+                  format: url
+                  description: 'The URL that can be used to access the item on Box.
+
+
+                    This URL will display the item in Box''s preview UI where the file
+
+                    can be downloaded if allowed.
+
+
+                    This URL will continue to work even when a custom `vanity_url`
+
+                    has been set for this shared link.'
+                  example: https://www.box.com/s/vspke7y05sb214wjokpk
+                download_url:
+                  type:
+                  - string
+                  - 'null'
+                  format: url
+                  x-box-premium-feature: true
+                  description: 'A URL that can be used to download the file. This URL can be used in
+
+                    a browser to download the file. This URL includes the file
+
+                    extension so that the file will be saved with the right file type.
+
+
+                    This property will be `null` for folders.'
+                  example: https://www.box.com/shared/static/rh935iit6ewrmw0unyul.jpeg
+                vanity_url:
+                  type:
+                  - string
+                  - 'null'
+                  format: url
+                  description: 'The "Custom URL" that can also be used to preview the item on Box.  Custom
+
+                    URLs can only be created or modified in the Box Web application.'
+                  example: https://acme.app.box.com/v/my_url/
+                vanity_name:
+                  type:
+                  - string
+                  - 'null'
+                  description: The custom name of a shared link, as used in the `vanity_url` field.
+                  example: my_url
+                access:
+                  type: string
+                  description: "The access level for this shared link.\n\n* `open` - provides access to this item to anyone with this link\n* `company` - only provides access to this item to people the same company\n* `collaborators` - only provides access to this item to people who are\n   collaborators on this item\n\nIf this field is omitted when creating the shared link, the access level\nwill be set to the default access level specified by the enterprise admin."
+                  enum:
+                  - open
+                  - company
+                  - collaborators
+                  example: open
+                effective_access:
+                  type: string
+                  description: 'The effective access level for the shared link. This can be a more
+
+                    restrictive access level than the value in the `access` field when the
+
+                    enterprise settings restrict the allowed access levels.'
+                  enum:
+                  - open
+                  - company
+                  - collaborators
+                  example: company
+                effective_permission:
+                  type: string
+                  description: 'The effective permissions for this shared link.
+
+                    These result in the more restrictive combination of
+
+                    the share link permissions and the item permissions set
+
+                    by the administrator, the owner, and any ancestor item
+
+                    such as a folder.'
+                  enum:
+                  - can_edit
+                  - can_download
+                  - can_preview
+                  - no_access
+                  example: can_download
+                unshared_at:
+                  type:
+                  - string
+                  - 'null'
+                  format: date-time
+                  description: 'The date and time when this link will be unshared. This field can only be
+
+                    set by users with paid accounts.'
+                  example: '2018-04-13T13:53:23-07:00'
+                is_password_enabled:
+                  type: boolean
+                  description: Defines if the shared link requires a password to access the item.
+                  example: true
+                permissions:
+                  type: object
+                  description: 'Defines if this link allows a user to preview, edit, and download an item.
+
+                    These permissions refer to the shared link only and
+
+                    do not supersede permissions applied to the item itself.'
+                  required:
+                  - can_download
+                  - can_preview
+                  - can_edit
+                  properties:
+                    can_download:
+                      type: boolean
+                      example: true
+                      description: 'Defines if the shared link allows for the item to be downloaded. For
+
+                        shared links on folders, this also applies to any items in the folder.
+
+
+                        This value can be set to `true` when the effective access level is
+
+                        set to `open` or `company`, not `collaborators`.'
+                    can_preview:
+                      type: boolean
+                      example: true
+                      description: 'Defines if the shared link allows for the item to be previewed.
+
+
+                        This value is always `true`. For shared links on folders this also
+
+                        applies to any items in the folder.'
+                    can_edit:
+                      type: boolean
+                      example: false
+                      description: 'Defines if the shared link allows for the item to be edited.
+
+
+                        This value can only be `true` if `can_download` is also `true` and if
+
+                        the item has a type of `file`.'
+                download_count:
+                  type: integer
+                  example: 3
+                  description: The number of times this item has been downloaded.
+                preview_count:
+                  type: integer
+                  example: 3
+                  description: The number of times this item has been previewed.
+            - description: 'The shared link object for this item. Will be
+
+                `null` if no shared link has been created.'
+            - {}
+          item_status:
+            type: string
+            example: active
+            enum:
+            - active
+            - trashed
+            - deleted
+            description: 'Whether this item is deleted or not. Values include `active`,
+
+              `trashed` if the file has been moved to the trash, and `deleted` if
+
+              the file has been permanently deleted'
+    File--Base:
+      title: File (Base)
+      type:
+      - object
+      - 'null'
+      x-box-resource-id: file--base
+      x-box-sanitized: true
+      x-box-tag: files
+      x-box-variants:
+      - base
+      - mini
+      - standard
+      - full
+      x-box-variant: base
+      description: 'The bare basic representation of a file, the minimal
+
+        amount of fields returned when using the `fields` query
+
+        parameter.'
+      required:
+      - id
+      - type
+      properties:
+        id:
+          type: string
+          description: 'The unique identifier that represent a file.
+
+
+            The ID for any file can be determined
+
+            by visiting a file in the web application
+
+            and copying the ID from the URL. For example,
+
+            for the URL `https://*.app.box.com/files/123`
+
+            the `file_id` is `123`.'
+          example: '12345'
+        etag:
+          type:
+          - string
+          - 'null'
+          example: '1'
+          description: 'The HTTP `etag` of this file. This can be used within some API
+
+            endpoints in the `If-Match` and `If-None-Match` headers to only
+
+            perform changes on the file if (no) changes have happened.'
+        type:
+          type: string
+          description: '`file`'
+          example: file
+          enum:
+          - file
+    ClientError_2:
       title: Client error
       type: object
       x-box-resource-id: client_error
@@ -2304,32 +2501,18 @@ components:
           type: string
           example: abcdef123456
           nullable: false
-    Items:
-      title: Items
+    FileVersionLegalHolds_2:
+      title: File version legal holds
       type: object
-      x-box-resource-id: items
-      x-box-tag: folders
-      description: 'A list of files, folders, and web links in
-
-        their mini representation.'
+      x-box-resource-id: file_version_legal_holds
+      x-box-tag: file_version_legal_holds
+      description: A list of file version legal holds.
       allOf:
       - type: object
-        description: The part of an API response that describes pagination
+        description: 'The part of an API response that describes marker
+
+          based pagination'
         properties:
-          total_count:
-            description: 'One greater than the offset of the last entry in the entire collection.
-
-              The total number of entries in the collection may be less than
-
-              `total_count`.
-
-
-              This field is only returned for calls that use offset-based pagination.
-
-              For marker-based paginated APIs, this field will be omitted.'
-            example: 5000
-            type: integer
-            format: int64
           limit:
             description: 'The limit that was used for these entries. This will be the same as the
 
@@ -2339,123 +2522,42 @@ components:
             example: 1000
             type: integer
             format: int64
-          offset:
-            description: 'The 0-based offset of the first entry in this set. This will be the same
-
-              as the `offset` query parameter.
-
-
-              This field is only returned for calls that use offset-based pagination.
-
-              For marker-based paginated APIs, this field will be omitted.'
-            example: 2000
-            type: integer
-            format: int64
-          order:
-            description: 'The order by which items are returned.
-
-
-              This field is only returned for calls that use offset-based pagination.
-
-              For marker-based paginated APIs, this field will be omitted.'
-            type: array
-            items:
-              type: object
-              description: The order in which a pagination is ordered
-              properties:
-                by:
-                  description: The field to order by
-                  example: type
-                  type: string
-                direction:
-                  type: string
-                  description: The direction to order by, either ascending or descending
-                  example: ASC
-                  enum:
-                  - ASC
-                  - DESC
+          next_marker:
+            description: The marker for the start of the next page of results.
+            example: JV9IRGZmieiBasejOG9yDCRNgd2ymoZIbjsxbJMjIs3kioVii
+            type: string
+            nullable: true
+          prev_marker:
+            description: The marker for the start of the previous page of results.
+            example: JV9IRGZmieiBasejOG9yDCRNgd2ymoZIbjsxbJMjIs3kioVih
+            type: string
+            nullable: true
       - properties:
           entries:
-            description: The items in this collection.
             type: array
+            description: A list of file version legal holds
             items:
-              oneOf:
-              - $ref: '#/components/schemas/File--Full'
-              - $ref: '#/components/schemas/Folder--Mini'
-              - $ref: '#/components/schemas/WebLink'
-    Folder--Base:
-      title: Folder (Base)
-      type: object
-      x-box-resource-id: folder--base
-      x-box-sanitized: true
-      x-box-tag: folders
-      x-box-variants:
-      - base
-      - mini
-      - standard
-      - full
-      x-box-variant: base
-      description: 'The bare basic representation of a folder, the minimal
-
-        amount of fields returned when using the `fields` query
-
-        parameter.'
-      required:
-      - id
-      - type
-      properties:
-        id:
-          type: string
-          nullable: false
-          description: 'The unique identifier that represent a folder.
-
-
-            The ID for any folder can be determined
-
-            by visiting a folder in the web application
-
-            and copying the ID from the URL. For example,
-
-            for the URL `https://*.app.box.com/folders/123`
-
-            the `folder_id` is `123`.'
-          example: '12345'
-        etag:
-          type: string
-          nullable: true
-          example: '1'
-          description: 'The HTTP `etag` of this folder. This can be used within some API
-
-            endpoints in the `If-Match` and `If-None-Match` headers to only
-
-            perform changes on the folder if (no) changes have happened.'
-        type:
-          type: string
-          description: '`folder`'
-          example: folder
-          enum:
-          - folder
-          nullable: false
-    User--Mini:
-      title: User (Mini)
-      type: object
-      x-box-resource-id: user--mini
-      x-box-variant: mini
-      description: 'A mini representation of a user, as can be returned when nested within other
-
-        resources.'
-      allOf:
-      - $ref: '#/components/schemas/User--Base'
-      - properties:
-          name:
-            type: string
-            description: The display name of this user
-            example: Aaron Levie
-            maxLength: 50
-            nullable: false
-          login:
-            type: string
-            format: email
-            description: The primary email address of this user
-            example: ceo@example.com
-            nullable: false
+              $ref: '#/components/schemas/FileVersionLegalHold'
+  securitySchemes:
+    OAuth2Security:
+      type: oauth2
+      flows:
+        authorizationCode:
+          authorizationUrl: https://account.box.com/api/oauth2/authorize
+          tokenUrl: https://api.box.com/oauth2/token
+          scopes:
+            root_readonly: Read all files and folders stored in Box
+            root_readwrite: Read and write all files and folders stored in Box
+            manage_app_users: Provision and manage app users
+            manage_managed_users: Provision and manage managed users
+            manage_groups: Manage an enterprise's groups
+            manage_webhook: Create webhooks programmatically through the API
+            manage_enterprise_properties: Manage enterprise properties
+            manage_data_retention: Manage data retention polices
+            manage_legal_hold: Manage Legal Holds
+externalDocs:
+  description: Box Developer Documentation
+  url: https://developer.box.com
+x-refined-from:
+- box-openapi-original.yml
+- file-version-legal-holds-openapi-original.yml

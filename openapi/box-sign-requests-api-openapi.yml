@@ -1,8 +1,13 @@
-openapi: 3.1.0
+openapi: 3.2.0
 info:
-  version: "1.0"
-  title: Box Authorize Authorization Sign Requests API
-  description: Needs a description.
+  title: Box Sign Requests API
+  x-refined-note:
+  - x-box-commit-hash differs across the merged source definitions and was not carried
+  version: '1.0'
+  description: 'Operations tagged Sign Requests across 2 of this provider''s published API definitions: box-openapi-original.yml, sign-requests-openapi-original.yml. Each path carries the servers of the definition it was published in.'
+servers:
+- url: https://api.box.com/2.0
+  description: Box Platform API server
 tags:
 - name: Sign Requests
   description: 'Sign requests are used
@@ -49,6 +54,11 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ClientError'
+      security:
+      - OAuth2Security: []
+    servers:
+    - url: https://api.box.com/2.0
+      description: Box Platform API server
   /sign_requests/{sign_request_id}/resend:
     post:
       operationId: post_sign_requests_id_resend
@@ -84,6 +94,11 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ClientError'
+      security:
+      - OAuth2Security: []
+    servers:
+    - url: https://api.box.com/2.0
+      description: Box Platform API server
   /sign_requests/{sign_request_id}:
     get:
       operationId: get_sign_requests_id
@@ -123,6 +138,11 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ClientError'
+      security:
+      - OAuth2Security: []
+    servers:
+    - url: https://api.box.com/2.0
+      description: Box Platform API server
   /sign_requests:
     get:
       operationId: get_sign_requests
@@ -168,6 +188,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ClientError'
+      security:
+      - OAuth2Security: []
     post:
       operationId: post_sign_requests
       summary: Box Create sign request
@@ -195,6 +217,11 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ClientError'
+      security:
+      - OAuth2Security: []
+    servers:
+    - url: https://api.box.com/2.0
+      description: Box Platform API server
 components:
   schemas:
     SignRequestCreateRequest:
@@ -207,21 +234,23 @@ components:
       - $ref: '#/components/schemas/SignRequest--Base'
       - properties:
           source_files:
-            type: array
+            type:
+            - array
+            - 'null'
             items:
               $ref: '#/components/schemas/File--Base'
             description: List of files to create a signing document from. This is currently limited to ten files. Only the ID and type fields are required for each file.
             maxItems: 10
-            nullable: true
           signature_color:
-            type: string
+            type:
+            - string
+            - 'null'
             example: blue
             description: Force a specific color for the signature (blue, black, or red)
             enum:
             - blue
             - black
             - red
-            nullable: true
           signers:
             type: array
             items:
@@ -244,53 +273,506 @@ components:
                 the first source file in the payload if we have the permission to
 
                 upload to that folder or a folder called "My Sign Requests".'
-    SignRequests:
-      title: Box Sign
+    SignRequestPrefillTag:
+      title: Sign Request Prefill Tag
       type: object
-      x-box-resource-id: sign_requests
-      x-box-tag: sign_requests
-      description: 'A standard representation of a sign request, as returned from any Box Sign
+      description: 'Prefill tags are used to prefill placeholders with signer input data. Only
 
-        API endpoints by default.'
+        one value field can be included.'
+      properties:
+        document_tag_id:
+          type:
+          - string
+          - 'null'
+          example: '1234'
+          description: This references the ID of a specific tag contained in a file of the sign request.
+        text_value:
+          type:
+          - string
+          - 'null'
+          example: text
+          description: Text prefill value
+        checkbox_value:
+          type:
+          - boolean
+          - 'null'
+          example: true
+          description: Checkbox prefill value
+        date_value:
+          type:
+          - string
+          - 'null'
+          format: date
+          example: '2021-04-26'
+          description: Date prefill value
+    ClientError:
+      title: Client error
+      type: object
+      x-box-resource-id: client_error
+      description: A generic error
+      properties:
+        type:
+          description: error
+          example: error
+          type: string
+          enum:
+          - error
+        status:
+          description: The HTTP status of the response.
+          example: 400
+          type: integer
+          format: int32
+        code:
+          description: A Box-specific error code
+          example: item_name_invalid
+          type: string
+          enum:
+          - created
+          - accepted
+          - no_content
+          - redirect
+          - not_modified
+          - bad_request
+          - unauthorized
+          - forbidden
+          - not_found
+          - method_not_allowed
+          - conflict
+          - precondition_failed
+          - too_many_requests
+          - internal_server_error
+          - unavailable
+          - item_name_invalid
+          - insufficient_scope
+        message:
+          description: A short message describing the error.
+          example: Method Not Allowed
+          type: string
+        context_info:
+          description: 'A free-form object that contains additional context
+
+            about the error. The possible fields are defined on
+
+            a per-endpoint basis. `message` is only one example.'
+          type:
+          - object
+          - 'null'
+          properties:
+            message:
+              type: string
+              description: More details on the error.
+              example: Something went wrong.
+        help_url:
+          description: A URL that links to more information about why this error occurred.
+          example: https://developer.box.com/guides/api-calls/permissions-and-errors/common-errors/
+          type: string
+        request_id:
+          description: 'A unique identifier for this response, which can be used
+
+            when contacting Box support.'
+          type: string
+          example: abcdef123456
+    Folder--Mini:
+      title: Folder (Mini)
+      type: object
+      x-box-resource-id: folder--mini
+      x-box-variant: mini
+      description: 'A mini representation of a file version, used when
+
+        nested under another resource.'
       allOf:
-      - type: object
-        description: 'The part of an API response that describes marker
-
-          based pagination'
-        properties:
-          limit:
-            description: 'The limit that was used for these entries. This will be the same as the
-
-              `limit` query parameter unless that value exceeded the maximum value
-
-              allowed. The maximum value varies by API.'
-            example: 1000
-            type: integer
-            format: int64
-          next_marker:
-            description: The marker for the start of the next page of results.
-            example: JV9IRGZmieiBasejOG9yDCRNgd2ymoZIbjsxbJMjIs3kioVii
-            type: string
-            nullable: true
+      - $ref: '#/components/schemas/Folder--Base'
       - properties:
-          entries:
-            type: array
-            description: A list of sign requests
-            items:
-              $ref: '#/components/schemas/SignRequest'
-    Folder--Base:
-      title: Folder (Base)
+          sequence_id:
+            allOf:
+            - type:
+              - string
+              - 'null'
+              example: '3'
+              description: 'A numeric identifier that represents the most recent user event
+
+                that has been applied to this item.
+
+
+                This can be used in combination with the `GET /events`-endpoint
+
+                to filter out user events that would have occurred before this
+
+                identifier was read.
+
+
+                An example would be where a Box Drive-like application
+
+                would fetch an item via the API, and then listen to incoming
+
+                user events for changes to the item. The application would
+
+                ignore any user events where the `sequence_id` in the event
+
+                is smaller than or equal to the `sequence_id` in the originally
+
+                fetched resource.'
+            - {}
+          name:
+            type: string
+            description: The name of the folder.
+            example: Contracts
+    FileVersion--Mini:
+      title: File version (Mini)
       type: object
-      x-box-resource-id: folder--base
+      x-box-resource-id: file_version--mini
+      x-box-variant: mini
+      description: 'A mini representation of a file version, used when
+
+        nested within another resource.'
+      allOf:
+      - $ref: '#/components/schemas/FileVersion--Base'
+      - properties:
+          sha1:
+            type: string
+            description: The SHA1 hash of this version of the file.
+            example: 134b65991ed521fcfe4724b7d814ab8ded5185dc
+    SignRequest--Base:
+      title: Sign Request (Base)
+      type: object
+      x-box-resource-id: sign_request--base
+      x-box-tag: sign_requests
+      x-box-variants:
+      - standard
+      - base
+      x-box-variant: base
+      description: A request to create a sign request object
+      properties:
+        is_document_preparation_needed:
+          type: boolean
+          description: Indicates if the sender should receive a `prepare_url` in the response to complete document preparation via UI.
+          example: true
+        redirect_url:
+          type:
+          - string
+          - 'null'
+          example: https://www.example.com
+          description: When specified, signature request will be redirected to this url when a document is signed.
+        declined_redirect_url:
+          type:
+          - string
+          - 'null'
+          example: https://declined-redirect.com
+          description: The uri that a signer will be redirected to after declining to sign a document.
+        are_text_signatures_enabled:
+          type: boolean
+          description: Disables the usage of signatures generated by typing (text).
+          example: true
+          default: true
+        email_subject:
+          type:
+          - string
+          - 'null'
+          example: Sign Request from Acme
+          description: Subject of sign request email. This is cleaned by sign request. If this field is not passed, a default subject will be used.
+        email_message:
+          type:
+          - string
+          - 'null'
+          example: Hello! Please sign the document below
+          description: Message to include in sign request email. The field is cleaned through sanitization of specific characters. However, some html tags are allowed. Links included in the message are also converted to hyperlinks in the email. The message may contain the following html tags including `a`, `abbr`, `acronym`, `b`, `blockquote`, `code`, `em`, `i`, `ul`, `li`, `ol`, and `strong`. Be aware that when the text to html ratio is too high, the email may end up in spam filters. Custom styles on these tags are not allowed. If this field is not passed, a default message will be used.
+        are_reminders_enabled:
+          type: boolean
+          description: Reminds signers to sign a document on day 3, 8, 13 and 18. Reminders are only sent to outstanding signers.
+          example: true
+        name:
+          type: string
+          example: name
+          description: Name of the sign request.
+        prefill_tags:
+          type: array
+          items:
+            $ref: '#/components/schemas/SignRequestPrefillTag'
+          description: When a document contains sign related tags in the content, you can prefill them using this `prefill_tags` by referencing the 'id' of the tag as the `external_id` field of the prefill tag.
+        days_valid:
+          type:
+          - integer
+          - 'null'
+          description: Set the number of days after which the created signature request will automatically expire if not completed. By default, we do not apply any expiration date on signature requests, and the signature request does not expire.
+          minimum: 0
+          maximum: 730
+          example: 2
+        external_id:
+          type:
+          - string
+          - 'null'
+          description: This can be used to reference an ID in an external system that the sign request is related to.
+          example: '123'
+        is_phone_verification_required_to_view:
+          type:
+          - boolean
+          - 'null'
+          description: Forces signers to verify a text message prior to viewing the document. You must specify the phone number of signers to have this setting apply to them.
+          example: true
+        template_id:
+          type:
+          - string
+          - 'null'
+          example: 123075213-af2c8822-3ef2-4952-8557-52d69c2fe9cb
+          description: When a signature request is created from a template this field will indicate the id of that template.
+    File--Mini:
+      title: File (Mini)
+      type:
+      - object
+      - 'null'
+      x-box-resource-id: file--mini
+      x-box-variant: mini
+      description: 'A mini representation of a file, used when
+
+        nested under another resource.'
+      allOf:
+      - $ref: '#/components/schemas/File--Base'
+      - properties:
+          sequence_id:
+            allOf:
+            - type:
+              - string
+              - 'null'
+              example: '3'
+              description: 'A numeric identifier that represents the most recent user event
+
+                that has been applied to this item.
+
+
+                This can be used in combination with the `GET /events`-endpoint
+
+                to filter out user events that would have occurred before this
+
+                identifier was read.
+
+
+                An example would be where a Box Drive-like application
+
+                would fetch an item via the API, and then listen to incoming
+
+                user events for changes to the item. The application would
+
+                ignore any user events where the `sequence_id` in the event
+
+                is smaller than or equal to the `sequence_id` in the originally
+
+                fetched resource.'
+            - {}
+          name:
+            type: string
+            description: The name of the file
+            example: Contract.pdf
+          sha1:
+            type: string
+            format: digest
+            example: 85136C79CBF9FE36BB9D05D0639C70C265C18D37
+            description: 'The SHA1 hash of the file. This can be used to compare the contents
+
+              of a file on Box with a local file.'
+          file_version:
+            allOf:
+            - $ref: '#/components/schemas/FileVersion--Mini'
+            - description: The information about the current version of the file.
+    SignRequestSigner:
+      title: Signer fields for GET Sign Request response
+      type: object
+      description: The schema for a Signer in a GET Sign Request request body
+      required:
+      - email
+      allOf:
+      - $ref: '#/components/schemas/SignRequestCreateSigner'
+      - properties:
+          has_viewed_document:
+            type: boolean
+            readOnly: true
+            example: true
+            description: Set to `true` if the signer views the document
+          signer_decision:
+            type:
+            - object
+            - 'null'
+            properties:
+              type:
+                type: string
+                enum:
+                - signed
+                - declined
+                example: signed
+                description: Type of decision made by the signer
+              finalized_at:
+                type: string
+                format: date-time
+                example: '2021-04-26T08:12:13.982Z'
+                description: Date and Time that the decision was made
+              additional_info:
+                type:
+                - string
+                - 'null'
+                example: Requesting changes before signing.
+                description: Additional info about the decision, such as the decline reason from the signer
+            description: Final decision made by the signer
+          inputs:
+            type: array
+            items:
+              $ref: '#/components/schemas/SignRequestSignerInput'
+            readOnly: true
+          embed_url:
+            type:
+            - string
+            - 'null'
+            readOnly: true
+            example: https://example.com
+            description: URL to direct a signer to for signing
+          iframeable_embed_url:
+            type:
+            - string
+            - 'null'
+            example: https://app.box.com/embed/sign/document/gfhr4222-a331-494b-808b-79bc7f3992a3/f14d7098-a331-494b-808b-79bc7f3992a4
+            description: 'This URL is specifically designed for
+
+              signing documents within an HTML `iframe` tag.
+
+              It will be returned in the response
+
+              only if the `embed_url_external_user_id`
+
+              parameter was passed in the
+
+              `create sign request` call.'
+    SignRequestCreateSigner:
+      title: Signer fields for Create Sign Request
+      type: object
+      description: The schema for a Signer in a POST Sign Request request body
+      properties:
+        email:
+          type:
+          - string
+          - 'null'
+          description: 'Email address of the signer.
+
+            The email address of the signer is required when making signature requests, except when using templates that are configured to include emails.'
+          example: example@gmail.com
+        role:
+          type: string
+          enum:
+          - signer
+          - approver
+          - final_copy_reader
+          description: 'Defines the role of the signer in the sign request. A `signer`
+
+            must sign the document and an `approver` must approve the document. A
+
+            `final_copy_reader` only receives the final signed document and signing
+
+            log.'
+          example: signer
+          default: signer
+        is_in_person:
+          type: boolean
+          description: 'Used in combination with an embed URL for a sender. After the
+
+            sender signs, they are redirected to the next `in_person` signer.'
+          example: true
+        order:
+          type: integer
+          description: Order of the signer
+          minimum: 0
+          example: 2
+        embed_url_external_user_id:
+          type:
+          - string
+          - 'null'
+          description: 'User ID for the signer in an external application responsible
+
+            for authentication when accessing the embed URL.'
+          example: '1234'
+        redirect_url:
+          type:
+          - string
+          - 'null'
+          description: 'The URL that a signer will be redirected
+
+            to after signing a document. Defining this URL
+
+            overrides default or global redirect URL
+
+            settings for a specific signer.
+
+            If no declined redirect URL is specified,
+
+            this URL will be used for decline actions as well.'
+          example: https://example.com
+        declined_redirect_url:
+          type:
+          - string
+          - 'null'
+          description: 'The URL that a signer will be redirect
+
+            to after declining to sign a document.
+
+            Defining this URL overrides default or global
+
+            declined redirect URL settings for a specific signer.'
+          example: https://declined-example.com
+        login_required:
+          type:
+          - boolean
+          - 'null'
+          description: 'If set to true, signer will need to login to a Box account
+
+            before signing the request. If the signer does not have
+
+            an existing account, they will have an option to create
+
+            a free Box account.'
+          example: true
+        verification_phone_number:
+          type:
+          - string
+          - 'null'
+          description: 'If set, this phone number is be used to verify the signer
+
+            via two factor authentication before they are able to sign the document.'
+          example: '6314578901'
+        password:
+          type:
+          - string
+          - 'null'
+          writeOnly: true
+          description: 'If set, the signer is required to enter the password before they are able
+
+            to sign a document. This field is write only.'
+          example: SecretPassword123
+        signer_group_id:
+          type:
+          - string
+          - 'null'
+          description: 'If set, signers who have the same value will be assigned to the same input and to the same signer group.
+
+            A signer group is not a Box Group. It is an entity that belongs to a Sign Request and can only be
+
+            used/accessed within this Sign Request. A signer group is expected to have more than one signer.
+
+            If the provided value is only used for one signer, this value will be ignored and request will be handled
+
+            as it was intended for an individual signer. The value provided can be any string and only used to
+
+            determine which signers belongs to same group. A successful response will provide a generated UUID value
+
+            instead for signers in the same signer group.'
+          example: cd4ff89-8fc1-42cf-8b29-1890dedd26d7
+    FileVersion--Base:
+      title: File version (Base)
+      type: object
+      x-box-resource-id: file_version--base
       x-box-sanitized: true
-      x-box-tag: folders
       x-box-variants:
       - base
       - mini
       - standard
       - full
       x-box-variant: base
-      description: 'The bare basic representation of a folder, the minimal
+      description: 'The bare basic representation of a file version, the minimal
 
         amount of fields returned when using the `fields` query
 
@@ -301,36 +783,14 @@ components:
       properties:
         id:
           type: string
-          nullable: false
-          description: 'The unique identifier that represent a folder.
-
-
-            The ID for any folder can be determined
-
-            by visiting a folder in the web application
-
-            and copying the ID from the URL. For example,
-
-            for the URL `https://*.app.box.com/folders/123`
-
-            the `folder_id` is `123`.'
+          description: The unique identifier that represent a file version.
           example: '12345'
-        etag:
-          type: string
-          nullable: true
-          example: '1'
-          description: 'The HTTP `etag` of this folder. This can be used within some API
-
-            endpoints in the `If-Match` and `If-None-Match` headers to only
-
-            perform changes on the folder if (no) changes have happened.'
         type:
           type: string
-          description: '`folder`'
-          example: folder
+          description: '`file_version`'
+          example: file_version
           enum:
-          - folder
-          nullable: false
+          - file_version
     SignRequestSignerInput:
       title: Sign Request Signer Input
       type: object
@@ -379,54 +839,118 @@ components:
             type: boolean
             description: Whether this input was defined as read-only(immutable by signers) or not
             example: true
-    Folder--Mini:
-      title: Folder (Mini)
+    SignRequest:
+      title: Sign Request
       type: object
-      x-box-resource-id: folder--mini
-      x-box-variant: mini
-      description: 'A mini representation of a file version, used when
-
-        nested under another resource.'
+      x-box-resource-id: sign_request
+      x-box-tag: sign_requests
+      x-box-variants:
+      - standard
+      - base
+      x-box-variant: standard
+      description: A Sign Request Object
       allOf:
-      - $ref: '#/components/schemas/Folder--Base'
+      - $ref: '#/components/schemas/SignRequest--Base'
       - properties:
-          sequence_id:
-            allOf:
-            - type: string
-              example: '3'
-              nullable: true
-              description: 'A numeric identifier that represents the most recent user event
-
-                that has been applied to this item.
-
-
-                This can be used in combination with the `GET /events`-endpoint
-
-                to filter out user events that would have occurred before this
-
-                identifier was read.
-
-
-                An example would be where a Box Drive-like application
-
-                would fetch an item via the API, and then listen to incoming
-
-                user events for changes to the item. The application would
-
-                ignore any user events where the `sequence_id` in the event
-
-                is smaller than or equal to the `sequence_id` in the originally
-
-                fetched resource.'
-            - nullable: false
-          name:
+          type:
             type: string
-            description: The name of the folder.
-            example: Contracts
-            nullable: false
+            example: sign-request
+            enum:
+            - sign-request
+            description: object type
+          source_files:
+            type: array
+            items:
+              $ref: '#/components/schemas/File--Base'
+            description: List of files to create a signing document from. This is currently limited to ten files. Only the ID and type fields are required for each file.
+          signers:
+            type: array
+            items:
+              $ref: '#/components/schemas/SignRequestSigner'
+            description: Array of signers for the sign request
+          signature_color:
+            type:
+            - string
+            - 'null'
+            example: blue
+            description: Force a specific color for the signature (blue, black, or red).
+          id:
+            type: string
+            example: '12345'
+            description: Sign request ID
+          prepare_url:
+            type:
+            - string
+            - 'null'
+            example: https://prepareurl.com
+            description: 'This URL is returned if `is_document_preparation_needed` is
+
+              set to `true` in the request. It is used to prepare the sign request
+
+              via UI. The sign request is not sent until preparation is complete.'
+          signing_log:
+            allOf:
+            - $ref: '#/components/schemas/File--Mini'
+            - description: 'Reference to a file that holds a log of all signer activity for
+
+                the request'
+          status:
+            type: string
+            enum:
+            - converting
+            - created
+            - sent
+            - viewed
+            - signed
+            - cancelled
+            - declined
+            - error_converting
+            - error_sending
+            - expired
+            - finalizing
+            - error_finalizing
+            example: converting
+            description: Describes the status of the sign request
+          sign_files:
+            type: object
+            properties:
+              files:
+                type: array
+                items:
+                  $ref: '#/components/schemas/File--Mini'
+              is_ready_for_download:
+                type: boolean
+                example: true
+                description: 'Indicates whether the `sign_files` documents are processing
+
+                  and the PDFs may be out of date. A change to any document
+
+                  requires processing on all `sign_files`. We
+
+                  recommended waiting until processing is finished
+
+                  (and this value is true) before downloading the PDFs.'
+            description: 'List of files that will be signed, which are copies of the original
+
+              source files. A new version of these files are created as signers sign
+
+              and can be downloaded at any point in the signing process.'
+          auto_expire_at:
+            type:
+            - string
+            - 'null'
+            format: date-time
+            example: '2021-04-26T08:12:13.982Z'
+            description: Uses `days_valid` to calculate the date and time, in GMT, the sign request will expire if unsigned.
+          parent_folder:
+            allOf:
+            - $ref: '#/components/schemas/Folder--Mini'
+            - description: "The destination folder to place final, signed document and signing\nlog.\n\nWhen this value was not passed in when the signature request was \ncreated, then we will use a default folder which is either the parent\nfolder of the first source file in the payload if we have the permission\nto upload to that folder or a folder called \"My Sign Requests\"."
     File--Base:
       title: File (Base)
-      type: object
+      type:
+      - object
+      - 'null'
       x-box-resource-id: file--base
       x-box-sanitized: true
       x-box-tag: files
@@ -436,7 +960,6 @@ components:
       - standard
       - full
       x-box-variant: base
-      nullable: true
       description: 'The bare basic representation of a file, the minimal
 
         amount of fields returned when using the `fields` query
@@ -448,7 +971,6 @@ components:
       properties:
         id:
           type: string
-          nullable: false
           description: 'The unique identifier that represent a file.
 
 
@@ -463,9 +985,10 @@ components:
             the `file_id` is `123`.'
           example: '12345'
         etag:
-          type: string
+          type:
+          - string
+          - 'null'
           example: '1'
-          nullable: true
           description: 'The HTTP `etag` of this file. This can be used within some API
 
             endpoints in the `If-Match` and `If-None-Match` headers to only
@@ -477,370 +1000,19 @@ components:
           example: file
           enum:
           - file
-          nullable: false
-    SignRequest--Base:
-      title: Sign Request (Base)
+    Folder--Base:
+      title: Folder (Base)
       type: object
-      x-box-resource-id: sign_request--base
-      x-box-tag: sign_requests
-      x-box-variants:
-      - standard
-      - base
-      x-box-variant: base
-      description: A request to create a sign request object
-      properties:
-        is_document_preparation_needed:
-          type: boolean
-          description: Indicates if the sender should receive a `prepare_url` in the response to complete document preparation via UI.
-          example: true
-        redirect_url:
-          type: string
-          example: https://www.example.com
-          description: When specified, signature request will be redirected to this url when a document is signed.
-          nullable: true
-        declined_redirect_url:
-          type: string
-          example: https://declined-redirect.com
-          description: The uri that a signer will be redirected to after declining to sign a document.
-          nullable: true
-        are_text_signatures_enabled:
-          type: boolean
-          description: Disables the usage of signatures generated by typing (text).
-          example: true
-          default: true
-        email_subject:
-          type: string
-          example: Sign Request from Acme
-          description: Subject of sign request email. This is cleaned by sign request. If this field is not passed, a default subject will be used.
-          nullable: true
-        email_message:
-          type: string
-          example: Hello! Please sign the document below
-          description: Message to include in sign request email. The field is cleaned through sanitization of specific characters. However, some html tags are allowed. Links included in the message are also converted to hyperlinks in the email. The message may contain the following html tags including `a`, `abbr`, `acronym`, `b`, `blockquote`, `code`, `em`, `i`, `ul`, `li`, `ol`, and `strong`. Be aware that when the text to html ratio is too high, the email may end up in spam filters. Custom styles on these tags are not allowed. If this field is not passed, a default message will be used.
-          nullable: true
-        are_reminders_enabled:
-          type: boolean
-          description: Reminds signers to sign a document on day 3, 8, 13 and 18. Reminders are only sent to outstanding signers.
-          example: true
-        name:
-          type: string
-          example: name
-          description: Name of the sign request.
-        prefill_tags:
-          type: array
-          items:
-            $ref: '#/components/schemas/SignRequestPrefillTag'
-          description: When a document contains sign related tags in the content, you can prefill them using this `prefill_tags` by referencing the 'id' of the tag as the `external_id` field of the prefill tag.
-        days_valid:
-          type: integer
-          description: Set the number of days after which the created signature request will automatically expire if not completed. By default, we do not apply any expiration date on signature requests, and the signature request does not expire.
-          minimum: 0
-          maximum: 730
-          example: 2
-          nullable: true
-        external_id:
-          type: string
-          description: This can be used to reference an ID in an external system that the sign request is related to.
-          example: '123'
-          nullable: true
-        is_phone_verification_required_to_view:
-          type: boolean
-          description: Forces signers to verify a text message prior to viewing the document. You must specify the phone number of signers to have this setting apply to them.
-          example: true
-          nullable: true
-        template_id:
-          type: string
-          example: 123075213-af2c8822-3ef2-4952-8557-52d69c2fe9cb
-          description: When a signature request is created from a template this field will indicate the id of that template.
-          nullable: true
-    SignRequestSigner:
-      title: Signer fields for GET Sign Request response
-      type: object
-      description: The schema for a Signer in a GET Sign Request request body
-      required:
-      - email
-      allOf:
-      - $ref: '#/components/schemas/SignRequestCreateSigner'
-      - properties:
-          has_viewed_document:
-            type: boolean
-            readOnly: true
-            example: true
-            description: Set to `true` if the signer views the document
-          signer_decision:
-            type: object
-            properties:
-              type:
-                type: string
-                enum:
-                - signed
-                - declined
-                example: signed
-                description: Type of decision made by the signer
-              finalized_at:
-                type: string
-                format: date-time
-                example: '2021-04-26T08:12:13.982Z'
-                description: Date and Time that the decision was made
-              additional_info:
-                type: string
-                example: Requesting changes before signing.
-                description: Additional info about the decision, such as the decline reason from the signer
-                nullable: true
-            description: Final decision made by the signer
-            nullable: true
-          inputs:
-            type: array
-            items:
-              $ref: '#/components/schemas/SignRequestSignerInput'
-            readOnly: true
-          embed_url:
-            type: string
-            readOnly: true
-            example: https://example.com
-            description: URL to direct a signer to for signing
-            nullable: true
-          iframeable_embed_url:
-            type: string
-            nullable: true
-            example: https://app.box.com/embed/sign/document/gfhr4222-a331-494b-808b-79bc7f3992a3/f14d7098-a331-494b-808b-79bc7f3992a4
-            description: 'This URL is specifically designed for
-
-              signing documents within an HTML `iframe` tag.
-
-              It will be returned in the response
-
-              only if the `embed_url_external_user_id`
-
-              parameter was passed in the
-
-              `create sign request` call.'
-    FileVersion--Mini:
-      title: File version (Mini)
-      type: object
-      x-box-resource-id: file_version--mini
-      x-box-variant: mini
-      description: 'A mini representation of a file version, used when
-
-        nested within another resource.'
-      allOf:
-      - $ref: '#/components/schemas/FileVersion--Base'
-      - properties:
-          sha1:
-            type: string
-            description: The SHA1 hash of this version of the file.
-            example: 134b65991ed521fcfe4724b7d814ab8ded5185dc
-    File--Mini:
-      title: File (Mini)
-      type: object
-      x-box-resource-id: file--mini
-      x-box-variant: mini
-      description: 'A mini representation of a file, used when
-
-        nested under another resource.'
-      nullable: true
-      allOf:
-      - $ref: '#/components/schemas/File--Base'
-      - properties:
-          sequence_id:
-            allOf:
-            - type: string
-              example: '3'
-              nullable: true
-              description: 'A numeric identifier that represents the most recent user event
-
-                that has been applied to this item.
-
-
-                This can be used in combination with the `GET /events`-endpoint
-
-                to filter out user events that would have occurred before this
-
-                identifier was read.
-
-
-                An example would be where a Box Drive-like application
-
-                would fetch an item via the API, and then listen to incoming
-
-                user events for changes to the item. The application would
-
-                ignore any user events where the `sequence_id` in the event
-
-                is smaller than or equal to the `sequence_id` in the originally
-
-                fetched resource.'
-            - nullable: false
-          name:
-            type: string
-            description: The name of the file
-            example: Contract.pdf
-          sha1:
-            type: string
-            format: digest
-            nullable: false
-            example: 85136C79CBF9FE36BB9D05D0639C70C265C18D37
-            description: 'The SHA1 hash of the file. This can be used to compare the contents
-
-              of a file on Box with a local file.'
-          file_version:
-            allOf:
-            - $ref: '#/components/schemas/FileVersion--Mini'
-            - description: The information about the current version of the file.
-    SignRequestCreateSigner:
-      title: Signer fields for Create Sign Request
-      type: object
-      description: The schema for a Signer in a POST Sign Request request body
-      properties:
-        email:
-          type: string
-          description: 'Email address of the signer.
-
-            The email address of the signer is required when making signature requests, except when using templates that are configured to include emails.'
-          example: example@gmail.com
-          nullable: true
-        role:
-          type: string
-          enum:
-          - signer
-          - approver
-          - final_copy_reader
-          description: 'Defines the role of the signer in the sign request. A `signer`
-
-            must sign the document and an `approver` must approve the document. A
-
-            `final_copy_reader` only receives the final signed document and signing
-
-            log.'
-          example: signer
-          default: signer
-        is_in_person:
-          type: boolean
-          description: 'Used in combination with an embed URL for a sender. After the
-
-            sender signs, they are redirected to the next `in_person` signer.'
-          example: true
-        order:
-          type: integer
-          description: Order of the signer
-          minimum: 0
-          example: 2
-        embed_url_external_user_id:
-          type: string
-          description: 'User ID for the signer in an external application responsible
-
-            for authentication when accessing the embed URL.'
-          example: '1234'
-          nullable: true
-        redirect_url:
-          type: string
-          description: 'The URL that a signer will be redirected
-
-            to after signing a document. Defining this URL
-
-            overrides default or global redirect URL
-
-            settings for a specific signer.
-
-            If no declined redirect URL is specified,
-
-            this URL will be used for decline actions as well.'
-          example: https://example.com
-          nullable: true
-        declined_redirect_url:
-          type: string
-          description: 'The URL that a signer will be redirect
-
-            to after declining to sign a document.
-
-            Defining this URL overrides default or global
-
-            declined redirect URL settings for a specific signer.'
-          example: https://declined-example.com
-          nullable: true
-        login_required:
-          type: boolean
-          description: 'If set to true, signer will need to login to a Box account
-
-            before signing the request. If the signer does not have
-
-            an existing account, they will have an option to create
-
-            a free Box account.'
-          example: true
-          nullable: true
-        verification_phone_number:
-          type: string
-          description: 'If set, this phone number is be used to verify the signer
-
-            via two factor authentication before they are able to sign the document.'
-          example: '6314578901'
-          nullable: true
-        password:
-          type: string
-          writeOnly: true
-          description: 'If set, the signer is required to enter the password before they are able
-
-            to sign a document. This field is write only.'
-          example: SecretPassword123
-          nullable: true
-        signer_group_id:
-          type: string
-          description: 'If set, signers who have the same value will be assigned to the same input and to the same signer group.
-
-            A signer group is not a Box Group. It is an entity that belongs to a Sign Request and can only be
-
-            used/accessed within this Sign Request. A signer group is expected to have more than one signer.
-
-            If the provided value is only used for one signer, this value will be ignored and request will be handled
-
-            as it was intended for an individual signer. The value provided can be any string and only used to
-
-            determine which signers belongs to same group. A successful response will provide a generated UUID value
-
-            instead for signers in the same signer group.'
-          example: cd4ff89-8fc1-42cf-8b29-1890dedd26d7
-          nullable: true
-    SignRequestPrefillTag:
-      title: Sign Request Prefill Tag
-      type: object
-      description: 'Prefill tags are used to prefill placeholders with signer input data. Only
-
-        one value field can be included.'
-      properties:
-        document_tag_id:
-          type: string
-          example: '1234'
-          description: This references the ID of a specific tag contained in a file of the sign request.
-          nullable: true
-        text_value:
-          type: string
-          example: text
-          description: Text prefill value
-          nullable: true
-        checkbox_value:
-          type: boolean
-          example: true
-          description: Checkbox prefill value
-          nullable: true
-        date_value:
-          type: string
-          format: date
-          example: '2021-04-26'
-          description: Date prefill value
-          nullable: true
-    FileVersion--Base:
-      title: File version (Base)
-      type: object
-      x-box-resource-id: file_version--base
+      x-box-resource-id: folder--base
       x-box-sanitized: true
+      x-box-tag: folders
       x-box-variants:
       - base
       - mini
       - standard
       - full
       x-box-variant: base
-      description: 'The bare basic representation of a file version, the minimal
+      description: 'The bare basic representation of a folder, the minimal
 
         amount of fields returned when using the `fields` query
 
@@ -851,17 +1023,71 @@ components:
       properties:
         id:
           type: string
-          nullable: false
-          description: The unique identifier that represent a file version.
+          description: 'The unique identifier that represent a folder.
+
+
+            The ID for any folder can be determined
+
+            by visiting a folder in the web application
+
+            and copying the ID from the URL. For example,
+
+            for the URL `https://*.app.box.com/folders/123`
+
+            the `folder_id` is `123`.'
           example: '12345'
+        etag:
+          type:
+          - string
+          - 'null'
+          example: '1'
+          description: 'The HTTP `etag` of this folder. This can be used within some API
+
+            endpoints in the `If-Match` and `If-None-Match` headers to only
+
+            perform changes on the folder if (no) changes have happened.'
         type:
           type: string
-          description: '`file_version`'
-          example: file_version
+          description: '`folder`'
+          example: folder
           enum:
-          - file_version
-          nullable: false
-    ClientError:
+          - folder
+    SignRequests:
+      title: Box Sign
+      type: object
+      x-box-resource-id: sign_requests
+      x-box-tag: sign_requests
+      description: 'A standard representation of a sign request, as returned from any Box Sign
+
+        API endpoints by default.'
+      allOf:
+      - type: object
+        description: 'The part of an API response that describes marker
+
+          based pagination'
+        properties:
+          limit:
+            description: 'The limit that was used for these entries. This will be the same as the
+
+              `limit` query parameter unless that value exceeded the maximum value
+
+              allowed. The maximum value varies by API.'
+            example: 1000
+            type: integer
+            format: int64
+          next_marker:
+            description: The marker for the start of the next page of results.
+            example: JV9IRGZmieiBasejOG9yDCRNgd2ymoZIbjsxbJMjIs3kioVii
+            type:
+            - string
+            - 'null'
+      - properties:
+          entries:
+            type: array
+            description: A list of sign requests
+            items:
+              $ref: '#/components/schemas/SignRequest'
+    ClientError_2:
       title: Client error
       type: object
       x-box-resource-id: client_error
@@ -932,7 +1158,41 @@ components:
           type: string
           example: abcdef123456
           nullable: false
-    SignRequest:
+    SignRequests_2:
+      title: Box Sign
+      type: object
+      x-box-resource-id: sign_requests
+      x-box-tag: sign_requests
+      description: 'A standard representation of a sign request, as returned from any Box Sign
+
+        API endpoints by default.'
+      allOf:
+      - type: object
+        description: 'The part of an API response that describes marker
+
+          based pagination'
+        properties:
+          limit:
+            description: 'The limit that was used for these entries. This will be the same as the
+
+              `limit` query parameter unless that value exceeded the maximum value
+
+              allowed. The maximum value varies by API.'
+            example: 1000
+            type: integer
+            format: int64
+          next_marker:
+            description: The marker for the start of the next page of results.
+            example: JV9IRGZmieiBasejOG9yDCRNgd2ymoZIbjsxbJMjIs3kioVii
+            type: string
+            nullable: true
+      - properties:
+          entries:
+            type: array
+            description: A list of sign requests
+            items:
+              $ref: '#/components/schemas/SignRequest_2'
+    SignRequest_2:
       title: Sign Request
       type: object
       x-box-resource-id: sign_request
@@ -1037,3 +1297,26 @@ components:
             allOf:
             - $ref: '#/components/schemas/Folder--Mini'
             - description: "The destination folder to place final, signed document and signing\nlog.\n\nWhen this value was not passed in when the signature request was \ncreated, then we will use a default folder which is either the parent\nfolder of the first source file in the payload if we have the permission\nto upload to that folder or a folder called \"My Sign Requests\"."
+  securitySchemes:
+    OAuth2Security:
+      type: oauth2
+      flows:
+        authorizationCode:
+          authorizationUrl: https://account.box.com/api/oauth2/authorize
+          tokenUrl: https://api.box.com/oauth2/token
+          scopes:
+            root_readonly: Read all files and folders stored in Box
+            root_readwrite: Read and write all files and folders stored in Box
+            manage_app_users: Provision and manage app users
+            manage_managed_users: Provision and manage managed users
+            manage_groups: Manage an enterprise's groups
+            manage_webhook: Create webhooks programmatically through the API
+            manage_enterprise_properties: Manage enterprise properties
+            manage_data_retention: Manage data retention polices
+            manage_legal_hold: Manage Legal Holds
+externalDocs:
+  description: Box Developer Documentation
+  url: https://developer.box.com
+x-refined-from:
+- box-openapi-original.yml
+- sign-requests-openapi-original.yml

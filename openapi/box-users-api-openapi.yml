@@ -1,8 +1,13 @@
-openapi: 3.1.0
+openapi: 3.2.0
 info:
-  version: "1.0"
-  title: Box Authorize Authorization Users API
-  description: Needs a description.
+  title: Box Users API
+  x-refined-note:
+  - x-box-commit-hash differs across the merged source definitions and was not carried
+  version: '1.0'
+  description: 'Operations tagged Users across 3 of this provider''s published API definitions: box-openapi-original.yml, folders-openapi-original.yml, users-openapi-original.yml. Each path carries the servers of the definition it was published in.'
+servers:
+- url: https://api.box.com/2.0
+  description: Box Platform API server
 tags:
 - name: Users
   description: 'Box API supports a variety of users,
@@ -175,6 +180,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ClientError'
+      security:
+      - OAuth2Security: []
     post:
       operationId: post_users
       summary: Box Create user
@@ -346,6 +353,11 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ClientError'
+      security:
+      - OAuth2Security: []
+    servers:
+    - url: https://api.box.com/2.0
+      description: Box Platform API server
   /users/me:
     get:
       operationId: get_users_me
@@ -411,6 +423,11 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ClientError'
+      security:
+      - OAuth2Security: []
+    servers:
+    - url: https://api.box.com/2.0
+      description: Box Platform API server
   /users/{user_id}:
     get:
       operationId: get_users_id
@@ -495,6 +512,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ClientError'
+      security:
+      - OAuth2Security: []
     put:
       operationId: put_users_id
       summary: Box Update user
@@ -550,8 +569,9 @@ paths:
               type: object
               properties:
                 enterprise:
-                  type: string
-                  nullable: true
+                  type:
+                  - string
+                  - 'null'
                   example: null
                   description: 'Set this to `null` to roll the user out of the enterprise
 
@@ -665,8 +685,9 @@ paths:
                     indicate unlimited storage.'
                   example: 11345156112
                 notification_email:
-                  type: object
-                  nullable: true
+                  type:
+                  - object
+                  - 'null'
                   description: 'An alternate notification email address to which email
 
                     notifications are sent. When it''s confirmed, this will be
@@ -720,6 +741,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ClientError'
+      security:
+      - OAuth2Security: []
     delete:
       operationId: delete_users_id
       x-box-tag: users
@@ -766,6 +789,11 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ClientError'
+      security:
+      - OAuth2Security: []
+    servers:
+    - url: https://api.box.com/2.0
+      description: Box Platform API server
   /users/{user_id}/folders/0:
     put:
       operationId: put_users_id_folders_0
@@ -907,13 +935,13 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ClientError'
+                $ref: '#/components/schemas/ClientError_2'
         default:
           description: An unexpected client error.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ClientError'
+                $ref: '#/components/schemas/ClientError_2'
   /users/terminate_sessions:
     post:
       operationId: post_users_terminate_sessions
@@ -965,43 +993,43 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ClientError'
+                $ref: '#/components/schemas/ClientError_3'
         '403':
           description: Returns an error if there are insufficient permissions.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ClientError'
+                $ref: '#/components/schemas/ClientError_3'
         '404':
           description: Returns an error if the resource could not be found.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ClientError'
+                $ref: '#/components/schemas/ClientError_3'
         '429':
           description: Returns an error if the rate limit is exceeded.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ClientError'
+                $ref: '#/components/schemas/ClientError_3'
         '500':
           description: Returns an error if there is an internal server issue.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ClientError'
+                $ref: '#/components/schemas/ClientError_3'
         '503':
           description: Returns an error if the request timed out.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ClientError'
+                $ref: '#/components/schemas/ClientError_3'
         default:
           description: An unexpected client error.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ClientError'
+                $ref: '#/components/schemas/ClientError_3'
   /users/{user_id}/avatar:
     get:
       operationId: get_users_id_avatar
@@ -1036,7 +1064,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ClientError'
+                $ref: '#/components/schemas/ClientError_3'
     post:
       operationId: post_users_id_avatar
       x-box-tag: avatars
@@ -1090,7 +1118,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ClientError'
+                $ref: '#/components/schemas/ClientError_3'
         '403':
           description: '* `forbidden`: Returns an error if the user does not have permissions
 
@@ -1098,7 +1126,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ClientError'
+                $ref: '#/components/schemas/ClientError_3'
         '404':
           description: '* `not_found`: Returns an error if the user
 
@@ -1106,13 +1134,13 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ClientError'
+                $ref: '#/components/schemas/ClientError_3'
         default:
           description: An unexpected client error.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ClientError'
+                $ref: '#/components/schemas/ClientError_3'
     delete:
       operationId: delete_users_id_avatar
       x-box-tag: avatars
@@ -1138,19 +1166,19 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ClientError'
+                $ref: '#/components/schemas/ClientError_3'
         '404':
           description: "* `not_found`: Returned if the user or user avatar does not exist\n or cannot be found."
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ClientError'
+                $ref: '#/components/schemas/ClientError_3'
         default:
           description: An unexpected client error.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ClientError'
+                $ref: '#/components/schemas/ClientError_3'
   /users/{user_id}/email_aliases:
     get:
       operationId: get_users_id_email_aliases
@@ -1181,7 +1209,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ClientError'
+                $ref: '#/components/schemas/ClientError_3'
     post:
       operationId: post_users_id_email_aliases
       x-box-tag: email_aliases
@@ -1221,7 +1249,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ClientError'
+                $ref: '#/components/schemas/ClientError_3'
   /users/{user_id}/email_aliases/{email_alias_id}:
     delete:
       operationId: delete_users_id_email_aliases_id
@@ -1253,7 +1281,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ClientError'
+                $ref: '#/components/schemas/ClientError_3'
   /users/{user_id}/memberships:
     get:
       operationId: get_users_id_memberships
@@ -1313,15 +1341,223 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ClientError'
+                $ref: '#/components/schemas/ClientError_3'
 components:
   schemas:
-    GroupMemberships:
-      title: Group memberships
+    User:
+      title: User
       type: object
-      x-box-resource-id: group_memberships
-      x-box-tag: memberships
-      description: A list of group memberships.
+      x-box-resource-id: user
+      x-box-variant: standard
+      description: 'A standard representation of a user, as returned from any
+
+        user API endpoints by default'
+      allOf:
+      - $ref: '#/components/schemas/User--Mini'
+      - properties:
+          created_at:
+            type: string
+            format: date-time
+            description: When the user object was created
+            example: '2012-12-12T10:53:43-08:00'
+          modified_at:
+            type: string
+            format: date-time
+            description: When the user object was last modified
+            example: '2012-12-12T10:53:43-08:00'
+          language:
+            type: string
+            description: 'The language of the user, formatted in modified version of the
+
+              [ISO 639-1](/guides/api-calls/language-codes) format.'
+            example: en
+          timezone:
+            type: string
+            format: timezone
+            description: The user's timezone
+            example: Africa/Bujumbura
+          space_amount:
+            type: integer
+            format: int64
+            description: The user’s total available space amount in bytes
+            example: 11345156112
+          space_used:
+            type: integer
+            format: int64
+            description: The amount of space in use by the user
+            example: 1237009912
+          max_upload_size:
+            type: integer
+            format: int64
+            description: The maximum individual file size in bytes the user can have
+            example: 2147483648
+          status:
+            type: string
+            enum:
+            - active
+            - inactive
+            - cannot_delete_edit
+            - cannot_delete_edit_upload
+            description: The user's account status
+            example: active
+          job_title:
+            type: string
+            description: The user’s job title
+            maxLength: 100
+            example: CEO
+          phone:
+            type: string
+            description: The user’s phone number
+            maxLength: 100
+            example: '6509241374'
+          address:
+            type: string
+            description: The user’s address
+            maxLength: 255
+            example: 900 Jefferson Ave, Redwood City, CA 94063
+          avatar_url:
+            type: string
+            description: URL of the user’s avatar image
+            example: https://www.box.com/api/avatar/large/181216415
+          notification_email:
+            type:
+            - object
+            - 'null'
+            description: 'An alternate notification email address to which email
+
+              notifications are sent. When it''s confirmed, this will be
+
+              the email address to which notifications are sent instead of
+
+              to the primary email address.'
+            properties:
+              email:
+                type: string
+                example: notifications@example.com
+                description: The email address to send the notifications to.
+              is_confirmed:
+                type: boolean
+                example: true
+                description: Specifies if this email address has been confirmed.
+    TrackingCode:
+      title: Tracking code
+      type: object
+      description: 'Tracking codes allow an admin to generate reports from the admin console
+
+        and assign an attribute to a specific group of users.
+
+        This setting must be enabled for an enterprise before it can be used.'
+      properties:
+        type:
+          type: string
+          description: '`tracking_code`'
+          example: tracking_code
+          enum:
+          - tracking_code
+        name:
+          type: string
+          description: 'The name of the tracking code, which must be preconfigured in
+
+            the Admin Console'
+          example: department
+        value:
+          type: string
+          description: The value of the tracking code
+          example: Sales
+    ClientError:
+      title: Client error
+      type: object
+      x-box-resource-id: client_error
+      description: A generic error
+      properties:
+        type:
+          description: error
+          example: error
+          type: string
+          enum:
+          - error
+        status:
+          description: The HTTP status of the response.
+          example: 400
+          type: integer
+          format: int32
+        code:
+          description: A Box-specific error code
+          example: item_name_invalid
+          type: string
+          enum:
+          - created
+          - accepted
+          - no_content
+          - redirect
+          - not_modified
+          - bad_request
+          - unauthorized
+          - forbidden
+          - not_found
+          - method_not_allowed
+          - conflict
+          - precondition_failed
+          - too_many_requests
+          - internal_server_error
+          - unavailable
+          - item_name_invalid
+          - insufficient_scope
+        message:
+          description: A short message describing the error.
+          example: Method Not Allowed
+          type: string
+        context_info:
+          description: 'A free-form object that contains additional context
+
+            about the error. The possible fields are defined on
+
+            a per-endpoint basis. `message` is only one example.'
+          type:
+          - object
+          - 'null'
+          properties:
+            message:
+              type: string
+              description: More details on the error.
+              example: Something went wrong.
+        help_url:
+          description: A URL that links to more information about why this error occurred.
+          example: https://developer.box.com/guides/api-calls/permissions-and-errors/common-errors/
+          type: string
+        request_id:
+          description: 'A unique identifier for this response, which can be used
+
+            when contacting Box support.'
+          type: string
+          example: abcdef123456
+    User--Mini:
+      title: User (Mini)
+      type: object
+      x-box-resource-id: user--mini
+      x-box-variant: mini
+      description: 'A mini representation of a user, as can be returned when nested within other
+
+        resources.'
+      allOf:
+      - $ref: '#/components/schemas/User--Base'
+      - properties:
+          name:
+            type: string
+            description: The display name of this user
+            example: Aaron Levie
+            maxLength: 50
+          login:
+            type: string
+            format: email
+            description: The primary email address of this user
+            example: ceo@example.com
+    Users:
+      title: Users
+      type: object
+      x-box-resource-id: users
+      x-box-tag: users
+      description: A list of users.
       allOf:
       - type: object
         description: The part of an API response that describes pagination
@@ -1387,9 +1623,208 @@ components:
       - properties:
           entries:
             type: array
-            description: A list of group memberships
+            description: A list of users
             items:
-              $ref: '#/components/schemas/GroupMembership'
+              $ref: '#/components/schemas/User--Full'
+    User--Base:
+      title: User (Base)
+      type: object
+      x-box-resource-id: user--base
+      x-box-tag: users
+      x-box-variants:
+      - base
+      - mini
+      - standard
+      - full
+      x-box-variant: base
+      description: 'A mini representation of a user, used when
+
+        nested within another resource.'
+      required:
+      - type
+      - id
+      properties:
+        id:
+          type: string
+          description: The unique identifier for this user
+          example: '11446498'
+        type:
+          type: string
+          description: '`user`'
+          example: user
+          enum:
+          - user
+    User--Full:
+      title: User (Full)
+      type: object
+      x-box-resource-id: user--full
+      x-box-variant: full
+      description: 'A full representation of a user, as can be returned from any
+
+        user API endpoint.'
+      allOf:
+      - $ref: '#/components/schemas/User'
+      - properties:
+          role:
+            type: string
+            enum:
+            - admin
+            - coadmin
+            - user
+            description: The user’s enterprise role
+            example: admin
+          tracking_codes:
+            type: array
+            items:
+              $ref: '#/components/schemas/TrackingCode'
+            description: 'Tracking codes allow an admin to generate reports from the
+
+              admin console and assign an attribute to a specific group
+
+              of users. This setting must be enabled for an enterprise
+
+              before it can be used.'
+          can_see_managed_users:
+            type: boolean
+            example: true
+            description: Whether the user can see other enterprise users in their contact list
+          is_sync_enabled:
+            type: boolean
+            description: Whether the user can use Box Sync
+            example: true
+          is_external_collab_restricted:
+            type: boolean
+            example: true
+            description: 'Whether the user is allowed to collaborate with users outside their
+
+              enterprise'
+          is_exempt_from_device_limits:
+            type: boolean
+            example: true
+            description: Whether to exempt the user from Enterprise device limits
+          is_exempt_from_login_verification:
+            type: boolean
+            example: true
+            description: Whether the user must use two-factor authentication
+          enterprise:
+            allOf:
+            - title: Enterprise
+              type: object
+              description: A representation of a Box enterprise
+              properties:
+                id:
+                  type: string
+                  description: The unique identifier for this enterprise.
+                  example: '11446498'
+                type:
+                  type: string
+                  description: '`enterprise`'
+                  example: enterprise
+                  enum:
+                  - enterprise
+                name:
+                  description: The name of the enterprise
+                  example: Acme Inc.
+                  type: string
+            - description: Representation of the user’s enterprise
+          my_tags:
+            type: array
+            items:
+              type: string
+            example:
+            - important
+            description: 'Tags for all files and folders owned by the user. Values returned
+
+              will only contain tags that were set by the requester.'
+          hostname:
+            type: string
+            example: https://example.app.box.com/
+            description: 'The root (protocol, subdomain, domain) of any links that need to be
+
+              generated for the user'
+          is_platform_access_only:
+            type: boolean
+            example: true
+            description: Whether the user is an App User
+          external_app_user_id:
+            type: string
+            example: my-user-1234
+            description: 'An external identifier for an app user, which can be used to look up
+
+              the user. This can be used to tie user IDs from external identity
+
+              providers to Box users.'
+    ClientError_2:
+      title: Client error
+      type: object
+      x-box-resource-id: client_error
+      description: A generic error
+      properties:
+        type:
+          description: error
+          example: error
+          type: string
+          enum:
+          - error
+          nullable: false
+        status:
+          description: The HTTP status of the response.
+          example: 400
+          type: integer
+          format: int32
+          nullable: false
+        code:
+          description: A Box-specific error code
+          example: item_name_invalid
+          type: string
+          enum:
+          - created
+          - accepted
+          - no_content
+          - redirect
+          - not_modified
+          - bad_request
+          - unauthorized
+          - forbidden
+          - not_found
+          - method_not_allowed
+          - conflict
+          - precondition_failed
+          - too_many_requests
+          - internal_server_error
+          - unavailable
+          - item_name_invalid
+          - insufficient_scope
+        message:
+          description: A short message describing the error.
+          example: Method Not Allowed
+          type: string
+          nullable: false
+        context_info:
+          description: 'A free-form object that contains additional context
+
+            about the error. The possible fields are defined on
+
+            a per-endpoint basis. `message` is only one example.'
+          type: object
+          nullable: true
+          properties:
+            message:
+              type: string
+              description: More details on the error.
+              example: Something went wrong.
+        help_url:
+          description: A URL that links to more information about why this error occurred.
+          example: https://developer.box.com/guides/api-calls/permissions-and-errors/common-errors/
+          type: string
+          nullable: false
+        request_id:
+          description: 'A unique identifier for this response, which can be used
+
+            when contacting Box support.'
+          type: string
+          example: abcdef123456
+          nullable: false
     Folder--Full:
       title: Folder (Full)
       type: object
@@ -1702,414 +2137,7 @@ components:
                     or co-admin who created the classification in the Box web app.'
             - description: Details about the classification applied to this folder.
             - nullable: true
-    User--Full:
-      title: User (Full)
-      type: object
-      x-box-resource-id: user--full
-      x-box-variant: full
-      description: 'A full representation of a user, as can be returned from any
-
-        user API endpoint.'
-      allOf:
-      - $ref: '#/components/schemas/User'
-      - properties:
-          role:
-            type: string
-            enum:
-            - admin
-            - coadmin
-            - user
-            description: The user’s enterprise role
-            example: admin
-          tracking_codes:
-            type: array
-            items:
-              $ref: '#/components/schemas/TrackingCode'
-            description: 'Tracking codes allow an admin to generate reports from the
-
-              admin console and assign an attribute to a specific group
-
-              of users. This setting must be enabled for an enterprise
-
-              before it can be used.'
-          can_see_managed_users:
-            type: boolean
-            example: true
-            description: Whether the user can see other enterprise users in their contact list
-          is_sync_enabled:
-            type: boolean
-            description: Whether the user can use Box Sync
-            example: true
-          is_external_collab_restricted:
-            type: boolean
-            example: true
-            description: 'Whether the user is allowed to collaborate with users outside their
-
-              enterprise'
-          is_exempt_from_device_limits:
-            type: boolean
-            example: true
-            description: Whether to exempt the user from Enterprise device limits
-          is_exempt_from_login_verification:
-            type: boolean
-            example: true
-            description: Whether the user must use two-factor authentication
-          enterprise:
-            allOf:
-            - title: Enterprise
-              type: object
-              description: A representation of a Box enterprise
-              properties:
-                id:
-                  type: string
-                  description: The unique identifier for this enterprise.
-                  example: '11446498'
-                type:
-                  type: string
-                  description: '`enterprise`'
-                  example: enterprise
-                  enum:
-                  - enterprise
-                name:
-                  description: The name of the enterprise
-                  example: Acme Inc.
-                  type: string
-            - description: Representation of the user’s enterprise
-          my_tags:
-            type: array
-            items:
-              type: string
-            example:
-            - important
-            description: 'Tags for all files and folders owned by the user. Values returned
-
-              will only contain tags that were set by the requester.'
-          hostname:
-            type: string
-            example: https://example.app.box.com/
-            description: 'The root (protocol, subdomain, domain) of any links that need to be
-
-              generated for the user'
-          is_platform_access_only:
-            type: boolean
-            example: true
-            description: Whether the user is an App User
-          external_app_user_id:
-            type: string
-            example: my-user-1234
-            description: 'An external identifier for an app user, which can be used to look up
-
-              the user. This can be used to tie user IDs from external identity
-
-              providers to Box users.'
-    User--Base:
-      title: User (Base)
-      type: object
-      x-box-resource-id: user--base
-      x-box-tag: users
-      x-box-variants:
-      - base
-      - mini
-      - standard
-      - full
-      x-box-variant: base
-      description: 'A mini representation of a user, used when
-
-        nested within another resource.'
-      required:
-      - type
-      - id
-      properties:
-        id:
-          type: string
-          description: The unique identifier for this user
-          example: '11446498'
-        type:
-          type: string
-          description: '`user`'
-          example: user
-          nullable: false
-          enum:
-          - user
-    UserAvatar:
-      title: User avatar
-      type: object
-      x-box-resource-id: user_avatar
-      x-box-tag: avatars
-      description: 'A resource holding URLs to the
-
-        avatar uploaded to a Box application.'
-      properties:
-        pic_urls:
-          type: object
-          description: Represents an object with user avatar URLs.
-          properties:
-            small:
-              type: string
-              description: The location of a small-sized avatar.
-              example: 'https://app.box.com/index.php?rm=pic_storage_auth&pic=euks! pac3kv01!7B6R5cZLmurEV_xB-KkycPk8Oi7oENUX2O_qUtIuO4342CG IldyCto9hqiQP7uxqYU5V2w63Ft4ln4UVVLDtDZu903OqzkflY2O-Lq00 ubA29xU-RJ6b_KzJEWRYgUhX1zEl3dzWo12g8eWRE2rStf123DF7AYahNqM 1BmLmviL_nODc7SDQHedTXPAjxURUAra5BvtLe7B05AizbNXdPlCNp-LNh _S-eZ_RjDXcGO-MkRWd_3BOMHnvjf450t5BfKoJ15WhEfiMlfXH1tmouHXrsC 66cT6-pzF9E40Iir_zThqSlrFxzP_xcmXzHapr_k-0E2qr2TXp4iC396TSlEw
-
-                '
-            large:
-              type: string
-              description: The location of a large-sized avatar.
-              example: 'https://app.box.com/index.php?rm=pic_storage_auth&pic=euks
-
-                pac3kv01!lipGQlQQOtCTCoB6zCOArUjVWLFJtLr5tn6aOZMCybhRx0NNuFQbVI36nw
-
-                jtEk5YjUUz1KVdVuvU2yDhu_ftK_bvxeKP1Ffrx9vKGVvJ-UJc1z32p6n2CmFzzpc
-
-                gSoX4pnPhFgydAL-u9jDspXUGElr-htDG_HPMiE9DZjqDueOxXHy8xe22wbaPAheC
-
-                ao1emv8r_fmufaUgSndeMYmyZj-KqOYsLBrBNgdeiK5tZmPOQggAEUmyQPkrd8W92TQ6sSlIp0r'
-            preview:
-              type: string
-              description: The location of the avatar preview.
-              example: 'https://app.box.com/index.php?rm=pic_storage_auth&pic=euks!
-
-                pac3kv01!8UcNPweOOAWj2DtHk_dCQB4wJpzyPkl7mT5nHj5ZdjY92ejYCBBZc95--403b29CW
-
-                k-8hSo_uBjh5h9QG42Ihu-cOZ-816sej1kof3SOm5gjn7qjMAx89cHjUaNK-6XasRqSNboenjZ
-
-                04laZuV9vSH12BZGAYycIZvvQ5R66Go8xG5GTMARf2nBU84c4H_SL5iws-HeBS4oQJWOJh6FBl
-
-                sSJDSTI74LGXqeZb3EY_As34VFC95F10uozoTOSubZmPYylPlaKXoKWk2f9wYQso1ZTN7sh-Gc
-
-                9Kp43zMLhArIWhok0Im6FlRAuWOQ03KYgL-k4L5EZp4Gw6B7uqVRwcBbsTwMIorWq1g'
-    TrackingCode:
-      title: Tracking code
-      type: object
-      description: 'Tracking codes allow an admin to generate reports from the admin console
-
-        and assign an attribute to a specific group of users.
-
-        This setting must be enabled for an enterprise before it can be used.'
-      properties:
-        type:
-          type: string
-          description: '`tracking_code`'
-          example: tracking_code
-          enum:
-          - tracking_code
-        name:
-          type: string
-          description: 'The name of the tracking code, which must be preconfigured in
-
-            the Admin Console'
-          example: department
-        value:
-          type: string
-          description: The value of the tracking code
-          example: Sales
-    EmailAliases:
-      title: Email aliases
-      type: object
-      x-box-resource-id: email_aliases
-      x-box-tag: email_aliases
-      description: A list of email aliases
-      properties:
-        total_count:
-          description: The number of email aliases.
-          example: 5000
-          type: integer
-          format: int64
-        entries:
-          type: array
-          description: A list of email aliases
-          items:
-            $ref: '#/components/schemas/EmailAlias'
-    Users:
-      title: Users
-      type: object
-      x-box-resource-id: users
-      x-box-tag: users
-      description: A list of users.
-      allOf:
-      - type: object
-        description: The part of an API response that describes pagination
-        properties:
-          total_count:
-            description: 'One greater than the offset of the last entry in the entire collection.
-
-              The total number of entries in the collection may be less than
-
-              `total_count`.
-
-
-              This field is only returned for calls that use offset-based pagination.
-
-              For marker-based paginated APIs, this field will be omitted.'
-            example: 5000
-            type: integer
-            format: int64
-          limit:
-            description: 'The limit that was used for these entries. This will be the same as the
-
-              `limit` query parameter unless that value exceeded the maximum value
-
-              allowed. The maximum value varies by API.'
-            example: 1000
-            type: integer
-            format: int64
-          offset:
-            description: 'The 0-based offset of the first entry in this set. This will be the same
-
-              as the `offset` query parameter.
-
-
-              This field is only returned for calls that use offset-based pagination.
-
-              For marker-based paginated APIs, this field will be omitted.'
-            example: 2000
-            type: integer
-            format: int64
-          order:
-            description: 'The order by which items are returned.
-
-
-              This field is only returned for calls that use offset-based pagination.
-
-              For marker-based paginated APIs, this field will be omitted.'
-            type: array
-            items:
-              type: object
-              description: The order in which a pagination is ordered
-              properties:
-                by:
-                  description: The field to order by
-                  example: type
-                  type: string
-                direction:
-                  type: string
-                  description: The direction to order by, either ascending or descending
-                  example: ASC
-                  enum:
-                  - ASC
-                  - DESC
-      - properties:
-          entries:
-            type: array
-            description: A list of users
-            items:
-              $ref: '#/components/schemas/User--Full'
-    User:
-      title: User
-      type: object
-      x-box-resource-id: user
-      x-box-variant: standard
-      description: 'A standard representation of a user, as returned from any
-
-        user API endpoints by default'
-      allOf:
-      - $ref: '#/components/schemas/User--Mini'
-      - properties:
-          created_at:
-            type: string
-            format: date-time
-            description: When the user object was created
-            example: '2012-12-12T10:53:43-08:00'
-          modified_at:
-            type: string
-            format: date-time
-            description: When the user object was last modified
-            example: '2012-12-12T10:53:43-08:00'
-          language:
-            type: string
-            description: 'The language of the user, formatted in modified version of the
-
-              [ISO 639-1](/guides/api-calls/language-codes) format.'
-            example: en
-          timezone:
-            type: string
-            format: timezone
-            description: The user's timezone
-            example: Africa/Bujumbura
-          space_amount:
-            type: integer
-            format: int64
-            description: The user’s total available space amount in bytes
-            example: 11345156112
-          space_used:
-            type: integer
-            format: int64
-            description: The amount of space in use by the user
-            example: 1237009912
-          max_upload_size:
-            type: integer
-            format: int64
-            description: The maximum individual file size in bytes the user can have
-            example: 2147483648
-          status:
-            type: string
-            enum:
-            - active
-            - inactive
-            - cannot_delete_edit
-            - cannot_delete_edit_upload
-            description: The user's account status
-            example: active
-          job_title:
-            type: string
-            description: The user’s job title
-            maxLength: 100
-            example: CEO
-          phone:
-            type: string
-            description: The user’s phone number
-            maxLength: 100
-            example: '6509241374'
-          address:
-            type: string
-            description: The user’s address
-            maxLength: 255
-            example: 900 Jefferson Ave, Redwood City, CA 94063
-          avatar_url:
-            type: string
-            description: URL of the user’s avatar image
-            example: https://www.box.com/api/avatar/large/181216415
-          notification_email:
-            type: object
-            description: 'An alternate notification email address to which email
-
-              notifications are sent. When it''s confirmed, this will be
-
-              the email address to which notifications are sent instead of
-
-              to the primary email address.'
-            nullable: true
-            properties:
-              email:
-                type: string
-                example: notifications@example.com
-                description: The email address to send the notifications to.
-              is_confirmed:
-                type: boolean
-                example: true
-                description: Specifies if this email address has been confirmed.
-    User--Mini:
-      title: User (Mini)
-      type: object
-      x-box-resource-id: user--mini
-      x-box-variant: mini
-      description: 'A mini representation of a user, as can be returned when nested within other
-
-        resources.'
-      allOf:
-      - $ref: '#/components/schemas/User--Base'
-      - properties:
-          name:
-            type: string
-            description: The display name of this user
-            example: Aaron Levie
-            maxLength: 50
-            nullable: false
-          login:
-            type: string
-            format: email
-            description: The primary email address of this user
-            example: ceo@example.com
-            nullable: false
-    ClientError:
+    ClientError_3:
       title: Client error
       type: object
       x-box-resource-id: client_error
@@ -2180,3 +2208,163 @@ components:
           type: string
           example: abcdef123456
           nullable: false
+    UserAvatar:
+      title: User avatar
+      type: object
+      x-box-resource-id: user_avatar
+      x-box-tag: avatars
+      description: 'A resource holding URLs to the
+
+        avatar uploaded to a Box application.'
+      properties:
+        pic_urls:
+          type: object
+          description: Represents an object with user avatar URLs.
+          properties:
+            small:
+              type: string
+              description: The location of a small-sized avatar.
+              example: 'https://app.box.com/index.php?rm=pic_storage_auth&pic=euks! pac3kv01!7B6R5cZLmurEV_xB-KkycPk8Oi7oENUX2O_qUtIuO4342CG IldyCto9hqiQP7uxqYU5V2w63Ft4ln4UVVLDtDZu903OqzkflY2O-Lq00 ubA29xU-RJ6b_KzJEWRYgUhX1zEl3dzWo12g8eWRE2rStf123DF7AYahNqM 1BmLmviL_nODc7SDQHedTXPAjxURUAra5BvtLe7B05AizbNXdPlCNp-LNh _S-eZ_RjDXcGO-MkRWd_3BOMHnvjf450t5BfKoJ15WhEfiMlfXH1tmouHXrsC 66cT6-pzF9E40Iir_zThqSlrFxzP_xcmXzHapr_k-0E2qr2TXp4iC396TSlEw
+
+                '
+            large:
+              type: string
+              description: The location of a large-sized avatar.
+              example: 'https://app.box.com/index.php?rm=pic_storage_auth&pic=euks
+
+                pac3kv01!lipGQlQQOtCTCoB6zCOArUjVWLFJtLr5tn6aOZMCybhRx0NNuFQbVI36nw
+
+                jtEk5YjUUz1KVdVuvU2yDhu_ftK_bvxeKP1Ffrx9vKGVvJ-UJc1z32p6n2CmFzzpc
+
+                gSoX4pnPhFgydAL-u9jDspXUGElr-htDG_HPMiE9DZjqDueOxXHy8xe22wbaPAheC
+
+                ao1emv8r_fmufaUgSndeMYmyZj-KqOYsLBrBNgdeiK5tZmPOQggAEUmyQPkrd8W92TQ6sSlIp0r'
+            preview:
+              type: string
+              description: The location of the avatar preview.
+              example: 'https://app.box.com/index.php?rm=pic_storage_auth&pic=euks!
+
+                pac3kv01!8UcNPweOOAWj2DtHk_dCQB4wJpzyPkl7mT5nHj5ZdjY92ejYCBBZc95--403b29CW
+
+                k-8hSo_uBjh5h9QG42Ihu-cOZ-816sej1kof3SOm5gjn7qjMAx89cHjUaNK-6XasRqSNboenjZ
+
+                04laZuV9vSH12BZGAYycIZvvQ5R66Go8xG5GTMARf2nBU84c4H_SL5iws-HeBS4oQJWOJh6FBl
+
+                sSJDSTI74LGXqeZb3EY_As34VFC95F10uozoTOSubZmPYylPlaKXoKWk2f9wYQso1ZTN7sh-Gc
+
+                9Kp43zMLhArIWhok0Im6FlRAuWOQ03KYgL-k4L5EZp4Gw6B7uqVRwcBbsTwMIorWq1g'
+    EmailAliases:
+      title: Email aliases
+      type: object
+      x-box-resource-id: email_aliases
+      x-box-tag: email_aliases
+      description: A list of email aliases
+      properties:
+        total_count:
+          description: The number of email aliases.
+          example: 5000
+          type: integer
+          format: int64
+        entries:
+          type: array
+          description: A list of email aliases
+          items:
+            $ref: '#/components/schemas/EmailAlias'
+    GroupMemberships:
+      title: Group memberships
+      type: object
+      x-box-resource-id: group_memberships
+      x-box-tag: memberships
+      description: A list of group memberships.
+      allOf:
+      - type: object
+        description: The part of an API response that describes pagination
+        properties:
+          total_count:
+            description: 'One greater than the offset of the last entry in the entire collection.
+
+              The total number of entries in the collection may be less than
+
+              `total_count`.
+
+
+              This field is only returned for calls that use offset-based pagination.
+
+              For marker-based paginated APIs, this field will be omitted.'
+            example: 5000
+            type: integer
+            format: int64
+          limit:
+            description: 'The limit that was used for these entries. This will be the same as the
+
+              `limit` query parameter unless that value exceeded the maximum value
+
+              allowed. The maximum value varies by API.'
+            example: 1000
+            type: integer
+            format: int64
+          offset:
+            description: 'The 0-based offset of the first entry in this set. This will be the same
+
+              as the `offset` query parameter.
+
+
+              This field is only returned for calls that use offset-based pagination.
+
+              For marker-based paginated APIs, this field will be omitted.'
+            example: 2000
+            type: integer
+            format: int64
+          order:
+            description: 'The order by which items are returned.
+
+
+              This field is only returned for calls that use offset-based pagination.
+
+              For marker-based paginated APIs, this field will be omitted.'
+            type: array
+            items:
+              type: object
+              description: The order in which a pagination is ordered
+              properties:
+                by:
+                  description: The field to order by
+                  example: type
+                  type: string
+                direction:
+                  type: string
+                  description: The direction to order by, either ascending or descending
+                  example: ASC
+                  enum:
+                  - ASC
+                  - DESC
+      - properties:
+          entries:
+            type: array
+            description: A list of group memberships
+            items:
+              $ref: '#/components/schemas/GroupMembership'
+  securitySchemes:
+    OAuth2Security:
+      type: oauth2
+      flows:
+        authorizationCode:
+          authorizationUrl: https://account.box.com/api/oauth2/authorize
+          tokenUrl: https://api.box.com/oauth2/token
+          scopes:
+            root_readonly: Read all files and folders stored in Box
+            root_readwrite: Read and write all files and folders stored in Box
+            manage_app_users: Provision and manage app users
+            manage_managed_users: Provision and manage managed users
+            manage_groups: Manage an enterprise's groups
+            manage_webhook: Create webhooks programmatically through the API
+            manage_enterprise_properties: Manage enterprise properties
+            manage_data_retention: Manage data retention polices
+            manage_legal_hold: Manage Legal Holds
+externalDocs:
+  description: Box Developer Documentation
+  url: https://developer.box.com
+x-refined-from:
+- box-openapi-original.yml
+- folders-openapi-original.yml
+- users-openapi-original.yml

@@ -1,7 +1,6 @@
-openapi: 3.1.0
+openapi: 3.2.0
 info:
-  version: "1.0"
-  title: Box Authorize Authorization Storage Policies API
+  title: Box Storage Policies API
   description: Needs a description.
 tags:
 - name: Storage Policies
@@ -108,43 +107,6 @@ paths:
                 $ref: '#/components/schemas/ClientError'
 components:
   schemas:
-    StoragePolicies:
-      title: Storage policies
-      type: object
-      x-box-resource-id: storage_policies
-      x-box-tag: storage_policies
-      description: A list of storage policies.
-      allOf:
-      - type: object
-        description: 'The part of an API response that describes marker
-
-          based pagination'
-        properties:
-          limit:
-            description: 'The limit that was used for these entries. This will be the same as the
-
-              `limit` query parameter unless that value exceeded the maximum value
-
-              allowed. The maximum value varies by API.'
-            example: 1000
-            type: integer
-            format: int64
-          next_marker:
-            description: The marker for the start of the next page of results.
-            example: JV9IRGZmieiBasejOG9yDCRNgd2ymoZIbjsxbJMjIs3kioVii
-            type: string
-            nullable: true
-          prev_marker:
-            description: The marker for the start of the previous page of results.
-            example: JV9IRGZmieiBasejOG9yDCRNgd2ymoZIbjsxbJMjIs3kioVih
-            type: string
-            nullable: true
-      - properties:
-          entries:
-            type: array
-            description: A list of storage policies
-            items:
-              $ref: '#/components/schemas/StoragePolicy'
     ClientError:
       title: Client error
       type: object
@@ -229,3 +191,40 @@ components:
             description: A descriptive name of the region
             type: string
             example: Montreal / Dublin
+    StoragePolicies:
+      title: Storage policies
+      type: object
+      x-box-resource-id: storage_policies
+      x-box-tag: storage_policies
+      description: A list of storage policies.
+      allOf:
+      - type: object
+        description: 'The part of an API response that describes marker
+
+          based pagination'
+        properties:
+          limit:
+            description: 'The limit that was used for these entries. This will be the same as the
+
+              `limit` query parameter unless that value exceeded the maximum value
+
+              allowed. The maximum value varies by API.'
+            example: 1000
+            type: integer
+            format: int64
+          next_marker:
+            description: The marker for the start of the next page of results.
+            example: JV9IRGZmieiBasejOG9yDCRNgd2ymoZIbjsxbJMjIs3kioVii
+            type: string
+            nullable: true
+          prev_marker:
+            description: The marker for the start of the previous page of results.
+            example: JV9IRGZmieiBasejOG9yDCRNgd2ymoZIbjsxbJMjIs3kioVih
+            type: string
+            nullable: true
+      - properties:
+          entries:
+            type: array
+            description: A list of storage policies
+            items:
+              $ref: '#/components/schemas/StoragePolicy'

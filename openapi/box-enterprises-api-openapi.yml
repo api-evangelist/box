@@ -1,8 +1,8 @@
-openapi: 3.1.0
+openapi: 3.2.0
 info:
-  version: "1.0"
-  title: Box Authorize Authorization Enterprises API
-  description: Needs a description.
+  title: Box Enterprises API
+  version: '1.0'
+  description: 'Operations tagged Enterprises across 2 of this provider''s published API definitions: device-pinners-openapi-original.yml, enterprises-openapi-original.yml. Each path carries the servers of the definition it was published in.'
 tags:
 - name: Enterprises
 paths:
@@ -75,33 +75,6 @@ paths:
                 $ref: '#/components/schemas/ClientError'
 components:
   schemas:
-    DevicePinner:
-      title: Device pinner
-      type: object
-      x-box-resource-id: device_pinner
-      x-box-tag: device_pinners
-      description: 'Device pins allow enterprises to control what devices can
-
-        use native Box applications.'
-      properties:
-        id:
-          type: string
-          description: The unique identifier for this device pin.
-          example: '11446498'
-        type:
-          type: string
-          description: '`device_pinner`'
-          example: device_pinner
-          enum:
-          - device_pinner
-        owned_by:
-          allOf:
-          - $ref: '#/components/schemas/User--Mini'
-          - description: The user that the device pin belongs to
-        product_name:
-          type: string
-          description: The type of device being pinned
-          example: iPad
     ClientError:
       title: Client error
       type: object
@@ -220,3 +193,33 @@ components:
                 enum:
                 - asc
                 - desc
+    DevicePinner:
+      title: Device pinner
+      type: object
+      x-box-resource-id: device_pinner
+      x-box-tag: device_pinners
+      description: 'Device pins allow enterprises to control what devices can
+
+        use native Box applications.'
+      properties:
+        id:
+          type: string
+          description: The unique identifier for this device pin.
+          example: '11446498'
+        type:
+          type: string
+          description: '`device_pinner`'
+          example: device_pinner
+          enum:
+          - device_pinner
+        owned_by:
+          allOf:
+          - $ref: '#/components/schemas/User--Mini'
+          - description: The user that the device pin belongs to
+        product_name:
+          type: string
+          description: The type of device being pinned
+          example: iPad
+x-refined-from:
+- device-pinners-openapi-original.yml
+- enterprises-openapi-original.yml

@@ -1,7 +1,6 @@
-openapi: 3.1.0
+openapi: 3.2.0
 info:
-  version: "1.0"
-  title: Box Authorize Authorization Terms of Services API
+  title: Box Terms of Services API
   description: Needs a description.
 tags:
 - name: Terms of Services
@@ -178,23 +177,6 @@ paths:
                 $ref: '#/components/schemas/ClientError'
 components:
   schemas:
-    TermsOfServices:
-      title: Terms of services
-      type: object
-      x-box-resource-id: terms_of_services
-      x-box-tag: terms_of_services
-      description: A list of terms of services
-      properties:
-        total_count:
-          description: The total number of objects.
-          example: 2
-          type: integer
-          format: int64
-        entries:
-          type: array
-          description: A list of terms of service objects
-          items:
-            $ref: '#/components/schemas/TermsOfService'
     ClientError:
       title: Client error
       type: object
@@ -328,3 +310,20 @@ components:
             format: date-time
             description: When the legal item was modified.
             example: '2012-12-12T10:53:43-08:00'
+    TermsOfServices:
+      title: Terms of services
+      type: object
+      x-box-resource-id: terms_of_services
+      x-box-tag: terms_of_services
+      description: A list of terms of services
+      properties:
+        total_count:
+          description: The total number of objects.
+          example: 2
+          type: integer
+          format: int64
+        entries:
+          type: array
+          description: A list of terms of service objects
+          items:
+            $ref: '#/components/schemas/TermsOfService'

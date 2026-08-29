@@ -1,8 +1,13 @@
-openapi: 3.1.0
+openapi: 3.2.0
 info:
-  version: "1.0"
-  title: Box Authorize Authorization Group Memberships API
-  description: Needs a description.
+  title: Box Group Memberships API
+  x-refined-note:
+  - x-box-commit-hash differs across the merged source definitions and was not carried
+  version: '1.0'
+  description: 'Operations tagged Group Memberships across 2 of this provider''s published API definitions: box-openapi-original.yml, group-memberships-openapi-original.yml. Each path carries the servers of the definition it was published in.'
+servers:
+- url: https://api.box.com/2.0
+  description: Box Platform API server
 tags:
 - name: Group Memberships
   description: 'Group memberships signify that
@@ -70,6 +75,11 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ClientError'
+      security:
+      - OAuth2Security: []
+    servers:
+    - url: https://api.box.com/2.0
+      description: Box Platform API server
   /groups/{group_id}/memberships:
     get:
       operationId: get_groups_id_memberships
@@ -130,6 +140,11 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ClientError'
+      security:
+      - OAuth2Security: []
+    servers:
+    - url: https://api.box.com/2.0
+      description: Box Platform API server
   /group_memberships:
     post:
       operationId: post_group_memberships
@@ -259,6 +274,11 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ClientError'
+      security:
+      - OAuth2Security: []
+    servers:
+    - url: https://api.box.com/2.0
+      description: Box Platform API server
   /group_memberships/{group_membership_id}:
     get:
       operationId: get_group_memberships_id
@@ -320,6 +340,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ClientError'
+      security:
+      - OAuth2Security: []
     put:
       operationId: put_group_memberships_id
       summary: Box Update group membership
@@ -419,6 +441,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ClientError'
+      security:
+      - OAuth2Security: []
     delete:
       operationId: delete_group_memberships_id
       summary: Box Remove user from group
@@ -449,8 +473,57 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ClientError'
+      security:
+      - OAuth2Security: []
+    servers:
+    - url: https://api.box.com/2.0
+      description: Box Platform API server
 components:
   schemas:
+    GroupMembership:
+      title: Group membership
+      type: object
+      x-box-resource-id: group_membership
+      x-box-tag: memberships
+      description: 'Membership is used to signify that a user is part of a
+
+        group.'
+      properties:
+        id:
+          type: string
+          description: The unique identifier for this group membership
+          example: '11446498'
+        type:
+          type: string
+          description: '`group_membership`'
+          example: group_membership
+          enum:
+          - group_membership
+        user:
+          allOf:
+          - $ref: '#/components/schemas/User--Mini'
+          - description: The user that the membership applies to
+        group:
+          allOf:
+          - $ref: '#/components/schemas/Group--Mini'
+          - description: The group that the membership applies to
+        role:
+          type: string
+          example: member
+          description: The role of the user in the group.
+          enum:
+          - member
+          - admin
+        created_at:
+          type: string
+          format: date-time
+          description: The time this membership was created.
+          example: '2012-12-12T10:53:43-08:00'
+        modified_at:
+          type: string
+          format: date-time
+          description: The time this membership was last modified.
+          example: '2012-12-12T10:53:43-08:00'
     GroupMemberships:
       title: Group memberships
       type: object
@@ -525,6 +598,73 @@ components:
             description: A list of group memberships
             items:
               $ref: '#/components/schemas/GroupMembership'
+    ClientError:
+      title: Client error
+      type: object
+      x-box-resource-id: client_error
+      description: A generic error
+      properties:
+        type:
+          description: error
+          example: error
+          type: string
+          enum:
+          - error
+        status:
+          description: The HTTP status of the response.
+          example: 400
+          type: integer
+          format: int32
+        code:
+          description: A Box-specific error code
+          example: item_name_invalid
+          type: string
+          enum:
+          - created
+          - accepted
+          - no_content
+          - redirect
+          - not_modified
+          - bad_request
+          - unauthorized
+          - forbidden
+          - not_found
+          - method_not_allowed
+          - conflict
+          - precondition_failed
+          - too_many_requests
+          - internal_server_error
+          - unavailable
+          - item_name_invalid
+          - insufficient_scope
+        message:
+          description: A short message describing the error.
+          example: Method Not Allowed
+          type: string
+        context_info:
+          description: 'A free-form object that contains additional context
+
+            about the error. The possible fields are defined on
+
+            a per-endpoint basis. `message` is only one example.'
+          type:
+          - object
+          - 'null'
+          properties:
+            message:
+              type: string
+              description: More details on the error.
+              example: Something went wrong.
+        help_url:
+          description: A URL that links to more information about why this error occurred.
+          example: https://developer.box.com/guides/api-calls/permissions-and-errors/common-errors/
+          type: string
+        request_id:
+          description: 'A unique identifier for this response, which can be used
+
+            when contacting Box support.'
+          type: string
+          example: abcdef123456
     Group--Base:
       title: Group (Base)
       type: object
@@ -552,6 +692,27 @@ components:
           example: group
           enum:
           - group
+    User--Mini:
+      title: User (Mini)
+      type: object
+      x-box-resource-id: user--mini
+      x-box-variant: mini
+      description: 'A mini representation of a user, as can be returned when nested within other
+
+        resources.'
+      allOf:
+      - $ref: '#/components/schemas/User--Base'
+      - properties:
+          name:
+            type: string
+            description: The display name of this user
+            example: Aaron Levie
+            maxLength: 50
+          login:
+            type: string
+            format: email
+            description: The primary email address of this user
+            example: ceo@example.com
     User--Base:
       title: User (Base)
       type: object
@@ -578,7 +739,6 @@ components:
           type: string
           description: '`user`'
           example: user
-          nullable: false
           enum:
           - user
     Group--Mini:
@@ -603,74 +763,7 @@ components:
             enum:
             - managed_group
             - all_users_group
-    User--Mini:
-      title: User (Mini)
-      type: object
-      x-box-resource-id: user--mini
-      x-box-variant: mini
-      description: 'A mini representation of a user, as can be returned when nested within other
-
-        resources.'
-      allOf:
-      - $ref: '#/components/schemas/User--Base'
-      - properties:
-          name:
-            type: string
-            description: The display name of this user
-            example: Aaron Levie
-            maxLength: 50
-            nullable: false
-          login:
-            type: string
-            format: email
-            description: The primary email address of this user
-            example: ceo@example.com
-            nullable: false
-    GroupMembership:
-      title: Group membership
-      type: object
-      x-box-resource-id: group_membership
-      x-box-tag: memberships
-      description: 'Membership is used to signify that a user is part of a
-
-        group.'
-      properties:
-        id:
-          type: string
-          description: The unique identifier for this group membership
-          example: '11446498'
-        type:
-          type: string
-          description: '`group_membership`'
-          example: group_membership
-          enum:
-          - group_membership
-        user:
-          allOf:
-          - $ref: '#/components/schemas/User--Mini'
-          - description: The user that the membership applies to
-        group:
-          allOf:
-          - $ref: '#/components/schemas/Group--Mini'
-          - description: The group that the membership applies to
-        role:
-          type: string
-          example: member
-          description: The role of the user in the group.
-          enum:
-          - member
-          - admin
-        created_at:
-          type: string
-          format: date-time
-          description: The time this membership was created.
-          example: '2012-12-12T10:53:43-08:00'
-        modified_at:
-          type: string
-          format: date-time
-          description: The time this membership was last modified.
-          example: '2012-12-12T10:53:43-08:00'
-    ClientError:
+    ClientError_2:
       title: Client error
       type: object
       x-box-resource-id: client_error
@@ -741,3 +834,26 @@ components:
           type: string
           example: abcdef123456
           nullable: false
+  securitySchemes:
+    OAuth2Security:
+      type: oauth2
+      flows:
+        authorizationCode:
+          authorizationUrl: https://account.box.com/api/oauth2/authorize
+          tokenUrl: https://api.box.com/oauth2/token
+          scopes:
+            root_readonly: Read all files and folders stored in Box
+            root_readwrite: Read and write all files and folders stored in Box
+            manage_app_users: Provision and manage app users
+            manage_managed_users: Provision and manage managed users
+            manage_groups: Manage an enterprise's groups
+            manage_webhook: Create webhooks programmatically through the API
+            manage_enterprise_properties: Manage enterprise properties
+            manage_data_retention: Manage data retention polices
+            manage_legal_hold: Manage Legal Holds
+externalDocs:
+  description: Box Developer Documentation
+  url: https://developer.box.com
+x-refined-from:
+- box-openapi-original.yml
+- group-memberships-openapi-original.yml

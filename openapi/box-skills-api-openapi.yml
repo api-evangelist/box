@@ -1,8 +1,22 @@
-openapi: 3.1.0
+openapi: 3.2.0
 info:
-  version: "1.0"
-  title: Box Authorize Authorization Skills API
-  description: Needs a description.
+  title: Box Platform Skills API
+  description: '[Box Platform](https://box.dev) provides functionality to provide access to content stored within [Box](https://box.com). It provides endpoints for basic manipulation of files and folders, management of users within an enterprise, as well as more complex topics such as legal holds and retention policies.'
+  termsOfService: https://cloud.app.box.com/s/rmwxu64h1ipr41u49w3bbuvbsa29wku9
+  contact:
+    name: Box, Inc
+    url: https://box.dev
+    email: devrel@box.com
+  license:
+    name: Apache-2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0
+  version: 2.0.0
+  x-box-commit-hash: '5819125043'
+servers:
+- url: https://api.box.com/2.0
+  description: Box Platform API server
+security:
+- OAuth2Security: []
 tags:
 - name: Skills
   description: 'Box Skills are designed to allow custom processing
@@ -446,137 +460,6 @@ paths:
                 $ref: '#/components/schemas/ClientError'
 components:
   schemas:
-    TranscriptSkillCard:
-      type: object
-      x-box-resource-id: transcript_skill_card
-      x-box-tag: skills
-      title: Transcript Skill Card
-      description: A Box Skill metadata card that adds a transcript to a file.
-      required:
-      - type
-      - skill_card_type
-      - skill
-      - invocation
-      - entries
-      properties:
-        created_at:
-          type: string
-          format: date-time
-          example: '2018-04-13T13:53:23-07:00'
-          description: The optional date and time this card was created at.
-        type:
-          type: string
-          description: '`skill_card`'
-          example: skill_card
-          enum:
-          - skill_card
-        skill_card_type:
-          type: string
-          description: '`transcript`'
-          example: transcript
-          enum:
-          - transcript
-        skill_card_title:
-          type: object
-          description: The title of the card.
-          required:
-          - message
-          properties:
-            code:
-              type: string
-              example: my_transcripts
-              description: An optional identifier for the title.
-            message:
-              type: string
-              example: My Transcripts
-              description: The actual title to show in the UI.
-        skill:
-          type: object
-          description: The service that applied this metadata.
-          required:
-          - type
-          - id
-          properties:
-            type:
-              type: string
-              example: service
-              description: '`service`'
-              enum:
-              - service
-            id:
-              type: string
-              example: transciption-service
-              description: 'A custom identifier that represent the service that
-
-                applied this metadata.'
-        invocation:
-          type: object
-          description: 'The invocation of this service, used to track
-
-            which instance of a service applied the metadata.'
-          required:
-          - type
-          - id
-          properties:
-            type:
-              type: string
-              example: skill_invocation
-              description: '`skill_invocation`'
-              enum:
-              - skill_invocation
-            id:
-              type: string
-              example: transciption-service-123
-              description: 'A custom identifier that represent the instance of
-
-                the service that applied this metadata. For example,
-
-                if your `image-recognition-service` runs on multiple
-
-                nodes, this field can be used to identify the ID of
-
-                the node that was used to apply the metadata.'
-        duration:
-          type: integer
-          example: 1000
-          description: 'An optional total duration in seconds.
-
-
-            Used with a `skill_card_type` of `transcript` or
-
-            `timeline`.'
-        entries:
-          type: array
-          description: 'An list of entries for the card. This represents the individual entries of
-
-            the transcription.'
-          items:
-            type: object
-            description: An entry in the `entries` attribute of a metadata card
-            properties:
-              text:
-                type: string
-                example: Hi, and welcome to this video...
-                description: 'The text of the entry. This would be the transcribed text assigned
-
-                  to the entry on the timeline.'
-              appears:
-                type: array
-                description: 'Defines when a transcribed bit of text appears. This only includes a
-
-                  start time and no end time.'
-                required:
-                - start
-                items:
-                  type: object
-                  description: The timestamp for an entry.
-                  properties:
-                    start:
-                      type: integer
-                      example: 1
-                      description: 'The time in seconds when an
-
-                        entry should start appearing on a timeline.'
     TimelineSkillCard:
       type: object
       x-box-resource-id: timeline_skill_card
@@ -727,64 +610,6 @@ components:
 
                   appears during the duration of this entry.'
                 example: https://example.com/image1.jpg
-    SkillCardsMetadata:
-      title: Skills metadata instance
-      type: object
-      x-box-resource-id: skill_cards_metadata
-      x-box-tag: skills
-      description: The metadata assigned to a using for Box skills.
-      properties:
-        $canEdit:
-          type: boolean
-          example: true
-          description: Whether the user can edit this metadata
-        $id:
-          type: string
-          format: uuid
-          example: 01234500-12f1-1234-aa12-b1d234cb567e
-          maxLength: 36
-          description: A UUID to identify the metadata object
-        $parent:
-          type: string
-          example: folder_59449484661,
-          description: An ID for the parent folder
-        $scope:
-          type: string
-          example: enterprise_27335
-          description: 'An ID for the scope in which this template
-
-            has been applied'
-        $template:
-          type: string
-          example: properties
-          description: The name of the template
-        $type:
-          type: string
-          example: properties-6bcba49f-ca6d-4d2a-a758-57fe6edf44d0
-          description: 'A unique identifier for the "type" of this instance. This is an internal
-
-            system property and should not be used by a client application.'
-        $typeVersion:
-          type: integer
-          example: 2
-          description: 'The last-known version of the template of the object. This is an internal
-
-            system property and should not be used by a client application.'
-        $version:
-          type: integer
-          example: 1
-          description: 'The version of the metadata object. Starts at 0 and increases every time
-
-            a user-defined property is modified.'
-        cards:
-          type: array
-          description: A list of Box Skill cards that have been applied to this file.
-          items:
-            oneOf:
-            - $ref: '#/components/schemas/KeywordSkillCard'
-            - $ref: '#/components/schemas/TimelineSkillCard'
-            - $ref: '#/components/schemas/TranscriptSkillCard'
-            - $ref: '#/components/schemas/StatusSkillCard'
     KeywordSkillCard:
       type: object
       x-box-resource-id: keyword_skill_card
@@ -886,6 +711,131 @@ components:
                 type: string
                 example: keyword1
                 description: The text of the keyword.
+    SkillCardsMetadata:
+      title: Skills metadata instance
+      type: object
+      x-box-resource-id: skill_cards_metadata
+      x-box-tag: skills
+      description: The metadata assigned to a using for Box skills.
+      properties:
+        $canEdit:
+          type: boolean
+          example: true
+          description: Whether the user can edit this metadata
+        $id:
+          type: string
+          format: uuid
+          example: 01234500-12f1-1234-aa12-b1d234cb567e
+          maxLength: 36
+          description: A UUID to identify the metadata object
+        $parent:
+          type: string
+          example: folder_59449484661,
+          description: An ID for the parent folder
+        $scope:
+          type: string
+          example: enterprise_27335
+          description: 'An ID for the scope in which this template
+
+            has been applied'
+        $template:
+          type: string
+          example: properties
+          description: The name of the template
+        $type:
+          type: string
+          example: properties-6bcba49f-ca6d-4d2a-a758-57fe6edf44d0
+          description: 'A unique identifier for the "type" of this instance. This is an internal
+
+            system property and should not be used by a client application.'
+        $typeVersion:
+          type: integer
+          example: 2
+          description: 'The last-known version of the template of the object. This is an internal
+
+            system property and should not be used by a client application.'
+        $version:
+          type: integer
+          example: 1
+          description: 'The version of the metadata object. Starts at 0 and increases every time
+
+            a user-defined property is modified.'
+        cards:
+          type: array
+          description: A list of Box Skill cards that have been applied to this file.
+          items:
+            oneOf:
+            - $ref: '#/components/schemas/KeywordSkillCard'
+            - $ref: '#/components/schemas/TimelineSkillCard'
+            - $ref: '#/components/schemas/TranscriptSkillCard'
+            - $ref: '#/components/schemas/StatusSkillCard'
+    ClientError:
+      title: Client error
+      type: object
+      x-box-resource-id: client_error
+      description: A generic error
+      properties:
+        type:
+          description: error
+          example: error
+          type: string
+          enum:
+          - error
+        status:
+          description: The HTTP status of the response.
+          example: 400
+          type: integer
+          format: int32
+        code:
+          description: A Box-specific error code
+          example: item_name_invalid
+          type: string
+          enum:
+          - created
+          - accepted
+          - no_content
+          - redirect
+          - not_modified
+          - bad_request
+          - unauthorized
+          - forbidden
+          - not_found
+          - method_not_allowed
+          - conflict
+          - precondition_failed
+          - too_many_requests
+          - internal_server_error
+          - unavailable
+          - item_name_invalid
+          - insufficient_scope
+        message:
+          description: A short message describing the error.
+          example: Method Not Allowed
+          type: string
+        context_info:
+          description: 'A free-form object that contains additional context
+
+            about the error. The possible fields are defined on
+
+            a per-endpoint basis. `message` is only one example.'
+          type:
+          - object
+          - 'null'
+          properties:
+            message:
+              type: string
+              description: More details on the error.
+              example: Something went wrong.
+        help_url:
+          description: A URL that links to more information about why this error occurred.
+          example: https://developer.box.com/guides/api-calls/permissions-and-errors/common-errors/
+          type: string
+        request_id:
+          description: 'A unique identifier for this response, which can be used
+
+            when contacting Box support.'
+          type: string
+          example: abcdef123456
     StatusSkillCard:
       type: object
       x-box-resource-id: status_skill_card
@@ -1004,74 +954,154 @@ components:
                 nodes, this field can be used to identify the ID of
 
                 the node that was used to apply the metadata.'
-    ClientError:
-      title: Client error
+    TranscriptSkillCard:
       type: object
-      x-box-resource-id: client_error
-      description: A generic error
+      x-box-resource-id: transcript_skill_card
+      x-box-tag: skills
+      title: Transcript Skill Card
+      description: A Box Skill metadata card that adds a transcript to a file.
+      required:
+      - type
+      - skill_card_type
+      - skill
+      - invocation
+      - entries
       properties:
+        created_at:
+          type: string
+          format: date-time
+          example: '2018-04-13T13:53:23-07:00'
+          description: The optional date and time this card was created at.
         type:
-          description: error
-          example: error
           type: string
+          description: '`skill_card`'
+          example: skill_card
           enum:
-          - error
-          nullable: false
-        status:
-          description: The HTTP status of the response.
-          example: 400
-          type: integer
-          format: int32
-          nullable: false
-        code:
-          description: A Box-specific error code
-          example: item_name_invalid
+          - skill_card
+        skill_card_type:
           type: string
+          description: '`transcript`'
+          example: transcript
           enum:
-          - created
-          - accepted
-          - no_content
-          - redirect
-          - not_modified
-          - bad_request
-          - unauthorized
-          - forbidden
-          - not_found
-          - method_not_allowed
-          - conflict
-          - precondition_failed
-          - too_many_requests
-          - internal_server_error
-          - unavailable
-          - item_name_invalid
-          - insufficient_scope
-        message:
-          description: A short message describing the error.
-          example: Method Not Allowed
-          type: string
-          nullable: false
-        context_info:
-          description: 'A free-form object that contains additional context
-
-            about the error. The possible fields are defined on
-
-            a per-endpoint basis. `message` is only one example.'
+          - transcript
+        skill_card_title:
           type: object
-          nullable: true
+          description: The title of the card.
+          required:
+          - message
           properties:
+            code:
+              type: string
+              example: my_transcripts
+              description: An optional identifier for the title.
             message:
               type: string
-              description: More details on the error.
-              example: Something went wrong.
-        help_url:
-          description: A URL that links to more information about why this error occurred.
-          example: https://developer.box.com/guides/api-calls/permissions-and-errors/common-errors/
-          type: string
-          nullable: false
-        request_id:
-          description: 'A unique identifier for this response, which can be used
+              example: My Transcripts
+              description: The actual title to show in the UI.
+        skill:
+          type: object
+          description: The service that applied this metadata.
+          required:
+          - type
+          - id
+          properties:
+            type:
+              type: string
+              example: service
+              description: '`service`'
+              enum:
+              - service
+            id:
+              type: string
+              example: transciption-service
+              description: 'A custom identifier that represent the service that
 
-            when contacting Box support.'
-          type: string
-          example: abcdef123456
-          nullable: false
+                applied this metadata.'
+        invocation:
+          type: object
+          description: 'The invocation of this service, used to track
+
+            which instance of a service applied the metadata.'
+          required:
+          - type
+          - id
+          properties:
+            type:
+              type: string
+              example: skill_invocation
+              description: '`skill_invocation`'
+              enum:
+              - skill_invocation
+            id:
+              type: string
+              example: transciption-service-123
+              description: 'A custom identifier that represent the instance of
+
+                the service that applied this metadata. For example,
+
+                if your `image-recognition-service` runs on multiple
+
+                nodes, this field can be used to identify the ID of
+
+                the node that was used to apply the metadata.'
+        duration:
+          type: integer
+          example: 1000
+          description: 'An optional total duration in seconds.
+
+
+            Used with a `skill_card_type` of `transcript` or
+
+            `timeline`.'
+        entries:
+          type: array
+          description: 'An list of entries for the card. This represents the individual entries of
+
+            the transcription.'
+          items:
+            type: object
+            description: An entry in the `entries` attribute of a metadata card
+            properties:
+              text:
+                type: string
+                example: Hi, and welcome to this video...
+                description: 'The text of the entry. This would be the transcribed text assigned
+
+                  to the entry on the timeline.'
+              appears:
+                type: array
+                description: 'Defines when a transcribed bit of text appears. This only includes a
+
+                  start time and no end time.'
+                required:
+                - start
+                items:
+                  type: object
+                  description: The timestamp for an entry.
+                  properties:
+                    start:
+                      type: integer
+                      example: 1
+                      description: 'The time in seconds when an
+
+                        entry should start appearing on a timeline.'
+  securitySchemes:
+    OAuth2Security:
+      type: oauth2
+      flows:
+        authorizationCode:
+          authorizationUrl: https://account.box.com/api/oauth2/authorize
+          tokenUrl: https://api.box.com/oauth2/token
+          scopes:
+            root_readonly: Read all files and folders stored in Box
+            root_readwrite: Read and write all files and folders stored in Box
+            manage_app_users: Provision and manage app users
+            manage_managed_users: Provision and manage managed users
+            manage_groups: Manage an enterprise's groups
+            manage_webhook: Create webhooks programmatically through the API
+            manage_enterprise_properties: Manage enterprise properties
+            manage_data_retention: Manage data retention polices
+            manage_legal_hold: Manage Legal Holds
+externalDocs:
+  description: Box Developer Documentation
+  url: https://developer.box.com

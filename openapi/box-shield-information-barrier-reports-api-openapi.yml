@@ -1,8 +1,13 @@
-openapi: 3.1.0
+openapi: 3.2.0
 info:
-  version: "1.0"
-  title: Box Authorize Authorization Shield Information Barrier Reports API
-  description: Needs a description.
+  title: Box Shield Information Barrier Reports API
+  x-refined-note:
+  - x-box-commit-hash differs across the merged source definitions and was not carried
+  version: '1.0'
+  description: 'Operations tagged Shield Information Barrier Reports across 2 of this provider''s published API definitions: box-openapi-original.yml, shield-information-barrier-reports-openapi-original.yml. Each path carries the servers of the definition it was published in.'
+servers:
+- url: https://api.box.com/2.0
+  description: Box Platform API server
 tags:
 - name: Shield Information Barrier Reports
   description: 'Shield information barrier reports
@@ -68,6 +73,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ClientError'
+      security:
+      - OAuth2Security: []
     post:
       operationId: post_shield_information_barrier_reports
       summary: Box Create shield information barrier report
@@ -109,6 +116,11 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ClientError'
+      security:
+      - OAuth2Security: []
+    servers:
+    - url: https://api.box.com/2.0
+      description: Box Platform API server
   /shield_information_barrier_reports/{shield_information_barrier_report_id}:
     get:
       operationId: get_shield_information_barrier_reports_id
@@ -146,6 +158,11 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ClientError'
+      security:
+      - OAuth2Security: []
+    servers:
+    - url: https://api.box.com/2.0
+      description: Box Platform API server
 components:
   schemas:
     ShieldInformationBarrierReportDetails:
@@ -187,6 +204,73 @@ components:
           example: shield_information_barrier_report
           enum:
           - shield_information_barrier_report
+    ClientError:
+      title: Client error
+      type: object
+      x-box-resource-id: client_error
+      description: A generic error
+      properties:
+        type:
+          description: error
+          example: error
+          type: string
+          enum:
+          - error
+        status:
+          description: The HTTP status of the response.
+          example: 400
+          type: integer
+          format: int32
+        code:
+          description: A Box-specific error code
+          example: item_name_invalid
+          type: string
+          enum:
+          - created
+          - accepted
+          - no_content
+          - redirect
+          - not_modified
+          - bad_request
+          - unauthorized
+          - forbidden
+          - not_found
+          - method_not_allowed
+          - conflict
+          - precondition_failed
+          - too_many_requests
+          - internal_server_error
+          - unavailable
+          - item_name_invalid
+          - insufficient_scope
+        message:
+          description: A short message describing the error.
+          example: Method Not Allowed
+          type: string
+        context_info:
+          description: 'A free-form object that contains additional context
+
+            about the error. The possible fields are defined on
+
+            a per-endpoint basis. `message` is only one example.'
+          type:
+          - object
+          - 'null'
+          properties:
+            message:
+              type: string
+              description: More details on the error.
+              example: Something went wrong.
+        help_url:
+          description: A URL that links to more information about why this error occurred.
+          example: https://developer.box.com/guides/api-calls/permissions-and-errors/common-errors/
+          type: string
+        request_id:
+          description: 'A unique identifier for this response, which can be used
+
+            when contacting Box support.'
+          type: string
+          example: abcdef123456
     ShieldInformationBarrierReport:
       title: Shield information barrier report
       type: object
@@ -282,8 +366,9 @@ components:
           next_marker:
             description: The marker for the start of the next page of results.
             example: JV9IRGZmieiBasejOG9yDCRNgd2ymoZIbjsxbJMjIs3kioVii
-            type: string
-            nullable: true
+            type:
+            - string
+            - 'null'
       - properties:
           entries:
             type: array
@@ -318,7 +403,6 @@ components:
           type: string
           description: '`user`'
           example: user
-          nullable: false
           enum:
           - user
     ShieldInformationBarrierReference:
@@ -330,7 +414,7 @@ components:
       properties:
         shield_information_barrier:
           $ref: '#/components/schemas/ShieldInformationBarrier--Base'
-    ClientError:
+    ClientError_2:
       title: Client error
       type: object
       x-box-resource-id: client_error
@@ -401,3 +485,60 @@ components:
           type: string
           example: abcdef123456
           nullable: false
+    ShieldInformationBarrierReports_2:
+      title: List of Shield Information Barrier Reports
+      type: object
+      x-box-resource-id: shield_information_barrier_reports
+      x-box-tag: shield_information_barrier_reports
+      description: A list of shield barrier reports.
+      allOf:
+      - type: object
+        description: 'The part of an API response that describes marker
+
+          based pagination'
+        properties:
+          limit:
+            description: 'The limit that was used for these entries. This will be the same as the
+
+              `limit` query parameter unless that value exceeded the maximum value
+
+              allowed. The maximum value varies by API.'
+            example: 1000
+            type: integer
+            format: int64
+          next_marker:
+            description: The marker for the start of the next page of results.
+            example: JV9IRGZmieiBasejOG9yDCRNgd2ymoZIbjsxbJMjIs3kioVii
+            type: string
+            nullable: true
+      - properties:
+          entries:
+            type: array
+            description: 'A list of shield information
+
+              barrier reports.'
+            items:
+              $ref: '#/components/schemas/ShieldInformationBarrierReport'
+  securitySchemes:
+    OAuth2Security:
+      type: oauth2
+      flows:
+        authorizationCode:
+          authorizationUrl: https://account.box.com/api/oauth2/authorize
+          tokenUrl: https://api.box.com/oauth2/token
+          scopes:
+            root_readonly: Read all files and folders stored in Box
+            root_readwrite: Read and write all files and folders stored in Box
+            manage_app_users: Provision and manage app users
+            manage_managed_users: Provision and manage managed users
+            manage_groups: Manage an enterprise's groups
+            manage_webhook: Create webhooks programmatically through the API
+            manage_enterprise_properties: Manage enterprise properties
+            manage_data_retention: Manage data retention polices
+            manage_legal_hold: Manage Legal Holds
+externalDocs:
+  description: Box Developer Documentation
+  url: https://developer.box.com
+x-refined-from:
+- box-openapi-original.yml
+- shield-information-barrier-reports-openapi-original.yml
