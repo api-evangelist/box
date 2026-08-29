@@ -1,0 +1,77 @@
+slug: box
+provider: Box
+generated_by: planning/capability-mapping/scripts/classify_capabilities.py
+model: claude-opus-5
+frame:
+- Software & Technology
+min_confidence: 0.7
+capability_model:
+  source: https://github.com/vincentmakes/turbo-ea-capabilities
+  license: CC-BY-4.0
+  attribution: Turbo EA Capabilities by Vincent Verdet — Turbo EA, https://github.com/vincentmakes/turbo-ea-capabilities,
+    CC BY 4.0
+  notice: NOTICE
+edge_count: 6
+edges:
+- tag: Group Memberships
+  spec_file: box-group-memberships-api-openapi.yml
+  capability_id: BC-620.20
+  capability_id_l1: BC-620
+  capability_name: Identity & Access Management
+  confidence: 0.8
+  evidence: POST /group_memberships  Box Add user to group; DELETE /group_memberships/{group_membership_id}  Box
+    Remove user from group
+  reason: Managing which users belong to which access groups is access administration — Identity & Access
+    Management.
+- tag: Groups
+  spec_file: box-groups-api-openapi.yml
+  capability_id: BC-620.20
+  capability_id_l1: BC-620
+  capability_name: Identity & Access Management
+  confidence: 0.8
+  evidence: GET /groups  Box List groups for enterprise; POST /groups/terminate_sessions  Box Create jobs
+    to terminate user group session
+  reason: Group definition, group collaborations and session termination are access-control administration
+    constructs — Identity & Access Management.
+- tag: Legal Hold Policies
+  spec_file: box-legal-hold-policies-api-openapi.yml
+  capability_id: BC-150.20
+  capability_id_l1: BC-150
+  capability_name: Litigation & Dispute Management
+  confidence: 0.75
+  evidence: POST /legal_hold_policies  Box Create legal hold policy; GET /legal_hold_policies  Box List
+    all legal hold policies
+  reason: Legal holds preserve content for litigation/e-discovery, a litigation and dispute management
+    practice. Some ambiguity with records/compliance policy management, hence 0.75.
+- tag: Legal Hold Policy Assignments
+  spec_file: box-legal-hold-policy-assignments-api-openapi.yml
+  capability_id: BC-150.20
+  capability_id_l1: BC-150
+  capability_name: Litigation & Dispute Management
+  confidence: 0.75
+  evidence: POST /legal_hold_policy_assignments  Box Assign legal hold policy; GET .../files_on_hold  Box
+    List current file versions for legal hold policy assignment
+  reason: Applying legal holds to specific files/folders for preservation supports litigation and e-discovery
+    obligations.
+- tag: Metadata Templates
+  spec_file: box-metadata-templates-api-openapi.yml
+  capability_id: BC-610.10
+  capability_id_l1: BC-610
+  capability_name: Data Governance Management
+  confidence: 0.7
+  evidence: POST /metadata_templates/schema  Box Create metadata template; GET /metadata_templates/enterprise/securityClassification.../schema  Box
+    List all classifications
+  reason: Defining enterprise metadata schemas and security classification taxonomies is data governance
+    — standards and classification policy for information assets.
+- tag: Users
+  spec_file: box-users-api-openapi.yml
+  capability_id: BC-620.20
+  capability_id_l1: BC-620
+  capability_name: Identity & Access Management
+  confidence: 0.7
+  evidence: '''Box List enterprise users'', ''Box Create user'', ''Box Delete user'', ''Box Create jobs
+    to terminate users session'''
+  reason: Administration of enterprise user accounts including creation, update, deletion, session termination
+    and email aliases — account lifecycle / joiners-movers-leavers administration, which is Identity &
+    Access Management. Confidence tempered because the surface is a content platform's user directory
+    rather than a dedicated IAM product.
