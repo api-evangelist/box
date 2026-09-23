@@ -1,7 +1,7 @@
 openapi: 3.2.0
 info:
   title: Box Platform Standard and Zones Storage Policies API
-  description: '[Box Platform](https://box.dev) provides functionality to provide access to content stored within [Box](https://box.com). It provides endpoints for basic manipulation of files and folders, management of users within an enterprise, as well as more complex topics such as legal holds and retention policies.'
+  description: Box Platform provides functionality to provide access to content stored within Box. It provides endpoints for basic manipulation of files and folders, management of users within an enterprise, as well as more complex topics such as legal holds and retention policies.
   termsOfService: https://cloud.app.box.com/s/rmwxu64h1ipr41u49w3bbuvbsa29wku9
   contact:
     name: Box, Inc
@@ -126,6 +126,82 @@ paths:
                 $ref: '#/components/schemas/ClientError'
 components:
   schemas:
+    StoragePolicy--Mini:
+      title: Storage policy (Mini)
+      type: object
+      x-box-resource-id: storage_policy--mini
+      x-box-tag: storage_policies
+      x-box-variants:
+      - standard
+      - mini
+      x-box-variant: mini
+      description: A mini description of a Storage Policy object
+      required:
+      - id
+      - type
+      properties:
+        id:
+          type: string
+          description: The unique identifier for this storage policy
+          example: '11446498'
+        type:
+          type: string
+          description: '`storage_policy`'
+          example: storage_policy
+          enum:
+          - storage_policy
+    StoragePolicies:
+      title: Storage policies
+      type: object
+      x-box-resource-id: storage_policies
+      x-box-tag: storage_policies
+      description: A list of storage policies.
+      allOf:
+      - type: object
+        description: 'The part of an API response that describes marker
+
+          based pagination'
+        properties:
+          limit:
+            description: 'The limit that was used for these entries. This will be the same as the
+
+              `limit` query parameter unless that value exceeded the maximum value
+
+              allowed. The maximum value varies by API.'
+            example: 1000
+            type: integer
+            format: int64
+          next_marker:
+            description: The marker for the start of the next page of results.
+            example: JV9IRGZmieiBasejOG9yDCRNgd2ymoZIbjsxbJMjIs3kioVii
+            type:
+            - string
+            - 'null'
+          prev_marker:
+            description: The marker for the start of the previous page of results.
+            example: JV9IRGZmieiBasejOG9yDCRNgd2ymoZIbjsxbJMjIs3kioVih
+            type:
+            - string
+            - 'null'
+      - properties:
+          entries:
+            type: array
+            description: A list of storage policies
+            items:
+              $ref: '#/components/schemas/StoragePolicy'
+    StoragePolicy:
+      title: Storage policy
+      type: object
+      x-box-resource-id: storage_policy
+      x-box-variant: standard
+      description: The Storage Policy object describes the storage zone.
+      allOf:
+      - $ref: '#/components/schemas/StoragePolicy--Mini'
+      - properties:
+          name:
+            description: A descriptive name of the region
+            type: string
+            example: Montreal / Dublin
     ClientError:
       title: Client error
       type: object
@@ -193,82 +269,6 @@ components:
             when contacting Box support.'
           type: string
           example: abcdef123456
-    StoragePolicy--Mini:
-      title: Storage policy (Mini)
-      type: object
-      x-box-resource-id: storage_policy--mini
-      x-box-tag: storage_policies
-      x-box-variants:
-      - standard
-      - mini
-      x-box-variant: mini
-      description: A mini description of a Storage Policy object
-      required:
-      - id
-      - type
-      properties:
-        id:
-          type: string
-          description: The unique identifier for this storage policy
-          example: '11446498'
-        type:
-          type: string
-          description: '`storage_policy`'
-          example: storage_policy
-          enum:
-          - storage_policy
-    StoragePolicy:
-      title: Storage policy
-      type: object
-      x-box-resource-id: storage_policy
-      x-box-variant: standard
-      description: The Storage Policy object describes the storage zone.
-      allOf:
-      - $ref: '#/components/schemas/StoragePolicy--Mini'
-      - properties:
-          name:
-            description: A descriptive name of the region
-            type: string
-            example: Montreal / Dublin
-    StoragePolicies:
-      title: Storage policies
-      type: object
-      x-box-resource-id: storage_policies
-      x-box-tag: storage_policies
-      description: A list of storage policies.
-      allOf:
-      - type: object
-        description: 'The part of an API response that describes marker
-
-          based pagination'
-        properties:
-          limit:
-            description: 'The limit that was used for these entries. This will be the same as the
-
-              `limit` query parameter unless that value exceeded the maximum value
-
-              allowed. The maximum value varies by API.'
-            example: 1000
-            type: integer
-            format: int64
-          next_marker:
-            description: The marker for the start of the next page of results.
-            example: JV9IRGZmieiBasejOG9yDCRNgd2ymoZIbjsxbJMjIs3kioVii
-            type:
-            - string
-            - 'null'
-          prev_marker:
-            description: The marker for the start of the previous page of results.
-            example: JV9IRGZmieiBasejOG9yDCRNgd2ymoZIbjsxbJMjIs3kioVih
-            type:
-            - string
-            - 'null'
-      - properties:
-          entries:
-            type: array
-            description: A list of storage policies
-            items:
-              $ref: '#/components/schemas/StoragePolicy'
   securitySchemes:
     OAuth2Security:
       type: oauth2

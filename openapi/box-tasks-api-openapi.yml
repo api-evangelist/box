@@ -1,13 +1,22 @@
 openapi: 3.2.0
 info:
-  title: Box Tasks API
-  x-refined-note:
-  - x-box-commit-hash differs across the merged source definitions and was not carried
-  version: '1.0'
-  description: 'Operations tagged Tasks across 2 of this provider''s published API definitions: box-openapi-original.yml, tasks-openapi-original.yml. Each path carries the servers of the definition it was published in.'
+  title: Box Platform Tasks API
+  description: Box Platform provides functionality to provide access to content stored within Box. It provides endpoints for basic manipulation of files and folders, management of users within an enterprise, as well as more complex topics such as legal holds and retention policies.
+  termsOfService: https://cloud.app.box.com/s/rmwxu64h1ipr41u49w3bbuvbsa29wku9
+  contact:
+    name: Box, Inc
+    url: https://box.dev
+    email: devrel@box.com
+  license:
+    name: Apache-2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0
+  version: 2.0.0
+  x-box-commit-hash: '5819125043'
 servers:
 - url: https://api.box.com/2.0
   description: Box Platform API server
+security:
+- OAuth2Security: []
 tags:
 - name: Tasks
   description: 'Tasks allow users to request collaborators on a file
@@ -87,11 +96,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ClientError'
-      security:
-      - OAuth2Security: []
-    servers:
-    - url: https://api.box.com/2.0
-      description: Box Platform API server
   /tasks:
     post:
       operationId: post_tasks
@@ -213,11 +217,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ClientError'
-      security:
-      - OAuth2Security: []
-    servers:
-    - url: https://api.box.com/2.0
-      description: Box Platform API server
   /tasks/{task_id}:
     get:
       operationId: get_tasks_id
@@ -256,8 +255,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ClientError'
-      security:
-      - OAuth2Security: []
     put:
       operationId: put_tasks_id
       tags:
@@ -365,8 +362,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ClientError'
-      security:
-      - OAuth2Security: []
     delete:
       operationId: delete_tasks_id
       tags:
@@ -400,59 +395,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ClientError'
-      security:
-      - OAuth2Security: []
-    servers:
-    - url: https://api.box.com/2.0
-      description: Box Platform API server
-  /tasks/{task_id}/assignments:
-    get:
-      operationId: get_tasks_id_assignments
-      summary: Box List task assignments
-      tags:
-      - Tasks
-      x-box-tag: task_assignments
-      x-box-sanitized: true
-      description: Lists all of the assignments for a given task.
-      parameters:
-      - name: task_id
-        description: The ID of the task.
-        example: '12345'
-        in: path
-        required: true
-        schema:
-          type: string
-      responses:
-        '200':
-          description: 'Returns a collection of task assignment defining what task on
-
-            a file has been assigned to which users and by who.'
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/TaskAssignments'
-        '404':
-          description: 'Returns an error when the task could not be found or the user does not
-
-            have access to the file the task is assigned to.'
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ClientError_2'
-        '500':
-          description: 'Returns an error if the task assignment ID was omitted in
-
-            the request.'
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ClientError_2'
-        default:
-          description: An unexpected client error.
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ClientError_2'
 components:
   schemas:
     TaskAssignments:
@@ -472,6 +414,102 @@ components:
           description: A list of task assignments
           items:
             $ref: '#/components/schemas/TaskAssignment'
+    User--Mini:
+      title: User (Mini)
+      type: object
+      x-box-resource-id: user--mini
+      x-box-variant: mini
+      description: 'A mini representation of a user, as can be returned when nested within other
+
+        resources.'
+      allOf:
+      - $ref: '#/components/schemas/User--Base'
+      - properties:
+          name:
+            type: string
+            description: The display name of this user
+            example: Aaron Levie
+            maxLength: 50
+          login:
+            type: string
+            format: email
+            description: The primary email address of this user
+            example: ceo@example.com
+    File--Base:
+      title: File (Base)
+      type:
+      - object
+      - 'null'
+      x-box-resource-id: file--base
+      x-box-sanitized: true
+      x-box-tag: files
+      x-box-variants:
+      - base
+      - mini
+      - standard
+      - full
+      x-box-variant: base
+      description: 'The bare basic representation of a file, the minimal
+
+        amount of fields returned when using the `fields` query
+
+        parameter.'
+      required:
+      - id
+      - type
+      properties:
+        id:
+          type: string
+          description: 'The unique identifier that represent a file.
+
+
+            The ID for any file can be determined
+
+            by visiting a file in the web application
+
+            and copying the ID from the URL. For example,
+
+            for the URL `https://*.app.box.com/files/123`
+
+            the `file_id` is `123`.'
+          example: '12345'
+        etag:
+          type:
+          - string
+          - 'null'
+          example: '1'
+          description: 'The HTTP `etag` of this file. This can be used within some API
+
+            endpoints in the `If-Match` and `If-None-Match` headers to only
+
+            perform changes on the file if (no) changes have happened.'
+        type:
+          type: string
+          description: '`file`'
+          example: file
+          enum:
+          - file
+    Tasks:
+      title: Tasks
+      type: object
+      x-box-resource-id: tasks
+      x-box-tag: tasks
+      description: A list of tasks
+      properties:
+        total_count:
+          description: 'One greater than the offset of the last entry in the entire collection.
+
+            The total number of entries in the collection may be less than
+
+            `total_count`.'
+          example: 5000
+          type: integer
+          format: int64
+        entries:
+          type: array
+          description: A list of tasks
+          items:
+            $ref: '#/components/schemas/Task'
     Task:
       title: Task
       type: object
@@ -619,27 +657,6 @@ components:
             when contacting Box support.'
           type: string
           example: abcdef123456
-    User--Mini:
-      title: User (Mini)
-      type: object
-      x-box-resource-id: user--mini
-      x-box-variant: mini
-      description: 'A mini representation of a user, as can be returned when nested within other
-
-        resources.'
-      allOf:
-      - $ref: '#/components/schemas/User--Base'
-      - properties:
-          name:
-            type: string
-            description: The display name of this user
-            example: Aaron Levie
-            maxLength: 50
-          login:
-            type: string
-            format: email
-            description: The primary email address of this user
-            example: ceo@example.com
     FileVersion--Mini:
       title: File version (Mini)
       type: object
@@ -655,85 +672,6 @@ components:
             type: string
             description: The SHA1 hash of this version of the file.
             example: 134b65991ed521fcfe4724b7d814ab8ded5185dc
-    File--Mini:
-      title: File (Mini)
-      type:
-      - object
-      - 'null'
-      x-box-resource-id: file--mini
-      x-box-variant: mini
-      description: 'A mini representation of a file, used when
-
-        nested under another resource.'
-      allOf:
-      - $ref: '#/components/schemas/File--Base'
-      - properties:
-          sequence_id:
-            allOf:
-            - type:
-              - string
-              - 'null'
-              example: '3'
-              description: 'A numeric identifier that represents the most recent user event
-
-                that has been applied to this item.
-
-
-                This can be used in combination with the `GET /events`-endpoint
-
-                to filter out user events that would have occurred before this
-
-                identifier was read.
-
-
-                An example would be where a Box Drive-like application
-
-                would fetch an item via the API, and then listen to incoming
-
-                user events for changes to the item. The application would
-
-                ignore any user events where the `sequence_id` in the event
-
-                is smaller than or equal to the `sequence_id` in the originally
-
-                fetched resource.'
-            - {}
-          name:
-            type: string
-            description: The name of the file
-            example: Contract.pdf
-          sha1:
-            type: string
-            format: digest
-            example: 85136C79CBF9FE36BB9D05D0639C70C265C18D37
-            description: 'The SHA1 hash of the file. This can be used to compare the contents
-
-              of a file on Box with a local file.'
-          file_version:
-            allOf:
-            - $ref: '#/components/schemas/FileVersion--Mini'
-            - description: The information about the current version of the file.
-    Tasks:
-      title: Tasks
-      type: object
-      x-box-resource-id: tasks
-      x-box-tag: tasks
-      description: A list of tasks
-      properties:
-        total_count:
-          description: 'One greater than the offset of the last entry in the entire collection.
-
-            The total number of entries in the collection may be less than
-
-            `total_count`.'
-          example: 5000
-          type: integer
-          format: int64
-        entries:
-          type: array
-          description: A list of tasks
-          items:
-            $ref: '#/components/schemas/Task'
     FileVersion--Base:
       title: File version (Base)
       type: object
@@ -831,6 +769,64 @@ components:
           allOf:
           - $ref: '#/components/schemas/User--Mini'
           - description: The user who assigned this task.
+    File--Mini:
+      title: File (Mini)
+      type:
+      - object
+      - 'null'
+      x-box-resource-id: file--mini
+      x-box-variant: mini
+      description: 'A mini representation of a file, used when
+
+        nested under another resource.'
+      allOf:
+      - $ref: '#/components/schemas/File--Base'
+      - properties:
+          sequence_id:
+            allOf:
+            - type:
+              - string
+              - 'null'
+              example: '3'
+              description: 'A numeric identifier that represents the most recent user event
+
+                that has been applied to this item.
+
+
+                This can be used in combination with the `GET /events`-endpoint
+
+                to filter out user events that would have occurred before this
+
+                identifier was read.
+
+
+                An example would be where a Box Drive-like application
+
+                would fetch an item via the API, and then listen to incoming
+
+                user events for changes to the item. The application would
+
+                ignore any user events where the `sequence_id` in the event
+
+                is smaller than or equal to the `sequence_id` in the originally
+
+                fetched resource.'
+            - {}
+          name:
+            type: string
+            description: The name of the file
+            example: Contract.pdf
+          sha1:
+            type: string
+            format: digest
+            example: 85136C79CBF9FE36BB9D05D0639C70C265C18D37
+            description: 'The SHA1 hash of the file. This can be used to compare the contents
+
+              of a file on Box with a local file.'
+          file_version:
+            allOf:
+            - $ref: '#/components/schemas/FileVersion--Mini'
+            - description: The information about the current version of the file.
     User--Base:
       title: User (Base)
       type: object
@@ -859,131 +855,6 @@ components:
           example: user
           enum:
           - user
-    File--Base:
-      title: File (Base)
-      type:
-      - object
-      - 'null'
-      x-box-resource-id: file--base
-      x-box-sanitized: true
-      x-box-tag: files
-      x-box-variants:
-      - base
-      - mini
-      - standard
-      - full
-      x-box-variant: base
-      description: 'The bare basic representation of a file, the minimal
-
-        amount of fields returned when using the `fields` query
-
-        parameter.'
-      required:
-      - id
-      - type
-      properties:
-        id:
-          type: string
-          description: 'The unique identifier that represent a file.
-
-
-            The ID for any file can be determined
-
-            by visiting a file in the web application
-
-            and copying the ID from the URL. For example,
-
-            for the URL `https://*.app.box.com/files/123`
-
-            the `file_id` is `123`.'
-          example: '12345'
-        etag:
-          type:
-          - string
-          - 'null'
-          example: '1'
-          description: 'The HTTP `etag` of this file. This can be used within some API
-
-            endpoints in the `If-Match` and `If-None-Match` headers to only
-
-            perform changes on the file if (no) changes have happened.'
-        type:
-          type: string
-          description: '`file`'
-          example: file
-          enum:
-          - file
-    ClientError_2:
-      title: Client error
-      type: object
-      x-box-resource-id: client_error
-      description: A generic error
-      properties:
-        type:
-          description: error
-          example: error
-          type: string
-          enum:
-          - error
-          nullable: false
-        status:
-          description: The HTTP status of the response.
-          example: 400
-          type: integer
-          format: int32
-          nullable: false
-        code:
-          description: A Box-specific error code
-          example: item_name_invalid
-          type: string
-          enum:
-          - created
-          - accepted
-          - no_content
-          - redirect
-          - not_modified
-          - bad_request
-          - unauthorized
-          - forbidden
-          - not_found
-          - method_not_allowed
-          - conflict
-          - precondition_failed
-          - too_many_requests
-          - internal_server_error
-          - unavailable
-          - item_name_invalid
-          - insufficient_scope
-        message:
-          description: A short message describing the error.
-          example: Method Not Allowed
-          type: string
-          nullable: false
-        context_info:
-          description: 'A free-form object that contains additional context
-
-            about the error. The possible fields are defined on
-
-            a per-endpoint basis. `message` is only one example.'
-          type: object
-          nullable: true
-          properties:
-            message:
-              type: string
-              description: More details on the error.
-              example: Something went wrong.
-        help_url:
-          description: A URL that links to more information about why this error occurred.
-          example: https://developer.box.com/guides/api-calls/permissions-and-errors/common-errors/
-          type: string
-          nullable: false
-        request_id:
-          description: 'A unique identifier for this response, which can be used
-
-            when contacting Box support.'
-          type: string
-          example: abcdef123456
-          nullable: false
   securitySchemes:
     OAuth2Security:
       type: oauth2
@@ -1004,6 +875,3 @@ components:
 externalDocs:
   description: Box Developer Documentation
   url: https://developer.box.com
-x-refined-from:
-- box-openapi-original.yml
-- tasks-openapi-original.yml

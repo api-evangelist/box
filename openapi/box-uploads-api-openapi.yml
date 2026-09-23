@@ -1,7 +1,7 @@
 openapi: 3.2.0
 info:
   title: Box Platform Uploads API
-  description: '[Box Platform](https://box.dev) provides functionality to provide access to content stored within [Box](https://box.com). It provides endpoints for basic manipulation of files and folders, management of users within an enterprise, as well as more complex topics such as legal holds and retention policies.'
+  description: Box Platform provides functionality to provide access to content stored within Box. It provides endpoints for basic manipulation of files and folders, management of users within an enterprise, as well as more complex topics such as legal holds and retention policies.
   termsOfService: https://cloud.app.box.com/s/rmwxu64h1ipr41u49w3bbuvbsa29wku9
   contact:
     name: Box, Inc
@@ -335,23 +335,260 @@ paths:
                 $ref: '#/components/schemas/ClientError'
 components:
   schemas:
-    Files:
-      title: Files
+    Metadata:
+      title: Metadata instance
       type: object
-      x-box-resource-id: files
+      x-box-resource-id: metadata
+      x-box-tag: file_metadata
+      x-box-variant: standard
+      description: 'An instance of a metadata template, which has been applied to a file or
+
+        folder.'
+      allOf:
+      - $ref: '#/components/schemas/Metadata--Base'
+    User--Mini:
+      title: User (Mini)
+      type: object
+      x-box-resource-id: user--mini
+      x-box-variant: mini
+      description: 'A mini representation of a user, as can be returned when nested within other
+
+        resources.'
+      allOf:
+      - $ref: '#/components/schemas/User--Base'
+      - properties:
+          name:
+            type: string
+            description: The display name of this user
+            example: Aaron Levie
+            maxLength: 50
+          login:
+            type: string
+            format: email
+            description: The primary email address of this user
+            example: ceo@example.com
+    File--Base:
+      title: File (Base)
+      type:
+      - object
+      - 'null'
+      x-box-resource-id: file--base
+      x-box-sanitized: true
       x-box-tag: files
-      description: A list of files
+      x-box-variants:
+      - base
+      - mini
+      - standard
+      - full
+      x-box-variant: base
+      description: 'The bare basic representation of a file, the minimal
+
+        amount of fields returned when using the `fields` query
+
+        parameter.'
+      required:
+      - id
+      - type
       properties:
-        total_count:
-          description: The number of files.
-          example: 1
+        id:
+          type: string
+          description: 'The unique identifier that represent a file.
+
+
+            The ID for any file can be determined
+
+            by visiting a file in the web application
+
+            and copying the ID from the URL. For example,
+
+            for the URL `https://*.app.box.com/files/123`
+
+            the `file_id` is `123`.'
+          example: '12345'
+        etag:
+          type:
+          - string
+          - 'null'
+          example: '1'
+          description: 'The HTTP `etag` of this file. This can be used within some API
+
+            endpoints in the `If-Match` and `If-None-Match` headers to only
+
+            perform changes on the file if (no) changes have happened.'
+        type:
+          type: string
+          description: '`file`'
+          example: file
+          enum:
+          - file
+    ClientError:
+      title: Client error
+      type: object
+      x-box-resource-id: client_error
+      description: A generic error
+      properties:
+        type:
+          description: error
+          example: error
+          type: string
+          enum:
+          - error
+        status:
+          description: The HTTP status of the response.
+          example: 400
           type: integer
-          format: int64
-        entries:
-          type: array
-          description: A list of files
-          items:
-            $ref: '#/components/schemas/File--Full'
+          format: int32
+        code:
+          description: A Box-specific error code
+          example: item_name_invalid
+          type: string
+          enum:
+          - created
+          - accepted
+          - no_content
+          - redirect
+          - not_modified
+          - bad_request
+          - unauthorized
+          - forbidden
+          - not_found
+          - method_not_allowed
+          - conflict
+          - precondition_failed
+          - too_many_requests
+          - internal_server_error
+          - unavailable
+          - item_name_invalid
+          - insufficient_scope
+        message:
+          description: A short message describing the error.
+          example: Method Not Allowed
+          type: string
+        context_info:
+          description: 'A free-form object that contains additional context
+
+            about the error. The possible fields are defined on
+
+            a per-endpoint basis. `message` is only one example.'
+          type:
+          - object
+          - 'null'
+          properties:
+            message:
+              type: string
+              description: More details on the error.
+              example: Something went wrong.
+        help_url:
+          description: A URL that links to more information about why this error occurred.
+          example: https://developer.box.com/guides/api-calls/permissions-and-errors/common-errors/
+          type: string
+        request_id:
+          description: 'A unique identifier for this response, which can be used
+
+            when contacting Box support.'
+          type: string
+          example: abcdef123456
+    Folder--Mini:
+      title: Folder (Mini)
+      type: object
+      x-box-resource-id: folder--mini
+      x-box-variant: mini
+      description: 'A mini representation of a file version, used when
+
+        nested under another resource.'
+      allOf:
+      - $ref: '#/components/schemas/Folder--Base'
+      - properties:
+          sequence_id:
+            allOf:
+            - type:
+              - string
+              - 'null'
+              example: '3'
+              description: 'A numeric identifier that represents the most recent user event
+
+                that has been applied to this item.
+
+
+                This can be used in combination with the `GET /events`-endpoint
+
+                to filter out user events that would have occurred before this
+
+                identifier was read.
+
+
+                An example would be where a Box Drive-like application
+
+                would fetch an item via the API, and then listen to incoming
+
+                user events for changes to the item. The application would
+
+                ignore any user events where the `sequence_id` in the event
+
+                is smaller than or equal to the `sequence_id` in the originally
+
+                fetched resource.'
+            - {}
+          name:
+            type: string
+            description: The name of the folder.
+            example: Contracts
+    FileVersion--Mini:
+      title: File version (Mini)
+      type: object
+      x-box-resource-id: file_version--mini
+      x-box-variant: mini
+      description: 'A mini representation of a file version, used when
+
+        nested within another resource.'
+      allOf:
+      - $ref: '#/components/schemas/FileVersion--Base'
+      - properties:
+          sha1:
+            type: string
+            description: The SHA1 hash of this version of the file.
+            example: 134b65991ed521fcfe4724b7d814ab8ded5185dc
+    Metadata--Base:
+      title: Metadata instance (Base)
+      type: object
+      x-box-resource-id: metadata--base
+      x-box-sanitized: true
+      x-box-tag: file_metadata
+      x-box-variants:
+      - base
+      - standard
+      - full
+      x-box-variant: base
+      description: The base representation of a metadata instance.
+      properties:
+        $parent:
+          type: string
+          example: folder_59449484661,
+          description: 'The identifier of the item that this metadata instance
+
+            has been attached to. This combines the `type` and the `id`
+
+            of the parent in the form `{type}_{id}`.'
+        $template:
+          type: string
+          example: marketingCollateral
+          description: The name of the template
+        $scope:
+          type: string
+          example: enterprise_27335
+          description: 'An ID for the scope in which this template
+
+            has been applied. This will be `enterprise_{enterprise_id}` for templates
+
+            defined for use in this enterprise, and `global` for general templates
+
+            that are available to all enterprises using Box.'
+        $version:
+          type: integer
+          example: 1
+          description: 'The version of the metadata instance. This version starts at 0 and
+
+            increases every time a user-defined property is modified.'
     File--Full:
       title: File (Full)
       type: object
@@ -889,109 +1126,64 @@ components:
               - can_preview
               - can_download
               - can_edit
-    ClientError:
-      title: Client error
+    FileVersion--Base:
+      title: File version (Base)
       type: object
-      x-box-resource-id: client_error
-      description: A generic error
+      x-box-resource-id: file_version--base
+      x-box-sanitized: true
+      x-box-variants:
+      - base
+      - mini
+      - standard
+      - full
+      x-box-variant: base
+      description: 'The bare basic representation of a file version, the minimal
+
+        amount of fields returned when using the `fields` query
+
+        parameter.'
+      required:
+      - id
+      - type
       properties:
+        id:
+          type: string
+          description: The unique identifier that represent a file version.
+          example: '12345'
         type:
-          description: error
-          example: error
           type: string
+          description: '`file_version`'
+          example: file_version
           enum:
-          - error
-        status:
-          description: The HTTP status of the response.
-          example: 400
-          type: integer
-          format: int32
-        code:
-          description: A Box-specific error code
-          example: item_name_invalid
+          - file_version
+    FileOrFolderScope:
+      title: File or folder scope
+      type: object
+      description: A relation between a resource (file or folder) and the scopes for which the resource can be accessed
+      properties:
+        scope:
           type: string
+          description: The scopes for the resource access
+          example: item_download
           enum:
-          - created
-          - accepted
-          - no_content
-          - redirect
-          - not_modified
-          - bad_request
-          - unauthorized
-          - forbidden
-          - not_found
-          - method_not_allowed
-          - conflict
-          - precondition_failed
-          - too_many_requests
-          - internal_server_error
-          - unavailable
-          - item_name_invalid
-          - insufficient_scope
-        message:
-          description: A short message describing the error.
-          example: Method Not Allowed
-          type: string
-        context_info:
-          description: 'A free-form object that contains additional context
-
-            about the error. The possible fields are defined on
-
-            a per-endpoint basis. `message` is only one example.'
-          type:
-          - object
-          - 'null'
-          properties:
-            message:
-              type: string
-              description: More details on the error.
-              example: Something went wrong.
-        help_url:
-          description: A URL that links to more information about why this error occurred.
-          example: https://developer.box.com/guides/api-calls/permissions-and-errors/common-errors/
-          type: string
-        request_id:
-          description: 'A unique identifier for this response, which can be used
-
-            when contacting Box support.'
-          type: string
-          example: abcdef123456
-    User--Mini:
-      title: User (Mini)
-      type: object
-      x-box-resource-id: user--mini
-      x-box-variant: mini
-      description: 'A mini representation of a user, as can be returned when nested within other
-
-        resources.'
-      allOf:
-      - $ref: '#/components/schemas/User--Base'
-      - properties:
-          name:
-            type: string
-            description: The display name of this user
-            example: Aaron Levie
-            maxLength: 50
-          login:
-            type: string
-            format: email
-            description: The primary email address of this user
-            example: ceo@example.com
-    FileVersion--Mini:
-      title: File version (Mini)
-      type: object
-      x-box-resource-id: file_version--mini
-      x-box-variant: mini
-      description: 'A mini representation of a file version, used when
-
-        nested within another resource.'
-      allOf:
-      - $ref: '#/components/schemas/FileVersion--Base'
-      - properties:
-          sha1:
-            type: string
-            description: The SHA1 hash of this version of the file.
-            example: 134b65991ed521fcfe4724b7d814ab8ded5185dc
+          - annotation_edit
+          - annotation_view_all
+          - annotation_view_self
+          - base_explorer
+          - base_picker
+          - base_preview
+          - base_upload
+          - item_delete
+          - item_download
+          - item_preview
+          - item_rename
+          - item_share
+        object:
+          allOf:
+          - oneOf:
+            - $ref: '#/components/schemas/Folder--Mini'
+            - $ref: '#/components/schemas/File--Mini'
+          - description: The file or folder resource
     File:
       title: File
       type: object
@@ -1343,133 +1535,6 @@ components:
             allOf:
             - $ref: '#/components/schemas/FileVersion--Mini'
             - description: The information about the current version of the file.
-    Folder--Mini:
-      title: Folder (Mini)
-      type: object
-      x-box-resource-id: folder--mini
-      x-box-variant: mini
-      description: 'A mini representation of a file version, used when
-
-        nested under another resource.'
-      allOf:
-      - $ref: '#/components/schemas/Folder--Base'
-      - properties:
-          sequence_id:
-            allOf:
-            - type:
-              - string
-              - 'null'
-              example: '3'
-              description: 'A numeric identifier that represents the most recent user event
-
-                that has been applied to this item.
-
-
-                This can be used in combination with the `GET /events`-endpoint
-
-                to filter out user events that would have occurred before this
-
-                identifier was read.
-
-
-                An example would be where a Box Drive-like application
-
-                would fetch an item via the API, and then listen to incoming
-
-                user events for changes to the item. The application would
-
-                ignore any user events where the `sequence_id` in the event
-
-                is smaller than or equal to the `sequence_id` in the originally
-
-                fetched resource.'
-            - {}
-          name:
-            type: string
-            description: The name of the folder.
-            example: Contracts
-    Metadata--Base:
-      title: Metadata instance (Base)
-      type: object
-      x-box-resource-id: metadata--base
-      x-box-sanitized: true
-      x-box-tag: file_metadata
-      x-box-variants:
-      - base
-      - standard
-      - full
-      x-box-variant: base
-      description: The base representation of a metadata instance.
-      properties:
-        $parent:
-          type: string
-          example: folder_59449484661,
-          description: 'The identifier of the item that this metadata instance
-
-            has been attached to. This combines the `type` and the `id`
-
-            of the parent in the form `{type}_{id}`.'
-        $template:
-          type: string
-          example: marketingCollateral
-          description: The name of the template
-        $scope:
-          type: string
-          example: enterprise_27335
-          description: 'An ID for the scope in which this template
-
-            has been applied. This will be `enterprise_{enterprise_id}` for templates
-
-            defined for use in this enterprise, and `global` for general templates
-
-            that are available to all enterprises using Box.'
-        $version:
-          type: integer
-          example: 1
-          description: 'The version of the metadata instance. This version starts at 0 and
-
-            increases every time a user-defined property is modified.'
-    FileVersion--Base:
-      title: File version (Base)
-      type: object
-      x-box-resource-id: file_version--base
-      x-box-sanitized: true
-      x-box-variants:
-      - base
-      - mini
-      - standard
-      - full
-      x-box-variant: base
-      description: 'The bare basic representation of a file version, the minimal
-
-        amount of fields returned when using the `fields` query
-
-        parameter.'
-      required:
-      - id
-      - type
-      properties:
-        id:
-          type: string
-          description: The unique identifier that represent a file version.
-          example: '12345'
-        type:
-          type: string
-          description: '`file_version`'
-          example: file_version
-          enum:
-          - file_version
-    Metadata:
-      title: Metadata instance
-      type: object
-      x-box-resource-id: metadata
-      x-box-tag: file_metadata
-      x-box-variant: standard
-      description: 'An instance of a metadata template, which has been applied to a file or
-
-        folder.'
-      allOf:
-      - $ref: '#/components/schemas/Metadata--Base'
     User--Base:
       title: User (Base)
       type: object
@@ -1498,88 +1563,6 @@ components:
           example: user
           enum:
           - user
-    File--Base:
-      title: File (Base)
-      type:
-      - object
-      - 'null'
-      x-box-resource-id: file--base
-      x-box-sanitized: true
-      x-box-tag: files
-      x-box-variants:
-      - base
-      - mini
-      - standard
-      - full
-      x-box-variant: base
-      description: 'The bare basic representation of a file, the minimal
-
-        amount of fields returned when using the `fields` query
-
-        parameter.'
-      required:
-      - id
-      - type
-      properties:
-        id:
-          type: string
-          description: 'The unique identifier that represent a file.
-
-
-            The ID for any file can be determined
-
-            by visiting a file in the web application
-
-            and copying the ID from the URL. For example,
-
-            for the URL `https://*.app.box.com/files/123`
-
-            the `file_id` is `123`.'
-          example: '12345'
-        etag:
-          type:
-          - string
-          - 'null'
-          example: '1'
-          description: 'The HTTP `etag` of this file. This can be used within some API
-
-            endpoints in the `If-Match` and `If-None-Match` headers to only
-
-            perform changes on the file if (no) changes have happened.'
-        type:
-          type: string
-          description: '`file`'
-          example: file
-          enum:
-          - file
-    FileOrFolderScope:
-      title: File or folder scope
-      type: object
-      description: A relation between a resource (file or folder) and the scopes for which the resource can be accessed
-      properties:
-        scope:
-          type: string
-          description: The scopes for the resource access
-          example: item_download
-          enum:
-          - annotation_edit
-          - annotation_view_all
-          - annotation_view_self
-          - base_explorer
-          - base_picker
-          - base_preview
-          - base_upload
-          - item_delete
-          - item_download
-          - item_preview
-          - item_rename
-          - item_share
-        object:
-          allOf:
-          - oneOf:
-            - $ref: '#/components/schemas/Folder--Mini'
-            - $ref: '#/components/schemas/File--Mini'
-          - description: The file or folder resource
     Folder--Base:
       title: Folder (Base)
       type: object
@@ -1632,6 +1615,23 @@ components:
           example: folder
           enum:
           - folder
+    Files:
+      title: Files
+      type: object
+      x-box-resource-id: files
+      x-box-tag: files
+      description: A list of files
+      properties:
+        total_count:
+          description: The number of files.
+          example: 1
+          type: integer
+          format: int64
+        entries:
+          type: array
+          description: A list of files
+          items:
+            $ref: '#/components/schemas/File--Full'
   securitySchemes:
     OAuth2Security:
       type: oauth2

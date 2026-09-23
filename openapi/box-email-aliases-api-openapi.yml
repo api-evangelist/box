@@ -1,7 +1,7 @@
 openapi: 3.2.0
 info:
   title: Box Platform Email Aliases API
-  description: '[Box Platform](https://box.dev) provides functionality to provide access to content stored within [Box](https://box.com). It provides endpoints for basic manipulation of files and folders, management of users within an enterprise, as well as more complex topics such as legal holds and retention policies.'
+  description: Box Platform provides functionality to provide access to content stored within Box. It provides endpoints for basic manipulation of files and folders, management of users within an enterprise, as well as more complex topics such as legal holds and retention policies.
   termsOfService: https://cloud.app.box.com/s/rmwxu64h1ipr41u49w3bbuvbsa29wku9
   contact:
     name: Box, Inc
@@ -129,6 +129,31 @@ paths:
                 $ref: '#/components/schemas/ClientError'
 components:
   schemas:
+    EmailAlias:
+      title: Email alias
+      type: object
+      x-box-resource-id: email_alias
+      x-box-tag: email_aliases
+      description: An email alias for a user.
+      properties:
+        id:
+          type: string
+          description: The unique identifier for this object
+          example: '11446498'
+        type:
+          type: string
+          description: '`email_alias`'
+          example: email_alias
+          enum:
+          - email_alias
+        email:
+          type: string
+          description: The email address
+          example: alias@example.com
+        is_confirmed:
+          type: boolean
+          description: Whether the email address has been confirmed
+          example: true
     ClientError:
       title: Client error
       type: object
@@ -213,31 +238,6 @@ components:
           description: A list of email aliases
           items:
             $ref: '#/components/schemas/EmailAlias'
-    EmailAlias:
-      title: Email alias
-      type: object
-      x-box-resource-id: email_alias
-      x-box-tag: email_aliases
-      description: An email alias for a user.
-      properties:
-        id:
-          type: string
-          description: The unique identifier for this object
-          example: '11446498'
-        type:
-          type: string
-          description: '`email_alias`'
-          example: email_alias
-          enum:
-          - email_alias
-        email:
-          type: string
-          description: The email address
-          example: alias@example.com
-        is_confirmed:
-          type: boolean
-          description: Whether the email address has been confirmed
-          example: true
   securitySchemes:
     OAuth2Security:
       type: oauth2

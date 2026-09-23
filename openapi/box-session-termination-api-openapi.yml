@@ -1,7 +1,7 @@
 openapi: 3.2.0
 info:
   title: Box Platform Session Termination API
-  description: '[Box Platform](https://box.dev) provides functionality to provide access to content stored within [Box](https://box.com). It provides endpoints for basic manipulation of files and folders, management of users within an enterprise, as well as more complex topics such as legal holds and retention policies.'
+  description: Box Platform provides functionality to provide access to content stored within Box. It provides endpoints for basic manipulation of files and folders, management of users within an enterprise, as well as more complex topics such as legal holds and retention policies.
   termsOfService: https://cloud.app.box.com/s/rmwxu64h1ipr41u49w3bbuvbsa29wku9
   contact:
     name: Box, Inc
@@ -208,6 +208,21 @@ paths:
                 $ref: '#/components/schemas/ClientError'
 components:
   schemas:
+    SessionTerminationMessage:
+      title: Session termination message
+      type: object
+      x-box-resource-id: session_termination
+      x-box-tag: session_termination
+      description: 'A message informing about the
+
+        termination job status'
+      properties:
+        message:
+          type: string
+          description: The unique identifier for the termination job status
+          example: 'Request is successful, please check the admin
+
+            events for the status of the job'
     ClientError:
       title: Client error
       type: object
@@ -275,21 +290,6 @@ components:
             when contacting Box support.'
           type: string
           example: abcdef123456
-    SessionTerminationMessage:
-      title: Session termination message
-      type: object
-      x-box-resource-id: session_termination
-      x-box-tag: session_termination
-      description: 'A message informing about the
-
-        termination job status'
-      properties:
-        message:
-          type: string
-          description: The unique identifier for the termination job status
-          example: 'Request is successful, please check the admin
-
-            events for the status of the job'
   securitySchemes:
     OAuth2Security:
       type: oauth2

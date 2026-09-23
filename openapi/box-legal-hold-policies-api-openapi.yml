@@ -1,13 +1,22 @@
 openapi: 3.2.0
 info:
-  title: Box Legal Hold Policies API
-  x-refined-note:
-  - x-box-commit-hash differs across the merged source definitions and was not carried
-  version: '1.0'
-  description: 'Operations tagged Legal Hold Policies across 2 of this provider''s published API definitions: box-openapi-original.yml, legal-hold-policies-openapi-original.yml. Each path carries the servers of the definition it was published in.'
+  title: Box Platform Legal Hold Policies API
+  description: Box Platform provides functionality to provide access to content stored within Box. It provides endpoints for basic manipulation of files and folders, management of users within an enterprise, as well as more complex topics such as legal holds and retention policies.
+  termsOfService: https://cloud.app.box.com/s/rmwxu64h1ipr41u49w3bbuvbsa29wku9
+  contact:
+    name: Box, Inc
+    url: https://box.dev
+    email: devrel@box.com
+  license:
+    name: Apache-2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0
+  version: 2.0.0
+  x-box-commit-hash: '5819125043'
 servers:
 - url: https://api.box.com/2.0
   description: Box Platform API server
+security:
+- OAuth2Security: []
 tags:
 - name: Legal Hold Policies
   description: 'A legal hold is a process that an enterprise
@@ -101,8 +110,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ClientError'
-      security:
-      - OAuth2Security: []
     post:
       operationId: post_legal_hold_policies
       summary: Box Create legal hold policy
@@ -218,11 +225,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ClientError'
-      security:
-      - OAuth2Security: []
-    servers:
-    - url: https://api.box.com/2.0
-      description: Box Platform API server
   /legal_hold_policies/{legal_hold_policy_id}:
     get:
       operationId: get_legal_hold_policies_id
@@ -252,8 +254,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ClientError'
-      security:
-      - OAuth2Security: []
     put:
       operationId: put_legal_hold_policies_id
       summary: Box Update legal hold policy
@@ -309,8 +309,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ClientError'
-      security:
-      - OAuth2Security: []
     delete:
       operationId: delete_legal_hold_policies_id
       x-box-tag: legal_hold_policies
@@ -342,13 +340,159 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ClientError'
-      security:
-      - OAuth2Security: []
-    servers:
-    - url: https://api.box.com/2.0
-      description: Box Platform API server
 components:
   schemas:
+    LegalHoldPolicies:
+      title: Legal hold policies
+      type: object
+      x-box-resource-id: legal_hold_policies
+      x-box-tag: legal_hold_policies
+      description: A list of legal hold policies.
+      allOf:
+      - type: object
+        description: 'The part of an API response that describes marker
+
+          based pagination'
+        properties:
+          limit:
+            description: 'The limit that was used for these entries. This will be the same as the
+
+              `limit` query parameter unless that value exceeded the maximum value
+
+              allowed. The maximum value varies by API.'
+            example: 1000
+            type: integer
+            format: int64
+          next_marker:
+            description: The marker for the start of the next page of results.
+            example: JV9IRGZmieiBasejOG9yDCRNgd2ymoZIbjsxbJMjIs3kioVii
+            type:
+            - string
+            - 'null'
+          prev_marker:
+            description: The marker for the start of the previous page of results.
+            example: JV9IRGZmieiBasejOG9yDCRNgd2ymoZIbjsxbJMjIs3kioVih
+            type:
+            - string
+            - 'null'
+      - properties:
+          entries:
+            type: array
+            description: A list of legal hold policies
+            items:
+              $ref: '#/components/schemas/LegalHoldPolicy'
+    User--Mini:
+      title: User (Mini)
+      type: object
+      x-box-resource-id: user--mini
+      x-box-variant: mini
+      description: 'A mini representation of a user, as can be returned when nested within other
+
+        resources.'
+      allOf:
+      - $ref: '#/components/schemas/User--Base'
+      - properties:
+          name:
+            type: string
+            description: The display name of this user
+            example: Aaron Levie
+            maxLength: 50
+          login:
+            type: string
+            format: email
+            description: The primary email address of this user
+            example: ceo@example.com
+    ClientError:
+      title: Client error
+      type: object
+      x-box-resource-id: client_error
+      description: A generic error
+      properties:
+        type:
+          description: error
+          example: error
+          type: string
+          enum:
+          - error
+        status:
+          description: The HTTP status of the response.
+          example: 400
+          type: integer
+          format: int32
+        code:
+          description: A Box-specific error code
+          example: item_name_invalid
+          type: string
+          enum:
+          - created
+          - accepted
+          - no_content
+          - redirect
+          - not_modified
+          - bad_request
+          - unauthorized
+          - forbidden
+          - not_found
+          - method_not_allowed
+          - conflict
+          - precondition_failed
+          - too_many_requests
+          - internal_server_error
+          - unavailable
+          - item_name_invalid
+          - insufficient_scope
+        message:
+          description: A short message describing the error.
+          example: Method Not Allowed
+          type: string
+        context_info:
+          description: 'A free-form object that contains additional context
+
+            about the error. The possible fields are defined on
+
+            a per-endpoint basis. `message` is only one example.'
+          type:
+          - object
+          - 'null'
+          properties:
+            message:
+              type: string
+              description: More details on the error.
+              example: Something went wrong.
+        help_url:
+          description: A URL that links to more information about why this error occurred.
+          example: https://developer.box.com/guides/api-calls/permissions-and-errors/common-errors/
+          type: string
+        request_id:
+          description: 'A unique identifier for this response, which can be used
+
+            when contacting Box support.'
+          type: string
+          example: abcdef123456
+    LegalHoldPolicy--Mini:
+      title: Legal hold policy (Mini)
+      type: object
+      x-box-resource-id: legal_hold_policy--mini
+      x-box-tag: legal_hold_policies
+      x-box-variants:
+      - mini
+      - standard
+      x-box-variant: mini
+      description: A mini legal hold policy
+      required:
+      - id
+      - type
+      properties:
+        id:
+          type: string
+          description: The unique identifier for this legal hold policy
+          example: '11446498'
+        type:
+          type: string
+          description: '`legal_hold_policy`'
+          example: legal_hold_policy
+          enum:
+          - legal_hold_policy
     LegalHoldPolicy:
       title: Legal hold policy
       type: object
@@ -454,133 +598,6 @@ components:
             example: Example
             description: Optional notes about why the policy was created.
             maxLength: 500
-    ClientError:
-      title: Client error
-      type: object
-      x-box-resource-id: client_error
-      description: A generic error
-      properties:
-        type:
-          description: error
-          example: error
-          type: string
-          enum:
-          - error
-        status:
-          description: The HTTP status of the response.
-          example: 400
-          type: integer
-          format: int32
-        code:
-          description: A Box-specific error code
-          example: item_name_invalid
-          type: string
-          enum:
-          - created
-          - accepted
-          - no_content
-          - redirect
-          - not_modified
-          - bad_request
-          - unauthorized
-          - forbidden
-          - not_found
-          - method_not_allowed
-          - conflict
-          - precondition_failed
-          - too_many_requests
-          - internal_server_error
-          - unavailable
-          - item_name_invalid
-          - insufficient_scope
-        message:
-          description: A short message describing the error.
-          example: Method Not Allowed
-          type: string
-        context_info:
-          description: 'A free-form object that contains additional context
-
-            about the error. The possible fields are defined on
-
-            a per-endpoint basis. `message` is only one example.'
-          type:
-          - object
-          - 'null'
-          properties:
-            message:
-              type: string
-              description: More details on the error.
-              example: Something went wrong.
-        help_url:
-          description: A URL that links to more information about why this error occurred.
-          example: https://developer.box.com/guides/api-calls/permissions-and-errors/common-errors/
-          type: string
-        request_id:
-          description: 'A unique identifier for this response, which can be used
-
-            when contacting Box support.'
-          type: string
-          example: abcdef123456
-    User--Mini:
-      title: User (Mini)
-      type: object
-      x-box-resource-id: user--mini
-      x-box-variant: mini
-      description: 'A mini representation of a user, as can be returned when nested within other
-
-        resources.'
-      allOf:
-      - $ref: '#/components/schemas/User--Base'
-      - properties:
-          name:
-            type: string
-            description: The display name of this user
-            example: Aaron Levie
-            maxLength: 50
-          login:
-            type: string
-            format: email
-            description: The primary email address of this user
-            example: ceo@example.com
-    LegalHoldPolicies:
-      title: Legal hold policies
-      type: object
-      x-box-resource-id: legal_hold_policies
-      x-box-tag: legal_hold_policies
-      description: A list of legal hold policies.
-      allOf:
-      - type: object
-        description: 'The part of an API response that describes marker
-
-          based pagination'
-        properties:
-          limit:
-            description: 'The limit that was used for these entries. This will be the same as the
-
-              `limit` query parameter unless that value exceeded the maximum value
-
-              allowed. The maximum value varies by API.'
-            example: 1000
-            type: integer
-            format: int64
-          next_marker:
-            description: The marker for the start of the next page of results.
-            example: JV9IRGZmieiBasejOG9yDCRNgd2ymoZIbjsxbJMjIs3kioVii
-            type:
-            - string
-            - 'null'
-          prev_marker:
-            description: The marker for the start of the previous page of results.
-            example: JV9IRGZmieiBasejOG9yDCRNgd2ymoZIbjsxbJMjIs3kioVih
-            type:
-            - string
-            - 'null'
-      - properties:
-          entries:
-            type: array
-            description: A list of legal hold policies
-            items:
-              $ref: '#/components/schemas/LegalHoldPolicy'
     User--Base:
       title: User (Base)
       type: object
@@ -609,138 +626,6 @@ components:
           example: user
           enum:
           - user
-    LegalHoldPolicy--Mini:
-      title: Legal hold policy (Mini)
-      type: object
-      x-box-resource-id: legal_hold_policy--mini
-      x-box-tag: legal_hold_policies
-      x-box-variants:
-      - mini
-      - standard
-      x-box-variant: mini
-      description: A mini legal hold policy
-      required:
-      - id
-      - type
-      properties:
-        id:
-          type: string
-          description: The unique identifier for this legal hold policy
-          example: '11446498'
-        type:
-          type: string
-          description: '`legal_hold_policy`'
-          example: legal_hold_policy
-          enum:
-          - legal_hold_policy
-    LegalHoldPolicies_2:
-      title: Legal hold policies
-      type: object
-      x-box-resource-id: legal_hold_policies
-      x-box-tag: legal_hold_policies
-      description: A list of legal hold policies.
-      allOf:
-      - type: object
-        description: 'The part of an API response that describes marker
-
-          based pagination'
-        properties:
-          limit:
-            description: 'The limit that was used for these entries. This will be the same as the
-
-              `limit` query parameter unless that value exceeded the maximum value
-
-              allowed. The maximum value varies by API.'
-            example: 1000
-            type: integer
-            format: int64
-          next_marker:
-            description: The marker for the start of the next page of results.
-            example: JV9IRGZmieiBasejOG9yDCRNgd2ymoZIbjsxbJMjIs3kioVii
-            type: string
-            nullable: true
-          prev_marker:
-            description: The marker for the start of the previous page of results.
-            example: JV9IRGZmieiBasejOG9yDCRNgd2ymoZIbjsxbJMjIs3kioVih
-            type: string
-            nullable: true
-      - properties:
-          entries:
-            type: array
-            description: A list of legal hold policies
-            items:
-              $ref: '#/components/schemas/LegalHoldPolicy'
-    ClientError_2:
-      title: Client error
-      type: object
-      x-box-resource-id: client_error
-      description: A generic error
-      properties:
-        type:
-          description: error
-          example: error
-          type: string
-          enum:
-          - error
-          nullable: false
-        status:
-          description: The HTTP status of the response.
-          example: 400
-          type: integer
-          format: int32
-          nullable: false
-        code:
-          description: A Box-specific error code
-          example: item_name_invalid
-          type: string
-          enum:
-          - created
-          - accepted
-          - no_content
-          - redirect
-          - not_modified
-          - bad_request
-          - unauthorized
-          - forbidden
-          - not_found
-          - method_not_allowed
-          - conflict
-          - precondition_failed
-          - too_many_requests
-          - internal_server_error
-          - unavailable
-          - item_name_invalid
-          - insufficient_scope
-        message:
-          description: A short message describing the error.
-          example: Method Not Allowed
-          type: string
-          nullable: false
-        context_info:
-          description: 'A free-form object that contains additional context
-
-            about the error. The possible fields are defined on
-
-            a per-endpoint basis. `message` is only one example.'
-          type: object
-          nullable: true
-          properties:
-            message:
-              type: string
-              description: More details on the error.
-              example: Something went wrong.
-        help_url:
-          description: A URL that links to more information about why this error occurred.
-          example: https://developer.box.com/guides/api-calls/permissions-and-errors/common-errors/
-          type: string
-          nullable: false
-        request_id:
-          description: 'A unique identifier for this response, which can be used
-
-            when contacting Box support.'
-          type: string
-          example: abcdef123456
-          nullable: false
   securitySchemes:
     OAuth2Security:
       type: oauth2
@@ -761,6 +646,3 @@ components:
 externalDocs:
   description: Box Developer Documentation
   url: https://developer.box.com
-x-refined-from:
-- box-openapi-original.yml
-- legal-hold-policies-openapi-original.yml

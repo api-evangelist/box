@@ -1,13 +1,22 @@
 openapi: 3.2.0
 info:
-  title: Box File Version Retentions API
-  x-refined-note:
-  - x-box-commit-hash differs across the merged source definitions and was not carried
-  version: '1.0'
-  description: 'Operations tagged File Version Retentions across 2 of this provider''s published API definitions: box-openapi-original.yml, file-version-retentions-openapi-original.yml. Each path carries the servers of the definition it was published in.'
+  title: Box Platform File Version Retentions API
+  description: Box Platform provides functionality to provide access to content stored within Box. It provides endpoints for basic manipulation of files and folders, management of users within an enterprise, as well as more complex topics such as legal holds and retention policies.
+  termsOfService: https://cloud.app.box.com/s/rmwxu64h1ipr41u49w3bbuvbsa29wku9
+  contact:
+    name: Box, Inc
+    url: https://box.dev
+    email: devrel@box.com
+  license:
+    name: Apache-2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0
+  version: 2.0.0
+  x-box-commit-hash: '5819125043'
 servers:
 - url: https://api.box.com/2.0
   description: Box Platform API server
+security:
+- OAuth2Security: []
 tags:
 - name: File Version Retentions
   description: 'A retention policy blocks permanent
@@ -111,11 +120,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ClientError'
-      security:
-      - OAuth2Security: []
-    servers:
-    - url: https://api.box.com/2.0
-      description: Box Platform API server
   /file_version_retentions/{file_version_retention_id}:
     get:
       operationId: get_file_version_retentions_id
@@ -145,308 +149,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ClientError'
-      security:
-      - OAuth2Security: []
-    servers:
-    - url: https://api.box.com/2.0
-      description: Box Platform API server
 components:
   schemas:
-    FileVersionRetentions:
-      title: File version retentions
-      type: object
-      x-box-resource-id: file_version_retentions
-      x-box-tag: file_version_retentions
-      description: A list of file version retentions.
-      allOf:
-      - type: object
-        description: 'The part of an API response that describes marker
-
-          based pagination'
-        properties:
-          limit:
-            description: 'The limit that was used for these entries. This will be the same as the
-
-              `limit` query parameter unless that value exceeded the maximum value
-
-              allowed. The maximum value varies by API.'
-            example: 1000
-            type: integer
-            format: int64
-          next_marker:
-            description: The marker for the start of the next page of results.
-            example: JV9IRGZmieiBasejOG9yDCRNgd2ymoZIbjsxbJMjIs3kioVii
-            type:
-            - string
-            - 'null'
-          prev_marker:
-            description: The marker for the start of the previous page of results.
-            example: JV9IRGZmieiBasejOG9yDCRNgd2ymoZIbjsxbJMjIs3kioVih
-            type:
-            - string
-            - 'null'
-      - properties:
-          entries:
-            type: array
-            description: A list of file version retentions
-            items:
-              $ref: '#/components/schemas/FileVersionRetention'
-    ClientError:
-      title: Client error
-      type: object
-      x-box-resource-id: client_error
-      description: A generic error
-      properties:
-        type:
-          description: error
-          example: error
-          type: string
-          enum:
-          - error
-        status:
-          description: The HTTP status of the response.
-          example: 400
-          type: integer
-          format: int32
-        code:
-          description: A Box-specific error code
-          example: item_name_invalid
-          type: string
-          enum:
-          - created
-          - accepted
-          - no_content
-          - redirect
-          - not_modified
-          - bad_request
-          - unauthorized
-          - forbidden
-          - not_found
-          - method_not_allowed
-          - conflict
-          - precondition_failed
-          - too_many_requests
-          - internal_server_error
-          - unavailable
-          - item_name_invalid
-          - insufficient_scope
-        message:
-          description: A short message describing the error.
-          example: Method Not Allowed
-          type: string
-        context_info:
-          description: 'A free-form object that contains additional context
-
-            about the error. The possible fields are defined on
-
-            a per-endpoint basis. `message` is only one example.'
-          type:
-          - object
-          - 'null'
-          properties:
-            message:
-              type: string
-              description: More details on the error.
-              example: Something went wrong.
-        help_url:
-          description: A URL that links to more information about why this error occurred.
-          example: https://developer.box.com/guides/api-calls/permissions-and-errors/common-errors/
-          type: string
-        request_id:
-          description: 'A unique identifier for this response, which can be used
-
-            when contacting Box support.'
-          type: string
-          example: abcdef123456
-    FileVersion--Mini:
-      title: File version (Mini)
-      type: object
-      x-box-resource-id: file_version--mini
-      x-box-variant: mini
-      description: 'A mini representation of a file version, used when
-
-        nested within another resource.'
-      allOf:
-      - $ref: '#/components/schemas/FileVersion--Base'
-      - properties:
-          sha1:
-            type: string
-            description: The SHA1 hash of this version of the file.
-            example: 134b65991ed521fcfe4724b7d814ab8ded5185dc
-    File--Mini:
-      title: File (Mini)
-      type:
-      - object
-      - 'null'
-      x-box-resource-id: file--mini
-      x-box-variant: mini
-      description: 'A mini representation of a file, used when
-
-        nested under another resource.'
-      allOf:
-      - $ref: '#/components/schemas/File--Base'
-      - properties:
-          sequence_id:
-            allOf:
-            - type:
-              - string
-              - 'null'
-              example: '3'
-              description: 'A numeric identifier that represents the most recent user event
-
-                that has been applied to this item.
-
-
-                This can be used in combination with the `GET /events`-endpoint
-
-                to filter out user events that would have occurred before this
-
-                identifier was read.
-
-
-                An example would be where a Box Drive-like application
-
-                would fetch an item via the API, and then listen to incoming
-
-                user events for changes to the item. The application would
-
-                ignore any user events where the `sequence_id` in the event
-
-                is smaller than or equal to the `sequence_id` in the originally
-
-                fetched resource.'
-            - {}
-          name:
-            type: string
-            description: The name of the file
-            example: Contract.pdf
-          sha1:
-            type: string
-            format: digest
-            example: 85136C79CBF9FE36BB9D05D0639C70C265C18D37
-            description: 'The SHA1 hash of the file. This can be used to compare the contents
-
-              of a file on Box with a local file.'
-          file_version:
-            allOf:
-            - $ref: '#/components/schemas/FileVersion--Mini'
-            - description: The information about the current version of the file.
-    FileVersion--Base:
-      title: File version (Base)
-      type: object
-      x-box-resource-id: file_version--base
-      x-box-sanitized: true
-      x-box-variants:
-      - base
-      - mini
-      - standard
-      - full
-      x-box-variant: base
-      description: 'The bare basic representation of a file version, the minimal
-
-        amount of fields returned when using the `fields` query
-
-        parameter.'
-      required:
-      - id
-      - type
-      properties:
-        id:
-          type: string
-          description: The unique identifier that represent a file version.
-          example: '12345'
-        type:
-          type: string
-          description: '`file_version`'
-          example: file_version
-          enum:
-          - file_version
-    FileVersionRetention:
-      title: File version retention
-      type: object
-      x-box-resource-id: file_version_retention
-      x-box-tag: file_version_retentions
-      description: 'A retention policy blocks permanent deletion of content
-
-        for a specified amount of time. Admins can apply policies to
-
-        specified folders, or an entire enterprise. A file version retention
-
-        is a  record for a retained file version. To use this feature,
-
-        you must  have the manage retention policies scope enabled for your
-
-        API key via  your application management console. For more information
-
-        about retention policies, please visit our help documentation'
-      properties:
-        id:
-          type: string
-          description: The unique identifier for this file version retention.
-          example: '11446498'
-        type:
-          type: string
-          description: '`file_version_retention`'
-          example: file_version_retention
-          enum:
-          - file_version_retention
-        file_version:
-          allOf:
-          - $ref: '#/components/schemas/FileVersion--Mini'
-          - description: 'The file version this file version retention was
-
-              applied to'
-        file:
-          allOf:
-          - $ref: '#/components/schemas/File--Mini'
-          - description: The file this file version retention was applied to
-        applied_at:
-          type: string
-          format: date-time
-          description: 'When this file version retention object was
-
-            created'
-          example: '2012-12-12T10:53:43-08:00'
-        disposition_at:
-          type: string
-          format: date-time
-          description: 'When the retention expires on this file
-
-            version retention'
-          example: '2012-12-12T10:53:43-08:00'
-        winning_retention_policy:
-          allOf:
-          - $ref: '#/components/schemas/RetentionPolicy--Mini'
-          - description: 'The winning retention policy applied to this file
-
-              version retention. A file version can have multiple
-
-              retention policies applied.'
-    RetentionPolicy--Base:
-      title: Retention policy (Base)
-      type: object
-      x-box-resource-id: retention_policy--base
-      x-box-tag: retention_policies
-      x-box-variants:
-      - base
-      - mini
-      - standard
-      x-box-variant: base
-      description: A base representation of a retention policy.
-      required:
-      - id
-      - type
-      properties:
-        id:
-          type: string
-          description: The unique identifier that represents a retention policy.
-          example: '12345'
-        type:
-          type: string
-          description: '`retention_policy`'
-          example: retention_policy
-          enum:
-          - retention_policy
     File--Base:
       title: File (Base)
       type:
@@ -551,7 +255,7 @@ components:
             enum:
             - permanently_delete
             - remove_retention
-    ClientError_2:
+    ClientError:
       title: Client error
       type: object
       x-box-resource-id: client_error
@@ -563,13 +267,11 @@ components:
           type: string
           enum:
           - error
-          nullable: false
         status:
           description: The HTTP status of the response.
           example: 400
           type: integer
           format: int32
-          nullable: false
         code:
           description: A Box-specific error code
           example: item_name_invalid
@@ -596,15 +298,15 @@ components:
           description: A short message describing the error.
           example: Method Not Allowed
           type: string
-          nullable: false
         context_info:
           description: 'A free-form object that contains additional context
 
             about the error. The possible fields are defined on
 
             a per-endpoint basis. `message` is only one example.'
-          type: object
-          nullable: true
+          type:
+          - object
+          - 'null'
           properties:
             message:
               type: string
@@ -614,15 +316,144 @@ components:
           description: A URL that links to more information about why this error occurred.
           example: https://developer.box.com/guides/api-calls/permissions-and-errors/common-errors/
           type: string
-          nullable: false
         request_id:
           description: 'A unique identifier for this response, which can be used
 
             when contacting Box support.'
           type: string
           example: abcdef123456
-          nullable: false
-    FileVersionRetentions_2:
+    FileVersionRetention:
+      title: File version retention
+      type: object
+      x-box-resource-id: file_version_retention
+      x-box-tag: file_version_retentions
+      description: 'A retention policy blocks permanent deletion of content
+
+        for a specified amount of time. Admins can apply policies to
+
+        specified folders, or an entire enterprise. A file version retention
+
+        is a  record for a retained file version. To use this feature,
+
+        you must  have the manage retention policies scope enabled for your
+
+        API key via  your application management console. For more information
+
+        about retention policies, please visit our help documentation'
+      properties:
+        id:
+          type: string
+          description: The unique identifier for this file version retention.
+          example: '11446498'
+        type:
+          type: string
+          description: '`file_version_retention`'
+          example: file_version_retention
+          enum:
+          - file_version_retention
+        file_version:
+          allOf:
+          - $ref: '#/components/schemas/FileVersion--Mini'
+          - description: 'The file version this file version retention was
+
+              applied to'
+        file:
+          allOf:
+          - $ref: '#/components/schemas/File--Mini'
+          - description: The file this file version retention was applied to
+        applied_at:
+          type: string
+          format: date-time
+          description: 'When this file version retention object was
+
+            created'
+          example: '2012-12-12T10:53:43-08:00'
+        disposition_at:
+          type: string
+          format: date-time
+          description: 'When the retention expires on this file
+
+            version retention'
+          example: '2012-12-12T10:53:43-08:00'
+        winning_retention_policy:
+          allOf:
+          - $ref: '#/components/schemas/RetentionPolicy--Mini'
+          - description: 'The winning retention policy applied to this file
+
+              version retention. A file version can have multiple
+
+              retention policies applied.'
+    FileVersion--Mini:
+      title: File version (Mini)
+      type: object
+      x-box-resource-id: file_version--mini
+      x-box-variant: mini
+      description: 'A mini representation of a file version, used when
+
+        nested within another resource.'
+      allOf:
+      - $ref: '#/components/schemas/FileVersion--Base'
+      - properties:
+          sha1:
+            type: string
+            description: The SHA1 hash of this version of the file.
+            example: 134b65991ed521fcfe4724b7d814ab8ded5185dc
+    FileVersion--Base:
+      title: File version (Base)
+      type: object
+      x-box-resource-id: file_version--base
+      x-box-sanitized: true
+      x-box-variants:
+      - base
+      - mini
+      - standard
+      - full
+      x-box-variant: base
+      description: 'The bare basic representation of a file version, the minimal
+
+        amount of fields returned when using the `fields` query
+
+        parameter.'
+      required:
+      - id
+      - type
+      properties:
+        id:
+          type: string
+          description: The unique identifier that represent a file version.
+          example: '12345'
+        type:
+          type: string
+          description: '`file_version`'
+          example: file_version
+          enum:
+          - file_version
+    RetentionPolicy--Base:
+      title: Retention policy (Base)
+      type: object
+      x-box-resource-id: retention_policy--base
+      x-box-tag: retention_policies
+      x-box-variants:
+      - base
+      - mini
+      - standard
+      x-box-variant: base
+      description: A base representation of a retention policy.
+      required:
+      - id
+      - type
+      properties:
+        id:
+          type: string
+          description: The unique identifier that represents a retention policy.
+          example: '12345'
+        type:
+          type: string
+          description: '`retention_policy`'
+          example: retention_policy
+          enum:
+          - retention_policy
+    FileVersionRetentions:
       title: File version retentions
       type: object
       x-box-resource-id: file_version_retentions
@@ -646,19 +477,79 @@ components:
           next_marker:
             description: The marker for the start of the next page of results.
             example: JV9IRGZmieiBasejOG9yDCRNgd2ymoZIbjsxbJMjIs3kioVii
-            type: string
-            nullable: true
+            type:
+            - string
+            - 'null'
           prev_marker:
             description: The marker for the start of the previous page of results.
             example: JV9IRGZmieiBasejOG9yDCRNgd2ymoZIbjsxbJMjIs3kioVih
-            type: string
-            nullable: true
+            type:
+            - string
+            - 'null'
       - properties:
           entries:
             type: array
             description: A list of file version retentions
             items:
               $ref: '#/components/schemas/FileVersionRetention'
+    File--Mini:
+      title: File (Mini)
+      type:
+      - object
+      - 'null'
+      x-box-resource-id: file--mini
+      x-box-variant: mini
+      description: 'A mini representation of a file, used when
+
+        nested under another resource.'
+      allOf:
+      - $ref: '#/components/schemas/File--Base'
+      - properties:
+          sequence_id:
+            allOf:
+            - type:
+              - string
+              - 'null'
+              example: '3'
+              description: 'A numeric identifier that represents the most recent user event
+
+                that has been applied to this item.
+
+
+                This can be used in combination with the `GET /events`-endpoint
+
+                to filter out user events that would have occurred before this
+
+                identifier was read.
+
+
+                An example would be where a Box Drive-like application
+
+                would fetch an item via the API, and then listen to incoming
+
+                user events for changes to the item. The application would
+
+                ignore any user events where the `sequence_id` in the event
+
+                is smaller than or equal to the `sequence_id` in the originally
+
+                fetched resource.'
+            - {}
+          name:
+            type: string
+            description: The name of the file
+            example: Contract.pdf
+          sha1:
+            type: string
+            format: digest
+            example: 85136C79CBF9FE36BB9D05D0639C70C265C18D37
+            description: 'The SHA1 hash of the file. This can be used to compare the contents
+
+              of a file on Box with a local file.'
+          file_version:
+            allOf:
+            - $ref: '#/components/schemas/FileVersion--Mini'
+            - description: The information about the current version of the file.
   securitySchemes:
     OAuth2Security:
       type: oauth2
@@ -679,6 +570,3 @@ components:
 externalDocs:
   description: Box Developer Documentation
   url: https://developer.box.com
-x-refined-from:
-- box-openapi-original.yml
-- file-version-retentions-openapi-original.yml

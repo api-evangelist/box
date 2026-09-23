@@ -1,7 +1,7 @@
 openapi: 3.2.0
 info:
   title: Box Platform Terms of Service API
-  description: '[Box Platform](https://box.dev) provides functionality to provide access to content stored within [Box](https://box.com). It provides endpoints for basic manipulation of files and folders, management of users within an enterprise, as well as more complex topics such as legal holds and retention policies.'
+  description: Box Platform provides functionality to provide access to content stored within Box. It provides endpoints for basic manipulation of files and folders, management of users within an enterprise, as well as more complex topics such as legal holds and retention policies.
   termsOfService: https://cloud.app.box.com/s/rmwxu64h1ipr41u49w3bbuvbsa29wku9
   contact:
     name: Box, Inc
@@ -196,6 +196,85 @@ paths:
                 $ref: '#/components/schemas/ClientError'
 components:
   schemas:
+    TermsOfService:
+      title: Terms of service
+      type: object
+      x-box-resource-id: terms_of_service
+      x-box-variant: standard
+      description: 'The root-level record that is supposed to represent a
+
+        single Terms of Service.'
+      allOf:
+      - $ref: '#/components/schemas/TermsOfService--Base'
+      - properties:
+          status:
+            description: Whether these terms are enabled or not
+            type: string
+            example: enabled
+            enum:
+            - enabled
+            - disabled
+          enterprise:
+            allOf:
+            - title: Enterprise
+              type: object
+              description: A representation of a Box enterprise
+              properties:
+                id:
+                  type: string
+                  description: The unique identifier for this enterprise.
+                  example: '11446498'
+                type:
+                  type: string
+                  description: '`enterprise`'
+                  example: enterprise
+                  enum:
+                  - enterprise
+                name:
+                  description: The name of the enterprise
+                  example: Acme Inc.
+                  type: string
+            - description: The enterprise these terms apply to
+          tos_type:
+            description: Whether to apply these terms to managed users or external users
+            type: string
+            example: managed
+            enum:
+            - managed
+            - external
+          text:
+            description: 'The text for your terms and conditions. This text could be
+
+              empty if the `status` is set to `disabled`.'
+            type: string
+            example: By using this service, you agree to ...
+          created_at:
+            type: string
+            format: date-time
+            description: When the legal item was created
+            example: '2012-12-12T10:53:43-08:00'
+          modified_at:
+            type: string
+            format: date-time
+            description: When the legal item was modified.
+            example: '2012-12-12T10:53:43-08:00'
+    TermsOfServices:
+      title: Terms of services
+      type: object
+      x-box-resource-id: terms_of_services
+      x-box-tag: terms_of_services
+      description: A list of terms of services
+      properties:
+        total_count:
+          description: The total number of objects.
+          example: 2
+          type: integer
+          format: int64
+        entries:
+          type: array
+          description: A list of terms of service objects
+          items:
+            $ref: '#/components/schemas/TermsOfService'
     ClientError:
       title: Client error
       type: object
@@ -263,68 +342,6 @@ components:
             when contacting Box support.'
           type: string
           example: abcdef123456
-    TermsOfService:
-      title: Terms of service
-      type: object
-      x-box-resource-id: terms_of_service
-      x-box-variant: standard
-      description: 'The root-level record that is supposed to represent a
-
-        single Terms of Service.'
-      allOf:
-      - $ref: '#/components/schemas/TermsOfService--Base'
-      - properties:
-          status:
-            description: Whether these terms are enabled or not
-            type: string
-            example: enabled
-            enum:
-            - enabled
-            - disabled
-          enterprise:
-            allOf:
-            - title: Enterprise
-              type: object
-              description: A representation of a Box enterprise
-              properties:
-                id:
-                  type: string
-                  description: The unique identifier for this enterprise.
-                  example: '11446498'
-                type:
-                  type: string
-                  description: '`enterprise`'
-                  example: enterprise
-                  enum:
-                  - enterprise
-                name:
-                  description: The name of the enterprise
-                  example: Acme Inc.
-                  type: string
-            - description: The enterprise these terms apply to
-          tos_type:
-            description: Whether to apply these terms to managed users or external users
-            type: string
-            example: managed
-            enum:
-            - managed
-            - external
-          text:
-            description: 'The text for your terms and conditions. This text could be
-
-              empty if the `status` is set to `disabled`.'
-            type: string
-            example: By using this service, you agree to ...
-          created_at:
-            type: string
-            format: date-time
-            description: When the legal item was created
-            example: '2012-12-12T10:53:43-08:00'
-          modified_at:
-            type: string
-            format: date-time
-            description: When the legal item was modified.
-            example: '2012-12-12T10:53:43-08:00'
     TermsOfService--Base:
       title: Terms of service (Base)
       type: object
@@ -351,23 +368,6 @@ components:
           example: terms_of_service
           enum:
           - terms_of_service
-    TermsOfServices:
-      title: Terms of services
-      type: object
-      x-box-resource-id: terms_of_services
-      x-box-tag: terms_of_services
-      description: A list of terms of services
-      properties:
-        total_count:
-          description: The total number of objects.
-          example: 2
-          type: integer
-          format: int64
-        entries:
-          type: array
-          description: A list of terms of service objects
-          items:
-            $ref: '#/components/schemas/TermsOfService'
   securitySchemes:
     OAuth2Security:
       type: oauth2

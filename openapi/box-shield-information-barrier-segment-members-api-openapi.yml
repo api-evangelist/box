@@ -1,13 +1,22 @@
 openapi: 3.2.0
 info:
-  title: Box Shield Information Barrier Segment Members API
-  x-refined-note:
-  - x-box-commit-hash differs across the merged source definitions and was not carried
-  version: '1.0'
-  description: 'Operations tagged Shield Information Barrier Segment Members across 2 of this provider''s published API definitions: box-openapi-original.yml, shield-information-barrier-segment-members-openapi-original.yml. Each path carries the servers of the definition it was published in.'
+  title: Box Platform Shield Information Barrier Segment Members API
+  description: Box Platform provides functionality to provide access to content stored within Box. It provides endpoints for basic manipulation of files and folders, management of users within an enterprise, as well as more complex topics such as legal holds and retention policies.
+  termsOfService: https://cloud.app.box.com/s/rmwxu64h1ipr41u49w3bbuvbsa29wku9
+  contact:
+    name: Box, Inc
+    url: https://box.dev
+    email: devrel@box.com
+  license:
+    name: Apache-2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0
+  version: 2.0.0
+  x-box-commit-hash: '5819125043'
 servers:
 - url: https://api.box.com/2.0
   description: Box Platform API server
+security:
+- OAuth2Security: []
 tags:
 - name: Shield Information Barrier Segment Members
   description: 'Shield information barrier segment member
@@ -56,8 +65,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ClientError'
-      security:
-      - OAuth2Security: []
     delete:
       operationId: delete_shield_information_barrier_segment_members_id
       summary: Box Delete shield information barrier segment member by ID
@@ -94,11 +101,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ClientError'
-      security:
-      - OAuth2Security: []
-    servers:
-    - url: https://api.box.com/2.0
-      description: Box Platform API server
   /shield_information_barrier_segment_members:
     get:
       operationId: get_shield_information_barrier_segment_members
@@ -153,8 +155,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ClientError'
-      security:
-      - OAuth2Security: []
     post:
       operationId: post_shield_information_barrier_segment_members
       summary: Box Create shield information barrier segment member
@@ -222,33 +222,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ClientError'
-      security:
-      - OAuth2Security: []
-    servers:
-    - url: https://api.box.com/2.0
-      description: Box Platform API server
 components:
   schemas:
-    ShieldInformationBarrierSegmentMember--Mini:
-      title: Shield information barrier segment member (Mini)
-      type: object
-      x-box-resource-id: shield_information_barrier_segment_member--mini
-      x-box-tag: shield_information_barrier_segment_members
-      x-box-variants:
-      - base
-      - mini
-      - standard
-      x-box-variant: mini
-      description: 'A mini representation of a
-
-        shield information barrier segment member object'
-      allOf:
-      - $ref: '#/components/schemas/ShieldInformationBarrierSegmentMember--Base'
-      - properties:
-          user:
-            allOf:
-            - $ref: '#/components/schemas/User--Base'
-            - description: The `type` and `id` of the requested shield information barrier segment member.
     ShieldInformationBarrierSegmentMember--Base:
       title: Shield information barrier segment member (Base)
       type: object
@@ -342,6 +317,84 @@ components:
             when contacting Box support.'
           type: string
           example: abcdef123456
+    ShieldInformationBarrier--Base:
+      title: Shield information barrier (Base)
+      type: object
+      x-box-resource-id: shield_information_barrier--base
+      x-box-tag: shield_information_barriers
+      x-box-variants:
+      - base
+      - standard
+      x-box-variant: base
+      description: 'A base representation of a
+
+        shield information barrier object'
+      properties:
+        id:
+          type: string
+          example: '11446498'
+          description: The unique identifier for the shield information barrier
+        type:
+          type: string
+          description: The type of the shield information barrier
+          example: shield_information_barrier
+          enum:
+          - shield_information_barrier
+    ShieldInformationBarrierSegmentMembers:
+      title: List of Shield Information Barrier Segment Members
+      type: object
+      x-box-resource-id: shield_information_barrier_segment_members
+      x-box-tag: shield_information_barrier_segment_members
+      description: List of Shield Information Barrier Member objects
+      allOf:
+      - type: object
+        description: 'The part of an API response that describes marker
+
+          based pagination'
+        properties:
+          limit:
+            description: 'The limit that was used for these entries. This will be the same as the
+
+              `limit` query parameter unless that value exceeded the maximum value
+
+              allowed. The maximum value varies by API.'
+            example: 1000
+            type: integer
+            format: int64
+          next_marker:
+            description: The marker for the start of the next page of results.
+            example: JV9IRGZmieiBasejOG9yDCRNgd2ymoZIbjsxbJMjIs3kioVii
+            type:
+            - string
+            - 'null'
+      - properties:
+          entries:
+            type: array
+            description: 'A list of shield information
+
+              barrier segment members'
+            items:
+              $ref: '#/components/schemas/ShieldInformationBarrierSegmentMember'
+    ShieldInformationBarrierSegmentMember--Mini:
+      title: Shield information barrier segment member (Mini)
+      type: object
+      x-box-resource-id: shield_information_barrier_segment_member--mini
+      x-box-tag: shield_information_barrier_segment_members
+      x-box-variants:
+      - base
+      - mini
+      - standard
+      x-box-variant: mini
+      description: 'A mini representation of a
+
+        shield information barrier segment member object'
+      allOf:
+      - $ref: '#/components/schemas/ShieldInformationBarrierSegmentMember--Base'
+      - properties:
+          user:
+            allOf:
+            - $ref: '#/components/schemas/User--Base'
+            - description: The `type` and `id` of the requested shield information barrier segment member.
     ShieldInformationBarrierSegmentMember:
       title: Shield information barrier segment member
       type: object
@@ -404,29 +457,6 @@ components:
             allOf:
             - $ref: '#/components/schemas/User--Base'
             - description: The user that updated this shield information barrier segment Member.
-    ShieldInformationBarrier--Base:
-      title: Shield information barrier (Base)
-      type: object
-      x-box-resource-id: shield_information_barrier--base
-      x-box-tag: shield_information_barriers
-      x-box-variants:
-      - base
-      - standard
-      x-box-variant: base
-      description: 'A base representation of a
-
-        shield information barrier object'
-      properties:
-        id:
-          type: string
-          example: '11446498'
-          description: The unique identifier for the shield information barrier
-        type:
-          type: string
-          description: The type of the shield information barrier
-          example: shield_information_barrier
-          enum:
-          - shield_information_barrier
     User--Base:
       title: User (Base)
       type: object
@@ -455,146 +485,6 @@ components:
           example: user
           enum:
           - user
-    ShieldInformationBarrierSegmentMembers:
-      title: List of Shield Information Barrier Segment Members
-      type: object
-      x-box-resource-id: shield_information_barrier_segment_members
-      x-box-tag: shield_information_barrier_segment_members
-      description: List of Shield Information Barrier Member objects
-      allOf:
-      - type: object
-        description: 'The part of an API response that describes marker
-
-          based pagination'
-        properties:
-          limit:
-            description: 'The limit that was used for these entries. This will be the same as the
-
-              `limit` query parameter unless that value exceeded the maximum value
-
-              allowed. The maximum value varies by API.'
-            example: 1000
-            type: integer
-            format: int64
-          next_marker:
-            description: The marker for the start of the next page of results.
-            example: JV9IRGZmieiBasejOG9yDCRNgd2ymoZIbjsxbJMjIs3kioVii
-            type:
-            - string
-            - 'null'
-      - properties:
-          entries:
-            type: array
-            description: 'A list of shield information
-
-              barrier segment members'
-            items:
-              $ref: '#/components/schemas/ShieldInformationBarrierSegmentMember'
-    ClientError_2:
-      title: Client error
-      type: object
-      x-box-resource-id: client_error
-      description: A generic error
-      properties:
-        type:
-          description: error
-          example: error
-          type: string
-          enum:
-          - error
-          nullable: false
-        status:
-          description: The HTTP status of the response.
-          example: 400
-          type: integer
-          format: int32
-          nullable: false
-        code:
-          description: A Box-specific error code
-          example: item_name_invalid
-          type: string
-          enum:
-          - created
-          - accepted
-          - no_content
-          - redirect
-          - not_modified
-          - bad_request
-          - unauthorized
-          - forbidden
-          - not_found
-          - method_not_allowed
-          - conflict
-          - precondition_failed
-          - too_many_requests
-          - internal_server_error
-          - unavailable
-          - item_name_invalid
-          - insufficient_scope
-        message:
-          description: A short message describing the error.
-          example: Method Not Allowed
-          type: string
-          nullable: false
-        context_info:
-          description: 'A free-form object that contains additional context
-
-            about the error. The possible fields are defined on
-
-            a per-endpoint basis. `message` is only one example.'
-          type: object
-          nullable: true
-          properties:
-            message:
-              type: string
-              description: More details on the error.
-              example: Something went wrong.
-        help_url:
-          description: A URL that links to more information about why this error occurred.
-          example: https://developer.box.com/guides/api-calls/permissions-and-errors/common-errors/
-          type: string
-          nullable: false
-        request_id:
-          description: 'A unique identifier for this response, which can be used
-
-            when contacting Box support.'
-          type: string
-          example: abcdef123456
-          nullable: false
-    ShieldInformationBarrierSegmentMembers_2:
-      title: List of Shield Information Barrier Segment Members
-      type: object
-      x-box-resource-id: shield_information_barrier_segment_members
-      x-box-tag: shield_information_barrier_segment_members
-      description: List of Shield Information Barrier Member objects
-      allOf:
-      - type: object
-        description: 'The part of an API response that describes marker
-
-          based pagination'
-        properties:
-          limit:
-            description: 'The limit that was used for these entries. This will be the same as the
-
-              `limit` query parameter unless that value exceeded the maximum value
-
-              allowed. The maximum value varies by API.'
-            example: 1000
-            type: integer
-            format: int64
-          next_marker:
-            description: The marker for the start of the next page of results.
-            example: JV9IRGZmieiBasejOG9yDCRNgd2ymoZIbjsxbJMjIs3kioVii
-            type: string
-            nullable: true
-      - properties:
-          entries:
-            type: array
-            description: 'A list of shield information
-
-              barrier segment members'
-            items:
-              $ref: '#/components/schemas/ShieldInformationBarrierSegmentMember'
   securitySchemes:
     OAuth2Security:
       type: oauth2
@@ -615,6 +505,3 @@ components:
 externalDocs:
   description: Box Developer Documentation
   url: https://developer.box.com
-x-refined-from:
-- box-openapi-original.yml
-- shield-information-barrier-segment-members-openapi-original.yml

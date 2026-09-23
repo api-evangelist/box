@@ -1,13 +1,22 @@
 openapi: 3.2.0
 info:
-  title: Box Retention Policies API
-  x-refined-note:
-  - x-box-commit-hash differs across the merged source definitions and was not carried
-  version: '1.0'
-  description: 'Operations tagged Retention Policies across 2 of this provider''s published API definitions: box-openapi-original.yml, retention-policies-openapi-original.yml. Each path carries the servers of the definition it was published in.'
+  title: Box Platform Retention Policies API
+  description: Box Platform provides functionality to provide access to content stored within Box. It provides endpoints for basic manipulation of files and folders, management of users within an enterprise, as well as more complex topics such as legal holds and retention policies.
+  termsOfService: https://cloud.app.box.com/s/rmwxu64h1ipr41u49w3bbuvbsa29wku9
+  contact:
+    name: Box, Inc
+    url: https://box.dev
+    email: devrel@box.com
+  license:
+    name: Apache-2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0
+  version: 2.0.0
+  x-box-commit-hash: '5819125043'
 servers:
 - url: https://api.box.com/2.0
   description: Box Platform API server
+security:
+- OAuth2Security: []
 tags:
 - name: Retention Policies
   description: 'A retention policy blocks permanent deletion of content
@@ -127,8 +136,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ClientError'
-      security:
-      - OAuth2Security: []
     post:
       operationId: post_retention_policies
       summary: Box Create retention policy
@@ -295,11 +302,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ClientError'
-      security:
-      - OAuth2Security: []
-    servers:
-    - url: https://api.box.com/2.0
-      description: Box Platform API server
   /retention_policies/{retention_policy_id}:
     get:
       operationId: get_retention_policies_id
@@ -357,8 +359,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ClientError'
-      security:
-      - OAuth2Security: []
     put:
       operationId: put_retention_policies_id
       summary: Box Update retention policy
@@ -563,8 +563,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ClientError'
-      security:
-      - OAuth2Security: []
     delete:
       operationId: delete_retention_policies_id
       summary: Box Delete retention policy
@@ -603,197 +601,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ClientError'
-      security:
-      - OAuth2Security: []
-    servers:
-    - url: https://api.box.com/2.0
-      description: Box Platform API server
-  /retention_policies/{retention_policy_id}/assignments:
-    get:
-      operationId: get_retention_policies_id_assignments
-      summary: Box List retention policy assignments
-      tags:
-      - Retention Policies
-      x-box-tag: retention_policy_assignments
-      description: 'Returns a list of all retention policy assignments associated with a specified
-
-        retention policy.'
-      parameters:
-      - name: retention_policy_id
-        description: The ID of the retention policy.
-        example: '982312'
-        in: path
-        required: true
-        schema:
-          type: string
-      - name: type
-        description: The type of the retention policy assignment to retrieve.
-        in: query
-        required: false
-        example: metadata_template
-        schema:
-          type: string
-          enum:
-          - folder
-          - enterprise
-          - metadata_template
-      - name: fields
-        description: 'A comma-separated list of attributes to include in the
-
-          response. This can be used to request fields that are
-
-          not normally returned in a standard response.
-
-
-          Be aware that specifying this parameter will have the
-
-          effect that none of the standard fields are returned in
-
-          the response unless explicitly specified, instead only
-
-          fields for the mini representation are returned, additional
-
-          to the fields requested.'
-        in: query
-        example:
-        - id
-        - type
-        - name
-        required: false
-        explode: false
-        schema:
-          type: array
-          items:
-            type: string
-      - name: marker
-        description: 'Defines the position marker at which to begin returning results. This is
-
-          used when paginating using marker-based pagination.'
-        in: query
-        required: false
-        example: JV9IRGZmieiBasejOG9yDCRNgd2ymoZIbjsxbJMjIs3kioVii
-        schema:
-          type: string
-      - name: limit
-        description: The maximum number of items to return per page.
-        in: query
-        required: false
-        example: 1000
-        schema:
-          type: integer
-          format: int64
-          maximum: 1000
-      responses:
-        '200':
-          description: 'Returns a list of the retention policy assignments associated with the
-
-            specified retention policy.'
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/RetentionPolicyAssignments'
-        '400':
-          description: Returns an error if an unknown `type` is specified.
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ClientError_2'
-        default:
-          description: An unexpected client error.
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ClientError_2'
 components:
   schemas:
-    ClientError:
-      title: Client error
-      type: object
-      x-box-resource-id: client_error
-      description: A generic error
-      properties:
-        type:
-          description: error
-          example: error
-          type: string
-          enum:
-          - error
-        status:
-          description: The HTTP status of the response.
-          example: 400
-          type: integer
-          format: int32
-        code:
-          description: A Box-specific error code
-          example: item_name_invalid
-          type: string
-          enum:
-          - created
-          - accepted
-          - no_content
-          - redirect
-          - not_modified
-          - bad_request
-          - unauthorized
-          - forbidden
-          - not_found
-          - method_not_allowed
-          - conflict
-          - precondition_failed
-          - too_many_requests
-          - internal_server_error
-          - unavailable
-          - item_name_invalid
-          - insufficient_scope
-        message:
-          description: A short message describing the error.
-          example: Method Not Allowed
-          type: string
-        context_info:
-          description: 'A free-form object that contains additional context
-
-            about the error. The possible fields are defined on
-
-            a per-endpoint basis. `message` is only one example.'
-          type:
-          - object
-          - 'null'
-          properties:
-            message:
-              type: string
-              description: More details on the error.
-              example: Something went wrong.
-        help_url:
-          description: A URL that links to more information about why this error occurred.
-          example: https://developer.box.com/guides/api-calls/permissions-and-errors/common-errors/
-          type: string
-        request_id:
-          description: 'A unique identifier for this response, which can be used
-
-            when contacting Box support.'
-          type: string
-          example: abcdef123456
-    User--Mini:
-      title: User (Mini)
-      type: object
-      x-box-resource-id: user--mini
-      x-box-variant: mini
-      description: 'A mini representation of a user, as can be returned when nested within other
-
-        resources.'
-      allOf:
-      - $ref: '#/components/schemas/User--Base'
-      - properties:
-          name:
-            type: string
-            description: The display name of this user
-            example: Aaron Levie
-            maxLength: 50
-          login:
-            type: string
-            format: email
-            description: The primary email address of this user
-            example: ceo@example.com
     RetentionPolicy:
       title: Retention policy
       type: object
@@ -911,92 +720,27 @@ components:
                 format: int64
                 type: integer
                 example: 1
-    RetentionPolicy--Base:
-      title: Retention policy (Base)
+    User--Mini:
+      title: User (Mini)
       type: object
-      x-box-resource-id: retention_policy--base
-      x-box-tag: retention_policies
-      x-box-variants:
-      - base
-      - mini
-      - standard
-      x-box-variant: base
-      description: A base representation of a retention policy.
-      required:
-      - id
-      - type
-      properties:
-        id:
-          type: string
-          description: The unique identifier that represents a retention policy.
-          example: '12345'
-        type:
-          type: string
-          description: '`retention_policy`'
-          example: retention_policy
-          enum:
-          - retention_policy
-    User--Base:
-      title: User (Base)
-      type: object
-      x-box-resource-id: user--base
-      x-box-tag: users
-      x-box-variants:
-      - base
-      - mini
-      - standard
-      - full
-      x-box-variant: base
-      description: 'A mini representation of a user, used when
+      x-box-resource-id: user--mini
+      x-box-variant: mini
+      description: 'A mini representation of a user, as can be returned when nested within other
 
-        nested within another resource.'
-      required:
-      - type
-      - id
-      properties:
-        id:
-          type: string
-          description: The unique identifier for this user
-          example: '11446498'
-        type:
-          type: string
-          description: '`user`'
-          example: user
-          enum:
-          - user
-    RetentionPolicies:
-      title: Retention policies
-      type: object
-      x-box-resource-id: retention_policies
-      x-box-tag: retention_policies
-      description: A list of retention policies.
+        resources.'
       allOf:
+      - $ref: '#/components/schemas/User--Base'
       - properties:
-          entries:
-            description: A list in which each entry represents a retention policy object.
-            type: array
-            items:
-              $ref: '#/components/schemas/RetentionPolicy'
-      - type: object
-        description: 'The part of an API response that describes marker
-
-          based pagination'
-        properties:
-          limit:
-            description: 'The limit that was used for these entries. This will be the same as the
-
-              `limit` query parameter unless that value exceeded the maximum value
-
-              allowed. The maximum value varies by API.'
-            example: 1000
-            type: integer
-            format: int64
-          next_marker:
-            description: The marker for the start of the next page of results.
-            example: JV9IRGZmieiBasejOG9yDCRNgd2ymoZIbjsxbJMjIs3kioVii
-            type:
-            - string
-            - 'null'
+          name:
+            type: string
+            description: The display name of this user
+            example: Aaron Levie
+            maxLength: 50
+          login:
+            type: string
+            format: email
+            description: The primary email address of this user
+            example: ceo@example.com
     RetentionPolicy--Mini:
       title: Retention policy (Mini)
       type: object
@@ -1047,7 +791,99 @@ components:
             enum:
             - permanently_delete
             - remove_retention
-    RetentionPolicies_2:
+    ClientError:
+      title: Client error
+      type: object
+      x-box-resource-id: client_error
+      description: A generic error
+      properties:
+        type:
+          description: error
+          example: error
+          type: string
+          enum:
+          - error
+        status:
+          description: The HTTP status of the response.
+          example: 400
+          type: integer
+          format: int32
+        code:
+          description: A Box-specific error code
+          example: item_name_invalid
+          type: string
+          enum:
+          - created
+          - accepted
+          - no_content
+          - redirect
+          - not_modified
+          - bad_request
+          - unauthorized
+          - forbidden
+          - not_found
+          - method_not_allowed
+          - conflict
+          - precondition_failed
+          - too_many_requests
+          - internal_server_error
+          - unavailable
+          - item_name_invalid
+          - insufficient_scope
+        message:
+          description: A short message describing the error.
+          example: Method Not Allowed
+          type: string
+        context_info:
+          description: 'A free-form object that contains additional context
+
+            about the error. The possible fields are defined on
+
+            a per-endpoint basis. `message` is only one example.'
+          type:
+          - object
+          - 'null'
+          properties:
+            message:
+              type: string
+              description: More details on the error.
+              example: Something went wrong.
+        help_url:
+          description: A URL that links to more information about why this error occurred.
+          example: https://developer.box.com/guides/api-calls/permissions-and-errors/common-errors/
+          type: string
+        request_id:
+          description: 'A unique identifier for this response, which can be used
+
+            when contacting Box support.'
+          type: string
+          example: abcdef123456
+    RetentionPolicy--Base:
+      title: Retention policy (Base)
+      type: object
+      x-box-resource-id: retention_policy--base
+      x-box-tag: retention_policies
+      x-box-variants:
+      - base
+      - mini
+      - standard
+      x-box-variant: base
+      description: A base representation of a retention policy.
+      required:
+      - id
+      - type
+      properties:
+        id:
+          type: string
+          description: The unique identifier that represents a retention policy.
+          example: '12345'
+        type:
+          type: string
+          description: '`retention_policy`'
+          example: retention_policy
+          enum:
+          - retention_policy
+    RetentionPolicies:
       title: Retention policies
       type: object
       x-box-resource-id: retention_policies
@@ -1077,111 +913,37 @@ components:
           next_marker:
             description: The marker for the start of the next page of results.
             example: JV9IRGZmieiBasejOG9yDCRNgd2ymoZIbjsxbJMjIs3kioVii
-            type: string
-            nullable: true
-    RetentionPolicyAssignments:
-      title: Retention policy assignments
+            type:
+            - string
+            - 'null'
+    User--Base:
+      title: User (Base)
       type: object
-      x-box-resource-id: retention_policy_assignments
-      x-box-tag: retention_policy_assignments
-      description: A list of retention policy assignments.
-      allOf:
-      - properties:
-          entries:
-            type: array
-            description: A list of retention policy assignments
-            items:
-              $ref: '#/components/schemas/RetentionPolicyAssignment'
-      - type: object
-        description: 'The part of an API response that describes marker
+      x-box-resource-id: user--base
+      x-box-tag: users
+      x-box-variants:
+      - base
+      - mini
+      - standard
+      - full
+      x-box-variant: base
+      description: 'A mini representation of a user, used when
 
-          based pagination'
-        properties:
-          limit:
-            description: 'The limit that was used for these entries. This will be the same as the
-
-              `limit` query parameter unless that value exceeded the maximum value
-
-              allowed. The maximum value varies by API.'
-            example: 1000
-            type: integer
-            format: int64
-          next_marker:
-            description: The marker for the start of the next page of results.
-            example: JV9IRGZmieiBasejOG9yDCRNgd2ymoZIbjsxbJMjIs3kioVii
-            type: string
-            nullable: true
-    ClientError_2:
-      title: Client error
-      type: object
-      x-box-resource-id: client_error
-      description: A generic error
+        nested within another resource.'
+      required:
+      - type
+      - id
       properties:
+        id:
+          type: string
+          description: The unique identifier for this user
+          example: '11446498'
         type:
-          description: error
-          example: error
           type: string
+          description: '`user`'
+          example: user
           enum:
-          - error
-          nullable: false
-        status:
-          description: The HTTP status of the response.
-          example: 400
-          type: integer
-          format: int32
-          nullable: false
-        code:
-          description: A Box-specific error code
-          example: item_name_invalid
-          type: string
-          enum:
-          - created
-          - accepted
-          - no_content
-          - redirect
-          - not_modified
-          - bad_request
-          - unauthorized
-          - forbidden
-          - not_found
-          - method_not_allowed
-          - conflict
-          - precondition_failed
-          - too_many_requests
-          - internal_server_error
-          - unavailable
-          - item_name_invalid
-          - insufficient_scope
-        message:
-          description: A short message describing the error.
-          example: Method Not Allowed
-          type: string
-          nullable: false
-        context_info:
-          description: 'A free-form object that contains additional context
-
-            about the error. The possible fields are defined on
-
-            a per-endpoint basis. `message` is only one example.'
-          type: object
-          nullable: true
-          properties:
-            message:
-              type: string
-              description: More details on the error.
-              example: Something went wrong.
-        help_url:
-          description: A URL that links to more information about why this error occurred.
-          example: https://developer.box.com/guides/api-calls/permissions-and-errors/common-errors/
-          type: string
-          nullable: false
-        request_id:
-          description: 'A unique identifier for this response, which can be used
-
-            when contacting Box support.'
-          type: string
-          example: abcdef123456
-          nullable: false
+          - user
   securitySchemes:
     OAuth2Security:
       type: oauth2
@@ -1202,6 +964,3 @@ components:
 externalDocs:
   description: Box Developer Documentation
   url: https://developer.box.com
-x-refined-from:
-- box-openapi-original.yml
-- retention-policies-openapi-original.yml

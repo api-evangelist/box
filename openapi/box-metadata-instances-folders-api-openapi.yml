@@ -1,7 +1,7 @@
 openapi: 3.2.0
 info:
   title: Box Platform Metadata Instances (Folders) API
-  description: '[Box Platform](https://box.dev) provides functionality to provide access to content stored within [Box](https://box.com). It provides endpoints for basic manipulation of files and folders, management of users within an enterprise, as well as more complex topics such as legal holds and retention policies.'
+  description: Box Platform provides functionality to provide access to content stored within Box. It provides endpoints for basic manipulation of files and folders, management of users within an enterprise, as well as more complex topics such as legal holds and retention policies.
   termsOfService: https://cloud.app.box.com/s/rmwxu64h1ipr41u49w3bbuvbsa29wku9
   contact:
     name: Box, Inc
@@ -642,6 +642,17 @@ components:
           - example: Aaron Levie
           - description: "A value for each of the fields that are present\non the metadata template.\nFor the `global.properties` template this can be\na list of zero or more fields,\nas this template allows for any generic key-value pairs \nto be stored stored in the template."
           x-box-example-key: name
+    Metadata:
+      title: Metadata instance
+      type: object
+      x-box-resource-id: metadata
+      x-box-tag: file_metadata
+      x-box-variant: standard
+      description: 'An instance of a metadata template, which has been applied to a file or
+
+        folder.'
+      allOf:
+      - $ref: '#/components/schemas/Metadata--Base'
     ClientError:
       title: Client error
       type: object
@@ -709,6 +720,22 @@ components:
             when contacting Box support.'
           type: string
           example: abcdef123456
+    Metadatas:
+      title: Metadata instances
+      type: object
+      x-box-resource-id: metadatas
+      x-box-tag: file_metadata
+      description: A list of metadata instances that have been applied to a file or folder.
+      properties:
+        entries:
+          type: array
+          description: A list of metadata instances, as applied to this file or folder.
+          items:
+            $ref: '#/components/schemas/Metadata'
+        limit:
+          description: The limit that was used for this page of results.
+          example: 100
+          type: integer
     Metadata--Base:
       title: Metadata instance (Base)
       type: object
@@ -750,33 +777,6 @@ components:
           description: 'The version of the metadata instance. This version starts at 0 and
 
             increases every time a user-defined property is modified.'
-    Metadata:
-      title: Metadata instance
-      type: object
-      x-box-resource-id: metadata
-      x-box-tag: file_metadata
-      x-box-variant: standard
-      description: 'An instance of a metadata template, which has been applied to a file or
-
-        folder.'
-      allOf:
-      - $ref: '#/components/schemas/Metadata--Base'
-    Metadatas:
-      title: Metadata instances
-      type: object
-      x-box-resource-id: metadatas
-      x-box-tag: file_metadata
-      description: A list of metadata instances that have been applied to a file or folder.
-      properties:
-        entries:
-          type: array
-          description: A list of metadata instances, as applied to this file or folder.
-          items:
-            $ref: '#/components/schemas/Metadata'
-        limit:
-          description: The limit that was used for this page of results.
-          example: 100
-          type: integer
   securitySchemes:
     OAuth2Security:
       type: oauth2

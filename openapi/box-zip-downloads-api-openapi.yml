@@ -1,13 +1,22 @@
 openapi: 3.2.0
 info:
-  title: Box Zip Downloads API
-  x-refined-note:
-  - x-box-commit-hash differs across the merged source definitions and was not carried
-  version: '1.0'
-  description: 'Operations tagged Zip Downloads across 2 of this provider''s published API definitions: box-openapi-original.yml, zip-downloads-openapi-original.yml. Each path carries the servers of the definition it was published in.'
+  title: Box Platform Zip Downloads API
+  description: Box Platform provides functionality to provide access to content stored within Box. It provides endpoints for basic manipulation of files and folders, management of users within an enterprise, as well as more complex topics such as legal holds and retention policies.
+  termsOfService: https://cloud.app.box.com/s/rmwxu64h1ipr41u49w3bbuvbsa29wku9
+  contact:
+    name: Box, Inc
+    url: https://box.dev
+    email: devrel@box.com
+  license:
+    name: Apache-2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0
+  version: 2.0.0
+  x-box-commit-hash: '5819125043'
 servers:
 - url: https://api.box.com/2.0
   description: Box Platform API server
+security:
+- OAuth2Security: []
 tags:
 - name: Zip Downloads
   description: 'Zip downloads represent a successful request
@@ -148,11 +157,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ClientError'
-      security:
-      - OAuth2Security: []
-    servers:
-    - url: https://api.box.com/2.0
-      description: Box Platform API server
   /zip_downloads/{zip_download_id}/content:
     get:
       operationId: get_zip_downloads_id_content
@@ -179,7 +183,7 @@ paths:
 
         The URL of this endpoint should not be considered as fixed. Instead, use
 
-        the [Create zip download](e://post_zip_downloads) API to request to create a
+        the Create zip download API to request to create a
 
         `zip` archive, and then follow the `download_url` field in the response to
 
@@ -250,9 +254,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ClientError'
-    servers:
-    - url: https://api.box.com/2.0
-      description: Box Platform API server
   /zip_downloads/{zip_download_id}/status:
     get:
       operationId: get_zip_downloads_id_status
@@ -277,7 +278,7 @@ paths:
 
         The URL of this endpoint should not be considered as fixed. Instead, use
 
-        the [Create zip download](e://post_zip_downloads) API to request to create a
+        the Create zip download API to request to create a
 
         `zip` archive, and then follow the `status_url` field in the response to
 
@@ -329,130 +330,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ClientError'
-      security:
-      - OAuth2Security: []
-    servers:
-    - url: https://api.box.com/2.0
-      description: Box Platform API server
 components:
   schemas:
-    ClientError:
-      title: Client error
-      type: object
-      x-box-resource-id: client_error
-      description: A generic error
-      properties:
-        type:
-          description: error
-          example: error
-          type: string
-          enum:
-          - error
-        status:
-          description: The HTTP status of the response.
-          example: 400
-          type: integer
-          format: int32
-        code:
-          description: A Box-specific error code
-          example: item_name_invalid
-          type: string
-          enum:
-          - created
-          - accepted
-          - no_content
-          - redirect
-          - not_modified
-          - bad_request
-          - unauthorized
-          - forbidden
-          - not_found
-          - method_not_allowed
-          - conflict
-          - precondition_failed
-          - too_many_requests
-          - internal_server_error
-          - unavailable
-          - item_name_invalid
-          - insufficient_scope
-        message:
-          description: A short message describing the error.
-          example: Method Not Allowed
-          type: string
-        context_info:
-          description: 'A free-form object that contains additional context
-
-            about the error. The possible fields are defined on
-
-            a per-endpoint basis. `message` is only one example.'
-          type:
-          - object
-          - 'null'
-          properties:
-            message:
-              type: string
-              description: More details on the error.
-              example: Something went wrong.
-        help_url:
-          description: A URL that links to more information about why this error occurred.
-          example: https://developer.box.com/guides/api-calls/permissions-and-errors/common-errors/
-          type: string
-        request_id:
-          description: 'A unique identifier for this response, which can be used
-
-            when contacting Box support.'
-          type: string
-          example: abcdef123456
-    ZipDownloadStatus:
-      title: Zip download status
-      type: object
-      x-box-resource-id: zip_download_status
-      x-box-tag: zip_downloads
-      x-box-reference-category: zip_downloads
-      description: The status of a `zip` archive being downloaded.
-      properties:
-        total_file_count:
-          type: integer
-          description: The total number of files in the archive.
-          example: 20
-          minimum: 0
-          maximum: 10000
-        downloaded_file_count:
-          type: integer
-          description: The number of files that have already been downloaded.
-          example: 10
-          minimum: 0
-        skipped_file_count:
-          type: integer
-          description: 'The number of files that have been skipped as they could not be
-
-            downloaded. In many cases this is due to permission issues that have
-
-            surfaced between the creation of the request for the archive and the
-
-            archive being downloaded.'
-          example: 5
-          minimum: 0
-        skipped_folder_count:
-          type: integer
-          description: 'The number of folders that have been skipped as they could not be
-
-            downloaded. In many cases this is due to permission issues that have
-
-            surfaced between the creation of the request for the archive and the
-
-            archive being downloaded.'
-          example: 5
-          minimum: 0
-        state:
-          type: string
-          description: The state of the archive being downloaded.
-          default: in_progress
-          example: succeeded
-          enum:
-          - in_progress
-          - failed
-          - succeeded
     ZipDownload:
       title: Zip download
       type: object
@@ -581,6 +460,73 @@ components:
 
                     downloaded `zip` archive.'
                   example: 3aa6a7.pdf
+    ClientError:
+      title: Client error
+      type: object
+      x-box-resource-id: client_error
+      description: A generic error
+      properties:
+        type:
+          description: error
+          example: error
+          type: string
+          enum:
+          - error
+        status:
+          description: The HTTP status of the response.
+          example: 400
+          type: integer
+          format: int32
+        code:
+          description: A Box-specific error code
+          example: item_name_invalid
+          type: string
+          enum:
+          - created
+          - accepted
+          - no_content
+          - redirect
+          - not_modified
+          - bad_request
+          - unauthorized
+          - forbidden
+          - not_found
+          - method_not_allowed
+          - conflict
+          - precondition_failed
+          - too_many_requests
+          - internal_server_error
+          - unavailable
+          - item_name_invalid
+          - insufficient_scope
+        message:
+          description: A short message describing the error.
+          example: Method Not Allowed
+          type: string
+        context_info:
+          description: 'A free-form object that contains additional context
+
+            about the error. The possible fields are defined on
+
+            a per-endpoint basis. `message` is only one example.'
+          type:
+          - object
+          - 'null'
+          properties:
+            message:
+              type: string
+              description: More details on the error.
+              example: Something went wrong.
+        help_url:
+          description: A URL that links to more information about why this error occurred.
+          example: https://developer.box.com/guides/api-calls/permissions-and-errors/common-errors/
+          type: string
+        request_id:
+          description: 'A unique identifier for this response, which can be used
+
+            when contacting Box support.'
+          type: string
+          example: abcdef123456
     ZipDownloadRequest:
       title: Create a `zip` archive
       type: object
@@ -619,77 +565,56 @@ components:
 
             `.zip` file extension, for example `January Financials.zip`.'
           example: January Financials
-    ClientError_2:
-      title: Client error
+    ZipDownloadStatus:
+      title: Zip download status
       type: object
-      x-box-resource-id: client_error
-      description: A generic error
+      x-box-resource-id: zip_download_status
+      x-box-tag: zip_downloads
+      x-box-reference-category: zip_downloads
+      description: The status of a `zip` archive being downloaded.
       properties:
-        type:
-          description: error
-          example: error
-          type: string
-          enum:
-          - error
-          nullable: false
-        status:
-          description: The HTTP status of the response.
-          example: 400
+        total_file_count:
           type: integer
-          format: int32
-          nullable: false
-        code:
-          description: A Box-specific error code
-          example: item_name_invalid
+          description: The total number of files in the archive.
+          example: 20
+          minimum: 0
+          maximum: 10000
+        downloaded_file_count:
+          type: integer
+          description: The number of files that have already been downloaded.
+          example: 10
+          minimum: 0
+        skipped_file_count:
+          type: integer
+          description: 'The number of files that have been skipped as they could not be
+
+            downloaded. In many cases this is due to permission issues that have
+
+            surfaced between the creation of the request for the archive and the
+
+            archive being downloaded.'
+          example: 5
+          minimum: 0
+        skipped_folder_count:
+          type: integer
+          description: 'The number of folders that have been skipped as they could not be
+
+            downloaded. In many cases this is due to permission issues that have
+
+            surfaced between the creation of the request for the archive and the
+
+            archive being downloaded.'
+          example: 5
+          minimum: 0
+        state:
           type: string
+          description: The state of the archive being downloaded.
+          default: in_progress
+          example: succeeded
           enum:
-          - created
-          - accepted
-          - no_content
-          - redirect
-          - not_modified
-          - bad_request
-          - unauthorized
-          - forbidden
-          - not_found
-          - method_not_allowed
-          - conflict
-          - precondition_failed
-          - too_many_requests
-          - internal_server_error
-          - unavailable
-          - item_name_invalid
-          - insufficient_scope
-        message:
-          description: A short message describing the error.
-          example: Method Not Allowed
-          type: string
-          nullable: false
-        context_info:
-          description: 'A free-form object that contains additional context
-
-            about the error. The possible fields are defined on
-
-            a per-endpoint basis. `message` is only one example.'
-          type: object
-          nullable: true
-          properties:
-            message:
-              type: string
-              description: More details on the error.
-              example: Something went wrong.
-        help_url:
-          description: A URL that links to more information about why this error occurred.
-          example: https://developer.box.com/guides/api-calls/permissions-and-errors/common-errors/
-          type: string
-          nullable: false
-        request_id:
-          description: 'A unique identifier for this response, which can be used
-
-            when contacting Box support.'
-          type: string
-          example: abcdef123456
-          nullable: false
+          - in_progress
+          - failed
+          - succeeded
   securitySchemes:
     OAuth2Security:
       type: oauth2
@@ -710,6 +635,3 @@ components:
 externalDocs:
   description: Box Developer Documentation
   url: https://developer.box.com
-x-refined-from:
-- box-openapi-original.yml
-- zip-downloads-openapi-original.yml
