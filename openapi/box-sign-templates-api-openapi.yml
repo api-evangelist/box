@@ -126,412 +126,6 @@ paths:
                 $ref: '#/components/schemas/ClientError'
 components:
   schemas:
-    SignRequestPrefillTag:
-      title: Sign Request Prefill Tag
-      type: object
-      description: 'Prefill tags are used to prefill placeholders with signer input data. Only
-
-        one value field can be included.'
-      properties:
-        document_tag_id:
-          type:
-          - string
-          - 'null'
-          example: '1234'
-          description: This references the ID of a specific tag contained in a file of the sign request.
-        text_value:
-          type:
-          - string
-          - 'null'
-          example: text
-          description: Text prefill value
-        checkbox_value:
-          type:
-          - boolean
-          - 'null'
-          example: true
-          description: Checkbox prefill value
-        date_value:
-          type:
-          - string
-          - 'null'
-          format: date
-          example: '2021-04-26'
-          description: Date prefill value
-    TemplateSignerInput:
-      title: Template Signer Input
-      type: object
-      description: Input created by a Signer on a Template
-      required:
-      - page_index
-      allOf:
-      - $ref: '#/components/schemas/SignRequestPrefillTag'
-      - properties:
-          type:
-            type: string
-            enum:
-            - signature
-            - date
-            - text
-            - checkbox
-            - attachment
-            - radio
-            - dropdown
-            description: Type of input
-            example: text
-          content_type:
-            type: string
-            enum:
-            - signature
-            - initial
-            - stamp
-            - date
-            - checkbox
-            - text
-            - full_name
-            - first_name
-            - last_name
-            - company
-            - title
-            - email
-            - attachment
-            - radio
-            - dropdown
-            description: Content type of input
-            example: text
-          is_required:
-            type: boolean
-            description: Whether or not the input is required.
-            example: true
-          page_index:
-            type: integer
-            description: Index of page that the input is on.
-            example: 4
-          document_id:
-            type:
-            - string
-            - 'null'
-            description: Document identifier.
-            example: 123075213-eb54b537-8b25-445e-87c1-5a1c67d8cbd7
-          dropdown_choices:
-            type:
-            - array
-            - 'null'
-            example:
-            - 'Yes'
-            - 'No'
-            - Maybe
-            description: When the input is of the type `dropdown` this values will be filled with all the dropdown options.
-            items:
-              type: string
-          group_id:
-            type:
-            - string
-            - 'null'
-            description: When the input is of type `radio` they can be grouped to gather with this identifier.
-            example: da317330-225a-4c72-89ad-0d6dcaaf4df6
-          coordinates:
-            type: object
-            description: Where the input is located on a page.
-            properties:
-              x:
-                type: number
-                example: 0.672258592471358
-                description: Relative x coordinate to the page the input is on, ranging from 0 to 1.
-              y:
-                type: number
-                example: 0.18654283173599448
-                description: Relative y coordinate to the page the input is on, ranging from 0 to 1.
-          dimensions:
-            type: object
-            description: The size of the input.
-            properties:
-              width:
-                type: number
-                example: 0.2618657937806874
-                description: Relative width to the page the input is on, ranging from 0 to 1.
-              height:
-                type: number
-                example: 0.05311728090109673
-                description: Relative height to the page the input is on, ranging from 0 to 1.
-          label:
-            type:
-            - string
-            - 'null'
-            description: The label field is used especially for text, attachment, radio, and checkbox type inputs.
-            example: Legal name
-          read_only:
-            type: boolean
-            description: Whether this input was defined as read-only(immutable by signers) or not
-            example: true
-    File--Base:
-      title: File (Base)
-      type:
-      - object
-      - 'null'
-      x-box-resource-id: file--base
-      x-box-sanitized: true
-      x-box-tag: files
-      x-box-variants:
-      - base
-      - mini
-      - standard
-      - full
-      x-box-variant: base
-      description: 'The bare basic representation of a file, the minimal
-
-        amount of fields returned when using the `fields` query
-
-        parameter.'
-      required:
-      - id
-      - type
-      properties:
-        id:
-          type: string
-          description: 'The unique identifier that represent a file.
-
-
-            The ID for any file can be determined
-
-            by visiting a file in the web application
-
-            and copying the ID from the URL. For example,
-
-            for the URL `https://*.app.box.com/files/123`
-
-            the `file_id` is `123`.'
-          example: '12345'
-        etag:
-          type:
-          - string
-          - 'null'
-          example: '1'
-          description: 'The HTTP `etag` of this file. This can be used within some API
-
-            endpoints in the `If-Match` and `If-None-Match` headers to only
-
-            perform changes on the file if (no) changes have happened.'
-        type:
-          type: string
-          description: '`file`'
-          example: file
-          enum:
-          - file
-    ClientError:
-      title: Client error
-      type: object
-      x-box-resource-id: client_error
-      description: A generic error
-      properties:
-        type:
-          description: error
-          example: error
-          type: string
-          enum:
-          - error
-        status:
-          description: The HTTP status of the response.
-          example: 400
-          type: integer
-          format: int32
-        code:
-          description: A Box-specific error code
-          example: item_name_invalid
-          type: string
-          enum:
-          - created
-          - accepted
-          - no_content
-          - redirect
-          - not_modified
-          - bad_request
-          - unauthorized
-          - forbidden
-          - not_found
-          - method_not_allowed
-          - conflict
-          - precondition_failed
-          - too_many_requests
-          - internal_server_error
-          - unavailable
-          - item_name_invalid
-          - insufficient_scope
-        message:
-          description: A short message describing the error.
-          example: Method Not Allowed
-          type: string
-        context_info:
-          description: 'A free-form object that contains additional context
-
-            about the error. The possible fields are defined on
-
-            a per-endpoint basis. `message` is only one example.'
-          type:
-          - object
-          - 'null'
-          properties:
-            message:
-              type: string
-              description: More details on the error.
-              example: Something went wrong.
-        help_url:
-          description: A URL that links to more information about why this error occurred.
-          example: https://developer.box.com/guides/api-calls/permissions-and-errors/common-errors/
-          type: string
-        request_id:
-          description: 'A unique identifier for this response, which can be used
-
-            when contacting Box support.'
-          type: string
-          example: abcdef123456
-    Folder--Mini:
-      title: Folder (Mini)
-      type: object
-      x-box-resource-id: folder--mini
-      x-box-variant: mini
-      description: 'A mini representation of a file version, used when
-
-        nested under another resource.'
-      allOf:
-      - $ref: '#/components/schemas/Folder--Base'
-      - properties:
-          sequence_id:
-            allOf:
-            - type:
-              - string
-              - 'null'
-              example: '3'
-              description: 'A numeric identifier that represents the most recent user event
-
-                that has been applied to this item.
-
-
-                This can be used in combination with the `GET /events`-endpoint
-
-                to filter out user events that would have occurred before this
-
-                identifier was read.
-
-
-                An example would be where a Box Drive-like application
-
-                would fetch an item via the API, and then listen to incoming
-
-                user events for changes to the item. The application would
-
-                ignore any user events where the `sequence_id` in the event
-
-                is smaller than or equal to the `sequence_id` in the originally
-
-                fetched resource.'
-            - {}
-          name:
-            type: string
-            description: The name of the folder.
-            example: Contracts
-    FileVersion--Mini:
-      title: File version (Mini)
-      type: object
-      x-box-resource-id: file_version--mini
-      x-box-variant: mini
-      description: 'A mini representation of a file version, used when
-
-        nested within another resource.'
-      allOf:
-      - $ref: '#/components/schemas/FileVersion--Base'
-      - properties:
-          sha1:
-            type: string
-            description: The SHA1 hash of this version of the file.
-            example: 134b65991ed521fcfe4724b7d814ab8ded5185dc
-    TemplateSigner:
-      title: Signer fields for Templates
-      type: object
-      description: The schema for a Signer for Templates
-      allOf:
-      - properties:
-          inputs:
-            type: array
-            items:
-              $ref: '#/components/schemas/TemplateSignerInput'
-            readOnly: true
-          email:
-            type:
-            - string
-            - 'null'
-            description: Email address of the signer
-            example: example@mail.com
-          role:
-            type: string
-            enum:
-            - signer
-            - approver
-            - final_copy_reader
-            description: 'Defines the role of the signer in the signature request. A role of
-
-              `signer` needs to sign the document, a role `approver`
-
-              approves the document and
-
-              a `final_copy_reader` role only
-
-              receives the final signed document and signing log.'
-            example: signer
-            default: signer
-          is_in_person:
-            type: boolean
-            description: 'Used in combination with an embed URL for a sender.
-
-              After the sender signs, they will be
-
-              redirected to the next `in_person` signer.'
-            example: true
-          order:
-            type: integer
-            description: Order of the signer
-            minimum: 0
-            example: 2
-          signer_group_id:
-            type:
-            - string
-            - 'null'
-            description: 'If provided, this value points signers that are assigned the same inputs and belongs to same signer group.
-
-              A signer group is not a Box Group. It is an entity that belongs to the template itself and can only be used
-
-              within Sign Requests created from it.'
-            example: cd4ff89-8fc1-42cf-8b29-1890dedd26d7
-    FileVersion--Base:
-      title: File version (Base)
-      type: object
-      x-box-resource-id: file_version--base
-      x-box-sanitized: true
-      x-box-variants:
-      - base
-      - mini
-      - standard
-      - full
-      x-box-variant: base
-      description: 'The bare basic representation of a file version, the minimal
-
-        amount of fields returned when using the `fields` query
-
-        parameter.'
-      required:
-      - id
-      - type
-      properties:
-        id:
-          type: string
-          description: The unique identifier that represent a file version.
-          example: '12345'
-        type:
-          type: string
-          description: '`file_version`'
-          example: file_version
-          enum:
-          - file_version
     SignTemplate:
       title: Box Sign template
       type: object
@@ -735,6 +329,505 @@ components:
                 - 'null'
                 example: Contact email email@mail.com
                 description: Content of the email footer.
+    Folder--Base:
+      title: Folder (Base)
+      type: object
+      x-box-resource-id: folder--base
+      x-box-sanitized: true
+      x-box-tag: folders
+      x-box-variants:
+      - base
+      - mini
+      - standard
+      - full
+      x-box-variant: base
+      description: 'The bare basic representation of a folder, the minimal
+
+        amount of fields returned when using the `fields` query
+
+        parameter.'
+      required:
+      - id
+      - type
+      properties:
+        id:
+          type: string
+          description: 'The unique identifier that represent a folder.
+
+
+            The ID for any folder can be determined
+
+            by visiting a folder in the web application
+
+            and copying the ID from the URL. For example,
+
+            for the URL `https://*.app.box.com/folders/123`
+
+            the `folder_id` is `123`.'
+          example: '12345'
+        etag:
+          type:
+          - string
+          - 'null'
+          example: '1'
+          description: 'The HTTP `etag` of this folder. This can be used within some API
+
+            endpoints in the `If-Match` and `If-None-Match` headers to only
+
+            perform changes on the folder if (no) changes have happened.'
+        type:
+          type: string
+          description: '`folder`'
+          example: folder
+          enum:
+          - folder
+    ClientError:
+      title: Client error
+      type: object
+      x-box-resource-id: client_error
+      description: A generic error
+      properties:
+        type:
+          description: error
+          example: error
+          type: string
+          enum:
+          - error
+        status:
+          description: The HTTP status of the response.
+          example: 400
+          type: integer
+          format: int32
+        code:
+          description: A Box-specific error code
+          example: item_name_invalid
+          type: string
+          enum:
+          - created
+          - accepted
+          - no_content
+          - redirect
+          - not_modified
+          - bad_request
+          - unauthorized
+          - forbidden
+          - not_found
+          - method_not_allowed
+          - conflict
+          - precondition_failed
+          - too_many_requests
+          - internal_server_error
+          - unavailable
+          - item_name_invalid
+          - insufficient_scope
+        message:
+          description: A short message describing the error.
+          example: Method Not Allowed
+          type: string
+        context_info:
+          description: 'A free-form object that contains additional context
+
+            about the error. The possible fields are defined on
+
+            a per-endpoint basis. `message` is only one example.'
+          type:
+          - object
+          - 'null'
+          properties:
+            message:
+              type: string
+              description: More details on the error.
+              example: Something went wrong.
+        help_url:
+          description: A URL that links to more information about why this error occurred.
+          example: https://developer.box.com/guides/api-calls/permissions-and-errors/common-errors/
+          type: string
+        request_id:
+          description: 'A unique identifier for this response, which can be used
+
+            when contacting Box support.'
+          type: string
+          example: abcdef123456
+    TemplateSignerInput:
+      title: Template Signer Input
+      type: object
+      description: Input created by a Signer on a Template
+      required:
+      - page_index
+      allOf:
+      - $ref: '#/components/schemas/SignRequestPrefillTag'
+      - properties:
+          type:
+            type: string
+            enum:
+            - signature
+            - date
+            - text
+            - checkbox
+            - attachment
+            - radio
+            - dropdown
+            description: Type of input
+            example: text
+          content_type:
+            type: string
+            enum:
+            - signature
+            - initial
+            - stamp
+            - date
+            - checkbox
+            - text
+            - full_name
+            - first_name
+            - last_name
+            - company
+            - title
+            - email
+            - attachment
+            - radio
+            - dropdown
+            description: Content type of input
+            example: text
+          is_required:
+            type: boolean
+            description: Whether or not the input is required.
+            example: true
+          page_index:
+            type: integer
+            description: Index of page that the input is on.
+            example: 4
+          document_id:
+            type:
+            - string
+            - 'null'
+            description: Document identifier.
+            example: 123075213-eb54b537-8b25-445e-87c1-5a1c67d8cbd7
+          dropdown_choices:
+            type:
+            - array
+            - 'null'
+            example:
+            - 'Yes'
+            - 'No'
+            - Maybe
+            description: When the input is of the type `dropdown` this values will be filled with all the dropdown options.
+            items:
+              type: string
+          group_id:
+            type:
+            - string
+            - 'null'
+            description: When the input is of type `radio` they can be grouped to gather with this identifier.
+            example: da317330-225a-4c72-89ad-0d6dcaaf4df6
+          coordinates:
+            type: object
+            description: Where the input is located on a page.
+            properties:
+              x:
+                type: number
+                example: 0.672258592471358
+                description: Relative x coordinate to the page the input is on, ranging from 0 to 1.
+              y:
+                type: number
+                example: 0.18654283173599448
+                description: Relative y coordinate to the page the input is on, ranging from 0 to 1.
+          dimensions:
+            type: object
+            description: The size of the input.
+            properties:
+              width:
+                type: number
+                example: 0.2618657937806874
+                description: Relative width to the page the input is on, ranging from 0 to 1.
+              height:
+                type: number
+                example: 0.05311728090109673
+                description: Relative height to the page the input is on, ranging from 0 to 1.
+          label:
+            type:
+            - string
+            - 'null'
+            description: The label field is used especially for text, attachment, radio, and checkbox type inputs.
+            example: Legal name
+          read_only:
+            type: boolean
+            description: Whether this input was defined as read-only(immutable by signers) or not
+            example: true
+    Folder--Mini:
+      title: Folder (Mini)
+      type: object
+      x-box-resource-id: folder--mini
+      x-box-variant: mini
+      description: 'A mini representation of a file version, used when
+
+        nested under another resource.'
+      allOf:
+      - $ref: '#/components/schemas/Folder--Base'
+      - properties:
+          sequence_id:
+            allOf:
+            - type:
+              - string
+              - 'null'
+              example: '3'
+              description: 'A numeric identifier that represents the most recent user event
+
+                that has been applied to this item.
+
+
+                This can be used in combination with the `GET /events`-endpoint
+
+                to filter out user events that would have occurred before this
+
+                identifier was read.
+
+
+                An example would be where a Box Drive-like application
+
+                would fetch an item via the API, and then listen to incoming
+
+                user events for changes to the item. The application would
+
+                ignore any user events where the `sequence_id` in the event
+
+                is smaller than or equal to the `sequence_id` in the originally
+
+                fetched resource.'
+            - {}
+          name:
+            type: string
+            description: The name of the folder.
+            example: Contracts
+    SignRequestPrefillTag:
+      title: Sign Request Prefill Tag
+      type: object
+      description: 'Prefill tags are used to prefill placeholders with signer input data. Only
+
+        one value field can be included.'
+      properties:
+        document_tag_id:
+          type:
+          - string
+          - 'null'
+          example: '1234'
+          description: This references the ID of a specific tag contained in a file of the sign request.
+        text_value:
+          type:
+          - string
+          - 'null'
+          example: text
+          description: Text prefill value
+        checkbox_value:
+          type:
+          - boolean
+          - 'null'
+          example: true
+          description: Checkbox prefill value
+        date_value:
+          type:
+          - string
+          - 'null'
+          format: date
+          example: '2021-04-26'
+          description: Date prefill value
+    SignTemplates:
+      title: Box Sign templates
+      type: object
+      x-box-resource-id: sign_templates
+      x-box-tag: sign_templates
+      description: 'A list of templates, as returned from any Box Sign
+
+        API endpoints by default.'
+      allOf:
+      - type: object
+        description: 'The part of an API response that describes marker
+
+          based pagination'
+        properties:
+          limit:
+            description: 'The limit that was used for these entries. This will be the same as the
+
+              `limit` query parameter unless that value exceeded the maximum value
+
+              allowed. The maximum value varies by API.'
+            example: 1000
+            type: integer
+            format: int64
+          next_marker:
+            description: The marker for the start of the next page of results.
+            example: JV9IRGZmieiBasejOG9yDCRNgd2ymoZIbjsxbJMjIs3kioVii
+            type:
+            - string
+            - 'null'
+          prev_marker:
+            description: The marker for the start of the previous page of results.
+            example: JV9IRGZmieiBasejOG9yDCRNgd2ymoZIbjsxbJMjIs3kioVih
+            type:
+            - string
+            - 'null'
+      - properties:
+          entries:
+            type: array
+            description: A list of templates.
+            items:
+              $ref: '#/components/schemas/SignTemplate'
+    File--Base:
+      title: File (Base)
+      type:
+      - object
+      - 'null'
+      x-box-resource-id: file--base
+      x-box-sanitized: true
+      x-box-tag: files
+      x-box-variants:
+      - base
+      - mini
+      - standard
+      - full
+      x-box-variant: base
+      description: 'The bare basic representation of a file, the minimal
+
+        amount of fields returned when using the `fields` query
+
+        parameter.'
+      required:
+      - id
+      - type
+      properties:
+        id:
+          type: string
+          description: 'The unique identifier that represent a file.
+
+
+            The ID for any file can be determined
+
+            by visiting a file in the web application
+
+            and copying the ID from the URL. For example,
+
+            for the URL `https://*.app.box.com/files/123`
+
+            the `file_id` is `123`.'
+          example: '12345'
+        etag:
+          type:
+          - string
+          - 'null'
+          example: '1'
+          description: 'The HTTP `etag` of this file. This can be used within some API
+
+            endpoints in the `If-Match` and `If-None-Match` headers to only
+
+            perform changes on the file if (no) changes have happened.'
+        type:
+          type: string
+          description: '`file`'
+          example: file
+          enum:
+          - file
+    TemplateSigner:
+      title: Signer fields for Templates
+      type: object
+      description: The schema for a Signer for Templates
+      allOf:
+      - properties:
+          inputs:
+            type: array
+            items:
+              $ref: '#/components/schemas/TemplateSignerInput'
+            readOnly: true
+          email:
+            type:
+            - string
+            - 'null'
+            description: Email address of the signer
+            example: example@mail.com
+          role:
+            type: string
+            enum:
+            - signer
+            - approver
+            - final_copy_reader
+            description: 'Defines the role of the signer in the signature request. A role of
+
+              `signer` needs to sign the document, a role `approver`
+
+              approves the document and
+
+              a `final_copy_reader` role only
+
+              receives the final signed document and signing log.'
+            example: signer
+            default: signer
+          is_in_person:
+            type: boolean
+            description: 'Used in combination with an embed URL for a sender.
+
+              After the sender signs, they will be
+
+              redirected to the next `in_person` signer.'
+            example: true
+          order:
+            type: integer
+            description: Order of the signer
+            minimum: 0
+            example: 2
+          signer_group_id:
+            type:
+            - string
+            - 'null'
+            description: 'If provided, this value points signers that are assigned the same inputs and belongs to same signer group.
+
+              A signer group is not a Box Group. It is an entity that belongs to the template itself and can only be used
+
+              within Sign Requests created from it.'
+            example: cd4ff89-8fc1-42cf-8b29-1890dedd26d7
+    FileVersion--Mini:
+      title: File version (Mini)
+      type: object
+      x-box-resource-id: file_version--mini
+      x-box-variant: mini
+      description: 'A mini representation of a file version, used when
+
+        nested within another resource.'
+      allOf:
+      - $ref: '#/components/schemas/FileVersion--Base'
+      - properties:
+          sha1:
+            type: string
+            description: The SHA1 hash of this version of the file.
+            example: 134b65991ed521fcfe4724b7d814ab8ded5185dc
+    FileVersion--Base:
+      title: File version (Base)
+      type: object
+      x-box-resource-id: file_version--base
+      x-box-sanitized: true
+      x-box-variants:
+      - base
+      - mini
+      - standard
+      - full
+      x-box-variant: base
+      description: 'The bare basic representation of a file version, the minimal
+
+        amount of fields returned when using the `fields` query
+
+        parameter.'
+      required:
+      - id
+      - type
+      properties:
+        id:
+          type: string
+          description: The unique identifier that represent a file version.
+          example: '12345'
+        type:
+          type: string
+          description: '`file_version`'
+          example: file_version
+          enum:
+          - file_version
     File--Mini:
       title: File (Mini)
       type:
@@ -793,99 +886,6 @@ components:
             allOf:
             - $ref: '#/components/schemas/FileVersion--Mini'
             - description: The information about the current version of the file.
-    SignTemplates:
-      title: Box Sign templates
-      type: object
-      x-box-resource-id: sign_templates
-      x-box-tag: sign_templates
-      description: 'A list of templates, as returned from any Box Sign
-
-        API endpoints by default.'
-      allOf:
-      - type: object
-        description: 'The part of an API response that describes marker
-
-          based pagination'
-        properties:
-          limit:
-            description: 'The limit that was used for these entries. This will be the same as the
-
-              `limit` query parameter unless that value exceeded the maximum value
-
-              allowed. The maximum value varies by API.'
-            example: 1000
-            type: integer
-            format: int64
-          next_marker:
-            description: The marker for the start of the next page of results.
-            example: JV9IRGZmieiBasejOG9yDCRNgd2ymoZIbjsxbJMjIs3kioVii
-            type:
-            - string
-            - 'null'
-          prev_marker:
-            description: The marker for the start of the previous page of results.
-            example: JV9IRGZmieiBasejOG9yDCRNgd2ymoZIbjsxbJMjIs3kioVih
-            type:
-            - string
-            - 'null'
-      - properties:
-          entries:
-            type: array
-            description: A list of templates.
-            items:
-              $ref: '#/components/schemas/SignTemplate'
-    Folder--Base:
-      title: Folder (Base)
-      type: object
-      x-box-resource-id: folder--base
-      x-box-sanitized: true
-      x-box-tag: folders
-      x-box-variants:
-      - base
-      - mini
-      - standard
-      - full
-      x-box-variant: base
-      description: 'The bare basic representation of a folder, the minimal
-
-        amount of fields returned when using the `fields` query
-
-        parameter.'
-      required:
-      - id
-      - type
-      properties:
-        id:
-          type: string
-          description: 'The unique identifier that represent a folder.
-
-
-            The ID for any folder can be determined
-
-            by visiting a folder in the web application
-
-            and copying the ID from the URL. For example,
-
-            for the URL `https://*.app.box.com/folders/123`
-
-            the `folder_id` is `123`.'
-          example: '12345'
-        etag:
-          type:
-          - string
-          - 'null'
-          example: '1'
-          description: 'The HTTP `etag` of this folder. This can be used within some API
-
-            endpoints in the `If-Match` and `If-None-Match` headers to only
-
-            perform changes on the folder if (no) changes have happened.'
-        type:
-          type: string
-          description: '`folder`'
-          example: folder
-          enum:
-          - folder
   securitySchemes:
     OAuth2Security:
       type: oauth2

@@ -250,87 +250,58 @@ paths:
                 $ref: '#/components/schemas/ClientError'
 components:
   schemas:
-    FolderLocks:
-      title: Folder Locks
+    Folder--Base:
+      title: Folder (Base)
       type: object
-      x-box-resource-id: folder_locks
-      x-box-tag: folder_locks
-      description: A list of folder locks
+      x-box-resource-id: folder--base
+      x-box-sanitized: true
+      x-box-tag: folders
+      x-box-variants:
+      - base
+      - mini
+      - standard
+      - full
+      x-box-variant: base
+      description: 'The bare basic representation of a folder, the minimal
+
+        amount of fields returned when using the `fields` query
+
+        parameter.'
+      required:
+      - id
+      - type
       properties:
-        entries:
-          type: array
-          description: A list of folder locks
-          items:
-            $ref: '#/components/schemas/FolderLock'
-        limit:
-          description: 'The limit that was used for these entries. This will be the same as the
-
-            `limit` query parameter unless that value exceeded the maximum value
-
-            allowed. The maximum value varies by API.'
-          example: '1000'
+        id:
           type: string
-        next_marker:
-          description: The marker for the start of the next page of results.
-          example: JV9IRGZmieiBasejOG9yDCRNgd2ymoZIbjsxbJMjIs3kioVii
+          description: 'The unique identifier that represent a folder.
+
+
+            The ID for any folder can be determined
+
+            by visiting a folder in the web application
+
+            and copying the ID from the URL. For example,
+
+            for the URL `https://*.app.box.com/folders/123`
+
+            the `folder_id` is `123`.'
+          example: '12345'
+        etag:
           type:
           - string
           - 'null'
-    FolderLock:
-      title: Folder Lock
-      type: object
-      x-box-resource-id: folder_lock
-      x-box-tag: folder_locks
-      description: 'Folder locks define access restrictions placed by folder owners
+          example: '1'
+          description: 'The HTTP `etag` of this folder. This can be used within some API
 
-        to prevent specific folders from being moved or deleted.'
-      properties:
-        folder:
-          allOf:
-          - $ref: '#/components/schemas/Folder--Mini'
-          - description: The folder that the lock applies to.
-        id:
-          type: string
-          description: The unique identifier for this folder lock.
-          example: '12345678'
+            endpoints in the `If-Match` and `If-None-Match` headers to only
+
+            perform changes on the folder if (no) changes have happened.'
         type:
           type: string
-          description: The object type, always `folder_lock`.
-          example: folder_lock
-        created_by:
-          allOf:
-          - $ref: '#/components/schemas/User--Base'
-          - description: The user or group that created the lock.
-        created_at:
-          type: string
-          format: date-time
-          example: '2020-09-14T23:12:53Z'
-          description: When the folder lock object was created.
-        locked_operations:
-          type: object
-          description: 'The operations that have been locked. Currently the `move`
-
-            and `delete` operations cannot be locked separately, and both need to be
-
-            set to `true`.
-
-            '
-          required:
-          - move
-          - delete
-          properties:
-            move:
-              type: boolean
-              description: Whether moving the folder is restricted.
-              example: true
-            delete:
-              type: boolean
-              description: Whether deleting the folder is restricted.
-              example: true
-        lock_type:
-          type: string
-          description: The lock type, always `freeze`.
-          example: freeze
+          description: '`folder`'
+          example: folder
+          enum:
+          - folder
     ClientError:
       title: Client error
       type: object
@@ -443,6 +414,32 @@ components:
             type: string
             description: The name of the folder.
             example: Contracts
+    FolderLocks:
+      title: Folder Locks
+      type: object
+      x-box-resource-id: folder_locks
+      x-box-tag: folder_locks
+      description: A list of folder locks
+      properties:
+        entries:
+          type: array
+          description: A list of folder locks
+          items:
+            $ref: '#/components/schemas/FolderLock'
+        limit:
+          description: 'The limit that was used for these entries. This will be the same as the
+
+            `limit` query parameter unless that value exceeded the maximum value
+
+            allowed. The maximum value varies by API.'
+          example: '1000'
+          type: string
+        next_marker:
+          description: The marker for the start of the next page of results.
+          example: JV9IRGZmieiBasejOG9yDCRNgd2ymoZIbjsxbJMjIs3kioVii
+          type:
+          - string
+          - 'null'
     User--Base:
       title: User (Base)
       type: object
@@ -471,58 +468,61 @@ components:
           example: user
           enum:
           - user
-    Folder--Base:
-      title: Folder (Base)
+    FolderLock:
+      title: Folder Lock
       type: object
-      x-box-resource-id: folder--base
-      x-box-sanitized: true
-      x-box-tag: folders
-      x-box-variants:
-      - base
-      - mini
-      - standard
-      - full
-      x-box-variant: base
-      description: 'The bare basic representation of a folder, the minimal
+      x-box-resource-id: folder_lock
+      x-box-tag: folder_locks
+      description: 'Folder locks define access restrictions placed by folder owners
 
-        amount of fields returned when using the `fields` query
-
-        parameter.'
-      required:
-      - id
-      - type
+        to prevent specific folders from being moved or deleted.'
       properties:
+        folder:
+          allOf:
+          - $ref: '#/components/schemas/Folder--Mini'
+          - description: The folder that the lock applies to.
         id:
           type: string
-          description: 'The unique identifier that represent a folder.
-
-
-            The ID for any folder can be determined
-
-            by visiting a folder in the web application
-
-            and copying the ID from the URL. For example,
-
-            for the URL `https://*.app.box.com/folders/123`
-
-            the `folder_id` is `123`.'
-          example: '12345'
-        etag:
-          type:
-          - string
-          - 'null'
-          example: '1'
-          description: 'The HTTP `etag` of this folder. This can be used within some API
-
-            endpoints in the `If-Match` and `If-None-Match` headers to only
-
-            perform changes on the folder if (no) changes have happened.'
+          description: The unique identifier for this folder lock.
+          example: '12345678'
         type:
           type: string
-          description: '`folder`'
-          example: folder
-          enum:
-          - folder
+          description: The object type, always `folder_lock`.
+          example: folder_lock
+        created_by:
+          allOf:
+          - $ref: '#/components/schemas/User--Base'
+          - description: The user or group that created the lock.
+        created_at:
+          type: string
+          format: date-time
+          example: '2020-09-14T23:12:53Z'
+          description: When the folder lock object was created.
+        locked_operations:
+          type: object
+          description: 'The operations that have been locked. Currently the `move`
+
+            and `delete` operations cannot be locked separately, and both need to be
+
+            set to `true`.
+
+            '
+          required:
+          - move
+          - delete
+          properties:
+            move:
+              type: boolean
+              description: Whether moving the folder is restricted.
+              example: true
+            delete:
+              type: boolean
+              description: Whether deleting the folder is restricted.
+              example: true
+        lock_type:
+          type: string
+          description: The lock type, always `freeze`.
+          example: freeze
   securitySchemes:
     OAuth2Security:
       type: oauth2

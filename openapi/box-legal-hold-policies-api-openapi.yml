@@ -342,66 +342,6 @@ paths:
                 $ref: '#/components/schemas/ClientError'
 components:
   schemas:
-    LegalHoldPolicies:
-      title: Legal hold policies
-      type: object
-      x-box-resource-id: legal_hold_policies
-      x-box-tag: legal_hold_policies
-      description: A list of legal hold policies.
-      allOf:
-      - type: object
-        description: 'The part of an API response that describes marker
-
-          based pagination'
-        properties:
-          limit:
-            description: 'The limit that was used for these entries. This will be the same as the
-
-              `limit` query parameter unless that value exceeded the maximum value
-
-              allowed. The maximum value varies by API.'
-            example: 1000
-            type: integer
-            format: int64
-          next_marker:
-            description: The marker for the start of the next page of results.
-            example: JV9IRGZmieiBasejOG9yDCRNgd2ymoZIbjsxbJMjIs3kioVii
-            type:
-            - string
-            - 'null'
-          prev_marker:
-            description: The marker for the start of the previous page of results.
-            example: JV9IRGZmieiBasejOG9yDCRNgd2ymoZIbjsxbJMjIs3kioVih
-            type:
-            - string
-            - 'null'
-      - properties:
-          entries:
-            type: array
-            description: A list of legal hold policies
-            items:
-              $ref: '#/components/schemas/LegalHoldPolicy'
-    User--Mini:
-      title: User (Mini)
-      type: object
-      x-box-resource-id: user--mini
-      x-box-variant: mini
-      description: 'A mini representation of a user, as can be returned when nested within other
-
-        resources.'
-      allOf:
-      - $ref: '#/components/schemas/User--Base'
-      - properties:
-          name:
-            type: string
-            description: The display name of this user
-            example: Aaron Levie
-            maxLength: 50
-          login:
-            type: string
-            format: email
-            description: The primary email address of this user
-            example: ceo@example.com
     ClientError:
       title: Client error
       type: object
@@ -469,6 +409,45 @@ components:
             when contacting Box support.'
           type: string
           example: abcdef123456
+    LegalHoldPolicies:
+      title: Legal hold policies
+      type: object
+      x-box-resource-id: legal_hold_policies
+      x-box-tag: legal_hold_policies
+      description: A list of legal hold policies.
+      allOf:
+      - type: object
+        description: 'The part of an API response that describes marker
+
+          based pagination'
+        properties:
+          limit:
+            description: 'The limit that was used for these entries. This will be the same as the
+
+              `limit` query parameter unless that value exceeded the maximum value
+
+              allowed. The maximum value varies by API.'
+            example: 1000
+            type: integer
+            format: int64
+          next_marker:
+            description: The marker for the start of the next page of results.
+            example: JV9IRGZmieiBasejOG9yDCRNgd2ymoZIbjsxbJMjIs3kioVii
+            type:
+            - string
+            - 'null'
+          prev_marker:
+            description: The marker for the start of the previous page of results.
+            example: JV9IRGZmieiBasejOG9yDCRNgd2ymoZIbjsxbJMjIs3kioVih
+            type:
+            - string
+            - 'null'
+      - properties:
+          entries:
+            type: array
+            description: A list of legal hold policies
+            items:
+              $ref: '#/components/schemas/LegalHoldPolicy'
     LegalHoldPolicy--Mini:
       title: Legal hold policy (Mini)
       type: object
@@ -493,6 +472,55 @@ components:
           example: legal_hold_policy
           enum:
           - legal_hold_policy
+    User--Base:
+      title: User (Base)
+      type: object
+      x-box-resource-id: user--base
+      x-box-tag: users
+      x-box-variants:
+      - base
+      - mini
+      - standard
+      - full
+      x-box-variant: base
+      description: 'A mini representation of a user, used when
+
+        nested within another resource.'
+      required:
+      - type
+      - id
+      properties:
+        id:
+          type: string
+          description: The unique identifier for this user
+          example: '11446498'
+        type:
+          type: string
+          description: '`user`'
+          example: user
+          enum:
+          - user
+    User--Mini:
+      title: User (Mini)
+      type: object
+      x-box-resource-id: user--mini
+      x-box-variant: mini
+      description: 'A mini representation of a user, as can be returned when nested within other
+
+        resources.'
+      allOf:
+      - $ref: '#/components/schemas/User--Base'
+      - properties:
+          name:
+            type: string
+            description: The display name of this user
+            example: Aaron Levie
+            maxLength: 50
+          login:
+            type: string
+            format: email
+            description: The primary email address of this user
+            example: ceo@example.com
     LegalHoldPolicy:
       title: Legal hold policy
       type: object
@@ -598,34 +626,6 @@ components:
             example: Example
             description: Optional notes about why the policy was created.
             maxLength: 500
-    User--Base:
-      title: User (Base)
-      type: object
-      x-box-resource-id: user--base
-      x-box-tag: users
-      x-box-variants:
-      - base
-      - mini
-      - standard
-      - full
-      x-box-variant: base
-      description: 'A mini representation of a user, used when
-
-        nested within another resource.'
-      required:
-      - type
-      - id
-      properties:
-        id:
-          type: string
-          description: The unique identifier for this user
-          example: '11446498'
-        type:
-          type: string
-          description: '`user`'
-          example: user
-          enum:
-          - user
   securitySchemes:
     OAuth2Security:
       type: oauth2

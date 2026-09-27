@@ -332,6 +332,94 @@ paths:
                 $ref: '#/components/schemas/ClientError'
 components:
   schemas:
+    ZipDownloadRequest:
+      title: Create a `zip` archive
+      type: object
+      description: A request to create a `zip` archive to download
+      required:
+      - items
+      properties:
+        items:
+          type: array
+          description: 'A list of items to add to the `zip` archive. These can
+
+            be folders or files.'
+          items:
+            type: object
+            description: An item to add to the `zip` archive. This can be a file or a folder.
+            required:
+            - type
+            - id
+            properties:
+              type:
+                type: string
+                description: The type of the item to add to the archive.
+                example: file
+                enum:
+                - file
+                - folder
+              id:
+                type: string
+                description: 'The identifier of the item to add to the archive. When this item is
+
+                  a folder then this can not be the root folder with ID `0`.'
+                example: '12345'
+        download_file_name:
+          type: string
+          description: 'The optional name of the `zip` archive. This name will be appended by the
+
+            `.zip` file extension, for example `January Financials.zip`.'
+          example: January Financials
+    ZipDownloadStatus:
+      title: Zip download status
+      type: object
+      x-box-resource-id: zip_download_status
+      x-box-tag: zip_downloads
+      x-box-reference-category: zip_downloads
+      description: The status of a `zip` archive being downloaded.
+      properties:
+        total_file_count:
+          type: integer
+          description: The total number of files in the archive.
+          example: 20
+          minimum: 0
+          maximum: 10000
+        downloaded_file_count:
+          type: integer
+          description: The number of files that have already been downloaded.
+          example: 10
+          minimum: 0
+        skipped_file_count:
+          type: integer
+          description: 'The number of files that have been skipped as they could not be
+
+            downloaded. In many cases this is due to permission issues that have
+
+            surfaced between the creation of the request for the archive and the
+
+            archive being downloaded.'
+          example: 5
+          minimum: 0
+        skipped_folder_count:
+          type: integer
+          description: 'The number of folders that have been skipped as they could not be
+
+            downloaded. In many cases this is due to permission issues that have
+
+            surfaced between the creation of the request for the archive and the
+
+            archive being downloaded.'
+          example: 5
+          minimum: 0
+        state:
+          type: string
+          description: The state of the archive being downloaded.
+          default: in_progress
+          example: succeeded
+          enum:
+          - in_progress
+          - failed
+          - succeeded
     ZipDownload:
       title: Zip download
       type: object
@@ -527,94 +615,6 @@ components:
             when contacting Box support.'
           type: string
           example: abcdef123456
-    ZipDownloadRequest:
-      title: Create a `zip` archive
-      type: object
-      description: A request to create a `zip` archive to download
-      required:
-      - items
-      properties:
-        items:
-          type: array
-          description: 'A list of items to add to the `zip` archive. These can
-
-            be folders or files.'
-          items:
-            type: object
-            description: An item to add to the `zip` archive. This can be a file or a folder.
-            required:
-            - type
-            - id
-            properties:
-              type:
-                type: string
-                description: The type of the item to add to the archive.
-                example: file
-                enum:
-                - file
-                - folder
-              id:
-                type: string
-                description: 'The identifier of the item to add to the archive. When this item is
-
-                  a folder then this can not be the root folder with ID `0`.'
-                example: '12345'
-        download_file_name:
-          type: string
-          description: 'The optional name of the `zip` archive. This name will be appended by the
-
-            `.zip` file extension, for example `January Financials.zip`.'
-          example: January Financials
-    ZipDownloadStatus:
-      title: Zip download status
-      type: object
-      x-box-resource-id: zip_download_status
-      x-box-tag: zip_downloads
-      x-box-reference-category: zip_downloads
-      description: The status of a `zip` archive being downloaded.
-      properties:
-        total_file_count:
-          type: integer
-          description: The total number of files in the archive.
-          example: 20
-          minimum: 0
-          maximum: 10000
-        downloaded_file_count:
-          type: integer
-          description: The number of files that have already been downloaded.
-          example: 10
-          minimum: 0
-        skipped_file_count:
-          type: integer
-          description: 'The number of files that have been skipped as they could not be
-
-            downloaded. In many cases this is due to permission issues that have
-
-            surfaced between the creation of the request for the archive and the
-
-            archive being downloaded.'
-          example: 5
-          minimum: 0
-        skipped_folder_count:
-          type: integer
-          description: 'The number of folders that have been skipped as they could not be
-
-            downloaded. In many cases this is due to permission issues that have
-
-            surfaced between the creation of the request for the archive and the
-
-            archive being downloaded.'
-          example: 5
-          minimum: 0
-        state:
-          type: string
-          description: The state of the archive being downloaded.
-          default: in_progress
-          example: succeeded
-          enum:
-          - in_progress
-          - failed
-          - succeeded
   securitySchemes:
     OAuth2Security:
       type: oauth2

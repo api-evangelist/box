@@ -432,79 +432,22 @@ components:
             description: A list of metadata cascade policies
             items:
               $ref: '#/components/schemas/MetadataCascadePolicy'
-    ConflictError:
-      title: Conflict error
+    FileConflict:
+      title: File (Conflict)
       type: object
-      x-box-resource-id: conflict_error
-      x-box-tag: uploads
-      description: 'The error that occurs when a file can not be created due
-
-        to a conflict.'
-      allOf:
-      - $ref: '#/components/schemas/ClientError'
-      - properties:
-          context_info:
-            type: object
-            properties:
-              conflicts:
-                type: array
-                description: A list of the file conflicts that caused this error.
-                items:
-                  $ref: '#/components/schemas/FileConflict'
-    File--Base:
-      title: File (Base)
-      type:
-      - object
-      - 'null'
-      x-box-resource-id: file--base
       x-box-sanitized: true
-      x-box-tag: files
-      x-box-variants:
-      - base
-      - mini
-      - standard
-      - full
-      x-box-variant: base
-      description: 'The bare basic representation of a file, the minimal
-
-        amount of fields returned when using the `fields` query
-
-        parameter.'
-      required:
-      - id
-      - type
-      properties:
-        id:
-          type: string
-          description: 'The unique identifier that represent a file.
-
-
-            The ID for any file can be determined
-
-            by visiting a file in the web application
-
-            and copying the ID from the URL. For example,
-
-            for the URL `https://*.app.box.com/files/123`
-
-            the `file_id` is `123`.'
-          example: '12345'
-        etag:
-          type:
-          - string
-          - 'null'
-          example: '1'
-          description: 'The HTTP `etag` of this file. This can be used within some API
-
-            endpoints in the `If-Match` and `If-None-Match` headers to only
-
-            perform changes on the file if (no) changes have happened.'
-        type:
-          type: string
-          description: '`file`'
-          example: file
-          enum:
-          - file
+      x-box-resource-id: file_conflict
+      x-box-tag: null
+      description: A representation of a file that is used to show
+      allOf:
+      - $ref: '#/components/schemas/File--Mini'
+      - properties:
+          sha1:
+            type: string
+            example: 85136C79CBF9FE36BB9D05D0639C70C265C18D37
+            description: The SHA1 hash of the file.
+          file_version:
+            $ref: '#/components/schemas/FileVersion--Mini'
     ClientError:
       title: Client error
       type: object
@@ -572,125 +515,25 @@ components:
             when contacting Box support.'
           type: string
           example: abcdef123456
-    FileVersion--Mini:
-      title: File version (Mini)
+    ConflictError:
+      title: Conflict error
       type: object
-      x-box-resource-id: file_version--mini
-      x-box-variant: mini
-      description: 'A mini representation of a file version, used when
+      x-box-resource-id: conflict_error
+      x-box-tag: uploads
+      description: 'The error that occurs when a file can not be created due
 
-        nested within another resource.'
+        to a conflict.'
       allOf:
-      - $ref: '#/components/schemas/FileVersion--Base'
+      - $ref: '#/components/schemas/ClientError'
       - properties:
-          sha1:
-            type: string
-            description: The SHA1 hash of this version of the file.
-            example: 134b65991ed521fcfe4724b7d814ab8ded5185dc
-    FileVersion--Base:
-      title: File version (Base)
-      type: object
-      x-box-resource-id: file_version--base
-      x-box-sanitized: true
-      x-box-variants:
-      - base
-      - mini
-      - standard
-      - full
-      x-box-variant: base
-      description: 'The bare basic representation of a file version, the minimal
-
-        amount of fields returned when using the `fields` query
-
-        parameter.'
-      required:
-      - id
-      - type
-      properties:
-        id:
-          type: string
-          description: The unique identifier that represent a file version.
-          example: '12345'
-        type:
-          type: string
-          description: '`file_version`'
-          example: file_version
-          enum:
-          - file_version
-    FileConflict:
-      title: File (Conflict)
-      type: object
-      x-box-sanitized: true
-      x-box-resource-id: file_conflict
-      x-box-tag: null
-      description: A representation of a file that is used to show
-      allOf:
-      - $ref: '#/components/schemas/File--Mini'
-      - properties:
-          sha1:
-            type: string
-            example: 85136C79CBF9FE36BB9D05D0639C70C265C18D37
-            description: The SHA1 hash of the file.
-          file_version:
-            $ref: '#/components/schemas/FileVersion--Mini'
-    File--Mini:
-      title: File (Mini)
-      type:
-      - object
-      - 'null'
-      x-box-resource-id: file--mini
-      x-box-variant: mini
-      description: 'A mini representation of a file, used when
-
-        nested under another resource.'
-      allOf:
-      - $ref: '#/components/schemas/File--Base'
-      - properties:
-          sequence_id:
-            allOf:
-            - type:
-              - string
-              - 'null'
-              example: '3'
-              description: 'A numeric identifier that represents the most recent user event
-
-                that has been applied to this item.
-
-
-                This can be used in combination with the `GET /events`-endpoint
-
-                to filter out user events that would have occurred before this
-
-                identifier was read.
-
-
-                An example would be where a Box Drive-like application
-
-                would fetch an item via the API, and then listen to incoming
-
-                user events for changes to the item. The application would
-
-                ignore any user events where the `sequence_id` in the event
-
-                is smaller than or equal to the `sequence_id` in the originally
-
-                fetched resource.'
-            - {}
-          name:
-            type: string
-            description: The name of the file
-            example: Contract.pdf
-          sha1:
-            type: string
-            format: digest
-            example: 85136C79CBF9FE36BB9D05D0639C70C265C18D37
-            description: 'The SHA1 hash of the file. This can be used to compare the contents
-
-              of a file on Box with a local file.'
-          file_version:
-            allOf:
-            - $ref: '#/components/schemas/FileVersion--Mini'
-            - description: The information about the current version of the file.
+          context_info:
+            type: object
+            properties:
+              conflicts:
+                type: array
+                description: A list of the file conflicts that caused this error.
+                items:
+                  $ref: '#/components/schemas/FileConflict'
     MetadataCascadePolicy:
       title: Metadata cascade policy
       type: object
@@ -782,6 +625,163 @@ components:
             [file]: e://get-files-id-metadata
 
             [folder]: e://get-folders-id-metadata'
+    File--Base:
+      title: File (Base)
+      type:
+      - object
+      - 'null'
+      x-box-resource-id: file--base
+      x-box-sanitized: true
+      x-box-tag: files
+      x-box-variants:
+      - base
+      - mini
+      - standard
+      - full
+      x-box-variant: base
+      description: 'The bare basic representation of a file, the minimal
+
+        amount of fields returned when using the `fields` query
+
+        parameter.'
+      required:
+      - id
+      - type
+      properties:
+        id:
+          type: string
+          description: 'The unique identifier that represent a file.
+
+
+            The ID for any file can be determined
+
+            by visiting a file in the web application
+
+            and copying the ID from the URL. For example,
+
+            for the URL `https://*.app.box.com/files/123`
+
+            the `file_id` is `123`.'
+          example: '12345'
+        etag:
+          type:
+          - string
+          - 'null'
+          example: '1'
+          description: 'The HTTP `etag` of this file. This can be used within some API
+
+            endpoints in the `If-Match` and `If-None-Match` headers to only
+
+            perform changes on the file if (no) changes have happened.'
+        type:
+          type: string
+          description: '`file`'
+          example: file
+          enum:
+          - file
+    FileVersion--Mini:
+      title: File version (Mini)
+      type: object
+      x-box-resource-id: file_version--mini
+      x-box-variant: mini
+      description: 'A mini representation of a file version, used when
+
+        nested within another resource.'
+      allOf:
+      - $ref: '#/components/schemas/FileVersion--Base'
+      - properties:
+          sha1:
+            type: string
+            description: The SHA1 hash of this version of the file.
+            example: 134b65991ed521fcfe4724b7d814ab8ded5185dc
+    FileVersion--Base:
+      title: File version (Base)
+      type: object
+      x-box-resource-id: file_version--base
+      x-box-sanitized: true
+      x-box-variants:
+      - base
+      - mini
+      - standard
+      - full
+      x-box-variant: base
+      description: 'The bare basic representation of a file version, the minimal
+
+        amount of fields returned when using the `fields` query
+
+        parameter.'
+      required:
+      - id
+      - type
+      properties:
+        id:
+          type: string
+          description: The unique identifier that represent a file version.
+          example: '12345'
+        type:
+          type: string
+          description: '`file_version`'
+          example: file_version
+          enum:
+          - file_version
+    File--Mini:
+      title: File (Mini)
+      type:
+      - object
+      - 'null'
+      x-box-resource-id: file--mini
+      x-box-variant: mini
+      description: 'A mini representation of a file, used when
+
+        nested under another resource.'
+      allOf:
+      - $ref: '#/components/schemas/File--Base'
+      - properties:
+          sequence_id:
+            allOf:
+            - type:
+              - string
+              - 'null'
+              example: '3'
+              description: 'A numeric identifier that represents the most recent user event
+
+                that has been applied to this item.
+
+
+                This can be used in combination with the `GET /events`-endpoint
+
+                to filter out user events that would have occurred before this
+
+                identifier was read.
+
+
+                An example would be where a Box Drive-like application
+
+                would fetch an item via the API, and then listen to incoming
+
+                user events for changes to the item. The application would
+
+                ignore any user events where the `sequence_id` in the event
+
+                is smaller than or equal to the `sequence_id` in the originally
+
+                fetched resource.'
+            - {}
+          name:
+            type: string
+            description: The name of the file
+            example: Contract.pdf
+          sha1:
+            type: string
+            format: digest
+            example: 85136C79CBF9FE36BB9D05D0639C70C265C18D37
+            description: 'The SHA1 hash of the file. This can be used to compare the contents
+
+              of a file on Box with a local file.'
+          file_version:
+            allOf:
+            - $ref: '#/components/schemas/FileVersion--Mini'
+            - description: The information about the current version of the file.
   securitySchemes:
     OAuth2Security:
       type: oauth2

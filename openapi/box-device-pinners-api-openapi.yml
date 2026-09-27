@@ -148,27 +148,53 @@ paths:
                 $ref: '#/components/schemas/ClientError'
 components:
   schemas:
-    User--Mini:
-      title: User (Mini)
+    DevicePinners:
+      title: Device pinners
       type: object
-      x-box-resource-id: user--mini
-      x-box-variant: mini
-      description: 'A mini representation of a user, as can be returned when nested within other
+      x-box-resource-id: device_pinners
+      x-box-tag: device_pinners
+      description: A list of device pins
+      properties:
+        entries:
+          type: array
+          description: A list of device pins
+          items:
+            $ref: '#/components/schemas/DevicePinner'
+        limit:
+          description: 'The limit that was used for these entries. This will be the same as the
 
-        resources.'
-      allOf:
-      - $ref: '#/components/schemas/User--Base'
-      - properties:
-          name:
-            type: string
-            description: The display name of this user
-            example: Aaron Levie
-            maxLength: 50
-          login:
-            type: string
-            format: email
-            description: The primary email address of this user
-            example: ceo@example.com
+            `limit` query parameter unless that value exceeded the maximum value
+
+            allowed.'
+          default: 100
+          example: 200
+          type: integer
+          format: int64
+        next_marker:
+          description: The marker for the start of the next page of results.
+          example: 3000
+          type: integer
+          format: int64
+        order:
+          description: The order by which items are returned.
+          type: array
+          items:
+            type: object
+            description: The order in which a pagination is ordered
+            properties:
+              by:
+                description: The field that is ordered by
+                example: id
+                enum:
+                - id
+                type: string
+              direction:
+                type: string
+                description: The direction to order by, either ascending or descending
+                example: asc
+                enum:
+                - asc
+                - desc
     ClientError:
       title: Client error
       type: object
@@ -236,33 +262,6 @@ components:
             when contacting Box support.'
           type: string
           example: abcdef123456
-    DevicePinner:
-      title: Device pinner
-      type: object
-      x-box-resource-id: device_pinner
-      x-box-tag: device_pinners
-      description: 'Device pins allow enterprises to control what devices can
-
-        use native Box applications.'
-      properties:
-        id:
-          type: string
-          description: The unique identifier for this device pin.
-          example: '11446498'
-        type:
-          type: string
-          description: '`device_pinner`'
-          example: device_pinner
-          enum:
-          - device_pinner
-        owned_by:
-          allOf:
-          - $ref: '#/components/schemas/User--Mini'
-          - description: The user that the device pin belongs to
-        product_name:
-          type: string
-          description: The type of device being pinned
-          example: iPad
     User--Base:
       title: User (Base)
       type: object
@@ -291,53 +290,54 @@ components:
           example: user
           enum:
           - user
-    DevicePinners:
-      title: Device pinners
+    DevicePinner:
+      title: Device pinner
       type: object
-      x-box-resource-id: device_pinners
+      x-box-resource-id: device_pinner
       x-box-tag: device_pinners
-      description: A list of device pins
+      description: 'Device pins allow enterprises to control what devices can
+
+        use native Box applications.'
       properties:
-        entries:
-          type: array
-          description: A list of device pins
-          items:
-            $ref: '#/components/schemas/DevicePinner'
-        limit:
-          description: 'The limit that was used for these entries. This will be the same as the
+        id:
+          type: string
+          description: The unique identifier for this device pin.
+          example: '11446498'
+        type:
+          type: string
+          description: '`device_pinner`'
+          example: device_pinner
+          enum:
+          - device_pinner
+        owned_by:
+          allOf:
+          - $ref: '#/components/schemas/User--Mini'
+          - description: The user that the device pin belongs to
+        product_name:
+          type: string
+          description: The type of device being pinned
+          example: iPad
+    User--Mini:
+      title: User (Mini)
+      type: object
+      x-box-resource-id: user--mini
+      x-box-variant: mini
+      description: 'A mini representation of a user, as can be returned when nested within other
 
-            `limit` query parameter unless that value exceeded the maximum value
-
-            allowed.'
-          default: 100
-          example: 200
-          type: integer
-          format: int64
-        next_marker:
-          description: The marker for the start of the next page of results.
-          example: 3000
-          type: integer
-          format: int64
-        order:
-          description: The order by which items are returned.
-          type: array
-          items:
-            type: object
-            description: The order in which a pagination is ordered
-            properties:
-              by:
-                description: The field that is ordered by
-                example: id
-                enum:
-                - id
-                type: string
-              direction:
-                type: string
-                description: The direction to order by, either ascending or descending
-                example: asc
-                enum:
-                - asc
-                - desc
+        resources.'
+      allOf:
+      - $ref: '#/components/schemas/User--Base'
+      - properties:
+          name:
+            type: string
+            description: The display name of this user
+            example: Aaron Levie
+            maxLength: 50
+          login:
+            type: string
+            format: email
+            description: The primary email address of this user
+            example: ceo@example.com
   securitySchemes:
     OAuth2Security:
       type: oauth2

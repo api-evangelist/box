@@ -247,41 +247,6 @@ paths:
                 $ref: '#/components/schemas/ClientError'
 components:
   schemas:
-    ShieldInformationBarrierSegmentRestrictions:
-      title: List of Shield Information Barrier Segment Restrictions
-      type: object
-      x-box-resource-id: shield_information_barrier_segment_restrictions
-      x-box-tag: shield_information_barrier_segment_restrictions
-      description: List of shield information barrier segment restriction objects
-      allOf:
-      - type: object
-        description: 'The part of an API response that describes marker
-
-          based pagination'
-        properties:
-          limit:
-            description: 'The limit that was used for these entries. This will be the same as the
-
-              `limit` query parameter unless that value exceeded the maximum value
-
-              allowed. The maximum value varies by API.'
-            example: 1000
-            type: integer
-            format: int64
-          next_marker:
-            description: The marker for the start of the next page of results.
-            example: JV9IRGZmieiBasejOG9yDCRNgd2ymoZIbjsxbJMjIs3kioVii
-            type:
-            - string
-            - 'null'
-      - properties:
-          entries:
-            type: array
-            description: 'A list of shield information barrier
-
-              segment restriction objects'
-            items:
-              $ref: '#/components/schemas/ShieldInformationBarrierSegmentRestriction'
     ClientError:
       title: Client error
       type: object
@@ -349,29 +314,6 @@ components:
             when contacting Box support.'
           type: string
           example: abcdef123456
-    ShieldInformationBarrier--Base:
-      title: Shield information barrier (Base)
-      type: object
-      x-box-resource-id: shield_information_barrier--base
-      x-box-tag: shield_information_barriers
-      x-box-variants:
-      - base
-      - standard
-      x-box-variant: base
-      description: 'A base representation of a
-
-        shield information barrier object'
-      properties:
-        id:
-          type: string
-          example: '11446498'
-          description: The unique identifier for the shield information barrier
-        type:
-          type: string
-          description: The type of the shield information barrier
-          example: shield_information_barrier
-          enum:
-          - shield_information_barrier
     ShieldInformationBarrierSegmentRestriction--Mini:
       title: Shield information barrier segment restriction (Mini)
       type: object
@@ -478,34 +420,41 @@ components:
             allOf:
             - $ref: '#/components/schemas/User--Base'
             - description: The user that updated this shield information barrier segment Restriction.
-    User--Base:
-      title: User (Base)
+    ShieldInformationBarrierSegmentRestrictions:
+      title: List of Shield Information Barrier Segment Restrictions
       type: object
-      x-box-resource-id: user--base
-      x-box-tag: users
-      x-box-variants:
-      - base
-      - mini
-      - standard
-      - full
-      x-box-variant: base
-      description: 'A mini representation of a user, used when
+      x-box-resource-id: shield_information_barrier_segment_restrictions
+      x-box-tag: shield_information_barrier_segment_restrictions
+      description: List of shield information barrier segment restriction objects
+      allOf:
+      - type: object
+        description: 'The part of an API response that describes marker
 
-        nested within another resource.'
-      required:
-      - type
-      - id
-      properties:
-        id:
-          type: string
-          description: The unique identifier for this user
-          example: '11446498'
-        type:
-          type: string
-          description: '`user`'
-          example: user
-          enum:
-          - user
+          based pagination'
+        properties:
+          limit:
+            description: 'The limit that was used for these entries. This will be the same as the
+
+              `limit` query parameter unless that value exceeded the maximum value
+
+              allowed. The maximum value varies by API.'
+            example: 1000
+            type: integer
+            format: int64
+          next_marker:
+            description: The marker for the start of the next page of results.
+            example: JV9IRGZmieiBasejOG9yDCRNgd2ymoZIbjsxbJMjIs3kioVii
+            type:
+            - string
+            - 'null'
+      - properties:
+          entries:
+            type: array
+            description: 'A list of shield information barrier
+
+              segment restriction objects'
+            items:
+              $ref: '#/components/schemas/ShieldInformationBarrierSegmentRestriction'
     ShieldInformationBarrierSegmentRestriction--Base:
       title: Shield information barrier segment restriction (Base)
       type: object
@@ -537,6 +486,57 @@ components:
           description: 'The unique identifier for the
 
             shield information barrier segment restriction.'
+    User--Base:
+      title: User (Base)
+      type: object
+      x-box-resource-id: user--base
+      x-box-tag: users
+      x-box-variants:
+      - base
+      - mini
+      - standard
+      - full
+      x-box-variant: base
+      description: 'A mini representation of a user, used when
+
+        nested within another resource.'
+      required:
+      - type
+      - id
+      properties:
+        id:
+          type: string
+          description: The unique identifier for this user
+          example: '11446498'
+        type:
+          type: string
+          description: '`user`'
+          example: user
+          enum:
+          - user
+    ShieldInformationBarrier--Base:
+      title: Shield information barrier (Base)
+      type: object
+      x-box-resource-id: shield_information_barrier--base
+      x-box-tag: shield_information_barriers
+      x-box-variants:
+      - base
+      - standard
+      x-box-variant: base
+      description: 'A base representation of a
+
+        shield information barrier object'
+      properties:
+        id:
+          type: string
+          example: '11446498'
+          description: The unique identifier for the shield information barrier
+        type:
+          type: string
+          description: The type of the shield information barrier
+          example: shield_information_barrier
+          enum:
+          - shield_information_barrier
   securitySchemes:
     OAuth2Security:
       type: oauth2

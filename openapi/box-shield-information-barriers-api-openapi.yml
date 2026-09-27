@@ -218,6 +218,105 @@ paths:
                 $ref: '#/components/schemas/ClientError'
 components:
   schemas:
+    ShieldInformationBarriers:
+      title: List of Shield Information Barriers
+      type: object
+      x-box-resource-id: shield_information_barriers
+      x-box-tag: shield_information_barriers
+      description: List of Shield Information Barrier objects
+      allOf:
+      - type: object
+        description: 'The part of an API response that describes marker
+
+          based pagination'
+        properties:
+          limit:
+            description: 'The limit that was used for these entries. This will be the same as the
+
+              `limit` query parameter unless that value exceeded the maximum value
+
+              allowed. The maximum value varies by API.'
+            example: 1000
+            type: integer
+            format: int64
+          next_marker:
+            description: The marker for the start of the next page of results.
+            example: JV9IRGZmieiBasejOG9yDCRNgd2ymoZIbjsxbJMjIs3kioVii
+            type:
+            - string
+            - 'null'
+      - properties:
+          entries:
+            type: array
+            description: A list of shield information barrier objects
+            items:
+              $ref: '#/components/schemas/ShieldInformationBarrier'
+    ShieldInformationBarrier:
+      title: Shield information barrier
+      type: object
+      x-box-resource-id: shield_information_barrier
+      x-box-tag: shield_information_barriers
+      x-box-variants:
+      - base
+      - standard
+      x-box-variant: standard
+      description: 'A standard representation of a
+
+        shield information barrier object'
+      properties:
+        id:
+          type: string
+          example: '11446498'
+          description: The unique identifier for the shield information barrier
+        type:
+          type: string
+          description: The type of the shield information barrier
+          example: shield_information_barrier
+          enum:
+          - shield_information_barrier
+        enterprise:
+          allOf:
+          - $ref: '#/components/schemas/Enterprise--Base'
+          description: The `type` and `id` of enterprise this barrier is under.
+        status:
+          type: string
+          enum:
+          - draft
+          - pending
+          - disabled
+          - enabled
+          - invalid
+          description: Status of the shield information barrier
+          example: draft
+        created_at:
+          type: string
+          format: date-time
+          example: '2020-06-26T18:44:45.869Z'
+          description: 'ISO date time string when this
+
+            shield information barrier object was created.'
+        created_by:
+          allOf:
+          - $ref: '#/components/schemas/User--Base'
+          description: The user who created this shield information barrier.
+        updated_at:
+          type: string
+          format: date-time
+          example: '2020-07-26T18:44:45.869Z'
+          description: ISO date time string when this shield information barrier was updated.
+        updated_by:
+          allOf:
+          - $ref: '#/components/schemas/User--Base'
+          description: The user that updated this shield information barrier.
+        enabled_at:
+          type: string
+          format: date-time
+          example: '2020-07-26T18:44:45.869Z'
+          description: ISO date time string when this shield information barrier was enabled.
+        enabled_by:
+          allOf:
+          - $ref: '#/components/schemas/User--Base'
+          - description: The user that enabled this shield information barrier.
     ClientError:
       title: Client error
       type: object
@@ -285,72 +384,6 @@ components:
             when contacting Box support.'
           type: string
           example: abcdef123456
-    ShieldInformationBarrier:
-      title: Shield information barrier
-      type: object
-      x-box-resource-id: shield_information_barrier
-      x-box-tag: shield_information_barriers
-      x-box-variants:
-      - base
-      - standard
-      x-box-variant: standard
-      description: 'A standard representation of a
-
-        shield information barrier object'
-      properties:
-        id:
-          type: string
-          example: '11446498'
-          description: The unique identifier for the shield information barrier
-        type:
-          type: string
-          description: The type of the shield information barrier
-          example: shield_information_barrier
-          enum:
-          - shield_information_barrier
-        enterprise:
-          allOf:
-          - $ref: '#/components/schemas/Enterprise--Base'
-          description: The `type` and `id` of enterprise this barrier is under.
-        status:
-          type: string
-          enum:
-          - draft
-          - pending
-          - disabled
-          - enabled
-          - invalid
-          description: Status of the shield information barrier
-          example: draft
-        created_at:
-          type: string
-          format: date-time
-          example: '2020-06-26T18:44:45.869Z'
-          description: 'ISO date time string when this
-
-            shield information barrier object was created.'
-        created_by:
-          allOf:
-          - $ref: '#/components/schemas/User--Base'
-          description: The user who created this shield information barrier.
-        updated_at:
-          type: string
-          format: date-time
-          example: '2020-07-26T18:44:45.869Z'
-          description: ISO date time string when this shield information barrier was updated.
-        updated_by:
-          allOf:
-          - $ref: '#/components/schemas/User--Base'
-          description: The user that updated this shield information barrier.
-        enabled_at:
-          type: string
-          format: date-time
-          example: '2020-07-26T18:44:45.869Z'
-          description: ISO date time string when this shield information barrier was enabled.
-        enabled_by:
-          allOf:
-          - $ref: '#/components/schemas/User--Base'
-          - description: The user that enabled this shield information barrier.
     Enterprise--Base:
       title: Enterprise (Base)
       type: object
@@ -403,39 +436,6 @@ components:
           example: user
           enum:
           - user
-    ShieldInformationBarriers:
-      title: List of Shield Information Barriers
-      type: object
-      x-box-resource-id: shield_information_barriers
-      x-box-tag: shield_information_barriers
-      description: List of Shield Information Barrier objects
-      allOf:
-      - type: object
-        description: 'The part of an API response that describes marker
-
-          based pagination'
-        properties:
-          limit:
-            description: 'The limit that was used for these entries. This will be the same as the
-
-              `limit` query parameter unless that value exceeded the maximum value
-
-              allowed. The maximum value varies by API.'
-            example: 1000
-            type: integer
-            format: int64
-          next_marker:
-            description: The marker for the start of the next page of results.
-            example: JV9IRGZmieiBasejOG9yDCRNgd2ymoZIbjsxbJMjIs3kioVii
-            type:
-            - string
-            - 'null'
-      - properties:
-          entries:
-            type: array
-            description: A list of shield information barrier objects
-            items:
-              $ref: '#/components/schemas/ShieldInformationBarrier'
   securitySchemes:
     OAuth2Security:
       type: oauth2

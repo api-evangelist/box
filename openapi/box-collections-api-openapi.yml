@@ -192,180 +192,132 @@ paths:
                 $ref: '#/components/schemas/ClientError'
 components:
   schemas:
-    File--Base:
-      title: File (Base)
-      type:
-      - object
-      - 'null'
-      x-box-resource-id: file--base
-      x-box-sanitized: true
-      x-box-tag: files
-      x-box-variants:
-      - base
-      - mini
-      - standard
-      - full
-      x-box-variant: base
-      description: 'The bare basic representation of a file, the minimal
-
-        amount of fields returned when using the `fields` query
-
-        parameter.'
-      required:
-      - id
-      - type
-      properties:
-        id:
-          type: string
-          description: 'The unique identifier that represent a file.
-
-
-            The ID for any file can be determined
-
-            by visiting a file in the web application
-
-            and copying the ID from the URL. For example,
-
-            for the URL `https://*.app.box.com/files/123`
-
-            the `file_id` is `123`.'
-          example: '12345'
-        etag:
-          type:
-          - string
-          - 'null'
-          example: '1'
-          description: 'The HTTP `etag` of this file. This can be used within some API
-
-            endpoints in the `If-Match` and `If-None-Match` headers to only
-
-            perform changes on the file if (no) changes have happened.'
-        type:
-          type: string
-          description: '`file`'
-          example: file
-          enum:
-          - file
-    Folder--Mini:
-      title: Folder (Mini)
+    Collections:
+      title: Collections
       type: object
-      x-box-resource-id: folder--mini
-      x-box-variant: mini
-      description: 'A mini representation of a file version, used when
-
-        nested under another resource.'
-      allOf:
-      - $ref: '#/components/schemas/Folder--Base'
-      - properties:
-          sequence_id:
-            allOf:
-            - type:
-              - string
-              - 'null'
-              example: '3'
-              description: 'A numeric identifier that represents the most recent user event
-
-                that has been applied to this item.
-
-
-                This can be used in combination with the `GET /events`-endpoint
-
-                to filter out user events that would have occurred before this
-
-                identifier was read.
-
-
-                An example would be where a Box Drive-like application
-
-                would fetch an item via the API, and then listen to incoming
-
-                user events for changes to the item. The application would
-
-                ignore any user events where the `sequence_id` in the event
-
-                is smaller than or equal to the `sequence_id` in the originally
-
-                fetched resource.'
-            - {}
-          name:
-            type: string
-            description: The name of the folder.
-            example: Contracts
-    FileVersion--Base:
-      title: File version (Base)
-      type: object
-      x-box-resource-id: file_version--base
-      x-box-sanitized: true
-      x-box-variants:
-      - base
-      - mini
-      - standard
-      - full
-      x-box-variant: base
-      description: 'The bare basic representation of a file version, the minimal
-
-        amount of fields returned when using the `fields` query
-
-        parameter.'
-      required:
-      - id
-      - type
-      properties:
-        id:
-          type: string
-          description: The unique identifier that represent a file version.
-          example: '12345'
-        type:
-          type: string
-          description: '`file_version`'
-          example: file_version
-          enum:
-          - file_version
-    Collection:
-      title: Collection
-      type: object
-      x-box-resource-id: collection
+      x-box-resource-id: collections
       x-box-tag: collections
-      description: 'A collection of items, including files and folders.
+      description: A list of collections
+      allOf:
+      - type: object
+        description: The part of an API response that describes pagination
+        properties:
+          total_count:
+            description: 'One greater than the offset of the last entry in the entire collection.
+
+              The total number of entries in the collection may be less than
+
+              `total_count`.
 
 
-        Currently, the only collection available
+              This field is only returned for calls that use offset-based pagination.
 
-        is the `favorites` collection.
+              For marker-based paginated APIs, this field will be omitted.'
+            example: 5000
+            type: integer
+            format: int64
+          limit:
+            description: 'The limit that was used for these entries. This will be the same as the
+
+              `limit` query parameter unless that value exceeded the maximum value
+
+              allowed. The maximum value varies by API.'
+            example: 1000
+            type: integer
+            format: int64
+          offset:
+            description: 'The 0-based offset of the first entry in this set. This will be the same
+
+              as the `offset` query parameter.
 
 
-        The contents of a collection can be explored in a
+              This field is only returned for calls that use offset-based pagination.
 
-        similar way to which the contents of a folder is
+              For marker-based paginated APIs, this field will be omitted.'
+            example: 2000
+            type: integer
+            format: int64
+          order:
+            description: 'The order by which items are returned.
 
-        explored.'
+
+              This field is only returned for calls that use offset-based pagination.
+
+              For marker-based paginated APIs, this field will be omitted.'
+            type: array
+            items:
+              type: object
+              description: The order in which a pagination is ordered
+              properties:
+                by:
+                  description: The field to order by
+                  example: type
+                  type: string
+                direction:
+                  type: string
+                  description: The direction to order by, either ascending or descending
+                  example: ASC
+                  enum:
+                  - ASC
+                  - DESC
+      - properties:
+          entries:
+            type: array
+            description: A list of collections
+            items:
+              $ref: '#/components/schemas/Collection'
+    Metadata:
+      title: Metadata instance
+      type: object
+      x-box-resource-id: metadata
+      x-box-tag: file_metadata
+      x-box-variant: standard
+      description: 'An instance of a metadata template, which has been applied to a file or
+
+        folder.'
+      allOf:
+      - $ref: '#/components/schemas/Metadata--Base'
+    Metadata--Base:
+      title: Metadata instance (Base)
+      type: object
+      x-box-resource-id: metadata--base
+      x-box-sanitized: true
+      x-box-tag: file_metadata
+      x-box-variants:
+      - base
+      - standard
+      - full
+      x-box-variant: base
+      description: The base representation of a metadata instance.
       properties:
-        id:
+        $parent:
           type: string
-          description: The unique identifier for this collection.
-          example: '11446498'
-        type:
-          type: string
-          description: '`collection`'
-          example: collection
-          enum:
-          - collection
-        name:
-          type: string
-          description: The name of the collection.
-          enum:
-          - Favorites
-          example: Favorites
-        collection_type:
-          type: string
-          description: 'The type of the collection. This is used to
+          example: folder_59449484661,
+          description: 'The identifier of the item that this metadata instance
 
-            determine the proper visual treatment for
+            has been attached to. This combines the `type` and the `id`
 
-            collections.'
-          enum:
-          - favorites
-          example: favorites
+            of the parent in the form `{type}_{id}`.'
+        $template:
+          type: string
+          example: marketingCollateral
+          description: The name of the template
+        $scope:
+          type: string
+          example: enterprise_27335
+          description: 'An ID for the scope in which this template
+
+            has been applied. This will be `enterprise_{enterprise_id}` for templates
+
+            defined for use in this enterprise, and `global` for general templates
+
+            that are available to all enterprises using Box.'
+        $version:
+          type: integer
+          example: 1
+          description: 'The version of the metadata instance. This version starts at 0 and
+
+            increases every time a user-defined property is modified.'
     File--Mini:
       title: File (Mini)
       type:
@@ -424,27 +376,103 @@ components:
             allOf:
             - $ref: '#/components/schemas/FileVersion--Mini'
             - description: The information about the current version of the file.
-    User--Mini:
-      title: User (Mini)
+    Folder--Base:
+      title: Folder (Base)
       type: object
-      x-box-resource-id: user--mini
-      x-box-variant: mini
-      description: 'A mini representation of a user, as can be returned when nested within other
+      x-box-resource-id: folder--base
+      x-box-sanitized: true
+      x-box-tag: folders
+      x-box-variants:
+      - base
+      - mini
+      - standard
+      - full
+      x-box-variant: base
+      description: 'The bare basic representation of a folder, the minimal
 
-        resources.'
+        amount of fields returned when using the `fields` query
+
+        parameter.'
+      required:
+      - id
+      - type
+      properties:
+        id:
+          type: string
+          description: 'The unique identifier that represent a folder.
+
+
+            The ID for any folder can be determined
+
+            by visiting a folder in the web application
+
+            and copying the ID from the URL. For example,
+
+            for the URL `https://*.app.box.com/folders/123`
+
+            the `folder_id` is `123`.'
+          example: '12345'
+        etag:
+          type:
+          - string
+          - 'null'
+          example: '1'
+          description: 'The HTTP `etag` of this folder. This can be used within some API
+
+            endpoints in the `If-Match` and `If-None-Match` headers to only
+
+            perform changes on the folder if (no) changes have happened.'
+        type:
+          type: string
+          description: '`folder`'
+          example: folder
+          enum:
+          - folder
+    Folder--Mini:
+      title: Folder (Mini)
+      type: object
+      x-box-resource-id: folder--mini
+      x-box-variant: mini
+      description: 'A mini representation of a file version, used when
+
+        nested under another resource.'
       allOf:
-      - $ref: '#/components/schemas/User--Base'
+      - $ref: '#/components/schemas/Folder--Base'
       - properties:
+          sequence_id:
+            allOf:
+            - type:
+              - string
+              - 'null'
+              example: '3'
+              description: 'A numeric identifier that represents the most recent user event
+
+                that has been applied to this item.
+
+
+                This can be used in combination with the `GET /events`-endpoint
+
+                to filter out user events that would have occurred before this
+
+                identifier was read.
+
+
+                An example would be where a Box Drive-like application
+
+                would fetch an item via the API, and then listen to incoming
+
+                user events for changes to the item. The application would
+
+                ignore any user events where the `sequence_id` in the event
+
+                is smaller than or equal to the `sequence_id` in the originally
+
+                fetched resource.'
+            - {}
           name:
             type: string
-            description: The display name of this user
-            example: Aaron Levie
-            maxLength: 50
-          login:
-            type: string
-            format: email
-            description: The primary email address of this user
-            example: ceo@example.com
+            description: The name of the folder.
+            example: Contracts
     FileVersion--Mini:
       title: File version (Mini)
       type: object
@@ -460,6 +488,36 @@ components:
             type: string
             description: The SHA1 hash of this version of the file.
             example: 134b65991ed521fcfe4724b7d814ab8ded5185dc
+    FileVersion--Base:
+      title: File version (Base)
+      type: object
+      x-box-resource-id: file_version--base
+      x-box-sanitized: true
+      x-box-variants:
+      - base
+      - mini
+      - standard
+      - full
+      x-box-variant: base
+      description: 'The bare basic representation of a file version, the minimal
+
+        amount of fields returned when using the `fields` query
+
+        parameter.'
+      required:
+      - id
+      - type
+      properties:
+        id:
+          type: string
+          description: The unique identifier that represent a file version.
+          example: '12345'
+        type:
+          type: string
+          description: '`file_version`'
+          example: file_version
+          enum:
+          - file_version
     WebLink:
       title: Web link
       type: object
@@ -728,58 +786,60 @@ components:
               `trashed` if the file has been moved to the trash, and `deleted` if
 
               the file has been permanently deleted'
-    Folder--Base:
-      title: Folder (Base)
+    WebLink--Mini:
+      title: Web link (Mini)
       type: object
-      x-box-resource-id: folder--base
-      x-box-sanitized: true
-      x-box-tag: folders
-      x-box-variants:
-      - base
-      - mini
-      - standard
-      - full
-      x-box-variant: base
-      description: 'The bare basic representation of a folder, the minimal
+      x-box-resource-id: web_link--mini
+      x-box-variant: mini
+      description: 'Web links are objects that point to URLs. These objects
 
-        amount of fields returned when using the `fields` query
-
-        parameter.'
-      required:
-      - id
-      - type
-      properties:
-        id:
-          type: string
-          description: 'The unique identifier that represent a folder.
+        are also known as bookmarks within the Box web application.
 
 
-            The ID for any folder can be determined
+        Web link objects are treated similarly to file objects,
 
-            by visiting a folder in the web application
+        they will also support most actions that apply to regular files.'
+      allOf:
+      - $ref: '#/components/schemas/WebLink--Base'
+      - properties:
+          url:
+            type: string
+            example: https://www.example.com/example/1234
+            description: The URL this web link points to
+          sequence_id:
+            allOf:
+            - type:
+              - string
+              - 'null'
+              example: '3'
+              description: 'A numeric identifier that represents the most recent user event
 
-            and copying the ID from the URL. For example,
+                that has been applied to this item.
 
-            for the URL `https://*.app.box.com/folders/123`
 
-            the `folder_id` is `123`.'
-          example: '12345'
-        etag:
-          type:
-          - string
-          - 'null'
-          example: '1'
-          description: 'The HTTP `etag` of this folder. This can be used within some API
+                This can be used in combination with the `GET /events`-endpoint
 
-            endpoints in the `If-Match` and `If-None-Match` headers to only
+                to filter out user events that would have occurred before this
 
-            perform changes on the folder if (no) changes have happened.'
-        type:
-          type: string
-          description: '`folder`'
-          example: folder
-          enum:
-          - folder
+                identifier was read.
+
+
+                An example would be where a Box Drive-like application
+
+                would fetch an item via the API, and then listen to incoming
+
+                user events for changes to the item. The application would
+
+                ignore any user events where the `sequence_id` in the event
+
+                is smaller than or equal to the `sequence_id` in the originally
+
+                fetched resource.'
+            - {}
+          name:
+            type: string
+            description: The name of the web link
+            example: My Bookmark
     Items:
       title: Items
       type: object
@@ -859,6 +919,65 @@ components:
               - $ref: '#/components/schemas/File--Full'
               - $ref: '#/components/schemas/Folder--Mini'
               - $ref: '#/components/schemas/WebLink'
+    User--Mini:
+      title: User (Mini)
+      type: object
+      x-box-resource-id: user--mini
+      x-box-variant: mini
+      description: 'A mini representation of a user, as can be returned when nested within other
+
+        resources.'
+      allOf:
+      - $ref: '#/components/schemas/User--Base'
+      - properties:
+          name:
+            type: string
+            description: The display name of this user
+            example: Aaron Levie
+            maxLength: 50
+          login:
+            type: string
+            format: email
+            description: The primary email address of this user
+            example: ceo@example.com
+    WebLink--Base:
+      title: Web link (Base)
+      type: object
+      x-box-resource-id: web_link--base
+      x-box-tag: web_links
+      x-box-variants:
+      - base
+      - mini
+      - standard
+      x-box-variant: base
+      description: 'Web links are objects that point to URLs. These objects
+
+        are also known as bookmarks within the Box web application.
+
+
+        Web link objects are treated similarly to file objects,
+
+        they will also support most actions that apply to regular files.'
+      required:
+      - id
+      - type
+      properties:
+        id:
+          type: string
+          description: The unique identifier for this web link
+          example: '11446498'
+        type:
+          type: string
+          description: '`web_link`'
+          example: web_link
+          enum:
+          - web_link
+        etag:
+          type: string
+          example: '1'
+          description: 'The entity tag of this web link. Used with `If-Match`
+
+            headers.'
     ClientError:
       title: Client error
       type: object
@@ -926,186 +1045,133 @@ components:
             when contacting Box support.'
           type: string
           example: abcdef123456
-    WebLink--Mini:
-      title: Web link (Mini)
-      type: object
-      x-box-resource-id: web_link--mini
-      x-box-variant: mini
-      description: 'Web links are objects that point to URLs. These objects
-
-        are also known as bookmarks within the Box web application.
-
-
-        Web link objects are treated similarly to file objects,
-
-        they will also support most actions that apply to regular files.'
-      allOf:
-      - $ref: '#/components/schemas/WebLink--Base'
-      - properties:
-          url:
-            type: string
-            example: https://www.example.com/example/1234
-            description: The URL this web link points to
-          sequence_id:
-            allOf:
-            - type:
-              - string
-              - 'null'
-              example: '3'
-              description: 'A numeric identifier that represents the most recent user event
-
-                that has been applied to this item.
-
-
-                This can be used in combination with the `GET /events`-endpoint
-
-                to filter out user events that would have occurred before this
-
-                identifier was read.
-
-
-                An example would be where a Box Drive-like application
-
-                would fetch an item via the API, and then listen to incoming
-
-                user events for changes to the item. The application would
-
-                ignore any user events where the `sequence_id` in the event
-
-                is smaller than or equal to the `sequence_id` in the originally
-
-                fetched resource.'
-            - {}
-          name:
-            type: string
-            description: The name of the web link
-            example: My Bookmark
-    Collections:
-      title: Collections
-      type: object
-      x-box-resource-id: collections
-      x-box-tag: collections
-      description: A list of collections
-      allOf:
-      - type: object
-        description: The part of an API response that describes pagination
-        properties:
-          total_count:
-            description: 'One greater than the offset of the last entry in the entire collection.
-
-              The total number of entries in the collection may be less than
-
-              `total_count`.
-
-
-              This field is only returned for calls that use offset-based pagination.
-
-              For marker-based paginated APIs, this field will be omitted.'
-            example: 5000
-            type: integer
-            format: int64
-          limit:
-            description: 'The limit that was used for these entries. This will be the same as the
-
-              `limit` query parameter unless that value exceeded the maximum value
-
-              allowed. The maximum value varies by API.'
-            example: 1000
-            type: integer
-            format: int64
-          offset:
-            description: 'The 0-based offset of the first entry in this set. This will be the same
-
-              as the `offset` query parameter.
-
-
-              This field is only returned for calls that use offset-based pagination.
-
-              For marker-based paginated APIs, this field will be omitted.'
-            example: 2000
-            type: integer
-            format: int64
-          order:
-            description: 'The order by which items are returned.
-
-
-              This field is only returned for calls that use offset-based pagination.
-
-              For marker-based paginated APIs, this field will be omitted.'
-            type: array
-            items:
-              type: object
-              description: The order in which a pagination is ordered
-              properties:
-                by:
-                  description: The field to order by
-                  example: type
-                  type: string
-                direction:
-                  type: string
-                  description: The direction to order by, either ascending or descending
-                  example: ASC
-                  enum:
-                  - ASC
-                  - DESC
-      - properties:
-          entries:
-            type: array
-            description: A list of collections
-            items:
-              $ref: '#/components/schemas/Collection'
-    Metadata:
-      title: Metadata instance
-      type: object
-      x-box-resource-id: metadata
-      x-box-tag: file_metadata
-      x-box-variant: standard
-      description: 'An instance of a metadata template, which has been applied to a file or
-
-        folder.'
-      allOf:
-      - $ref: '#/components/schemas/Metadata--Base'
-    Metadata--Base:
-      title: Metadata instance (Base)
-      type: object
-      x-box-resource-id: metadata--base
+    File--Base:
+      title: File (Base)
+      type:
+      - object
+      - 'null'
+      x-box-resource-id: file--base
       x-box-sanitized: true
-      x-box-tag: file_metadata
+      x-box-tag: files
       x-box-variants:
       - base
+      - mini
       - standard
       - full
       x-box-variant: base
-      description: The base representation of a metadata instance.
+      description: 'The bare basic representation of a file, the minimal
+
+        amount of fields returned when using the `fields` query
+
+        parameter.'
+      required:
+      - id
+      - type
       properties:
-        $parent:
+        id:
           type: string
-          example: folder_59449484661,
-          description: 'The identifier of the item that this metadata instance
+          description: 'The unique identifier that represent a file.
 
-            has been attached to. This combines the `type` and the `id`
 
-            of the parent in the form `{type}_{id}`.'
-        $template:
+            The ID for any file can be determined
+
+            by visiting a file in the web application
+
+            and copying the ID from the URL. For example,
+
+            for the URL `https://*.app.box.com/files/123`
+
+            the `file_id` is `123`.'
+          example: '12345'
+        etag:
+          type:
+          - string
+          - 'null'
+          example: '1'
+          description: 'The HTTP `etag` of this file. This can be used within some API
+
+            endpoints in the `If-Match` and `If-None-Match` headers to only
+
+            perform changes on the file if (no) changes have happened.'
+        type:
           type: string
-          example: marketingCollateral
-          description: The name of the template
-        $scope:
+          description: '`file`'
+          example: file
+          enum:
+          - file
+    FileOrFolderScope:
+      title: File or folder scope
+      type: object
+      description: A relation between a resource (file or folder) and the scopes for which the resource can be accessed
+      properties:
+        scope:
           type: string
-          example: enterprise_27335
-          description: 'An ID for the scope in which this template
+          description: The scopes for the resource access
+          example: item_download
+          enum:
+          - annotation_edit
+          - annotation_view_all
+          - annotation_view_self
+          - base_explorer
+          - base_picker
+          - base_preview
+          - base_upload
+          - item_delete
+          - item_download
+          - item_preview
+          - item_rename
+          - item_share
+        object:
+          allOf:
+          - oneOf:
+            - $ref: '#/components/schemas/Folder--Mini'
+            - $ref: '#/components/schemas/File--Mini'
+          - description: The file or folder resource
+    Collection:
+      title: Collection
+      type: object
+      x-box-resource-id: collection
+      x-box-tag: collections
+      description: 'A collection of items, including files and folders.
 
-            has been applied. This will be `enterprise_{enterprise_id}` for templates
 
-            defined for use in this enterprise, and `global` for general templates
+        Currently, the only collection available
 
-            that are available to all enterprises using Box.'
-        $version:
-          type: integer
-          example: 1
-          description: 'The version of the metadata instance. This version starts at 0 and
+        is the `favorites` collection.
 
-            increases every time a user-defined property is modified.'
+
+        The contents of a collection can be explored in a
+
+        similar way to which the contents of a folder is
+
+        explored.'
+      properties:
+        id:
+          type: string
+          description: The unique identifier for this collection.
+          example: '11446498'
+        type:
+          type: string
+          description: '`collection`'
+          example: collection
+          enum:
+          - collection
+        name:
+          type: string
+          description: The name of the collection.
+          enum:
+          - Favorites
+          example: Favorites
+        collection_type:
+          type: string
+          description: 'The type of the collection. This is used to
+
+            determine the proper visual treatment for
+
+            collections.'
+          enum:
+          - favorites
+          example: favorites
     File--Full:
       title: File (Full)
       type: object
@@ -1643,34 +1709,6 @@ components:
               - can_preview
               - can_download
               - can_edit
-    FileOrFolderScope:
-      title: File or folder scope
-      type: object
-      description: A relation between a resource (file or folder) and the scopes for which the resource can be accessed
-      properties:
-        scope:
-          type: string
-          description: The scopes for the resource access
-          example: item_download
-          enum:
-          - annotation_edit
-          - annotation_view_all
-          - annotation_view_self
-          - base_explorer
-          - base_picker
-          - base_preview
-          - base_upload
-          - item_delete
-          - item_download
-          - item_preview
-          - item_rename
-          - item_share
-        object:
-          allOf:
-          - oneOf:
-            - $ref: '#/components/schemas/Folder--Mini'
-            - $ref: '#/components/schemas/File--Mini'
-          - description: The file or folder resource
     File:
       title: File
       type: object
@@ -1964,44 +2002,6 @@ components:
             - trashed
             - deleted
             example: active
-    WebLink--Base:
-      title: Web link (Base)
-      type: object
-      x-box-resource-id: web_link--base
-      x-box-tag: web_links
-      x-box-variants:
-      - base
-      - mini
-      - standard
-      x-box-variant: base
-      description: 'Web links are objects that point to URLs. These objects
-
-        are also known as bookmarks within the Box web application.
-
-
-        Web link objects are treated similarly to file objects,
-
-        they will also support most actions that apply to regular files.'
-      required:
-      - id
-      - type
-      properties:
-        id:
-          type: string
-          description: The unique identifier for this web link
-          example: '11446498'
-        type:
-          type: string
-          description: '`web_link`'
-          example: web_link
-          enum:
-          - web_link
-        etag:
-          type: string
-          example: '1'
-          description: 'The entity tag of this web link. Used with `If-Match`
-
-            headers.'
     User--Base:
       title: User (Base)
       type: object

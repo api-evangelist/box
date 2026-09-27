@@ -172,126 +172,6 @@ paths:
                 $ref: '#/components/schemas/ClientError'
 components:
   schemas:
-    CollaborationAllowlistExemptTarget:
-      title: Allowed collaboration domains user exemption
-      type: object
-      x-box-resource-id: collaboration_allowlist_exempt_target
-      x-box-tag: collaboration_allowlist_exempt_targets
-      description: 'The user that is exempt from any of the restrictions
-
-        imposed by the list of allowed collaboration domains for this enterprise.'
-      properties:
-        id:
-          type: string
-          description: The unique identifier for this exemption
-          example: '11446498'
-        type:
-          type: string
-          description: '`collaboration_whitelist_exempt_target`'
-          example: collaboration_whitelist_exempt_target
-          enum:
-          - collaboration_whitelist_exempt_target
-        enterprise:
-          allOf:
-          - title: Enterprise
-            type: object
-            description: A representation of a Box enterprise
-            properties:
-              id:
-                type: string
-                description: The unique identifier for this enterprise.
-                example: '11446498'
-              type:
-                type: string
-                description: '`enterprise`'
-                example: enterprise
-                enum:
-                - enterprise
-              name:
-                description: The name of the enterprise
-                example: Acme Inc.
-                type: string
-          - description: The enterprise this entry belongs to
-        user:
-          allOf:
-          - $ref: '#/components/schemas/User--Mini'
-          - description: The user that has been exempt
-        created_at:
-          type: string
-          format: date-time
-          description: The time the entry was created
-          example: '2012-12-12T10:53:43-08:00'
-        modified_at:
-          type: string
-          format: date-time
-          description: The time the entry was modified
-          example: '2012-12-12T10:53:43-08:00'
-    User--Mini:
-      title: User (Mini)
-      type: object
-      x-box-resource-id: user--mini
-      x-box-variant: mini
-      description: 'A mini representation of a user, as can be returned when nested within other
-
-        resources.'
-      allOf:
-      - $ref: '#/components/schemas/User--Base'
-      - properties:
-          name:
-            type: string
-            description: The display name of this user
-            example: Aaron Levie
-            maxLength: 50
-          login:
-            type: string
-            format: email
-            description: The primary email address of this user
-            example: ceo@example.com
-    CollaborationAllowlistExemptTargets:
-      title: Allowed collaboration domains user exemptions
-      type: object
-      x-box-resource-id: collaboration_allowlist_exempt_targets
-      x-box-tag: collaboration_allowlist_exempt_targets
-      description: 'A list of users exempt from any of the restrictions
-
-        imposed by the list of allowed collaboration domains for this enterprise.'
-      allOf:
-      - type: object
-        description: 'The part of an API response that describes marker
-
-          based pagination'
-        properties:
-          limit:
-            description: 'The limit that was used for these entries. This will be the same as the
-
-              `limit` query parameter unless that value exceeded the maximum value
-
-              allowed. The maximum value varies by API.'
-            example: 1000
-            type: integer
-            format: int64
-          next_marker:
-            description: The marker for the start of the next page of results.
-            example: JV9IRGZmieiBasejOG9yDCRNgd2ymoZIbjsxbJMjIs3kioVii
-            type:
-            - string
-            - 'null'
-          prev_marker:
-            description: The marker for the start of the previous page of results.
-            example: JV9IRGZmieiBasejOG9yDCRNgd2ymoZIbjsxbJMjIs3kioVih
-            type:
-            - string
-            - 'null'
-      - properties:
-          entries:
-            type: array
-            description: 'A list of users exempt from any of the restrictions
-
-              imposed by the list of allowed collaboration domains
-
-              for this enterprise.'
-            items:
-              $ref: '#/components/schemas/CollaborationAllowlistExemptTarget'
     ClientError:
       title: Client error
       type: object
@@ -359,6 +239,105 @@ components:
             when contacting Box support.'
           type: string
           example: abcdef123456
+    CollaborationAllowlistExemptTargets:
+      title: Allowed collaboration domains user exemptions
+      type: object
+      x-box-resource-id: collaboration_allowlist_exempt_targets
+      x-box-tag: collaboration_allowlist_exempt_targets
+      description: 'A list of users exempt from any of the restrictions
+
+        imposed by the list of allowed collaboration domains for this enterprise.'
+      allOf:
+      - type: object
+        description: 'The part of an API response that describes marker
+
+          based pagination'
+        properties:
+          limit:
+            description: 'The limit that was used for these entries. This will be the same as the
+
+              `limit` query parameter unless that value exceeded the maximum value
+
+              allowed. The maximum value varies by API.'
+            example: 1000
+            type: integer
+            format: int64
+          next_marker:
+            description: The marker for the start of the next page of results.
+            example: JV9IRGZmieiBasejOG9yDCRNgd2ymoZIbjsxbJMjIs3kioVii
+            type:
+            - string
+            - 'null'
+          prev_marker:
+            description: The marker for the start of the previous page of results.
+            example: JV9IRGZmieiBasejOG9yDCRNgd2ymoZIbjsxbJMjIs3kioVih
+            type:
+            - string
+            - 'null'
+      - properties:
+          entries:
+            type: array
+            description: 'A list of users exempt from any of the restrictions
+
+              imposed by the list of allowed collaboration domains
+
+              for this enterprise.'
+            items:
+              $ref: '#/components/schemas/CollaborationAllowlistExemptTarget'
+    CollaborationAllowlistExemptTarget:
+      title: Allowed collaboration domains user exemption
+      type: object
+      x-box-resource-id: collaboration_allowlist_exempt_target
+      x-box-tag: collaboration_allowlist_exempt_targets
+      description: 'The user that is exempt from any of the restrictions
+
+        imposed by the list of allowed collaboration domains for this enterprise.'
+      properties:
+        id:
+          type: string
+          description: The unique identifier for this exemption
+          example: '11446498'
+        type:
+          type: string
+          description: '`collaboration_whitelist_exempt_target`'
+          example: collaboration_whitelist_exempt_target
+          enum:
+          - collaboration_whitelist_exempt_target
+        enterprise:
+          allOf:
+          - title: Enterprise
+            type: object
+            description: A representation of a Box enterprise
+            properties:
+              id:
+                type: string
+                description: The unique identifier for this enterprise.
+                example: '11446498'
+              type:
+                type: string
+                description: '`enterprise`'
+                example: enterprise
+                enum:
+                - enterprise
+              name:
+                description: The name of the enterprise
+                example: Acme Inc.
+                type: string
+          - description: The enterprise this entry belongs to
+        user:
+          allOf:
+          - $ref: '#/components/schemas/User--Mini'
+          - description: The user that has been exempt
+        created_at:
+          type: string
+          format: date-time
+          description: The time the entry was created
+          example: '2012-12-12T10:53:43-08:00'
+        modified_at:
+          type: string
+          format: date-time
+          description: The time the entry was modified
+          example: '2012-12-12T10:53:43-08:00'
     User--Base:
       title: User (Base)
       type: object
@@ -387,6 +366,27 @@ components:
           example: user
           enum:
           - user
+    User--Mini:
+      title: User (Mini)
+      type: object
+      x-box-resource-id: user--mini
+      x-box-variant: mini
+      description: 'A mini representation of a user, as can be returned when nested within other
+
+        resources.'
+      allOf:
+      - $ref: '#/components/schemas/User--Base'
+      - properties:
+          name:
+            type: string
+            description: The display name of this user
+            example: Aaron Levie
+            maxLength: 50
+          login:
+            type: string
+            format: email
+            description: The primary email address of this user
+            example: ceo@example.com
   securitySchemes:
     OAuth2Security:
       type: oauth2

@@ -177,53 +177,6 @@ paths:
                 $ref: '#/components/schemas/ClientError'
 components:
   schemas:
-    User--Mini:
-      title: User (Mini)
-      type: object
-      x-box-resource-id: user--mini
-      x-box-variant: mini
-      description: 'A mini representation of a user, as can be returned when nested within other
-
-        resources.'
-      allOf:
-      - $ref: '#/components/schemas/User--Base'
-      - properties:
-          name:
-            type: string
-            description: The display name of this user
-            example: Aaron Levie
-            maxLength: 50
-          login:
-            type: string
-            format: email
-            description: The primary email address of this user
-            example: ceo@example.com
-    TermsOfService--Base:
-      title: Terms of service (Base)
-      type: object
-      x-box-resource-id: terms_of_service--base
-      x-box-tag: terms_of_services
-      x-box-variants:
-      - base
-      - standard
-      x-box-variant: base
-      description: 'The root-level record that is supposed to represent a
-
-        single Terms of Service.'
-      required:
-      - id
-      - type
-      properties:
-        id:
-          type: string
-          description: The unique identifier for this terms of service.
-          example: '11446498'
-        type:
-          type: string
-          description: '`terms_of_service`'
-          example: terms_of_service
-          enum:
-          - terms_of_service
     ClientError:
       title: Client error
       type: object
@@ -291,6 +244,32 @@ components:
             when contacting Box support.'
           type: string
           example: abcdef123456
+    TermsOfService--Base:
+      title: Terms of service (Base)
+      type: object
+      x-box-resource-id: terms_of_service--base
+      x-box-tag: terms_of_services
+      x-box-variants:
+      - base
+      - standard
+      x-box-variant: base
+      description: 'The root-level record that is supposed to represent a
+
+        single Terms of Service.'
+      required:
+      - id
+      - type
+      properties:
+        id:
+          type: string
+          description: The unique identifier for this terms of service.
+          example: '11446498'
+        type:
+          type: string
+          description: '`terms_of_service`'
+          example: terms_of_service
+          enum:
+          - terms_of_service
     TermsOfServiceUserStatus:
       title: Terms of service user status
       type: object
@@ -378,6 +357,27 @@ components:
           example: user
           enum:
           - user
+    User--Mini:
+      title: User (Mini)
+      type: object
+      x-box-resource-id: user--mini
+      x-box-variant: mini
+      description: 'A mini representation of a user, as can be returned when nested within other
+
+        resources.'
+      allOf:
+      - $ref: '#/components/schemas/User--Base'
+      - properties:
+          name:
+            type: string
+            description: The display name of this user
+            example: Aaron Levie
+            maxLength: 50
+          login:
+            type: string
+            format: email
+            description: The primary email address of this user
+            example: ceo@example.com
   securitySchemes:
     OAuth2Security:
       type: oauth2

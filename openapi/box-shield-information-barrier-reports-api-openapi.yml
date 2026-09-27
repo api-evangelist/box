@@ -185,54 +185,6 @@ components:
           example: shield_information_barrier_report
           enum:
           - shield_information_barrier_report
-    ShieldInformationBarrierReport:
-      title: Shield information barrier report
-      type: object
-      x-box-resource-id: shield_information_barrier_report
-      x-box-tag: shield_information_barrier_reports
-      x-box-variants:
-      - base
-      - standard
-      x-box-variant: standard
-      description: 'A standard representation
-
-        of a shield information barrier report object'
-      allOf:
-      - $ref: '#/components/schemas/ShieldInformationBarrierReport--Base'
-      - properties:
-          shield_information_barrier:
-            allOf:
-            - $ref: '#/components/schemas/ShieldInformationBarrierReference'
-          status:
-            type: string
-            enum:
-            - pending
-            - error
-            - done
-            - cancelled
-            description: Status of the shield information report
-            example: pending
-          details:
-            allOf:
-            - $ref: '#/components/schemas/ShieldInformationBarrierReportDetails'
-          created_at:
-            type: string
-            format: date-time
-            example: '2020-06-26T18:44:45.869Z'
-            description: 'ISO date time string when this
-
-              shield information barrier report object was created.'
-          created_by:
-            allOf:
-            - $ref: '#/components/schemas/User--Base'
-            - description: The user who created this shield information barrier report.
-          updated_at:
-            type: string
-            format: date-time
-            example: '2020-07-26T18:44:45.869Z'
-            description: 'ISO date time string when this
-
-              shield information barrier report was updated.'
     ClientError:
       title: Client error
       type: object
@@ -300,6 +252,107 @@ components:
             when contacting Box support.'
           type: string
           example: abcdef123456
+    ShieldInformationBarrierReport:
+      title: Shield information barrier report
+      type: object
+      x-box-resource-id: shield_information_barrier_report
+      x-box-tag: shield_information_barrier_reports
+      x-box-variants:
+      - base
+      - standard
+      x-box-variant: standard
+      description: 'A standard representation
+
+        of a shield information barrier report object'
+      allOf:
+      - $ref: '#/components/schemas/ShieldInformationBarrierReport--Base'
+      - properties:
+          shield_information_barrier:
+            allOf:
+            - $ref: '#/components/schemas/ShieldInformationBarrierReference'
+          status:
+            type: string
+            enum:
+            - pending
+            - error
+            - done
+            - cancelled
+            description: Status of the shield information report
+            example: pending
+          details:
+            allOf:
+            - $ref: '#/components/schemas/ShieldInformationBarrierReportDetails'
+          created_at:
+            type: string
+            format: date-time
+            example: '2020-06-26T18:44:45.869Z'
+            description: 'ISO date time string when this
+
+              shield information barrier report object was created.'
+          created_by:
+            allOf:
+            - $ref: '#/components/schemas/User--Base'
+            - description: The user who created this shield information barrier report.
+          updated_at:
+            type: string
+            format: date-time
+            example: '2020-07-26T18:44:45.869Z'
+            description: 'ISO date time string when this
+
+              shield information barrier report was updated.'
+    ShieldInformationBarrierReference:
+      title: Shield information barrier reference
+      type: object
+      x-box-resource-id: shield_information_barrier_reference
+      x-box-tag: shield_information_barrier_reports
+      description: A shield information barrier reference for requests and responses
+      properties:
+        shield_information_barrier:
+          $ref: '#/components/schemas/ShieldInformationBarrier--Base'
+    ShieldInformationBarrierReportDetails:
+      title: Shield information barrier report details
+      type: object
+      x-box-resource-id: shield_information_barrier_report_details
+      x-box-tag: shield_information_barrier_reports
+      description: 'Indicates which folder the report
+
+        file is located and any errors when generating the report.'
+      properties:
+        details:
+          type: object
+          properties:
+            folder_id:
+              type: string
+              example: '124235'
+              description: Folder ID for locating this report
+    User--Base:
+      title: User (Base)
+      type: object
+      x-box-resource-id: user--base
+      x-box-tag: users
+      x-box-variants:
+      - base
+      - mini
+      - standard
+      - full
+      x-box-variant: base
+      description: 'A mini representation of a user, used when
+
+        nested within another resource.'
+      required:
+      - type
+      - id
+      properties:
+        id:
+          type: string
+          description: The unique identifier for this user
+          example: '11446498'
+        type:
+          type: string
+          description: '`user`'
+          example: user
+          enum:
+          - user
     ShieldInformationBarrierReports:
       title: List of Shield Information Barrier Reports
       type: object
@@ -358,59 +411,6 @@ components:
           example: shield_information_barrier
           enum:
           - shield_information_barrier
-    ShieldInformationBarrierReference:
-      title: Shield information barrier reference
-      type: object
-      x-box-resource-id: shield_information_barrier_reference
-      x-box-tag: shield_information_barrier_reports
-      description: A shield information barrier reference for requests and responses
-      properties:
-        shield_information_barrier:
-          $ref: '#/components/schemas/ShieldInformationBarrier--Base'
-    ShieldInformationBarrierReportDetails:
-      title: Shield information barrier report details
-      type: object
-      x-box-resource-id: shield_information_barrier_report_details
-      x-box-tag: shield_information_barrier_reports
-      description: 'Indicates which folder the report
-
-        file is located and any errors when generating the report.'
-      properties:
-        details:
-          type: object
-          properties:
-            folder_id:
-              type: string
-              example: '124235'
-              description: Folder ID for locating this report
-    User--Base:
-      title: User (Base)
-      type: object
-      x-box-resource-id: user--base
-      x-box-tag: users
-      x-box-variants:
-      - base
-      - mini
-      - standard
-      - full
-      x-box-variant: base
-      description: 'A mini representation of a user, used when
-
-        nested within another resource.'
-      required:
-      - type
-      - id
-      properties:
-        id:
-          type: string
-          description: The unique identifier for this user
-          example: '11446498'
-        type:
-          type: string
-          description: '`user`'
-          example: user
-          enum:
-          - user
   securitySchemes:
     OAuth2Security:
       type: oauth2

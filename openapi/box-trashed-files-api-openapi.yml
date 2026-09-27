@@ -307,154 +307,6 @@ paths:
                 $ref: '#/components/schemas/ClientError'
 components:
   schemas:
-    User--Mini:
-      title: User (Mini)
-      type: object
-      x-box-resource-id: user--mini
-      x-box-variant: mini
-      description: 'A mini representation of a user, as can be returned when nested within other
-
-        resources.'
-      allOf:
-      - $ref: '#/components/schemas/User--Base'
-      - properties:
-          name:
-            type: string
-            description: The display name of this user
-            example: Aaron Levie
-            maxLength: 50
-          login:
-            type: string
-            format: email
-            description: The primary email address of this user
-            example: ceo@example.com
-    ClientError:
-      title: Client error
-      type: object
-      x-box-resource-id: client_error
-      description: A generic error
-      properties:
-        type:
-          description: error
-          example: error
-          type: string
-          enum:
-          - error
-        status:
-          description: The HTTP status of the response.
-          example: 400
-          type: integer
-          format: int32
-        code:
-          description: A Box-specific error code
-          example: item_name_invalid
-          type: string
-          enum:
-          - created
-          - accepted
-          - no_content
-          - redirect
-          - not_modified
-          - bad_request
-          - unauthorized
-          - forbidden
-          - not_found
-          - method_not_allowed
-          - conflict
-          - precondition_failed
-          - too_many_requests
-          - internal_server_error
-          - unavailable
-          - item_name_invalid
-          - insufficient_scope
-        message:
-          description: A short message describing the error.
-          example: Method Not Allowed
-          type: string
-        context_info:
-          description: 'A free-form object that contains additional context
-
-            about the error. The possible fields are defined on
-
-            a per-endpoint basis. `message` is only one example.'
-          type:
-          - object
-          - 'null'
-          properties:
-            message:
-              type: string
-              description: More details on the error.
-              example: Something went wrong.
-        help_url:
-          description: A URL that links to more information about why this error occurred.
-          example: https://developer.box.com/guides/api-calls/permissions-and-errors/common-errors/
-          type: string
-        request_id:
-          description: 'A unique identifier for this response, which can be used
-
-            when contacting Box support.'
-          type: string
-          example: abcdef123456
-    Folder--Mini:
-      title: Folder (Mini)
-      type: object
-      x-box-resource-id: folder--mini
-      x-box-variant: mini
-      description: 'A mini representation of a file version, used when
-
-        nested under another resource.'
-      allOf:
-      - $ref: '#/components/schemas/Folder--Base'
-      - properties:
-          sequence_id:
-            allOf:
-            - type:
-              - string
-              - 'null'
-              example: '3'
-              description: 'A numeric identifier that represents the most recent user event
-
-                that has been applied to this item.
-
-
-                This can be used in combination with the `GET /events`-endpoint
-
-                to filter out user events that would have occurred before this
-
-                identifier was read.
-
-
-                An example would be where a Box Drive-like application
-
-                would fetch an item via the API, and then listen to incoming
-
-                user events for changes to the item. The application would
-
-                ignore any user events where the `sequence_id` in the event
-
-                is smaller than or equal to the `sequence_id` in the originally
-
-                fetched resource.'
-            - {}
-          name:
-            type: string
-            description: The name of the folder.
-            example: Contracts
-    FileVersion--Mini:
-      title: File version (Mini)
-      type: object
-      x-box-resource-id: file_version--mini
-      x-box-variant: mini
-      description: 'A mini representation of a file version, used when
-
-        nested within another resource.'
-      allOf:
-      - $ref: '#/components/schemas/FileVersion--Base'
-      - properties:
-          sha1:
-            type: string
-            description: The SHA1 hash of this version of the file.
-            example: 134b65991ed521fcfe4724b7d814ab8ded5185dc
     TrashFile:
       title: Trashed File
       type: object
@@ -701,18 +553,86 @@ components:
           - trashed
           - deleted
           example: trashed
-    FileVersion--Base:
-      title: File version (Base)
+    ClientError:
+      title: Client error
       type: object
-      x-box-resource-id: file_version--base
+      x-box-resource-id: client_error
+      description: A generic error
+      properties:
+        type:
+          description: error
+          example: error
+          type: string
+          enum:
+          - error
+        status:
+          description: The HTTP status of the response.
+          example: 400
+          type: integer
+          format: int32
+        code:
+          description: A Box-specific error code
+          example: item_name_invalid
+          type: string
+          enum:
+          - created
+          - accepted
+          - no_content
+          - redirect
+          - not_modified
+          - bad_request
+          - unauthorized
+          - forbidden
+          - not_found
+          - method_not_allowed
+          - conflict
+          - precondition_failed
+          - too_many_requests
+          - internal_server_error
+          - unavailable
+          - item_name_invalid
+          - insufficient_scope
+        message:
+          description: A short message describing the error.
+          example: Method Not Allowed
+          type: string
+        context_info:
+          description: 'A free-form object that contains additional context
+
+            about the error. The possible fields are defined on
+
+            a per-endpoint basis. `message` is only one example.'
+          type:
+          - object
+          - 'null'
+          properties:
+            message:
+              type: string
+              description: More details on the error.
+              example: Something went wrong.
+        help_url:
+          description: A URL that links to more information about why this error occurred.
+          example: https://developer.box.com/guides/api-calls/permissions-and-errors/common-errors/
+          type: string
+        request_id:
+          description: 'A unique identifier for this response, which can be used
+
+            when contacting Box support.'
+          type: string
+          example: abcdef123456
+    Folder--Base:
+      title: Folder (Base)
+      type: object
+      x-box-resource-id: folder--base
       x-box-sanitized: true
+      x-box-tag: folders
       x-box-variants:
       - base
       - mini
       - standard
       - full
       x-box-variant: base
-      description: 'The bare basic representation of a file version, the minimal
+      description: 'The bare basic representation of a folder, the minimal
 
         amount of fields returned when using the `fields` query
 
@@ -723,14 +643,80 @@ components:
       properties:
         id:
           type: string
-          description: The unique identifier that represent a file version.
+          description: 'The unique identifier that represent a folder.
+
+
+            The ID for any folder can be determined
+
+            by visiting a folder in the web application
+
+            and copying the ID from the URL. For example,
+
+            for the URL `https://*.app.box.com/folders/123`
+
+            the `folder_id` is `123`.'
           example: '12345'
+        etag:
+          type:
+          - string
+          - 'null'
+          example: '1'
+          description: 'The HTTP `etag` of this folder. This can be used within some API
+
+            endpoints in the `If-Match` and `If-None-Match` headers to only
+
+            perform changes on the folder if (no) changes have happened.'
         type:
           type: string
-          description: '`file_version`'
-          example: file_version
+          description: '`folder`'
+          example: folder
           enum:
-          - file_version
+          - folder
+    Folder--Mini:
+      title: Folder (Mini)
+      type: object
+      x-box-resource-id: folder--mini
+      x-box-variant: mini
+      description: 'A mini representation of a file version, used when
+
+        nested under another resource.'
+      allOf:
+      - $ref: '#/components/schemas/Folder--Base'
+      - properties:
+          sequence_id:
+            allOf:
+            - type:
+              - string
+              - 'null'
+              example: '3'
+              description: 'A numeric identifier that represents the most recent user event
+
+                that has been applied to this item.
+
+
+                This can be used in combination with the `GET /events`-endpoint
+
+                to filter out user events that would have occurred before this
+
+                identifier was read.
+
+
+                An example would be where a Box Drive-like application
+
+                would fetch an item via the API, and then listen to incoming
+
+                user events for changes to the item. The application would
+
+                ignore any user events where the `sequence_id` in the event
+
+                is smaller than or equal to the `sequence_id` in the originally
+
+                fetched resource.'
+            - {}
+          name:
+            type: string
+            description: The name of the folder.
+            example: Contracts
     TrashFileRestored:
       title: Trashed File (Restored)
       type: object
@@ -949,6 +935,21 @@ components:
           - trashed
           - deleted
           example: active
+    FileVersion--Mini:
+      title: File version (Mini)
+      type: object
+      x-box-resource-id: file_version--mini
+      x-box-variant: mini
+      description: 'A mini representation of a file version, used when
+
+        nested within another resource.'
+      allOf:
+      - $ref: '#/components/schemas/FileVersion--Base'
+      - properties:
+          sha1:
+            type: string
+            description: The SHA1 hash of this version of the file.
+            example: 134b65991ed521fcfe4724b7d814ab8ded5185dc
     User--Base:
       title: User (Base)
       type: object
@@ -977,19 +978,18 @@ components:
           example: user
           enum:
           - user
-    Folder--Base:
-      title: Folder (Base)
+    FileVersion--Base:
+      title: File version (Base)
       type: object
-      x-box-resource-id: folder--base
+      x-box-resource-id: file_version--base
       x-box-sanitized: true
-      x-box-tag: folders
       x-box-variants:
       - base
       - mini
       - standard
       - full
       x-box-variant: base
-      description: 'The bare basic representation of a folder, the minimal
+      description: 'The bare basic representation of a file version, the minimal
 
         amount of fields returned when using the `fields` query
 
@@ -1000,35 +1000,35 @@ components:
       properties:
         id:
           type: string
-          description: 'The unique identifier that represent a folder.
-
-
-            The ID for any folder can be determined
-
-            by visiting a folder in the web application
-
-            and copying the ID from the URL. For example,
-
-            for the URL `https://*.app.box.com/folders/123`
-
-            the `folder_id` is `123`.'
+          description: The unique identifier that represent a file version.
           example: '12345'
-        etag:
-          type:
-          - string
-          - 'null'
-          example: '1'
-          description: 'The HTTP `etag` of this folder. This can be used within some API
-
-            endpoints in the `If-Match` and `If-None-Match` headers to only
-
-            perform changes on the folder if (no) changes have happened.'
         type:
           type: string
-          description: '`folder`'
-          example: folder
+          description: '`file_version`'
+          example: file_version
           enum:
-          - folder
+          - file_version
+    User--Mini:
+      title: User (Mini)
+      type: object
+      x-box-resource-id: user--mini
+      x-box-variant: mini
+      description: 'A mini representation of a user, as can be returned when nested within other
+
+        resources.'
+      allOf:
+      - $ref: '#/components/schemas/User--Base'
+      - properties:
+          name:
+            type: string
+            description: The display name of this user
+            example: Aaron Levie
+            maxLength: 50
+          login:
+            type: string
+            format: email
+            description: The primary email address of this user
+            example: ceo@example.com
   securitySchemes:
     OAuth2Security:
       type: oauth2
