@@ -393,147 +393,36 @@ paths:
                 $ref: '#/components/schemas/ClientError'
 components:
   schemas:
-    MetadataCascadePolicies:
-      title: Metadata cascade policies
+    FileVersion--Base:
+      title: File version (Base)
       type: object
-      x-box-resource-id: metadata_cascade_policies
-      x-box-tag: metadata_cascade_policies
-      description: A list of metadata cascade policies.
-      allOf:
-      - type: object
-        description: 'The part of an API response that describes marker
-
-          based pagination'
-        properties:
-          limit:
-            description: 'The limit that was used for these entries. This will be the same as the
-
-              `limit` query parameter unless that value exceeded the maximum value
-
-              allowed. The maximum value varies by API.'
-            example: 1000
-            type: integer
-            format: int64
-          next_marker:
-            description: The marker for the start of the next page of results.
-            example: JV9IRGZmieiBasejOG9yDCRNgd2ymoZIbjsxbJMjIs3kioVii
-            type:
-            - string
-            - 'null'
-          prev_marker:
-            description: The marker for the start of the previous page of results.
-            example: JV9IRGZmieiBasejOG9yDCRNgd2ymoZIbjsxbJMjIs3kioVih
-            type:
-            - string
-            - 'null'
-      - properties:
-          entries:
-            type: array
-            description: A list of metadata cascade policies
-            items:
-              $ref: '#/components/schemas/MetadataCascadePolicy'
-    FileConflict:
-      title: File (Conflict)
-      type: object
+      x-box-resource-id: file_version--base
       x-box-sanitized: true
-      x-box-resource-id: file_conflict
-      x-box-tag: null
-      description: A representation of a file that is used to show
-      allOf:
-      - $ref: '#/components/schemas/File--Mini'
-      - properties:
-          sha1:
-            type: string
-            example: 85136C79CBF9FE36BB9D05D0639C70C265C18D37
-            description: The SHA1 hash of the file.
-          file_version:
-            $ref: '#/components/schemas/FileVersion--Mini'
-    ClientError:
-      title: Client error
-      type: object
-      x-box-resource-id: client_error
-      description: A generic error
+      x-box-variants:
+      - base
+      - mini
+      - standard
+      - full
+      x-box-variant: base
+      description: 'The bare basic representation of a file version, the minimal
+
+        amount of fields returned when using the `fields` query
+
+        parameter.'
+      required:
+      - id
+      - type
       properties:
+        id:
+          type: string
+          description: The unique identifier that represent a file version.
+          example: '12345'
         type:
-          description: error
-          example: error
           type: string
+          description: '`file_version`'
+          example: file_version
           enum:
-          - error
-        status:
-          description: The HTTP status of the response.
-          example: 400
-          type: integer
-          format: int32
-        code:
-          description: A Box-specific error code
-          example: item_name_invalid
-          type: string
-          enum:
-          - created
-          - accepted
-          - no_content
-          - redirect
-          - not_modified
-          - bad_request
-          - unauthorized
-          - forbidden
-          - not_found
-          - method_not_allowed
-          - conflict
-          - precondition_failed
-          - too_many_requests
-          - internal_server_error
-          - unavailable
-          - item_name_invalid
-          - insufficient_scope
-        message:
-          description: A short message describing the error.
-          example: Method Not Allowed
-          type: string
-        context_info:
-          description: 'A free-form object that contains additional context
-
-            about the error. The possible fields are defined on
-
-            a per-endpoint basis. `message` is only one example.'
-          type:
-          - object
-          - 'null'
-          properties:
-            message:
-              type: string
-              description: More details on the error.
-              example: Something went wrong.
-        help_url:
-          description: A URL that links to more information about why this error occurred.
-          example: https://developer.box.com/guides/api-calls/permissions-and-errors/common-errors/
-          type: string
-        request_id:
-          description: 'A unique identifier for this response, which can be used
-
-            when contacting Box support.'
-          type: string
-          example: abcdef123456
-    ConflictError:
-      title: Conflict error
-      type: object
-      x-box-resource-id: conflict_error
-      x-box-tag: uploads
-      description: 'The error that occurs when a file can not be created due
-
-        to a conflict.'
-      allOf:
-      - $ref: '#/components/schemas/ClientError'
-      - properties:
-          context_info:
-            type: object
-            properties:
-              conflicts:
-                type: array
-                description: A list of the file conflicts that caused this error.
-                items:
-                  $ref: '#/components/schemas/FileConflict'
+          - file_version
     MetadataCascadePolicy:
       title: Metadata cascade policy
       type: object
@@ -625,6 +514,143 @@ components:
             [file]: e://get-files-id-metadata
 
             [folder]: e://get-folders-id-metadata'
+    ClientError:
+      title: Client error
+      type: object
+      x-box-resource-id: client_error
+      description: A generic error
+      properties:
+        type:
+          description: error
+          example: error
+          type: string
+          enum:
+          - error
+        status:
+          description: The HTTP status of the response.
+          example: 400
+          type: integer
+          format: int32
+        code:
+          description: A Box-specific error code
+          example: item_name_invalid
+          type: string
+          enum:
+          - created
+          - accepted
+          - no_content
+          - redirect
+          - not_modified
+          - bad_request
+          - unauthorized
+          - forbidden
+          - not_found
+          - method_not_allowed
+          - conflict
+          - precondition_failed
+          - too_many_requests
+          - internal_server_error
+          - unavailable
+          - item_name_invalid
+          - insufficient_scope
+        message:
+          description: A short message describing the error.
+          example: Method Not Allowed
+          type: string
+        context_info:
+          description: 'A free-form object that contains additional context
+
+            about the error. The possible fields are defined on
+
+            a per-endpoint basis. `message` is only one example.'
+          type:
+          - object
+          - 'null'
+          properties:
+            message:
+              type: string
+              description: More details on the error.
+              example: Something went wrong.
+        help_url:
+          description: A URL that links to more information about why this error occurred.
+          example: https://developer.box.com/guides/api-calls/permissions-and-errors/common-errors/
+          type: string
+        request_id:
+          description: 'A unique identifier for this response, which can be used
+
+            when contacting Box support.'
+          type: string
+          example: abcdef123456
+    FileVersion--Mini:
+      title: File version (Mini)
+      type: object
+      x-box-resource-id: file_version--mini
+      x-box-variant: mini
+      description: 'A mini representation of a file version, used when
+
+        nested within another resource.'
+      allOf:
+      - $ref: '#/components/schemas/FileVersion--Base'
+      - properties:
+          sha1:
+            type: string
+            description: The SHA1 hash of this version of the file.
+            example: 134b65991ed521fcfe4724b7d814ab8ded5185dc
+    FileConflict:
+      title: File (Conflict)
+      type: object
+      x-box-sanitized: true
+      x-box-resource-id: file_conflict
+      x-box-tag: null
+      description: A representation of a file that is used to show
+      allOf:
+      - $ref: '#/components/schemas/File--Mini'
+      - properties:
+          sha1:
+            type: string
+            example: 85136C79CBF9FE36BB9D05D0639C70C265C18D37
+            description: The SHA1 hash of the file.
+          file_version:
+            $ref: '#/components/schemas/FileVersion--Mini'
+    MetadataCascadePolicies:
+      title: Metadata cascade policies
+      type: object
+      x-box-resource-id: metadata_cascade_policies
+      x-box-tag: metadata_cascade_policies
+      description: A list of metadata cascade policies.
+      allOf:
+      - type: object
+        description: 'The part of an API response that describes marker
+
+          based pagination'
+        properties:
+          limit:
+            description: 'The limit that was used for these entries. This will be the same as the
+
+              `limit` query parameter unless that value exceeded the maximum value
+
+              allowed. The maximum value varies by API.'
+            example: 1000
+            type: integer
+            format: int64
+          next_marker:
+            description: The marker for the start of the next page of results.
+            example: JV9IRGZmieiBasejOG9yDCRNgd2ymoZIbjsxbJMjIs3kioVii
+            type:
+            - string
+            - 'null'
+          prev_marker:
+            description: The marker for the start of the previous page of results.
+            example: JV9IRGZmieiBasejOG9yDCRNgd2ymoZIbjsxbJMjIs3kioVih
+            type:
+            - string
+            - 'null'
+      - properties:
+          entries:
+            type: array
+            description: A list of metadata cascade policies
+            items:
+              $ref: '#/components/schemas/MetadataCascadePolicy'
     File--Base:
       title: File (Base)
       type:
@@ -679,51 +705,25 @@ components:
           example: file
           enum:
           - file
-    FileVersion--Mini:
-      title: File version (Mini)
+    ConflictError:
+      title: Conflict error
       type: object
-      x-box-resource-id: file_version--mini
-      x-box-variant: mini
-      description: 'A mini representation of a file version, used when
+      x-box-resource-id: conflict_error
+      x-box-tag: uploads
+      description: 'The error that occurs when a file can not be created due
 
-        nested within another resource.'
+        to a conflict.'
       allOf:
-      - $ref: '#/components/schemas/FileVersion--Base'
+      - $ref: '#/components/schemas/ClientError'
       - properties:
-          sha1:
-            type: string
-            description: The SHA1 hash of this version of the file.
-            example: 134b65991ed521fcfe4724b7d814ab8ded5185dc
-    FileVersion--Base:
-      title: File version (Base)
-      type: object
-      x-box-resource-id: file_version--base
-      x-box-sanitized: true
-      x-box-variants:
-      - base
-      - mini
-      - standard
-      - full
-      x-box-variant: base
-      description: 'The bare basic representation of a file version, the minimal
-
-        amount of fields returned when using the `fields` query
-
-        parameter.'
-      required:
-      - id
-      - type
-      properties:
-        id:
-          type: string
-          description: The unique identifier that represent a file version.
-          example: '12345'
-        type:
-          type: string
-          description: '`file_version`'
-          example: file_version
-          enum:
-          - file_version
+          context_info:
+            type: object
+            properties:
+              conflicts:
+                type: array
+                description: A list of the file conflicts that caused this error.
+                items:
+                  $ref: '#/components/schemas/FileConflict'
     File--Mini:
       title: File (Mini)
       type:

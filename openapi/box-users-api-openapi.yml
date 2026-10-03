@@ -784,31 +784,34 @@ paths:
                 $ref: '#/components/schemas/ClientError'
 components:
   schemas:
-    TrackingCode:
-      title: Tracking code
+    User--Base:
+      title: User (Base)
       type: object
-      description: 'Tracking codes allow an admin to generate reports from the admin console
+      x-box-resource-id: user--base
+      x-box-tag: users
+      x-box-variants:
+      - base
+      - mini
+      - standard
+      - full
+      x-box-variant: base
+      description: 'A mini representation of a user, used when
 
-        and assign an attribute to a specific group of users.
-
-        This setting must be enabled for an enterprise before it can be used.'
+        nested within another resource.'
+      required:
+      - type
+      - id
       properties:
+        id:
+          type: string
+          description: The unique identifier for this user
+          example: '11446498'
         type:
           type: string
-          description: '`tracking_code`'
-          example: tracking_code
+          description: '`user`'
+          example: user
           enum:
-          - tracking_code
-        name:
-          type: string
-          description: 'The name of the tracking code, which must be preconfigured in
-
-            the Admin Console'
-          example: department
-        value:
-          type: string
-          description: The value of the tracking code
-          example: Sales
+          - user
     ClientError:
       title: Client error
       type: object
@@ -876,6 +879,126 @@ components:
             when contacting Box support.'
           type: string
           example: abcdef123456
+    TrackingCode:
+      title: Tracking code
+      type: object
+      description: 'Tracking codes allow an admin to generate reports from the admin console
+
+        and assign an attribute to a specific group of users.
+
+        This setting must be enabled for an enterprise before it can be used.'
+      properties:
+        type:
+          type: string
+          description: '`tracking_code`'
+          example: tracking_code
+          enum:
+          - tracking_code
+        name:
+          type: string
+          description: 'The name of the tracking code, which must be preconfigured in
+
+            the Admin Console'
+          example: department
+        value:
+          type: string
+          description: The value of the tracking code
+          example: Sales
+    Users:
+      title: Users
+      type: object
+      x-box-resource-id: users
+      x-box-tag: users
+      description: A list of users.
+      allOf:
+      - type: object
+        description: The part of an API response that describes pagination
+        properties:
+          total_count:
+            description: 'One greater than the offset of the last entry in the entire collection.
+
+              The total number of entries in the collection may be less than
+
+              `total_count`.
+
+
+              This field is only returned for calls that use offset-based pagination.
+
+              For marker-based paginated APIs, this field will be omitted.'
+            example: 5000
+            type: integer
+            format: int64
+          limit:
+            description: 'The limit that was used for these entries. This will be the same as the
+
+              `limit` query parameter unless that value exceeded the maximum value
+
+              allowed. The maximum value varies by API.'
+            example: 1000
+            type: integer
+            format: int64
+          offset:
+            description: 'The 0-based offset of the first entry in this set. This will be the same
+
+              as the `offset` query parameter.
+
+
+              This field is only returned for calls that use offset-based pagination.
+
+              For marker-based paginated APIs, this field will be omitted.'
+            example: 2000
+            type: integer
+            format: int64
+          order:
+            description: 'The order by which items are returned.
+
+
+              This field is only returned for calls that use offset-based pagination.
+
+              For marker-based paginated APIs, this field will be omitted.'
+            type: array
+            items:
+              type: object
+              description: The order in which a pagination is ordered
+              properties:
+                by:
+                  description: The field to order by
+                  example: type
+                  type: string
+                direction:
+                  type: string
+                  description: The direction to order by, either ascending or descending
+                  example: ASC
+                  enum:
+                  - ASC
+                  - DESC
+      - properties:
+          entries:
+            type: array
+            description: A list of users
+            items:
+              $ref: '#/components/schemas/User--Full'
+    User--Mini:
+      title: User (Mini)
+      type: object
+      x-box-resource-id: user--mini
+      x-box-variant: mini
+      description: 'A mini representation of a user, as can be returned when nested within other
+
+        resources.'
+      allOf:
+      - $ref: '#/components/schemas/User--Base'
+      - properties:
+          name:
+            type: string
+            description: The display name of this user
+            example: Aaron Levie
+            maxLength: 50
+          login:
+            type: string
+            format: email
+            description: The primary email address of this user
+            example: ceo@example.com
     User:
       title: User
       type: object
@@ -1071,129 +1194,6 @@ components:
               the user. This can be used to tie user IDs from external identity
 
               providers to Box users.'
-    User--Base:
-      title: User (Base)
-      type: object
-      x-box-resource-id: user--base
-      x-box-tag: users
-      x-box-variants:
-      - base
-      - mini
-      - standard
-      - full
-      x-box-variant: base
-      description: 'A mini representation of a user, used when
-
-        nested within another resource.'
-      required:
-      - type
-      - id
-      properties:
-        id:
-          type: string
-          description: The unique identifier for this user
-          example: '11446498'
-        type:
-          type: string
-          description: '`user`'
-          example: user
-          enum:
-          - user
-    User--Mini:
-      title: User (Mini)
-      type: object
-      x-box-resource-id: user--mini
-      x-box-variant: mini
-      description: 'A mini representation of a user, as can be returned when nested within other
-
-        resources.'
-      allOf:
-      - $ref: '#/components/schemas/User--Base'
-      - properties:
-          name:
-            type: string
-            description: The display name of this user
-            example: Aaron Levie
-            maxLength: 50
-          login:
-            type: string
-            format: email
-            description: The primary email address of this user
-            example: ceo@example.com
-    Users:
-      title: Users
-      type: object
-      x-box-resource-id: users
-      x-box-tag: users
-      description: A list of users.
-      allOf:
-      - type: object
-        description: The part of an API response that describes pagination
-        properties:
-          total_count:
-            description: 'One greater than the offset of the last entry in the entire collection.
-
-              The total number of entries in the collection may be less than
-
-              `total_count`.
-
-
-              This field is only returned for calls that use offset-based pagination.
-
-              For marker-based paginated APIs, this field will be omitted.'
-            example: 5000
-            type: integer
-            format: int64
-          limit:
-            description: 'The limit that was used for these entries. This will be the same as the
-
-              `limit` query parameter unless that value exceeded the maximum value
-
-              allowed. The maximum value varies by API.'
-            example: 1000
-            type: integer
-            format: int64
-          offset:
-            description: 'The 0-based offset of the first entry in this set. This will be the same
-
-              as the `offset` query parameter.
-
-
-              This field is only returned for calls that use offset-based pagination.
-
-              For marker-based paginated APIs, this field will be omitted.'
-            example: 2000
-            type: integer
-            format: int64
-          order:
-            description: 'The order by which items are returned.
-
-
-              This field is only returned for calls that use offset-based pagination.
-
-              For marker-based paginated APIs, this field will be omitted.'
-            type: array
-            items:
-              type: object
-              description: The order in which a pagination is ordered
-              properties:
-                by:
-                  description: The field to order by
-                  example: type
-                  type: string
-                direction:
-                  type: string
-                  description: The direction to order by, either ascending or descending
-                  example: ASC
-                  enum:
-                  - ASC
-                  - DESC
-      - properties:
-          entries:
-            type: array
-            description: A list of users
-            items:
-              $ref: '#/components/schemas/User--Full'
   securitySchemes:
     OAuth2Security:
       type: oauth2

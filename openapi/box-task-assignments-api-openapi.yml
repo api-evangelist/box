@@ -322,6 +322,81 @@ paths:
                 $ref: '#/components/schemas/ClientError'
 components:
   schemas:
+    FileVersion--Base:
+      title: File version (Base)
+      type: object
+      x-box-resource-id: file_version--base
+      x-box-sanitized: true
+      x-box-variants:
+      - base
+      - mini
+      - standard
+      - full
+      x-box-variant: base
+      description: 'The bare basic representation of a file version, the minimal
+
+        amount of fields returned when using the `fields` query
+
+        parameter.'
+      required:
+      - id
+      - type
+      properties:
+        id:
+          type: string
+          description: The unique identifier that represent a file version.
+          example: '12345'
+        type:
+          type: string
+          description: '`file_version`'
+          example: file_version
+          enum:
+          - file_version
+    User--Base:
+      title: User (Base)
+      type: object
+      x-box-resource-id: user--base
+      x-box-tag: users
+      x-box-variants:
+      - base
+      - mini
+      - standard
+      - full
+      x-box-variant: base
+      description: 'A mini representation of a user, used when
+
+        nested within another resource.'
+      required:
+      - type
+      - id
+      properties:
+        id:
+          type: string
+          description: The unique identifier for this user
+          example: '11446498'
+        type:
+          type: string
+          description: '`user`'
+          example: user
+          enum:
+          - user
+    TaskAssignments:
+      title: Task assignments
+      type: object
+      x-box-resource-id: task_assignments
+      x-box-tag: task_assignments
+      description: A list of task assignments
+      properties:
+        total_count:
+          description: The total number of items in this collection.
+          example: 100
+          type: integer
+          format: int64
+        entries:
+          type: array
+          description: A list of task assignments
+          items:
+            $ref: '#/components/schemas/TaskAssignment'
     ClientError:
       title: Client error
       type: object
@@ -456,6 +531,21 @@ components:
           allOf:
           - $ref: '#/components/schemas/User--Mini'
           - description: The user who assigned this task.
+    FileVersion--Mini:
+      title: File version (Mini)
+      type: object
+      x-box-resource-id: file_version--mini
+      x-box-variant: mini
+      description: 'A mini representation of a file version, used when
+
+        nested within another resource.'
+      allOf:
+      - $ref: '#/components/schemas/FileVersion--Base'
+      - properties:
+          sha1:
+            type: string
+            description: The SHA1 hash of this version of the file.
+            example: 134b65991ed521fcfe4724b7d814ab8ded5185dc
     File--Base:
       title: File (Base)
       type:
@@ -510,96 +600,6 @@ components:
           example: file
           enum:
           - file
-    FileVersion--Mini:
-      title: File version (Mini)
-      type: object
-      x-box-resource-id: file_version--mini
-      x-box-variant: mini
-      description: 'A mini representation of a file version, used when
-
-        nested within another resource.'
-      allOf:
-      - $ref: '#/components/schemas/FileVersion--Base'
-      - properties:
-          sha1:
-            type: string
-            description: The SHA1 hash of this version of the file.
-            example: 134b65991ed521fcfe4724b7d814ab8ded5185dc
-    TaskAssignments:
-      title: Task assignments
-      type: object
-      x-box-resource-id: task_assignments
-      x-box-tag: task_assignments
-      description: A list of task assignments
-      properties:
-        total_count:
-          description: The total number of items in this collection.
-          example: 100
-          type: integer
-          format: int64
-        entries:
-          type: array
-          description: A list of task assignments
-          items:
-            $ref: '#/components/schemas/TaskAssignment'
-    User--Base:
-      title: User (Base)
-      type: object
-      x-box-resource-id: user--base
-      x-box-tag: users
-      x-box-variants:
-      - base
-      - mini
-      - standard
-      - full
-      x-box-variant: base
-      description: 'A mini representation of a user, used when
-
-        nested within another resource.'
-      required:
-      - type
-      - id
-      properties:
-        id:
-          type: string
-          description: The unique identifier for this user
-          example: '11446498'
-        type:
-          type: string
-          description: '`user`'
-          example: user
-          enum:
-          - user
-    FileVersion--Base:
-      title: File version (Base)
-      type: object
-      x-box-resource-id: file_version--base
-      x-box-sanitized: true
-      x-box-variants:
-      - base
-      - mini
-      - standard
-      - full
-      x-box-variant: base
-      description: 'The bare basic representation of a file version, the minimal
-
-        amount of fields returned when using the `fields` query
-
-        parameter.'
-      required:
-      - id
-      - type
-      properties:
-        id:
-          type: string
-          description: The unique identifier that represent a file version.
-          example: '12345'
-        type:
-          type: string
-          description: '`file_version`'
-          example: file_version
-          enum:
-          - file_version
     User--Mini:
       title: User (Mini)
       type: object

@@ -271,6 +271,78 @@ paths:
                 $ref: '#/components/schemas/ClientError'
 components:
   schemas:
+    User--Base:
+      title: User (Base)
+      type: object
+      x-box-resource-id: user--base
+      x-box-tag: users
+      x-box-variants:
+      - base
+      - mini
+      - standard
+      - full
+      x-box-variant: base
+      description: 'A mini representation of a user, used when
+
+        nested within another resource.'
+      required:
+      - type
+      - id
+      properties:
+        id:
+          type: string
+          description: The unique identifier for this user
+          example: '11446498'
+        type:
+          type: string
+          description: '`user`'
+          example: user
+          enum:
+          - user
+    Workflows:
+      title: Workflows
+      type: object
+      x-box-resource-id: workflows
+      x-box-tag: workflows
+      description: 'A list of workflows.
+
+
+        You application must be authorized to use the `Manage Box Relay` application
+
+        scope within the developer console in order to use this resource.'
+      allOf:
+      - type: object
+        description: 'The part of an API response that describes marker
+
+          based pagination'
+        properties:
+          limit:
+            description: 'The limit that was used for these entries. This will be the same as the
+
+              `limit` query parameter unless that value exceeded the maximum value
+
+              allowed. The maximum value varies by API.'
+            example: 1000
+            type: integer
+            format: int64
+          next_marker:
+            description: The marker for the start of the next page of results.
+            example: JV9IRGZmieiBasejOG9yDCRNgd2ymoZIbjsxbJMjIs3kioVii
+            type:
+            - string
+            - 'null'
+          prev_marker:
+            description: The marker for the start of the previous page of results.
+            example: JV9IRGZmieiBasejOG9yDCRNgd2ymoZIbjsxbJMjIs3kioVih
+            type:
+            - string
+            - 'null'
+      - properties:
+          entries:
+            type: array
+            description: A list of workflows
+            items:
+              $ref: '#/components/schemas/Workflow'
     ClientError:
       title: Client error
       type: object
@@ -338,6 +410,45 @@ components:
             when contacting Box support.'
           type: string
           example: abcdef123456
+    Workflow--Mini:
+      title: Workflow (Mini)
+      type: object
+      x-box-resource-id: workflow--mini
+      x-box-tag: workflows
+      x-box-variants:
+      - mini
+      - standard
+      - full
+      x-box-variant: mini
+      description: 'Box Relay Workflows are objects that represent a named collection of flows.
+
+
+        You application must be authorized to use the `Manage Box Relay` application
+
+        scope within the developer console in order to use this resource.'
+      properties:
+        id:
+          type: string
+          description: The unique identifier for the workflow
+          example: '11446498'
+        type:
+          type: string
+          description: '`workflow`'
+          example: workflow
+          enum:
+          - workflow
+        name:
+          type: string
+          example: New Hire Workflow
+          description: The name of the workflow
+        description:
+          type: string
+          description: The description for a workflow.
+          example: This workflow sets off a new hire approval flow
+        is_enabled:
+          type: boolean
+          example: true
+          description: Specifies if this workflow is enabled
     Workflow:
       title: Workflow
       type: object
@@ -536,117 +647,6 @@ components:
                   allOf:
                   - $ref: '#/components/schemas/User--Base'
                   - description: The user who created this flow
-    Workflow--Mini:
-      title: Workflow (Mini)
-      type: object
-      x-box-resource-id: workflow--mini
-      x-box-tag: workflows
-      x-box-variants:
-      - mini
-      - standard
-      - full
-      x-box-variant: mini
-      description: 'Box Relay Workflows are objects that represent a named collection of flows.
-
-
-        You application must be authorized to use the `Manage Box Relay` application
-
-        scope within the developer console in order to use this resource.'
-      properties:
-        id:
-          type: string
-          description: The unique identifier for the workflow
-          example: '11446498'
-        type:
-          type: string
-          description: '`workflow`'
-          example: workflow
-          enum:
-          - workflow
-        name:
-          type: string
-          example: New Hire Workflow
-          description: The name of the workflow
-        description:
-          type: string
-          description: The description for a workflow.
-          example: This workflow sets off a new hire approval flow
-        is_enabled:
-          type: boolean
-          example: true
-          description: Specifies if this workflow is enabled
-    Workflows:
-      title: Workflows
-      type: object
-      x-box-resource-id: workflows
-      x-box-tag: workflows
-      description: 'A list of workflows.
-
-
-        You application must be authorized to use the `Manage Box Relay` application
-
-        scope within the developer console in order to use this resource.'
-      allOf:
-      - type: object
-        description: 'The part of an API response that describes marker
-
-          based pagination'
-        properties:
-          limit:
-            description: 'The limit that was used for these entries. This will be the same as the
-
-              `limit` query parameter unless that value exceeded the maximum value
-
-              allowed. The maximum value varies by API.'
-            example: 1000
-            type: integer
-            format: int64
-          next_marker:
-            description: The marker for the start of the next page of results.
-            example: JV9IRGZmieiBasejOG9yDCRNgd2ymoZIbjsxbJMjIs3kioVii
-            type:
-            - string
-            - 'null'
-          prev_marker:
-            description: The marker for the start of the previous page of results.
-            example: JV9IRGZmieiBasejOG9yDCRNgd2ymoZIbjsxbJMjIs3kioVih
-            type:
-            - string
-            - 'null'
-      - properties:
-          entries:
-            type: array
-            description: A list of workflows
-            items:
-              $ref: '#/components/schemas/Workflow'
-    User--Base:
-      title: User (Base)
-      type: object
-      x-box-resource-id: user--base
-      x-box-tag: users
-      x-box-variants:
-      - base
-      - mini
-      - standard
-      - full
-      x-box-variant: base
-      description: 'A mini representation of a user, used when
-
-        nested within another resource.'
-      required:
-      - type
-      - id
-      properties:
-        id:
-          type: string
-          description: The unique identifier for this user
-          example: '11446498'
-        type:
-          type: string
-          description: '`user`'
-          example: user
-          enum:
-          - user
   securitySchemes:
     OAuth2Security:
       type: oauth2

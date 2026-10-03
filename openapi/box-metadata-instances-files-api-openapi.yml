@@ -551,6 +551,22 @@ paths:
                 $ref: '#/components/schemas/ClientError'
 components:
   schemas:
+    Metadatas:
+      title: Metadata instances
+      type: object
+      x-box-resource-id: metadatas
+      x-box-tag: file_metadata
+      description: A list of metadata instances that have been applied to a file or folder.
+      properties:
+        entries:
+          type: array
+          description: A list of metadata instances, as applied to this file or folder.
+          items:
+            $ref: '#/components/schemas/Metadata'
+        limit:
+          description: The limit that was used for this page of results.
+          example: 100
+          type: integer
     ClientError:
       title: Client error
       type: object
@@ -618,22 +634,6 @@ components:
             when contacting Box support.'
           type: string
           example: abcdef123456
-    Metadatas:
-      title: Metadata instances
-      type: object
-      x-box-resource-id: metadatas
-      x-box-tag: file_metadata
-      description: A list of metadata instances that have been applied to a file or folder.
-      properties:
-        entries:
-          type: array
-          description: A list of metadata instances, as applied to this file or folder.
-          items:
-            $ref: '#/components/schemas/Metadata'
-        limit:
-          description: The limit that was used for this page of results.
-          example: 100
-          type: integer
     Metadata--Base:
       title: Metadata instance (Base)
       type: object
@@ -675,17 +675,6 @@ components:
           description: 'The version of the metadata instance. This version starts at 0 and
 
             increases every time a user-defined property is modified.'
-    Metadata:
-      title: Metadata instance
-      type: object
-      x-box-resource-id: metadata
-      x-box-tag: file_metadata
-      x-box-variant: standard
-      description: 'An instance of a metadata template, which has been applied to a file or
-
-        folder.'
-      allOf:
-      - $ref: '#/components/schemas/Metadata--Base'
     Metadata--Full:
       title: Metadata instance (Full)
       type: object
@@ -729,6 +718,17 @@ components:
           - example: Aaron Levie
           - description: "A value for each of the fields that are present\non the metadata template.\nFor the `global.properties` template this can be\na list of zero or more fields,\nas this template allows for any generic key-value pairs \nto be stored stored in the template."
           x-box-example-key: name
+    Metadata:
+      title: Metadata instance
+      type: object
+      x-box-resource-id: metadata
+      x-box-tag: file_metadata
+      x-box-variant: standard
+      description: 'An instance of a metadata template, which has been applied to a file or
+
+        folder.'
+      allOf:
+      - $ref: '#/components/schemas/Metadata--Base'
   securitySchemes:
     OAuth2Security:
       type: oauth2

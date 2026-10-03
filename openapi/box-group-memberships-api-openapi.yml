@@ -465,6 +465,78 @@ paths:
                 $ref: '#/components/schemas/ClientError'
 components:
   schemas:
+    GroupMembership:
+      title: Group membership
+      type: object
+      x-box-resource-id: group_membership
+      x-box-tag: memberships
+      description: 'Membership is used to signify that a user is part of a
+
+        group.'
+      properties:
+        id:
+          type: string
+          description: The unique identifier for this group membership
+          example: '11446498'
+        type:
+          type: string
+          description: '`group_membership`'
+          example: group_membership
+          enum:
+          - group_membership
+        user:
+          allOf:
+          - $ref: '#/components/schemas/User--Mini'
+          - description: The user that the membership applies to
+        group:
+          allOf:
+          - $ref: '#/components/schemas/Group--Mini'
+          - description: The group that the membership applies to
+        role:
+          type: string
+          example: member
+          description: The role of the user in the group.
+          enum:
+          - member
+          - admin
+        created_at:
+          type: string
+          format: date-time
+          description: The time this membership was created.
+          example: '2012-12-12T10:53:43-08:00'
+        modified_at:
+          type: string
+          format: date-time
+          description: The time this membership was last modified.
+          example: '2012-12-12T10:53:43-08:00'
+    User--Base:
+      title: User (Base)
+      type: object
+      x-box-resource-id: user--base
+      x-box-tag: users
+      x-box-variants:
+      - base
+      - mini
+      - standard
+      - full
+      x-box-variant: base
+      description: 'A mini representation of a user, used when
+
+        nested within another resource.'
+      required:
+      - type
+      - id
+      properties:
+        id:
+          type: string
+          description: The unique identifier for this user
+          example: '11446498'
+        type:
+          type: string
+          description: '`user`'
+          example: user
+          enum:
+          - user
     ClientError:
       title: Client error
       type: object
@@ -532,33 +604,6 @@ components:
             when contacting Box support.'
           type: string
           example: abcdef123456
-    Group--Base:
-      title: Group (Base)
-      type: object
-      x-box-resource-id: group--base
-      x-box-sanitized: true
-      x-box-tag: groups
-      x-box-variants:
-      - base
-      - mini
-      - standard
-      - full
-      x-box-variant: base
-      description: A base representation of a group.
-      required:
-      - id
-      - type
-      properties:
-        id:
-          type: string
-          description: The unique identifier for this object
-          example: '11446498'
-        type:
-          type: string
-          description: '`group`'
-          example: group
-          enum:
-          - group
     GroupMemberships:
       title: Group memberships
       type: object
@@ -633,99 +678,33 @@ components:
             description: A list of group memberships
             items:
               $ref: '#/components/schemas/GroupMembership'
-    GroupMembership:
-      title: Group membership
+    Group--Base:
+      title: Group (Base)
       type: object
-      x-box-resource-id: group_membership
-      x-box-tag: memberships
-      description: 'Membership is used to signify that a user is part of a
-
-        group.'
-      properties:
-        id:
-          type: string
-          description: The unique identifier for this group membership
-          example: '11446498'
-        type:
-          type: string
-          description: '`group_membership`'
-          example: group_membership
-          enum:
-          - group_membership
-        user:
-          allOf:
-          - $ref: '#/components/schemas/User--Mini'
-          - description: The user that the membership applies to
-        group:
-          allOf:
-          - $ref: '#/components/schemas/Group--Mini'
-          - description: The group that the membership applies to
-        role:
-          type: string
-          example: member
-          description: The role of the user in the group.
-          enum:
-          - member
-          - admin
-        created_at:
-          type: string
-          format: date-time
-          description: The time this membership was created.
-          example: '2012-12-12T10:53:43-08:00'
-        modified_at:
-          type: string
-          format: date-time
-          description: The time this membership was last modified.
-          example: '2012-12-12T10:53:43-08:00'
-    User--Base:
-      title: User (Base)
-      type: object
-      x-box-resource-id: user--base
-      x-box-tag: users
+      x-box-resource-id: group--base
+      x-box-sanitized: true
+      x-box-tag: groups
       x-box-variants:
       - base
       - mini
       - standard
       - full
       x-box-variant: base
-      description: 'A mini representation of a user, used when
-
-        nested within another resource.'
+      description: A base representation of a group.
       required:
-      - type
       - id
+      - type
       properties:
         id:
           type: string
-          description: The unique identifier for this user
+          description: The unique identifier for this object
           example: '11446498'
         type:
           type: string
-          description: '`user`'
-          example: user
+          description: '`group`'
+          example: group
           enum:
-          - user
-    User--Mini:
-      title: User (Mini)
-      type: object
-      x-box-resource-id: user--mini
-      x-box-variant: mini
-      description: 'A mini representation of a user, as can be returned when nested within other
-
-        resources.'
-      allOf:
-      - $ref: '#/components/schemas/User--Base'
-      - properties:
-          name:
-            type: string
-            description: The display name of this user
-            example: Aaron Levie
-            maxLength: 50
-          login:
-            type: string
-            format: email
-            description: The primary email address of this user
-            example: ceo@example.com
+          - group
     Group--Mini:
       title: Group (Mini)
       type: object
@@ -748,6 +727,27 @@ components:
             enum:
             - managed_group
             - all_users_group
+    User--Mini:
+      title: User (Mini)
+      type: object
+      x-box-resource-id: user--mini
+      x-box-variant: mini
+      description: 'A mini representation of a user, as can be returned when nested within other
+
+        resources.'
+      allOf:
+      - $ref: '#/components/schemas/User--Base'
+      - properties:
+          name:
+            type: string
+            description: The display name of this user
+            example: Aaron Levie
+            maxLength: 50
+          login:
+            type: string
+            format: email
+            description: The primary email address of this user
+            example: ceo@example.com
   securitySchemes:
     OAuth2Security:
       type: oauth2

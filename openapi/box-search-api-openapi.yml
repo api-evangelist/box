@@ -651,44 +651,34 @@ paths:
                 $ref: '#/components/schemas/ClientError'
 components:
   schemas:
-    MetadataQueryResults:
-      title: Metadata query search results
+    User--Base:
+      title: User (Base)
       type: object
-      x-box-tag: search
-      x-box-resource-id: metadata_query_results
-      description: A page of files and folders that matched the metadata query.
+      x-box-resource-id: user--base
+      x-box-tag: users
+      x-box-variants:
+      - base
+      - mini
+      - standard
+      - full
+      x-box-variant: base
+      description: 'A mini representation of a user, used when
+
+        nested within another resource.'
+      required:
+      - type
+      - id
       properties:
-        entries:
-          description: 'The mini representation of the files and folders that match the search
-
-            terms.
-
-
-            By default, this endpoint returns only the most basic info about the
-
-            items. To get additional fields for each item, including any of the
-
-            metadata, use the `fields` attribute in the query.'
-          type: array
-          x-box-resource-variant: 1
-          items:
-            oneOf:
-            - $ref: '#/components/schemas/File'
-            - $ref: '#/components/schemas/Folder'
-        limit:
-          description: 'The limit that was used for this search. This will be the same as the
-
-            `limit` query parameter unless that value exceeded the maximum value
-
-            allowed.'
-          default: 100
-          example: 100
-          type: integer
-          format: int64
-        next_marker:
-          description: The marker for the start of the next page of results.
-          example: 0!-M7487OpVfBTNBV-XsQjU50gQFlbFFu5nArMWD7Ck61GH_Qo40M1S2xN5zWZPBzEjaQS1SOjJiQoo5BsXEl1bCVLRZ2pTqo4SKp9tyqzWQK2L51KR_nC1EgF5I_TJSFw7uO2Bx4HweGETOjh5_2oPSWw5iMkM-OvGApeR0lGFO48FDKoyzJyLgz5aogxoKd8VE09CesOOnTnmZvrW0puylDc-hFjY5YLmWFBKox3SOWiSDwKFkmZGNHyjEzza1nSwbZg6CYsAdGsDwGJhuCeTNsFzP5Mo5qx9wMloS0lSPuf2CcBInbIJzl2CKlXF3FvqhANttpm2nzdBTQRSoJyJnjVBpf4Q_HjV2eb4KIZBBlLy067UCVdv2AAWQFd5E2i6s1YiGRTtgMEZntOSUYD4IYLMWWm5Ra7ke_SP32SL3GSjbBQYIyCVQ..
+        id:
           type: string
+          description: The unique identifier for this user
+          example: '11446498'
+        type:
+          type: string
+          description: '`user`'
+          example: user
+          enum:
+          - user
     Folder:
       title: Folder
       type: object
@@ -1051,604 +1041,73 @@ components:
 
                 information, not when querying a folder''s items.'
             - {}
-    Metadata:
-      title: Metadata instance
+    ClientError:
+      title: Client error
       type: object
-      x-box-resource-id: metadata
-      x-box-tag: file_metadata
-      x-box-variant: standard
-      description: 'An instance of a metadata template, which has been applied to a file or
-
-        folder.'
-      allOf:
-      - $ref: '#/components/schemas/Metadata--Base'
-    Metadata--Base:
-      title: Metadata instance (Base)
-      type: object
-      x-box-resource-id: metadata--base
-      x-box-sanitized: true
-      x-box-tag: file_metadata
-      x-box-variants:
-      - base
-      - standard
-      - full
-      x-box-variant: base
-      description: The base representation of a metadata instance.
+      x-box-resource-id: client_error
+      description: A generic error
       properties:
-        $parent:
-          type: string
-          example: folder_59449484661,
-          description: 'The identifier of the item that this metadata instance
-
-            has been attached to. This combines the `type` and the `id`
-
-            of the parent in the form `{type}_{id}`.'
-        $template:
-          type: string
-          example: marketingCollateral
-          description: The name of the template
-        $scope:
-          type: string
-          example: enterprise_27335
-          description: 'An ID for the scope in which this template
-
-            has been applied. This will be `enterprise_{enterprise_id}` for templates
-
-            defined for use in this enterprise, and `global` for general templates
-
-            that are available to all enterprises using Box.'
-        $version:
-          type: integer
-          example: 1
-          description: 'The version of the metadata instance. This version starts at 0 and
-
-            increases every time a user-defined property is modified.'
-    SearchResults:
-      title: Search Results
-      type: object
-      x-box-resource-id: search_results
-      x-box-tag: search
-      description: A list of files, folders and web links that matched the search query.
-      required:
-      - type
-      allOf:
-      - type: object
-        properties:
-          total_count:
-            description: 'One greater than the offset of the last entry in the search results.
-
-              The total number of entries in the collection may be less than
-
-              `total_count`.'
-            example: 5000
-            type: integer
-            format: int64
-          limit:
-            description: 'The limit that was used for this search. This will be the same as the
-
-              `limit` query parameter unless that value exceeded the maximum value
-
-              allowed.'
-            example: 1000
-            type: integer
-            format: int64
-          offset:
-            description: 'The 0-based offset of the first entry in this set. This will be the same
-
-              as the `offset` query parameter used.'
-            example: 2000
-            type: integer
-            format: int64
-      - properties:
-          type:
-            description: Specifies the response as search result items without shared links
-            type: string
-            example: search_results_items
-            enum:
-            - search_results_items
-          entries:
-            description: The search results for the query provided.
-            type: array
-            items:
-              oneOf:
-              - $ref: '#/components/schemas/File--Full'
-              - $ref: '#/components/schemas/Folder--Full'
-              - $ref: '#/components/schemas/WebLink'
-    Folder--Full:
-      title: Folder (Full)
-      type: object
-      x-box-resource-id: folder--full
-      x-box-variant: full
-      description: 'A full representation of a folder, as can be returned from any
-
-        folder API endpoints by default'
-      allOf:
-      - $ref: '#/components/schemas/Folder'
-      - properties:
-          sync_state:
-            allOf:
-            - type: string
-              example: synced
-              description: 'Specifies whether a folder should be synced to a
-
-                user''s device or not. This is used by Box Sync
-
-                (discontinued) and is not used by Box Drive.'
-              enum:
-              - synced
-              - not_synced
-              - partially_synced
-          has_collaborations:
-            type: boolean
-            example: true
-            description: Specifies if this folder has any other collaborators.
-          permissions:
-            allOf:
-            - type: object
-              description: The permissions that the authenticated user has for a folder.
-              required:
-              - can_upload
-              allOf:
-              - type: object
-                description: The permissions that the authenticated user has for an item.
-                required:
-                - can_delete
-                - can_download
-                - can_invite_collaborator
-                - can_rename
-                - can_set_share_access
-                - can_share
-                properties:
-                  can_delete:
-                    type: boolean
-                    description: Specifies if the current user can delete this item.
-                    example: true
-                  can_download:
-                    type: boolean
-                    description: Specifies if the current user can download this item.
-                    example: true
-                  can_invite_collaborator:
-                    type: boolean
-                    description: 'Specifies if the current user can invite new
-
-                      users to collaborate on this item, and if the user can
-
-                      update the role of a user already collaborated on this
-
-                      item.'
-                    example: true
-                  can_rename:
-                    type: boolean
-                    description: Specifies if the user can rename this item.
-                    example: true
-                  can_set_share_access:
-                    type: boolean
-                    description: 'Specifies if the user can change the access level of an
-
-                      existing shared link on this item.'
-                    example: true
-                  can_share:
-                    type: boolean
-                    description: Specifies if the user can create a shared link for this item.
-                    example: true
-              - properties:
-                  can_upload:
-                    type: boolean
-                    description: Specifies if the user can upload into this folder.
-                    example: true
-            - description: 'Describes the permissions that the current user has
-
-                for this folder'
-            - {}
-          tags:
-            allOf:
-            - type: array
-              example:
-              - approved
-              items:
-                type: string
-              minItems: 1
-              maxItems: 100
-              description: 'The tags for this item. These tags are shown in
-
-                the Box web app and mobile apps next to an item.
-
-
-                To add or remove a tag, retrieve the item''s current tags,
-
-                modify them, and then update this field.
-
-
-                There is a limit of 100 tags per item, and 10,000
-
-                unique tags per enterprise.'
-            - {}
-          can_non_owners_invite:
-            allOf:
-            - type: boolean
-              example: true
-              description: 'Specifies if users who are not the owner
-
-                of the folder can invite new collaborators to the folder.'
-            - {}
-          is_externally_owned:
-            type: boolean
-            example: true
-            description: 'Specifies if this folder is owned by a user outside of the
-
-              authenticated enterprise.'
-          metadata:
-            allOf:
-            - title: Item metadata instances
-              type: object
-              description: 'A list of metadata instances, nested within key-value pairs of their `scope`
-
-                and `templateKey`.
-
-
-                To access the metadata for a file or folder, first use the
-
-                metadata endpoints to determine the metadata templates available to your
-
-                enterprise.
-
-
-                Then use the `GET /files/:id` or `GET /folder/:id`
-
-                endpoint with the `fields` query parameter to get
-
-                the metadata by ID.
-
-
-                To request a metadata instance for a particular `scope` and `templateKey`
-
-                use the following format for the `fields` parameter:
-
-                `metadata.<scope>.<templateKey>`
-
-
-                For example, `?fields=metadata.enterprise_27335.marketingCollateral`.'
-              example:
-                enterprise_27335:
-                  marketingCollateral:
-                    $canEdit: true
-                    $id: 01234500-12f1-1234-aa12-b1d234cb567e
-                    $parent: folder_59449484661
-                    $scope: enterprise_27335
-                    $template: marketingCollateral
-                    $type: properties-6bcba49f-ca6d-4d2a-a758-57fe6edf44d0
-                    $typeVersion: 2
-                    $version: 1
-              additionalProperties:
-                type: object
-                description: 'A list of metadata instances, nested within key-value pairs of their `scope`
-
-                  and `templateKey`.'
-                example:
-                  marketingCollateral:
-                    $canEdit: true
-                    $id: 01234500-12f1-1234-aa12-b1d234cb567e
-                    $parent: folder_59449484661
-                    $scope: enterprise_27335
-                    $template: marketingCollateral
-                    $type: properties-6bcba49f-ca6d-4d2a-a758-57fe6edf44d0
-                    $typeVersion: 2
-                    $version: 1
-                additionalProperties:
-                  $ref: '#/components/schemas/Metadata'
-            - description: 'An object containing the metadata instances that have been
-
-                attached to this folder.
-
-
-                Each metadata instance is uniquely identified by its `scope` and
-
-                `templateKey`. There can only be one instance of any metadata
-
-                template attached to each folder. Each metadata instance is nested
-
-                within an object with the `templateKey` as the key, which again
-
-                itself is nested in an object with the `scope` as the key.'
-          is_collaboration_restricted_to_enterprise:
-            allOf:
-            - type: boolean
-              example: true
-              description: 'Specifies if new invites to this folder are restricted to users
-
-                within the enterprise. This does not affect existing
-
-                collaborations.'
-            - {}
-          allowed_shared_link_access_levels:
-            type: array
-            example:
-            - open
-            items:
-              type: string
-              enum:
-              - open
-              - company
-              - collaborators
-            description: 'A list of access levels that are available
-
-              for this folder.
-
-
-              For some folders, like the root folder, this will always
-
-              be an empty list as sharing is not allowed at that level.'
-          allowed_invitee_roles:
-            type: array
-            example:
-            - editor
-            description: 'A list of the types of roles that user can be invited at
-
-              when sharing this folder.'
-            items:
-              type: string
-              enum:
-              - editor
-              - viewer
-              - previewer
-              - uploader
-              - previewer uploader
-              - viewer uploader
-              - co-owner
-          watermark_info:
-            allOf:
-            - type: object
-              description: Details about the watermark applied to this item
-              properties:
-                is_watermarked:
-                  type: boolean
-                  description: Specifies if this item has a watermark applied.
-                  example: true
-            - description: Details about the watermark applied to this folder
-            - {}
-          is_accessible_via_shared_link:
-            type: boolean
-            description: 'Specifies if the folder can be accessed
-
-              with the direct shared link or a shared link
-
-              to a parent folder.'
-            example: true
-            enum:
-            - true
-            - false
-          can_non_owners_view_collaborators:
-            type: boolean
-            example: true
-            description: 'Specifies if collaborators who are not owners
-
-              of this folder are restricted from viewing other
-
-              collaborations on this folder.
-
-
-              It also restricts non-owners from inviting new
-
-              collaborators.'
-          classification:
-            allOf:
-            - type: object
-              description: The classification applied to an item
-              properties:
-                name:
-                  type: string
-                  example: Top Secret
-                  description: The name of the classification
-                definition:
-                  type: string
-                  example: Content that should not be shared outside the company.
-                  description: An explanation of the meaning of this classification.
-                color:
-                  type: string
-                  example: '#FF0000'
-                  description: 'The color that is used to display the
-
-                    classification label in a user-interface. Colors are defined by the admin
-
-                    or co-admin who created the classification in the Box web app.'
-            - description: Details about the classification applied to this folder.
-            - {}
-    File--Mini:
-      title: File (Mini)
-      type:
-      - object
-      - 'null'
-      x-box-resource-id: file--mini
-      x-box-variant: mini
-      description: 'A mini representation of a file, used when
-
-        nested under another resource.'
-      allOf:
-      - $ref: '#/components/schemas/File--Base'
-      - properties:
-          sequence_id:
-            allOf:
-            - type:
-              - string
-              - 'null'
-              example: '3'
-              description: 'A numeric identifier that represents the most recent user event
-
-                that has been applied to this item.
-
-
-                This can be used in combination with the `GET /events`-endpoint
-
-                to filter out user events that would have occurred before this
-
-                identifier was read.
-
-
-                An example would be where a Box Drive-like application
-
-                would fetch an item via the API, and then listen to incoming
-
-                user events for changes to the item. The application would
-
-                ignore any user events where the `sequence_id` in the event
-
-                is smaller than or equal to the `sequence_id` in the originally
-
-                fetched resource.'
-            - {}
-          name:
-            type: string
-            description: The name of the file
-            example: Contract.pdf
-          sha1:
-            type: string
-            format: digest
-            example: 85136C79CBF9FE36BB9D05D0639C70C265C18D37
-            description: 'The SHA1 hash of the file. This can be used to compare the contents
-
-              of a file on Box with a local file.'
-          file_version:
-            allOf:
-            - $ref: '#/components/schemas/FileVersion--Mini'
-            - description: The information about the current version of the file.
-    MetadataFieldFilterFloatRange:
-      title: Metadata field filter (float range)
-      type: object
-      x-box-resource-id: metadata_field_filter_float_range
-      description: 'Specifies which `float` field on the template to filter the search
-
-        results by, specifying a range of values that can match.'
-      example:
-        contractValue:
-          gt: 100000
-          lt: 200000
-      additionalProperties:
-        type: object
-        description: 'Specifies which `float` field on the template to filter the search
-
-          results by, specifying a range of values that can match.'
-        example:
-          gt: 100000
-          lt: 200000
-        x-box-example-key: value
-        properties:
-          lt:
-            description: 'Specifies the (inclusive) upper bound for the metadata field
-
-              value. The value of a field must be lower than (`lt`) or
-
-              equal to this value for the search query to match this
-
-              template.'
-            type: number
-            example: 200000
-          gt:
-            description: 'Specifies the (inclusive) lower bound for the metadata field
-
-              value. The value of a field must be greater than (`gt`) or
-
-              equal to this value for the search query to match this
-
-              template.'
-            type: number
-            example: 100000
-    Folder--Base:
-      title: Folder (Base)
-      type: object
-      x-box-resource-id: folder--base
-      x-box-sanitized: true
-      x-box-tag: folders
-      x-box-variants:
-      - base
-      - mini
-      - standard
-      - full
-      x-box-variant: base
-      description: 'The bare basic representation of a folder, the minimal
-
-        amount of fields returned when using the `fields` query
-
-        parameter.'
-      required:
-      - id
-      - type
-      properties:
-        id:
-          type: string
-          description: 'The unique identifier that represent a folder.
-
-
-            The ID for any folder can be determined
-
-            by visiting a folder in the web application
-
-            and copying the ID from the URL. For example,
-
-            for the URL `https://*.app.box.com/folders/123`
-
-            the `folder_id` is `123`.'
-          example: '12345'
-        etag:
-          type:
-          - string
-          - 'null'
-          example: '1'
-          description: 'The HTTP `etag` of this folder. This can be used within some API
-
-            endpoints in the `If-Match` and `If-None-Match` headers to only
-
-            perform changes on the folder if (no) changes have happened.'
         type:
+          description: error
+          example: error
           type: string
-          description: '`folder`'
-          example: folder
           enum:
-          - folder
-    Folder--Mini:
-      title: Folder (Mini)
-      type: object
-      x-box-resource-id: folder--mini
-      x-box-variant: mini
-      description: 'A mini representation of a file version, used when
+          - error
+        status:
+          description: The HTTP status of the response.
+          example: 400
+          type: integer
+          format: int32
+        code:
+          description: A Box-specific error code
+          example: item_name_invalid
+          type: string
+          enum:
+          - created
+          - accepted
+          - no_content
+          - redirect
+          - not_modified
+          - bad_request
+          - unauthorized
+          - forbidden
+          - not_found
+          - method_not_allowed
+          - conflict
+          - precondition_failed
+          - too_many_requests
+          - internal_server_error
+          - unavailable
+          - item_name_invalid
+          - insufficient_scope
+        message:
+          description: A short message describing the error.
+          example: Method Not Allowed
+          type: string
+        context_info:
+          description: 'A free-form object that contains additional context
 
-        nested under another resource.'
-      allOf:
-      - $ref: '#/components/schemas/Folder--Base'
-      - properties:
-          sequence_id:
-            allOf:
-            - type:
-              - string
-              - 'null'
-              example: '3'
-              description: 'A numeric identifier that represents the most recent user event
+            about the error. The possible fields are defined on
 
-                that has been applied to this item.
+            a per-endpoint basis. `message` is only one example.'
+          type:
+          - object
+          - 'null'
+          properties:
+            message:
+              type: string
+              description: More details on the error.
+              example: Something went wrong.
+        help_url:
+          description: A URL that links to more information about why this error occurred.
+          example: https://developer.box.com/guides/api-calls/permissions-and-errors/common-errors/
+          type: string
+        request_id:
+          description: 'A unique identifier for this response, which can be used
 
-
-                This can be used in combination with the `GET /events`-endpoint
-
-                to filter out user events that would have occurred before this
-
-                identifier was read.
-
-
-                An example would be where a Box Drive-like application
-
-                would fetch an item via the API, and then listen to incoming
-
-                user events for changes to the item. The application would
-
-                ignore any user events where the `sequence_id` in the event
-
-                is smaller than or equal to the `sequence_id` in the originally
-
-                fetched resource.'
-            - {}
-          name:
-            type: string
-            description: The name of the folder.
-            example: Contracts
+            when contacting Box support.'
+          type: string
+          example: abcdef123456
     MetadataFilter:
       title: Metadata filter
       type: object
@@ -1716,21 +1175,238 @@ components:
           - example:
               category: online
               contractValue: 1000000
-    FileVersion--Mini:
-      title: File version (Mini)
+    MetadataFieldFilterFloat:
+      title: Metadata field filter (float)
       type: object
-      x-box-resource-id: file_version--mini
-      x-box-variant: mini
-      description: 'A mini representation of a file version, used when
+      x-box-resource-id: metadata_field_filter_float
+      description: 'Specifies which `float` field on the template to filter the search
 
-        nested within another resource.'
+        results by.'
+      example:
+        contractValue: 10000
+      additionalProperties:
+        type: number
+        description: 'A mapping between a metadata `float` field key and
+
+          the value to match search results on.'
+        example: 10000
+        x-box-example-key: contractValue
+    MetadataQuery:
+      title: Metadata query search request
+      type: object
+      description: 'Create a search using SQL-like syntax to return items that match specific
+
+        metadata.'
+      required:
+      - from
+      - ancestor_folder_id
+      properties:
+        from:
+          type: string
+          description: 'Specifies the template used in the query. Must be in the form
+
+            `scope.templateKey`. Not all templates can be used in this field,
+
+            most notably the built-in, Box-provided classification templates
+
+            can not be used in a query.'
+          example: enterprise_123456.someTemplate
+        query:
+          type: string
+          description: 'The query to perform. A query is a logical expression that is very similar
+
+            to a SQL `SELECT` statement. Values in the search query can be turned into
+
+            parameters specified in the `query_param` arguments list to prevent having
+
+            to manually insert search values into the query string.
+
+
+            For example, a value of `:amount` would represent the `amount` value in
+
+            `query_params` object.'
+          example: value >= :amount
+        query_params:
+          type: object
+          description: 'Set of arguments corresponding to the parameters specified in the
+
+            `query`. The type of each parameter used in the `query_params` must match
+
+            the type of the corresponding metadata template field.'
+          example:
+            amount: '100'
+          additionalProperties:
+            type: string
+            description: 'The value for the argument being used in the metadata search.
+
+
+              The type of this parameter must match the type of the corresponding
+
+              metadata template field.'
+            example: '100'
+            x-box-example-key: amount
+        ancestor_folder_id:
+          type: string
+          description: 'The ID of the folder that you are restricting the query to. A
+
+            value of zero will return results from all folders you have access
+
+            to. A non-zero value will only return results found in the folder
+
+            corresponding to the ID or in any of its subfolders.'
+          example: '0'
+        order_by:
+          type: array
+          description: 'A list of template fields and directions to sort the metadata query
+
+            results by.
+
+
+            The ordering `direction` must be the same for each item in the array.'
+          items:
+            type: object
+            description: 'An object representing one of the metadata template fields to sort the
+
+              metadata query results by.'
+            properties:
+              field_key:
+                type: string
+                description: 'The metadata template field to order by.
+
+
+                  The `field_key` represents the `key` value of a field from the
+
+                  metadata template being searched for.'
+                example: amount
+              direction:
+                type: string
+                description: 'The direction to order by, either ascending or descending.
+
+
+                  The `ordering` direction must be the same for each item in the
+
+                  array.'
+                example: asc
+                enum:
+                - ASC
+                - DESC
+                - asc
+                - desc
+        limit:
+          type: integer
+          description: 'A value between 0 and 100 that indicates the maximum number of results
+
+            to return for a single request. This only specifies a maximum
+
+            boundary and will not guarantee the minimum number of results
+
+            returned.'
+          default: 100
+          minimum: 0
+          maximum: 100
+          example: 50
+        marker:
+          type: string
+          description: Marker to use for requesting the next page.
+          example: AAAAAmVYB1FWec8GH6yWu2nwmanfMh07IyYInaa7DZDYjgO1H4KoLW29vPlLY173OKsci6h6xGh61gG73gnaxoS+o0BbI1/h6le6cikjlupVhASwJ2Cj0tOD9wlnrUMHHw3/ISf+uuACzrOMhN6d5fYrbidPzS6MdhJOejuYlvsg4tcBYzjauP3+VU51p77HFAIuObnJT0ff
+        fields:
+          type: array
+          items:
+            type: string
+          description: 'By default, this endpoint returns only the most basic info about the items for
+
+            which the query matches. This attribute can be used to specify a list of
+
+            additional attributes to return for any item, including its metadata.
+
+
+            This attribute takes a list of item fields, metadata template identifiers,
+
+            or metadata template field identifiers.
+
+
+            For example:
+
+
+            * `created_by` will add the details of the user who created the item to
+
+            the response.
+
+            * `metadata.<scope>.<templateKey>` will return the mini-representation
+
+            of the metadata instance identified by the `scope` and `templateKey`.
+
+            * `metadata.<scope>.<templateKey>.<field>` will return all the mini-representation
+
+            of the metadata instance identified by the `scope` and `templateKey` plus
+
+            the field specified by the `field` name. Multiple fields for the same
+
+            `scope` and `templateKey` can be defined.'
+          example:
+          - extension
+          - created_at
+          - item_status
+          - metadata.enterprise_1234.contracts
+          - metadata.enterprise_1234.regions.location
+    File--Mini:
+      title: File (Mini)
+      type:
+      - object
+      - 'null'
+      x-box-resource-id: file--mini
+      x-box-variant: mini
+      description: 'A mini representation of a file, used when
+
+        nested under another resource.'
       allOf:
-      - $ref: '#/components/schemas/FileVersion--Base'
+      - $ref: '#/components/schemas/File--Base'
       - properties:
+          sequence_id:
+            allOf:
+            - type:
+              - string
+              - 'null'
+              example: '3'
+              description: 'A numeric identifier that represents the most recent user event
+
+                that has been applied to this item.
+
+
+                This can be used in combination with the `GET /events`-endpoint
+
+                to filter out user events that would have occurred before this
+
+                identifier was read.
+
+
+                An example would be where a Box Drive-like application
+
+                would fetch an item via the API, and then listen to incoming
+
+                user events for changes to the item. The application would
+
+                ignore any user events where the `sequence_id` in the event
+
+                is smaller than or equal to the `sequence_id` in the originally
+
+                fetched resource.'
+            - {}
+          name:
+            type: string
+            description: The name of the file
+            example: Contract.pdf
           sha1:
             type: string
-            description: The SHA1 hash of this version of the file.
-            example: 134b65991ed521fcfe4724b7d814ab8ded5185dc
+            format: digest
+            example: 85136C79CBF9FE36BB9D05D0639C70C265C18D37
+            description: 'The SHA1 hash of the file. This can be used to compare the contents
+
+              of a file on Box with a local file.'
+          file_version:
+            allOf:
+            - $ref: '#/components/schemas/FileVersion--Mini'
+            - description: The information about the current version of the file.
     FileVersion--Base:
       title: File version (Base)
       type: object
@@ -1761,6 +1437,233 @@ components:
           example: file_version
           enum:
           - file_version
+    WebLink--Base:
+      title: Web link (Base)
+      type: object
+      x-box-resource-id: web_link--base
+      x-box-tag: web_links
+      x-box-variants:
+      - base
+      - mini
+      - standard
+      x-box-variant: base
+      description: 'Web links are objects that point to URLs. These objects
+
+        are also known as bookmarks within the Box web application.
+
+
+        Web link objects are treated similarly to file objects,
+
+        they will also support most actions that apply to regular files.'
+      required:
+      - id
+      - type
+      properties:
+        id:
+          type: string
+          description: The unique identifier for this web link
+          example: '11446498'
+        type:
+          type: string
+          description: '`web_link`'
+          example: web_link
+          enum:
+          - web_link
+        etag:
+          type: string
+          example: '1'
+          description: 'The entity tag of this web link. Used with `If-Match`
+
+            headers.'
+    Folder--Mini:
+      title: Folder (Mini)
+      type: object
+      x-box-resource-id: folder--mini
+      x-box-variant: mini
+      description: 'A mini representation of a file version, used when
+
+        nested under another resource.'
+      allOf:
+      - $ref: '#/components/schemas/Folder--Base'
+      - properties:
+          sequence_id:
+            allOf:
+            - type:
+              - string
+              - 'null'
+              example: '3'
+              description: 'A numeric identifier that represents the most recent user event
+
+                that has been applied to this item.
+
+
+                This can be used in combination with the `GET /events`-endpoint
+
+                to filter out user events that would have occurred before this
+
+                identifier was read.
+
+
+                An example would be where a Box Drive-like application
+
+                would fetch an item via the API, and then listen to incoming
+
+                user events for changes to the item. The application would
+
+                ignore any user events where the `sequence_id` in the event
+
+                is smaller than or equal to the `sequence_id` in the originally
+
+                fetched resource.'
+            - {}
+          name:
+            type: string
+            description: The name of the folder.
+            example: Contracts
+    MetadataFieldFilterFloatRange:
+      title: Metadata field filter (float range)
+      type: object
+      x-box-resource-id: metadata_field_filter_float_range
+      description: 'Specifies which `float` field on the template to filter the search
+
+        results by, specifying a range of values that can match.'
+      example:
+        contractValue:
+          gt: 100000
+          lt: 200000
+      additionalProperties:
+        type: object
+        description: 'Specifies which `float` field on the template to filter the search
+
+          results by, specifying a range of values that can match.'
+        example:
+          gt: 100000
+          lt: 200000
+        x-box-example-key: value
+        properties:
+          lt:
+            description: 'Specifies the (inclusive) upper bound for the metadata field
+
+              value. The value of a field must be lower than (`lt`) or
+
+              equal to this value for the search query to match this
+
+              template.'
+            type: number
+            example: 200000
+          gt:
+            description: 'Specifies the (inclusive) lower bound for the metadata field
+
+              value. The value of a field must be greater than (`gt`) or
+
+              equal to this value for the search query to match this
+
+              template.'
+            type: number
+            example: 100000
+    Metadata:
+      title: Metadata instance
+      type: object
+      x-box-resource-id: metadata
+      x-box-tag: file_metadata
+      x-box-variant: standard
+      description: 'An instance of a metadata template, which has been applied to a file or
+
+        folder.'
+      allOf:
+      - $ref: '#/components/schemas/Metadata--Base'
+    MetadataFieldFilterDateRange:
+      title: Metadata field filter (date range)
+      type: object
+      x-box-resource-id: metadata_field_filter_date_range
+      description: 'Specifies which `date` field on the template to filter the search
+
+        results by, specifying a range of dates that can match.'
+      example:
+        expirationDate:
+          lt: '2017-08-01T00:00:00Z'
+          gt: '2016-08-01T00:00:00Z'
+      additionalProperties:
+        type: object
+        description: Match a `date` metadata field to a range of values.
+        example:
+          lt: '2017-08-01T00:00:00Z'
+          gt: '2016-08-01T00:00:00Z'
+        x-box-example-key: expirationDate
+        properties:
+          lt:
+            description: 'Specifies the (inclusive) upper bound for the metadata field
+
+              value. The value of a field must be lower than (`lt`) or
+
+              equal to this value for the search query to match this
+
+              template.'
+            type: string
+            format: date-time
+            example: '2017-08-01T00:00:00Z'
+          gt:
+            description: 'Specifies the (inclusive) lower bound for the metadata field
+
+              value. The value of a field must be greater than (`gt`) or
+
+              equal to this value for the search query to match this
+
+              template.'
+            type: string
+            format: date-time
+            example: '2016-08-01T00:00:00Z'
+    SearchResults:
+      title: Search Results
+      type: object
+      x-box-resource-id: search_results
+      x-box-tag: search
+      description: A list of files, folders and web links that matched the search query.
+      required:
+      - type
+      allOf:
+      - type: object
+        properties:
+          total_count:
+            description: 'One greater than the offset of the last entry in the search results.
+
+              The total number of entries in the collection may be less than
+
+              `total_count`.'
+            example: 5000
+            type: integer
+            format: int64
+          limit:
+            description: 'The limit that was used for this search. This will be the same as the
+
+              `limit` query parameter unless that value exceeded the maximum value
+
+              allowed.'
+            example: 1000
+            type: integer
+            format: int64
+          offset:
+            description: 'The 0-based offset of the first entry in this set. This will be the same
+
+              as the `offset` query parameter used.'
+            example: 2000
+            type: integer
+            format: int64
+      - properties:
+          type:
+            description: Specifies the response as search result items without shared links
+            type: string
+            example: search_results_items
+            enum:
+            - search_results_items
+          entries:
+            description: The search results for the query provided.
+            type: array
+            items:
+              oneOf:
+              - $ref: '#/components/schemas/File--Full'
+              - $ref: '#/components/schemas/Folder--Full'
+              - $ref: '#/components/schemas/WebLink'
     WebLink:
       title: Web link
       type: object
@@ -2029,338 +1932,6 @@ components:
               `trashed` if the file has been moved to the trash, and `deleted` if
 
               the file has been permanently deleted'
-    WebLink--Mini:
-      title: Web link (Mini)
-      type: object
-      x-box-resource-id: web_link--mini
-      x-box-variant: mini
-      description: 'Web links are objects that point to URLs. These objects
-
-        are also known as bookmarks within the Box web application.
-
-
-        Web link objects are treated similarly to file objects,
-
-        they will also support most actions that apply to regular files.'
-      allOf:
-      - $ref: '#/components/schemas/WebLink--Base'
-      - properties:
-          url:
-            type: string
-            example: https://www.example.com/example/1234
-            description: The URL this web link points to
-          sequence_id:
-            allOf:
-            - type:
-              - string
-              - 'null'
-              example: '3'
-              description: 'A numeric identifier that represents the most recent user event
-
-                that has been applied to this item.
-
-
-                This can be used in combination with the `GET /events`-endpoint
-
-                to filter out user events that would have occurred before this
-
-                identifier was read.
-
-
-                An example would be where a Box Drive-like application
-
-                would fetch an item via the API, and then listen to incoming
-
-                user events for changes to the item. The application would
-
-                ignore any user events where the `sequence_id` in the event
-
-                is smaller than or equal to the `sequence_id` in the originally
-
-                fetched resource.'
-            - {}
-          name:
-            type: string
-            description: The name of the web link
-            example: My Bookmark
-    Items:
-      title: Items
-      type: object
-      x-box-resource-id: items
-      x-box-tag: folders
-      description: 'A list of files, folders, and web links in
-
-        their mini representation.'
-      allOf:
-      - type: object
-        description: The part of an API response that describes pagination
-        properties:
-          total_count:
-            description: 'One greater than the offset of the last entry in the entire collection.
-
-              The total number of entries in the collection may be less than
-
-              `total_count`.
-
-
-              This field is only returned for calls that use offset-based pagination.
-
-              For marker-based paginated APIs, this field will be omitted.'
-            example: 5000
-            type: integer
-            format: int64
-          limit:
-            description: 'The limit that was used for these entries. This will be the same as the
-
-              `limit` query parameter unless that value exceeded the maximum value
-
-              allowed. The maximum value varies by API.'
-            example: 1000
-            type: integer
-            format: int64
-          offset:
-            description: 'The 0-based offset of the first entry in this set. This will be the same
-
-              as the `offset` query parameter.
-
-
-              This field is only returned for calls that use offset-based pagination.
-
-              For marker-based paginated APIs, this field will be omitted.'
-            example: 2000
-            type: integer
-            format: int64
-          order:
-            description: 'The order by which items are returned.
-
-
-              This field is only returned for calls that use offset-based pagination.
-
-              For marker-based paginated APIs, this field will be omitted.'
-            type: array
-            items:
-              type: object
-              description: The order in which a pagination is ordered
-              properties:
-                by:
-                  description: The field to order by
-                  example: type
-                  type: string
-                direction:
-                  type: string
-                  description: The direction to order by, either ascending or descending
-                  example: ASC
-                  enum:
-                  - ASC
-                  - DESC
-      - properties:
-          entries:
-            description: The items in this collection.
-            type: array
-            items:
-              oneOf:
-              - $ref: '#/components/schemas/File--Full'
-              - $ref: '#/components/schemas/Folder--Mini'
-              - $ref: '#/components/schemas/WebLink'
-    User--Mini:
-      title: User (Mini)
-      type: object
-      x-box-resource-id: user--mini
-      x-box-variant: mini
-      description: 'A mini representation of a user, as can be returned when nested within other
-
-        resources.'
-      allOf:
-      - $ref: '#/components/schemas/User--Base'
-      - properties:
-          name:
-            type: string
-            description: The display name of this user
-            example: Aaron Levie
-            maxLength: 50
-          login:
-            type: string
-            format: email
-            description: The primary email address of this user
-            example: ceo@example.com
-    WebLink--Base:
-      title: Web link (Base)
-      type: object
-      x-box-resource-id: web_link--base
-      x-box-tag: web_links
-      x-box-variants:
-      - base
-      - mini
-      - standard
-      x-box-variant: base
-      description: 'Web links are objects that point to URLs. These objects
-
-        are also known as bookmarks within the Box web application.
-
-
-        Web link objects are treated similarly to file objects,
-
-        they will also support most actions that apply to regular files.'
-      required:
-      - id
-      - type
-      properties:
-        id:
-          type: string
-          description: The unique identifier for this web link
-          example: '11446498'
-        type:
-          type: string
-          description: '`web_link`'
-          example: web_link
-          enum:
-          - web_link
-        etag:
-          type: string
-          example: '1'
-          description: 'The entity tag of this web link. Used with `If-Match`
-
-            headers.'
-    MetadataFieldFilterString:
-      title: Metadata field filter (string)
-      type: object
-      x-box-resource-id: metadata_field_filter_string
-      description: 'Specifies which text field on the template to filter the search
-
-        results by.'
-      example:
-        category: online
-      additionalProperties:
-        type: string
-        description: 'A mapping between a metadata `string` field key and
-
-          the value to match search results on.'
-        example: online
-        x-box-example-key: category
-    MetadataFieldFilterDateRange:
-      title: Metadata field filter (date range)
-      type: object
-      x-box-resource-id: metadata_field_filter_date_range
-      description: 'Specifies which `date` field on the template to filter the search
-
-        results by, specifying a range of dates that can match.'
-      example:
-        expirationDate:
-          lt: '2017-08-01T00:00:00Z'
-          gt: '2016-08-01T00:00:00Z'
-      additionalProperties:
-        type: object
-        description: Match a `date` metadata field to a range of values.
-        example:
-          lt: '2017-08-01T00:00:00Z'
-          gt: '2016-08-01T00:00:00Z'
-        x-box-example-key: expirationDate
-        properties:
-          lt:
-            description: 'Specifies the (inclusive) upper bound for the metadata field
-
-              value. The value of a field must be lower than (`lt`) or
-
-              equal to this value for the search query to match this
-
-              template.'
-            type: string
-            format: date-time
-            example: '2017-08-01T00:00:00Z'
-          gt:
-            description: 'Specifies the (inclusive) lower bound for the metadata field
-
-              value. The value of a field must be greater than (`gt`) or
-
-              equal to this value for the search query to match this
-
-              template.'
-            type: string
-            format: date-time
-            example: '2016-08-01T00:00:00Z'
-    ClientError:
-      title: Client error
-      type: object
-      x-box-resource-id: client_error
-      description: A generic error
-      properties:
-        type:
-          description: error
-          example: error
-          type: string
-          enum:
-          - error
-        status:
-          description: The HTTP status of the response.
-          example: 400
-          type: integer
-          format: int32
-        code:
-          description: A Box-specific error code
-          example: item_name_invalid
-          type: string
-          enum:
-          - created
-          - accepted
-          - no_content
-          - redirect
-          - not_modified
-          - bad_request
-          - unauthorized
-          - forbidden
-          - not_found
-          - method_not_allowed
-          - conflict
-          - precondition_failed
-          - too_many_requests
-          - internal_server_error
-          - unavailable
-          - item_name_invalid
-          - insufficient_scope
-        message:
-          description: A short message describing the error.
-          example: Method Not Allowed
-          type: string
-        context_info:
-          description: 'A free-form object that contains additional context
-
-            about the error. The possible fields are defined on
-
-            a per-endpoint basis. `message` is only one example.'
-          type:
-          - object
-          - 'null'
-          properties:
-            message:
-              type: string
-              description: More details on the error.
-              example: Something went wrong.
-        help_url:
-          description: A URL that links to more information about why this error occurred.
-          example: https://developer.box.com/guides/api-calls/permissions-and-errors/common-errors/
-          type: string
-        request_id:
-          description: 'A unique identifier for this response, which can be used
-
-            when contacting Box support.'
-          type: string
-          example: abcdef123456
-    MetadataFieldFilterFloat:
-      title: Metadata field filter (float)
-      type: object
-      x-box-resource-id: metadata_field_filter_float
-      description: 'Specifies which `float` field on the template to filter the search
-
-        results by.'
-      example:
-        contractValue: 10000
-      additionalProperties:
-        type: number
-        description: 'A mapping between a metadata `float` field key and
-
-          the value to match search results on.'
-        example: 10000
-        x-box-example-key: contractValue
     MetadataFieldFilterMultiSelect:
       title: Metadata field filter (multi-select)
       type: object
@@ -2394,347 +1965,6 @@ components:
         items:
           type: string
         x-box-example-key: category
-    File--Base:
-      title: File (Base)
-      type:
-      - object
-      - 'null'
-      x-box-resource-id: file--base
-      x-box-sanitized: true
-      x-box-tag: files
-      x-box-variants:
-      - base
-      - mini
-      - standard
-      - full
-      x-box-variant: base
-      description: 'The bare basic representation of a file, the minimal
-
-        amount of fields returned when using the `fields` query
-
-        parameter.'
-      required:
-      - id
-      - type
-      properties:
-        id:
-          type: string
-          description: 'The unique identifier that represent a file.
-
-
-            The ID for any file can be determined
-
-            by visiting a file in the web application
-
-            and copying the ID from the URL. For example,
-
-            for the URL `https://*.app.box.com/files/123`
-
-            the `file_id` is `123`.'
-          example: '12345'
-        etag:
-          type:
-          - string
-          - 'null'
-          example: '1'
-          description: 'The HTTP `etag` of this file. This can be used within some API
-
-            endpoints in the `If-Match` and `If-None-Match` headers to only
-
-            perform changes on the file if (no) changes have happened.'
-        type:
-          type: string
-          description: '`file`'
-          example: file
-          enum:
-          - file
-    FileOrFolderScope:
-      title: File or folder scope
-      type: object
-      description: A relation between a resource (file or folder) and the scopes for which the resource can be accessed
-      properties:
-        scope:
-          type: string
-          description: The scopes for the resource access
-          example: item_download
-          enum:
-          - annotation_edit
-          - annotation_view_all
-          - annotation_view_self
-          - base_explorer
-          - base_picker
-          - base_preview
-          - base_upload
-          - item_delete
-          - item_download
-          - item_preview
-          - item_rename
-          - item_share
-        object:
-          allOf:
-          - oneOf:
-            - $ref: '#/components/schemas/Folder--Mini'
-            - $ref: '#/components/schemas/File--Mini'
-          - description: The file or folder resource
-    MetadataQuery:
-      title: Metadata query search request
-      type: object
-      description: 'Create a search using SQL-like syntax to return items that match specific
-
-        metadata.'
-      required:
-      - from
-      - ancestor_folder_id
-      properties:
-        from:
-          type: string
-          description: 'Specifies the template used in the query. Must be in the form
-
-            `scope.templateKey`. Not all templates can be used in this field,
-
-            most notably the built-in, Box-provided classification templates
-
-            can not be used in a query.'
-          example: enterprise_123456.someTemplate
-        query:
-          type: string
-          description: 'The query to perform. A query is a logical expression that is very similar
-
-            to a SQL `SELECT` statement. Values in the search query can be turned into
-
-            parameters specified in the `query_param` arguments list to prevent having
-
-            to manually insert search values into the query string.
-
-
-            For example, a value of `:amount` would represent the `amount` value in
-
-            `query_params` object.'
-          example: value >= :amount
-        query_params:
-          type: object
-          description: 'Set of arguments corresponding to the parameters specified in the
-
-            `query`. The type of each parameter used in the `query_params` must match
-
-            the type of the corresponding metadata template field.'
-          example:
-            amount: '100'
-          additionalProperties:
-            type: string
-            description: 'The value for the argument being used in the metadata search.
-
-
-              The type of this parameter must match the type of the corresponding
-
-              metadata template field.'
-            example: '100'
-            x-box-example-key: amount
-        ancestor_folder_id:
-          type: string
-          description: 'The ID of the folder that you are restricting the query to. A
-
-            value of zero will return results from all folders you have access
-
-            to. A non-zero value will only return results found in the folder
-
-            corresponding to the ID or in any of its subfolders.'
-          example: '0'
-        order_by:
-          type: array
-          description: 'A list of template fields and directions to sort the metadata query
-
-            results by.
-
-
-            The ordering `direction` must be the same for each item in the array.'
-          items:
-            type: object
-            description: 'An object representing one of the metadata template fields to sort the
-
-              metadata query results by.'
-            properties:
-              field_key:
-                type: string
-                description: 'The metadata template field to order by.
-
-
-                  The `field_key` represents the `key` value of a field from the
-
-                  metadata template being searched for.'
-                example: amount
-              direction:
-                type: string
-                description: 'The direction to order by, either ascending or descending.
-
-
-                  The `ordering` direction must be the same for each item in the
-
-                  array.'
-                example: asc
-                enum:
-                - ASC
-                - DESC
-                - asc
-                - desc
-        limit:
-          type: integer
-          description: 'A value between 0 and 100 that indicates the maximum number of results
-
-            to return for a single request. This only specifies a maximum
-
-            boundary and will not guarantee the minimum number of results
-
-            returned.'
-          default: 100
-          minimum: 0
-          maximum: 100
-          example: 50
-        marker:
-          type: string
-          description: Marker to use for requesting the next page.
-          example: AAAAAmVYB1FWec8GH6yWu2nwmanfMh07IyYInaa7DZDYjgO1H4KoLW29vPlLY173OKsci6h6xGh61gG73gnaxoS+o0BbI1/h6le6cikjlupVhASwJ2Cj0tOD9wlnrUMHHw3/ISf+uuACzrOMhN6d5fYrbidPzS6MdhJOejuYlvsg4tcBYzjauP3+VU51p77HFAIuObnJT0ff
-        fields:
-          type: array
-          items:
-            type: string
-          description: 'By default, this endpoint returns only the most basic info about the items for
-
-            which the query matches. This attribute can be used to specify a list of
-
-            additional attributes to return for any item, including its metadata.
-
-
-            This attribute takes a list of item fields, metadata template identifiers,
-
-            or metadata template field identifiers.
-
-
-            For example:
-
-
-            * `created_by` will add the details of the user who created the item to
-
-            the response.
-
-            * `metadata.<scope>.<templateKey>` will return the mini-representation
-
-            of the metadata instance identified by the `scope` and `templateKey`.
-
-            * `metadata.<scope>.<templateKey>.<field>` will return all the mini-representation
-
-            of the metadata instance identified by the `scope` and `templateKey` plus
-
-            the field specified by the `field` name. Multiple fields for the same
-
-            `scope` and `templateKey` can be defined.'
-          example:
-          - extension
-          - created_at
-          - item_status
-          - metadata.enterprise_1234.contracts
-          - metadata.enterprise_1234.regions.location
-    SearchResultWithSharedLink:
-      title: Search Result (including Shared Link)
-      type: object
-      x-box-resource-id: search_result_with_shared_link
-      x-box-tag: search
-      description: 'A single of files, folder or web link that matched the search query,
-
-        including the additional information about the shared link through
-
-        which the item has been shared with the user.
-
-
-        This response format is only returned when the
-
-        `include_recent_shared_links` query parameter has been set to `true`.'
-      properties:
-        accessible_via_shared_link:
-          description: 'The optional shared link through which the user has access to this
-
-            item. This value is only returned for items for which the user has
-
-            recently accessed the file through a shared link. For all other
-
-            items this value will return `null`.'
-          example: https://www.box.com/s/vspke7y05sb214wjokpk
-          type: string
-          format: url
-        item:
-          allOf:
-          - oneOf:
-            - $ref: '#/components/schemas/File--Full'
-            - $ref: '#/components/schemas/Folder--Full'
-            - $ref: '#/components/schemas/WebLink'
-          - description: 'The file, folder or web link that matched the
-
-              search query.'
-        type:
-          description: The result type. The value is always `search_result`.
-          example: search_result
-          type: string
-    SearchResultsWithSharedLinks:
-      title: Search Results (including Shared Links)
-      type: object
-      x-box-resource-id: search_results_with_shared_links
-      x-box-tag: search
-      description: 'A list of files, folders and web links that matched the search query,
-
-        including the additional information about any shared links through
-
-        which the item has been shared with the user.
-
-
-        This response format is only returned when the `include_recent_shared_links`
-
-        query parameter has been set to `true`.'
-      required:
-      - type
-      allOf:
-      - type: object
-        properties:
-          total_count:
-            description: 'One greater than the offset of the last entry in the search results.
-
-              The total number of entries in the collection may be less than
-
-              `total_count`.'
-            example: 5000
-            type: integer
-            format: int64
-          limit:
-            description: 'The limit that was used for this search. This will be the same as the
-
-              `limit` query parameter unless that value exceeded the maximum value
-
-              allowed.'
-            example: 1000
-            type: integer
-            format: int64
-          offset:
-            description: 'The 0-based offset of the first entry in this set. This will be the same
-
-              as the `offset` query parameter used.'
-            example: 2000
-            type: integer
-            format: int64
-      - properties:
-          type:
-            description: Specifies the response as search result items with shared links
-            type: string
-            example: search_results_with_shared_links
-            enum:
-            - search_results_with_shared_links
-          entries:
-            description: 'The search results for the query provided, including the
-
-              additional information about any shared links through
-
-              which the item has been shared with the user.'
-            type: array
-            items:
-              $ref: '#/components/schemas/SearchResultWithSharedLink'
     File--Full:
       title: File (Full)
       type: object
@@ -3272,6 +2502,465 @@ components:
               - can_preview
               - can_download
               - can_edit
+    MetadataFieldFilterString:
+      title: Metadata field filter (string)
+      type: object
+      x-box-resource-id: metadata_field_filter_string
+      description: 'Specifies which text field on the template to filter the search
+
+        results by.'
+      example:
+        category: online
+      additionalProperties:
+        type: string
+        description: 'A mapping between a metadata `string` field key and
+
+          the value to match search results on.'
+        example: online
+        x-box-example-key: category
+    User--Mini:
+      title: User (Mini)
+      type: object
+      x-box-resource-id: user--mini
+      x-box-variant: mini
+      description: 'A mini representation of a user, as can be returned when nested within other
+
+        resources.'
+      allOf:
+      - $ref: '#/components/schemas/User--Base'
+      - properties:
+          name:
+            type: string
+            description: The display name of this user
+            example: Aaron Levie
+            maxLength: 50
+          login:
+            type: string
+            format: email
+            description: The primary email address of this user
+            example: ceo@example.com
+    WebLink--Mini:
+      title: Web link (Mini)
+      type: object
+      x-box-resource-id: web_link--mini
+      x-box-variant: mini
+      description: 'Web links are objects that point to URLs. These objects
+
+        are also known as bookmarks within the Box web application.
+
+
+        Web link objects are treated similarly to file objects,
+
+        they will also support most actions that apply to regular files.'
+      allOf:
+      - $ref: '#/components/schemas/WebLink--Base'
+      - properties:
+          url:
+            type: string
+            example: https://www.example.com/example/1234
+            description: The URL this web link points to
+          sequence_id:
+            allOf:
+            - type:
+              - string
+              - 'null'
+              example: '3'
+              description: 'A numeric identifier that represents the most recent user event
+
+                that has been applied to this item.
+
+
+                This can be used in combination with the `GET /events`-endpoint
+
+                to filter out user events that would have occurred before this
+
+                identifier was read.
+
+
+                An example would be where a Box Drive-like application
+
+                would fetch an item via the API, and then listen to incoming
+
+                user events for changes to the item. The application would
+
+                ignore any user events where the `sequence_id` in the event
+
+                is smaller than or equal to the `sequence_id` in the originally
+
+                fetched resource.'
+            - {}
+          name:
+            type: string
+            description: The name of the web link
+            example: My Bookmark
+    Folder--Full:
+      title: Folder (Full)
+      type: object
+      x-box-resource-id: folder--full
+      x-box-variant: full
+      description: 'A full representation of a folder, as can be returned from any
+
+        folder API endpoints by default'
+      allOf:
+      - $ref: '#/components/schemas/Folder'
+      - properties:
+          sync_state:
+            allOf:
+            - type: string
+              example: synced
+              description: 'Specifies whether a folder should be synced to a
+
+                user''s device or not. This is used by Box Sync
+
+                (discontinued) and is not used by Box Drive.'
+              enum:
+              - synced
+              - not_synced
+              - partially_synced
+          has_collaborations:
+            type: boolean
+            example: true
+            description: Specifies if this folder has any other collaborators.
+          permissions:
+            allOf:
+            - type: object
+              description: The permissions that the authenticated user has for a folder.
+              required:
+              - can_upload
+              allOf:
+              - type: object
+                description: The permissions that the authenticated user has for an item.
+                required:
+                - can_delete
+                - can_download
+                - can_invite_collaborator
+                - can_rename
+                - can_set_share_access
+                - can_share
+                properties:
+                  can_delete:
+                    type: boolean
+                    description: Specifies if the current user can delete this item.
+                    example: true
+                  can_download:
+                    type: boolean
+                    description: Specifies if the current user can download this item.
+                    example: true
+                  can_invite_collaborator:
+                    type: boolean
+                    description: 'Specifies if the current user can invite new
+
+                      users to collaborate on this item, and if the user can
+
+                      update the role of a user already collaborated on this
+
+                      item.'
+                    example: true
+                  can_rename:
+                    type: boolean
+                    description: Specifies if the user can rename this item.
+                    example: true
+                  can_set_share_access:
+                    type: boolean
+                    description: 'Specifies if the user can change the access level of an
+
+                      existing shared link on this item.'
+                    example: true
+                  can_share:
+                    type: boolean
+                    description: Specifies if the user can create a shared link for this item.
+                    example: true
+              - properties:
+                  can_upload:
+                    type: boolean
+                    description: Specifies if the user can upload into this folder.
+                    example: true
+            - description: 'Describes the permissions that the current user has
+
+                for this folder'
+            - {}
+          tags:
+            allOf:
+            - type: array
+              example:
+              - approved
+              items:
+                type: string
+              minItems: 1
+              maxItems: 100
+              description: 'The tags for this item. These tags are shown in
+
+                the Box web app and mobile apps next to an item.
+
+
+                To add or remove a tag, retrieve the item''s current tags,
+
+                modify them, and then update this field.
+
+
+                There is a limit of 100 tags per item, and 10,000
+
+                unique tags per enterprise.'
+            - {}
+          can_non_owners_invite:
+            allOf:
+            - type: boolean
+              example: true
+              description: 'Specifies if users who are not the owner
+
+                of the folder can invite new collaborators to the folder.'
+            - {}
+          is_externally_owned:
+            type: boolean
+            example: true
+            description: 'Specifies if this folder is owned by a user outside of the
+
+              authenticated enterprise.'
+          metadata:
+            allOf:
+            - title: Item metadata instances
+              type: object
+              description: 'A list of metadata instances, nested within key-value pairs of their `scope`
+
+                and `templateKey`.
+
+
+                To access the metadata for a file or folder, first use the
+
+                metadata endpoints to determine the metadata templates available to your
+
+                enterprise.
+
+
+                Then use the `GET /files/:id` or `GET /folder/:id`
+
+                endpoint with the `fields` query parameter to get
+
+                the metadata by ID.
+
+
+                To request a metadata instance for a particular `scope` and `templateKey`
+
+                use the following format for the `fields` parameter:
+
+                `metadata.<scope>.<templateKey>`
+
+
+                For example, `?fields=metadata.enterprise_27335.marketingCollateral`.'
+              example:
+                enterprise_27335:
+                  marketingCollateral:
+                    $canEdit: true
+                    $id: 01234500-12f1-1234-aa12-b1d234cb567e
+                    $parent: folder_59449484661
+                    $scope: enterprise_27335
+                    $template: marketingCollateral
+                    $type: properties-6bcba49f-ca6d-4d2a-a758-57fe6edf44d0
+                    $typeVersion: 2
+                    $version: 1
+              additionalProperties:
+                type: object
+                description: 'A list of metadata instances, nested within key-value pairs of their `scope`
+
+                  and `templateKey`.'
+                example:
+                  marketingCollateral:
+                    $canEdit: true
+                    $id: 01234500-12f1-1234-aa12-b1d234cb567e
+                    $parent: folder_59449484661
+                    $scope: enterprise_27335
+                    $template: marketingCollateral
+                    $type: properties-6bcba49f-ca6d-4d2a-a758-57fe6edf44d0
+                    $typeVersion: 2
+                    $version: 1
+                additionalProperties:
+                  $ref: '#/components/schemas/Metadata'
+            - description: 'An object containing the metadata instances that have been
+
+                attached to this folder.
+
+
+                Each metadata instance is uniquely identified by its `scope` and
+
+                `templateKey`. There can only be one instance of any metadata
+
+                template attached to each folder. Each metadata instance is nested
+
+                within an object with the `templateKey` as the key, which again
+
+                itself is nested in an object with the `scope` as the key.'
+          is_collaboration_restricted_to_enterprise:
+            allOf:
+            - type: boolean
+              example: true
+              description: 'Specifies if new invites to this folder are restricted to users
+
+                within the enterprise. This does not affect existing
+
+                collaborations.'
+            - {}
+          allowed_shared_link_access_levels:
+            type: array
+            example:
+            - open
+            items:
+              type: string
+              enum:
+              - open
+              - company
+              - collaborators
+            description: 'A list of access levels that are available
+
+              for this folder.
+
+
+              For some folders, like the root folder, this will always
+
+              be an empty list as sharing is not allowed at that level.'
+          allowed_invitee_roles:
+            type: array
+            example:
+            - editor
+            description: 'A list of the types of roles that user can be invited at
+
+              when sharing this folder.'
+            items:
+              type: string
+              enum:
+              - editor
+              - viewer
+              - previewer
+              - uploader
+              - previewer uploader
+              - viewer uploader
+              - co-owner
+          watermark_info:
+            allOf:
+            - type: object
+              description: Details about the watermark applied to this item
+              properties:
+                is_watermarked:
+                  type: boolean
+                  description: Specifies if this item has a watermark applied.
+                  example: true
+            - description: Details about the watermark applied to this folder
+            - {}
+          is_accessible_via_shared_link:
+            type: boolean
+            description: 'Specifies if the folder can be accessed
+
+              with the direct shared link or a shared link
+
+              to a parent folder.'
+            example: true
+            enum:
+            - true
+            - false
+          can_non_owners_view_collaborators:
+            type: boolean
+            example: true
+            description: 'Specifies if collaborators who are not owners
+
+              of this folder are restricted from viewing other
+
+              collaborations on this folder.
+
+
+              It also restricts non-owners from inviting new
+
+              collaborators.'
+          classification:
+            allOf:
+            - type: object
+              description: The classification applied to an item
+              properties:
+                name:
+                  type: string
+                  example: Top Secret
+                  description: The name of the classification
+                definition:
+                  type: string
+                  example: Content that should not be shared outside the company.
+                  description: An explanation of the meaning of this classification.
+                color:
+                  type: string
+                  example: '#FF0000'
+                  description: 'The color that is used to display the
+
+                    classification label in a user-interface. Colors are defined by the admin
+
+                    or co-admin who created the classification in the Box web app.'
+            - description: Details about the classification applied to this folder.
+            - {}
+    Metadata--Base:
+      title: Metadata instance (Base)
+      type: object
+      x-box-resource-id: metadata--base
+      x-box-sanitized: true
+      x-box-tag: file_metadata
+      x-box-variants:
+      - base
+      - standard
+      - full
+      x-box-variant: base
+      description: The base representation of a metadata instance.
+      properties:
+        $parent:
+          type: string
+          example: folder_59449484661,
+          description: 'The identifier of the item that this metadata instance
+
+            has been attached to. This combines the `type` and the `id`
+
+            of the parent in the form `{type}_{id}`.'
+        $template:
+          type: string
+          example: marketingCollateral
+          description: The name of the template
+        $scope:
+          type: string
+          example: enterprise_27335
+          description: 'An ID for the scope in which this template
+
+            has been applied. This will be `enterprise_{enterprise_id}` for templates
+
+            defined for use in this enterprise, and `global` for general templates
+
+            that are available to all enterprises using Box.'
+        $version:
+          type: integer
+          example: 1
+          description: 'The version of the metadata instance. This version starts at 0 and
+
+            increases every time a user-defined property is modified.'
+    FileOrFolderScope:
+      title: File or folder scope
+      type: object
+      description: A relation between a resource (file or folder) and the scopes for which the resource can be accessed
+      properties:
+        scope:
+          type: string
+          description: The scopes for the resource access
+          example: item_download
+          enum:
+          - annotation_edit
+          - annotation_view_all
+          - annotation_view_self
+          - base_explorer
+          - base_picker
+          - base_preview
+          - base_upload
+          - item_delete
+          - item_download
+          - item_preview
+          - item_rename
+          - item_share
+        object:
+          allOf:
+          - oneOf:
+            - $ref: '#/components/schemas/Folder--Mini'
+            - $ref: '#/components/schemas/File--Mini'
+          - description: The file or folder resource
     File:
       title: File
       type: object
@@ -3565,34 +3254,345 @@ components:
             - trashed
             - deleted
             example: active
-    User--Base:
-      title: User (Base)
+    Folder--Base:
+      title: Folder (Base)
       type: object
-      x-box-resource-id: user--base
-      x-box-tag: users
+      x-box-resource-id: folder--base
+      x-box-sanitized: true
+      x-box-tag: folders
       x-box-variants:
       - base
       - mini
       - standard
       - full
       x-box-variant: base
-      description: 'A mini representation of a user, used when
+      description: 'The bare basic representation of a folder, the minimal
 
-        nested within another resource.'
+        amount of fields returned when using the `fields` query
+
+        parameter.'
       required:
-      - type
       - id
+      - type
       properties:
         id:
           type: string
-          description: The unique identifier for this user
-          example: '11446498'
+          description: 'The unique identifier that represent a folder.
+
+
+            The ID for any folder can be determined
+
+            by visiting a folder in the web application
+
+            and copying the ID from the URL. For example,
+
+            for the URL `https://*.app.box.com/folders/123`
+
+            the `folder_id` is `123`.'
+          example: '12345'
+        etag:
+          type:
+          - string
+          - 'null'
+          example: '1'
+          description: 'The HTTP `etag` of this folder. This can be used within some API
+
+            endpoints in the `If-Match` and `If-None-Match` headers to only
+
+            perform changes on the folder if (no) changes have happened.'
         type:
           type: string
-          description: '`user`'
-          example: user
+          description: '`folder`'
+          example: folder
           enum:
-          - user
+          - folder
+    Items:
+      title: Items
+      type: object
+      x-box-resource-id: items
+      x-box-tag: folders
+      description: 'A list of files, folders, and web links in
+
+        their mini representation.'
+      allOf:
+      - type: object
+        description: The part of an API response that describes pagination
+        properties:
+          total_count:
+            description: 'One greater than the offset of the last entry in the entire collection.
+
+              The total number of entries in the collection may be less than
+
+              `total_count`.
+
+
+              This field is only returned for calls that use offset-based pagination.
+
+              For marker-based paginated APIs, this field will be omitted.'
+            example: 5000
+            type: integer
+            format: int64
+          limit:
+            description: 'The limit that was used for these entries. This will be the same as the
+
+              `limit` query parameter unless that value exceeded the maximum value
+
+              allowed. The maximum value varies by API.'
+            example: 1000
+            type: integer
+            format: int64
+          offset:
+            description: 'The 0-based offset of the first entry in this set. This will be the same
+
+              as the `offset` query parameter.
+
+
+              This field is only returned for calls that use offset-based pagination.
+
+              For marker-based paginated APIs, this field will be omitted.'
+            example: 2000
+            type: integer
+            format: int64
+          order:
+            description: 'The order by which items are returned.
+
+
+              This field is only returned for calls that use offset-based pagination.
+
+              For marker-based paginated APIs, this field will be omitted.'
+            type: array
+            items:
+              type: object
+              description: The order in which a pagination is ordered
+              properties:
+                by:
+                  description: The field to order by
+                  example: type
+                  type: string
+                direction:
+                  type: string
+                  description: The direction to order by, either ascending or descending
+                  example: ASC
+                  enum:
+                  - ASC
+                  - DESC
+      - properties:
+          entries:
+            description: The items in this collection.
+            type: array
+            items:
+              oneOf:
+              - $ref: '#/components/schemas/File--Full'
+              - $ref: '#/components/schemas/Folder--Mini'
+              - $ref: '#/components/schemas/WebLink'
+    MetadataQueryResults:
+      title: Metadata query search results
+      type: object
+      x-box-tag: search
+      x-box-resource-id: metadata_query_results
+      description: A page of files and folders that matched the metadata query.
+      properties:
+        entries:
+          description: 'The mini representation of the files and folders that match the search
+
+            terms.
+
+
+            By default, this endpoint returns only the most basic info about the
+
+            items. To get additional fields for each item, including any of the
+
+            metadata, use the `fields` attribute in the query.'
+          type: array
+          x-box-resource-variant: 1
+          items:
+            oneOf:
+            - $ref: '#/components/schemas/File'
+            - $ref: '#/components/schemas/Folder'
+        limit:
+          description: 'The limit that was used for this search. This will be the same as the
+
+            `limit` query parameter unless that value exceeded the maximum value
+
+            allowed.'
+          default: 100
+          example: 100
+          type: integer
+          format: int64
+        next_marker:
+          description: The marker for the start of the next page of results.
+          example: 0!-M7487OpVfBTNBV-XsQjU50gQFlbFFu5nArMWD7Ck61GH_Qo40M1S2xN5zWZPBzEjaQS1SOjJiQoo5BsXEl1bCVLRZ2pTqo4SKp9tyqzWQK2L51KR_nC1EgF5I_TJSFw7uO2Bx4HweGETOjh5_2oPSWw5iMkM-OvGApeR0lGFO48FDKoyzJyLgz5aogxoKd8VE09CesOOnTnmZvrW0puylDc-hFjY5YLmWFBKox3SOWiSDwKFkmZGNHyjEzza1nSwbZg6CYsAdGsDwGJhuCeTNsFzP5Mo5qx9wMloS0lSPuf2CcBInbIJzl2CKlXF3FvqhANttpm2nzdBTQRSoJyJnjVBpf4Q_HjV2eb4KIZBBlLy067UCVdv2AAWQFd5E2i6s1YiGRTtgMEZntOSUYD4IYLMWWm5Ra7ke_SP32SL3GSjbBQYIyCVQ..
+          type: string
+    SearchResultWithSharedLink:
+      title: Search Result (including Shared Link)
+      type: object
+      x-box-resource-id: search_result_with_shared_link
+      x-box-tag: search
+      description: 'A single of files, folder or web link that matched the search query,
+
+        including the additional information about the shared link through
+
+        which the item has been shared with the user.
+
+
+        This response format is only returned when the
+
+        `include_recent_shared_links` query parameter has been set to `true`.'
+      properties:
+        accessible_via_shared_link:
+          description: 'The optional shared link through which the user has access to this
+
+            item. This value is only returned for items for which the user has
+
+            recently accessed the file through a shared link. For all other
+
+            items this value will return `null`.'
+          example: https://www.box.com/s/vspke7y05sb214wjokpk
+          type: string
+          format: url
+        item:
+          allOf:
+          - oneOf:
+            - $ref: '#/components/schemas/File--Full'
+            - $ref: '#/components/schemas/Folder--Full'
+            - $ref: '#/components/schemas/WebLink'
+          - description: 'The file, folder or web link that matched the
+
+              search query.'
+        type:
+          description: The result type. The value is always `search_result`.
+          example: search_result
+          type: string
+    SearchResultsWithSharedLinks:
+      title: Search Results (including Shared Links)
+      type: object
+      x-box-resource-id: search_results_with_shared_links
+      x-box-tag: search
+      description: 'A list of files, folders and web links that matched the search query,
+
+        including the additional information about any shared links through
+
+        which the item has been shared with the user.
+
+
+        This response format is only returned when the `include_recent_shared_links`
+
+        query parameter has been set to `true`.'
+      required:
+      - type
+      allOf:
+      - type: object
+        properties:
+          total_count:
+            description: 'One greater than the offset of the last entry in the search results.
+
+              The total number of entries in the collection may be less than
+
+              `total_count`.'
+            example: 5000
+            type: integer
+            format: int64
+          limit:
+            description: 'The limit that was used for this search. This will be the same as the
+
+              `limit` query parameter unless that value exceeded the maximum value
+
+              allowed.'
+            example: 1000
+            type: integer
+            format: int64
+          offset:
+            description: 'The 0-based offset of the first entry in this set. This will be the same
+
+              as the `offset` query parameter used.'
+            example: 2000
+            type: integer
+            format: int64
+      - properties:
+          type:
+            description: Specifies the response as search result items with shared links
+            type: string
+            example: search_results_with_shared_links
+            enum:
+            - search_results_with_shared_links
+          entries:
+            description: 'The search results for the query provided, including the
+
+              additional information about any shared links through
+
+              which the item has been shared with the user.'
+            type: array
+            items:
+              $ref: '#/components/schemas/SearchResultWithSharedLink'
+    FileVersion--Mini:
+      title: File version (Mini)
+      type: object
+      x-box-resource-id: file_version--mini
+      x-box-variant: mini
+      description: 'A mini representation of a file version, used when
+
+        nested within another resource.'
+      allOf:
+      - $ref: '#/components/schemas/FileVersion--Base'
+      - properties:
+          sha1:
+            type: string
+            description: The SHA1 hash of this version of the file.
+            example: 134b65991ed521fcfe4724b7d814ab8ded5185dc
+    File--Base:
+      title: File (Base)
+      type:
+      - object
+      - 'null'
+      x-box-resource-id: file--base
+      x-box-sanitized: true
+      x-box-tag: files
+      x-box-variants:
+      - base
+      - mini
+      - standard
+      - full
+      x-box-variant: base
+      description: 'The bare basic representation of a file, the minimal
+
+        amount of fields returned when using the `fields` query
+
+        parameter.'
+      required:
+      - id
+      - type
+      properties:
+        id:
+          type: string
+          description: 'The unique identifier that represent a file.
+
+
+            The ID for any file can be determined
+
+            by visiting a file in the web application
+
+            and copying the ID from the URL. For example,
+
+            for the URL `https://*.app.box.com/files/123`
+
+            the `file_id` is `123`.'
+          example: '12345'
+        etag:
+          type:
+          - string
+          - 'null'
+          example: '1'
+          description: 'The HTTP `etag` of this file. This can be used within some API
+
+            endpoints in the `If-Match` and `If-None-Match` headers to only
+
+            perform changes on the file if (no) changes have happened.'
+        type:
+          type: string
+          description: '`file`'
+          example: file
+          enum:
+          - file
   securitySchemes:
     OAuth2Security:
       type: oauth2

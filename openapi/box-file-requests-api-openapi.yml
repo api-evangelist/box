@@ -406,6 +406,34 @@ components:
           example: folder
           enum:
           - folder
+    User--Base:
+      title: User (Base)
+      type: object
+      x-box-resource-id: user--base
+      x-box-tag: users
+      x-box-variants:
+      - base
+      - mini
+      - standard
+      - full
+      x-box-variant: base
+      description: 'A mini representation of a user, used when
+
+        nested within another resource.'
+      required:
+      - type
+      - id
+      properties:
+        id:
+          type: string
+          description: The unique identifier for this user
+          example: '11446498'
+        type:
+          type: string
+          description: '`user`'
+          example: user
+          enum:
+          - user
     ClientError:
       title: Client error
       type: object
@@ -518,33 +546,6 @@ components:
             type: string
             description: The name of the folder.
             example: Contracts
-    FileRequestCopyRequest:
-      title: File Request (Copy)
-      type: object
-      description: The request body to copy a file request.
-      required:
-      - folder
-      allOf:
-      - $ref: '#/components/schemas/FileRequestUpdateRequest'
-      - properties:
-          folder:
-            type: object
-            description: The folder to associate the new file request to.
-            required:
-            - id
-            properties:
-              type:
-                type: string
-                example: folder
-                description: '`folder`'
-                enum:
-                - folder
-              id:
-                type: string
-                example: '42037322'
-                description: 'The ID of the folder to associate the new
-
-                  file request to.'
     FileRequestUpdateRequest:
       title: File Request (Update)
       type: object
@@ -630,34 +631,6 @@ components:
 
             This will default to the value on the existing file request.'
           example: '2020-09-28T10:53:43-08:00'
-    User--Base:
-      title: User (Base)
-      type: object
-      x-box-resource-id: user--base
-      x-box-tag: users
-      x-box-variants:
-      - base
-      - mini
-      - standard
-      - full
-      x-box-variant: base
-      description: 'A mini representation of a user, used when
-
-        nested within another resource.'
-      required:
-      - type
-      - id
-      properties:
-        id:
-          type: string
-          description: The unique identifier for this user
-          example: '11446498'
-        type:
-          type: string
-          description: '`user`'
-          example: user
-          enum:
-          - user
     User--Mini:
       title: User (Mini)
       type: object
@@ -846,6 +819,33 @@ components:
           format: date-time
           description: The date and time when the file request was last updated.
           example: '2020-09-28T10:53:43-08:00'
+    FileRequestCopyRequest:
+      title: File Request (Copy)
+      type: object
+      description: The request body to copy a file request.
+      required:
+      - folder
+      allOf:
+      - $ref: '#/components/schemas/FileRequestUpdateRequest'
+      - properties:
+          folder:
+            type: object
+            description: The folder to associate the new file request to.
+            required:
+            - id
+            properties:
+              type:
+                type: string
+                example: folder
+                description: '`folder`'
+                enum:
+                - folder
+              id:
+                type: string
+                example: '42037322'
+                description: 'The ID of the folder to associate the new
+
+                  file request to.'
   securitySchemes:
     OAuth2Security:
       type: oauth2

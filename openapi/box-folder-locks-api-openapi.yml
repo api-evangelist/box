@@ -302,6 +302,60 @@ components:
           example: folder
           enum:
           - folder
+    FolderLocks:
+      title: Folder Locks
+      type: object
+      x-box-resource-id: folder_locks
+      x-box-tag: folder_locks
+      description: A list of folder locks
+      properties:
+        entries:
+          type: array
+          description: A list of folder locks
+          items:
+            $ref: '#/components/schemas/FolderLock'
+        limit:
+          description: 'The limit that was used for these entries. This will be the same as the
+
+            `limit` query parameter unless that value exceeded the maximum value
+
+            allowed. The maximum value varies by API.'
+          example: '1000'
+          type: string
+        next_marker:
+          description: The marker for the start of the next page of results.
+          example: JV9IRGZmieiBasejOG9yDCRNgd2ymoZIbjsxbJMjIs3kioVii
+          type:
+          - string
+          - 'null'
+    User--Base:
+      title: User (Base)
+      type: object
+      x-box-resource-id: user--base
+      x-box-tag: users
+      x-box-variants:
+      - base
+      - mini
+      - standard
+      - full
+      x-box-variant: base
+      description: 'A mini representation of a user, used when
+
+        nested within another resource.'
+      required:
+      - type
+      - id
+      properties:
+        id:
+          type: string
+          description: The unique identifier for this user
+          example: '11446498'
+        type:
+          type: string
+          description: '`user`'
+          example: user
+          enum:
+          - user
     ClientError:
       title: Client error
       type: object
@@ -414,60 +468,6 @@ components:
             type: string
             description: The name of the folder.
             example: Contracts
-    FolderLocks:
-      title: Folder Locks
-      type: object
-      x-box-resource-id: folder_locks
-      x-box-tag: folder_locks
-      description: A list of folder locks
-      properties:
-        entries:
-          type: array
-          description: A list of folder locks
-          items:
-            $ref: '#/components/schemas/FolderLock'
-        limit:
-          description: 'The limit that was used for these entries. This will be the same as the
-
-            `limit` query parameter unless that value exceeded the maximum value
-
-            allowed. The maximum value varies by API.'
-          example: '1000'
-          type: string
-        next_marker:
-          description: The marker for the start of the next page of results.
-          example: JV9IRGZmieiBasejOG9yDCRNgd2ymoZIbjsxbJMjIs3kioVii
-          type:
-          - string
-          - 'null'
-    User--Base:
-      title: User (Base)
-      type: object
-      x-box-resource-id: user--base
-      x-box-tag: users
-      x-box-variants:
-      - base
-      - mini
-      - standard
-      - full
-      x-box-variant: base
-      description: 'A mini representation of a user, used when
-
-        nested within another resource.'
-      required:
-      - type
-      - id
-      properties:
-        id:
-          type: string
-          description: The unique identifier for this user
-          example: '11446498'
-        type:
-          type: string
-          description: '`user`'
-          example: user
-          enum:
-          - user
     FolderLock:
       title: Folder Lock
       type: object

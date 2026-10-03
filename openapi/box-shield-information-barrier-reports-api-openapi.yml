@@ -162,29 +162,85 @@ paths:
                 $ref: '#/components/schemas/ClientError'
 components:
   schemas:
-    ShieldInformationBarrierReport--Base:
-      title: Shield information barrier report (Base)
+    User--Base:
+      title: User (Base)
       type: object
-      x-box-resource-id: shield_information_barrier_report--base
-      x-box-tag: shield_information_barrier_reports
+      x-box-resource-id: user--base
+      x-box-tag: users
       x-box-variants:
       - base
+      - mini
       - standard
+      - full
       x-box-variant: base
-      description: 'A base representation of a
+      description: 'A mini representation of a user, used when
 
-        shield information barrier report object'
+        nested within another resource.'
+      required:
+      - type
+      - id
       properties:
         id:
           type: string
+          description: The unique identifier for this user
           example: '11446498'
-          description: The unique identifier for the shield information barrier report
         type:
           type: string
-          description: The type of the shield information barrier report
-          example: shield_information_barrier_report
+          description: '`user`'
+          example: user
           enum:
-          - shield_information_barrier_report
+          - user
+    ShieldInformationBarrierReports:
+      title: List of Shield Information Barrier Reports
+      type: object
+      x-box-resource-id: shield_information_barrier_reports
+      x-box-tag: shield_information_barrier_reports
+      description: A list of shield barrier reports.
+      allOf:
+      - type: object
+        description: 'The part of an API response that describes marker
+
+          based pagination'
+        properties:
+          limit:
+            description: 'The limit that was used for these entries. This will be the same as the
+
+              `limit` query parameter unless that value exceeded the maximum value
+
+              allowed. The maximum value varies by API.'
+            example: 1000
+            type: integer
+            format: int64
+          next_marker:
+            description: The marker for the start of the next page of results.
+            example: JV9IRGZmieiBasejOG9yDCRNgd2ymoZIbjsxbJMjIs3kioVii
+            type:
+            - string
+            - 'null'
+      - properties:
+          entries:
+            type: array
+            description: 'A list of shield information
+
+              barrier reports.'
+            items:
+              $ref: '#/components/schemas/ShieldInformationBarrierReport'
+    ShieldInformationBarrierReportDetails:
+      title: Shield information barrier report details
+      type: object
+      x-box-resource-id: shield_information_barrier_report_details
+      x-box-tag: shield_information_barrier_reports
+      description: 'Indicates which folder the report
+
+        file is located and any errors when generating the report.'
+      properties:
+        details:
+          type: object
+          properties:
+            folder_id:
+              type: string
+              example: '124235'
+              description: Folder ID for locating this report
     ClientError:
       title: Client error
       type: object
@@ -309,85 +365,6 @@ components:
       properties:
         shield_information_barrier:
           $ref: '#/components/schemas/ShieldInformationBarrier--Base'
-    ShieldInformationBarrierReportDetails:
-      title: Shield information barrier report details
-      type: object
-      x-box-resource-id: shield_information_barrier_report_details
-      x-box-tag: shield_information_barrier_reports
-      description: 'Indicates which folder the report
-
-        file is located and any errors when generating the report.'
-      properties:
-        details:
-          type: object
-          properties:
-            folder_id:
-              type: string
-              example: '124235'
-              description: Folder ID for locating this report
-    User--Base:
-      title: User (Base)
-      type: object
-      x-box-resource-id: user--base
-      x-box-tag: users
-      x-box-variants:
-      - base
-      - mini
-      - standard
-      - full
-      x-box-variant: base
-      description: 'A mini representation of a user, used when
-
-        nested within another resource.'
-      required:
-      - type
-      - id
-      properties:
-        id:
-          type: string
-          description: The unique identifier for this user
-          example: '11446498'
-        type:
-          type: string
-          description: '`user`'
-          example: user
-          enum:
-          - user
-    ShieldInformationBarrierReports:
-      title: List of Shield Information Barrier Reports
-      type: object
-      x-box-resource-id: shield_information_barrier_reports
-      x-box-tag: shield_information_barrier_reports
-      description: A list of shield barrier reports.
-      allOf:
-      - type: object
-        description: 'The part of an API response that describes marker
-
-          based pagination'
-        properties:
-          limit:
-            description: 'The limit that was used for these entries. This will be the same as the
-
-              `limit` query parameter unless that value exceeded the maximum value
-
-              allowed. The maximum value varies by API.'
-            example: 1000
-            type: integer
-            format: int64
-          next_marker:
-            description: The marker for the start of the next page of results.
-            example: JV9IRGZmieiBasejOG9yDCRNgd2ymoZIbjsxbJMjIs3kioVii
-            type:
-            - string
-            - 'null'
-      - properties:
-          entries:
-            type: array
-            description: 'A list of shield information
-
-              barrier reports.'
-            items:
-              $ref: '#/components/schemas/ShieldInformationBarrierReport'
     ShieldInformationBarrier--Base:
       title: Shield information barrier (Base)
       type: object
@@ -411,6 +388,29 @@ components:
           example: shield_information_barrier
           enum:
           - shield_information_barrier
+    ShieldInformationBarrierReport--Base:
+      title: Shield information barrier report (Base)
+      type: object
+      x-box-resource-id: shield_information_barrier_report--base
+      x-box-tag: shield_information_barrier_reports
+      x-box-variants:
+      - base
+      - standard
+      x-box-variant: base
+      description: 'A base representation of a
+
+        shield information barrier report object'
+      properties:
+        id:
+          type: string
+          example: '11446498'
+          description: The unique identifier for the shield information barrier report
+        type:
+          type: string
+          description: The type of the shield information barrier report
+          example: shield_information_barrier_report
+          enum:
+          - shield_information_barrier_report
   securitySchemes:
     OAuth2Security:
       type: oauth2

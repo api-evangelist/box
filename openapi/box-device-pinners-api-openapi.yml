@@ -148,53 +148,34 @@ paths:
                 $ref: '#/components/schemas/ClientError'
 components:
   schemas:
-    DevicePinners:
-      title: Device pinners
+    User--Base:
+      title: User (Base)
       type: object
-      x-box-resource-id: device_pinners
-      x-box-tag: device_pinners
-      description: A list of device pins
+      x-box-resource-id: user--base
+      x-box-tag: users
+      x-box-variants:
+      - base
+      - mini
+      - standard
+      - full
+      x-box-variant: base
+      description: 'A mini representation of a user, used when
+
+        nested within another resource.'
+      required:
+      - type
+      - id
       properties:
-        entries:
-          type: array
-          description: A list of device pins
-          items:
-            $ref: '#/components/schemas/DevicePinner'
-        limit:
-          description: 'The limit that was used for these entries. This will be the same as the
-
-            `limit` query parameter unless that value exceeded the maximum value
-
-            allowed.'
-          default: 100
-          example: 200
-          type: integer
-          format: int64
-        next_marker:
-          description: The marker for the start of the next page of results.
-          example: 3000
-          type: integer
-          format: int64
-        order:
-          description: The order by which items are returned.
-          type: array
-          items:
-            type: object
-            description: The order in which a pagination is ordered
-            properties:
-              by:
-                description: The field that is ordered by
-                example: id
-                enum:
-                - id
-                type: string
-              direction:
-                type: string
-                description: The direction to order by, either ascending or descending
-                example: asc
-                enum:
-                - asc
-                - desc
+        id:
+          type: string
+          description: The unique identifier for this user
+          example: '11446498'
+        type:
+          type: string
+          description: '`user`'
+          example: user
+          enum:
+          - user
     ClientError:
       title: Client error
       type: object
@@ -262,34 +243,53 @@ components:
             when contacting Box support.'
           type: string
           example: abcdef123456
-    User--Base:
-      title: User (Base)
+    DevicePinners:
+      title: Device pinners
       type: object
-      x-box-resource-id: user--base
-      x-box-tag: users
-      x-box-variants:
-      - base
-      - mini
-      - standard
-      - full
-      x-box-variant: base
-      description: 'A mini representation of a user, used when
-
-        nested within another resource.'
-      required:
-      - type
-      - id
+      x-box-resource-id: device_pinners
+      x-box-tag: device_pinners
+      description: A list of device pins
       properties:
-        id:
-          type: string
-          description: The unique identifier for this user
-          example: '11446498'
-        type:
-          type: string
-          description: '`user`'
-          example: user
-          enum:
-          - user
+        entries:
+          type: array
+          description: A list of device pins
+          items:
+            $ref: '#/components/schemas/DevicePinner'
+        limit:
+          description: 'The limit that was used for these entries. This will be the same as the
+
+            `limit` query parameter unless that value exceeded the maximum value
+
+            allowed.'
+          default: 100
+          example: 200
+          type: integer
+          format: int64
+        next_marker:
+          description: The marker for the start of the next page of results.
+          example: 3000
+          type: integer
+          format: int64
+        order:
+          description: The order by which items are returned.
+          type: array
+          items:
+            type: object
+            description: The order in which a pagination is ordered
+            properties:
+              by:
+                description: The field that is ordered by
+                example: id
+                enum:
+                - id
+                type: string
+              direction:
+                type: string
+                description: The direction to order by, either ascending or descending
+                example: asc
+                enum:
+                - asc
+                - desc
     DevicePinner:
       title: Device pinner
       type: object

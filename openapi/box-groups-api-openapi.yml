@@ -514,27 +514,80 @@ paths:
                 $ref: '#/components/schemas/ClientError'
 components:
   schemas:
-    Group:
-      title: Group
+    Groups:
+      title: Groups
       type: object
-      x-box-resource-id: group
-      x-box-variant: standard
-      description: 'A standard representation of a group, as returned from any
-
-        group API endpoints by default'
+      x-box-resource-id: groups
+      x-box-tag: groups
+      description: A list of groups.
       allOf:
-      - $ref: '#/components/schemas/Group--Mini'
+      - type: object
+        description: The part of an API response that describes pagination
+        properties:
+          total_count:
+            description: 'One greater than the offset of the last entry in the entire collection.
+
+              The total number of entries in the collection may be less than
+
+              `total_count`.
+
+
+              This field is only returned for calls that use offset-based pagination.
+
+              For marker-based paginated APIs, this field will be omitted.'
+            example: 5000
+            type: integer
+            format: int64
+          limit:
+            description: 'The limit that was used for these entries. This will be the same as the
+
+              `limit` query parameter unless that value exceeded the maximum value
+
+              allowed. The maximum value varies by API.'
+            example: 1000
+            type: integer
+            format: int64
+          offset:
+            description: 'The 0-based offset of the first entry in this set. This will be the same
+
+              as the `offset` query parameter.
+
+
+              This field is only returned for calls that use offset-based pagination.
+
+              For marker-based paginated APIs, this field will be omitted.'
+            example: 2000
+            type: integer
+            format: int64
+          order:
+            description: 'The order by which items are returned.
+
+
+              This field is only returned for calls that use offset-based pagination.
+
+              For marker-based paginated APIs, this field will be omitted.'
+            type: array
+            items:
+              type: object
+              description: The order in which a pagination is ordered
+              properties:
+                by:
+                  description: The field to order by
+                  example: type
+                  type: string
+                direction:
+                  type: string
+                  description: The direction to order by, either ascending or descending
+                  example: ASC
+                  enum:
+                  - ASC
+                  - DESC
       - properties:
-          created_at:
-            type: string
-            format: date-time
-            description: When the group object was created
-            example: '2012-12-12T10:53:43-08:00'
-          modified_at:
-            type: string
-            format: date-time
-            description: When the group object was last modified
-            example: '2012-12-12T10:53:43-08:00'
+          entries:
+            type: array
+            description: A list of groups
+            items:
+              $ref: '#/components/schemas/Group--Full'
     ClientError:
       title: Client error
       type: object
@@ -602,6 +655,49 @@ components:
             when contacting Box support.'
           type: string
           example: abcdef123456
+    Group:
+      title: Group
+      type: object
+      x-box-resource-id: group
+      x-box-variant: standard
+      description: 'A standard representation of a group, as returned from any
+
+        group API endpoints by default'
+      allOf:
+      - $ref: '#/components/schemas/Group--Mini'
+      - properties:
+          created_at:
+            type: string
+            format: date-time
+            description: When the group object was created
+            example: '2012-12-12T10:53:43-08:00'
+          modified_at:
+            type: string
+            format: date-time
+            description: When the group object was last modified
+            example: '2012-12-12T10:53:43-08:00'
+    Group--Mini:
+      title: Group (Mini)
+      type: object
+      x-box-resource-id: group--mini
+      x-box-variant: mini
+      description: 'Mini representation of a group, including id and name of
+
+        group.'
+      allOf:
+      - $ref: '#/components/schemas/Group--Base'
+      - properties:
+          name:
+            type: string
+            description: The name of the group
+            example: Support
+          group_type:
+            type: string
+            description: The type of the group.
+            example: managed_group
+            enum:
+            - managed_group
+            - all_users_group
     Group--Base:
       title: Group (Base)
       type: object
@@ -721,102 +817,6 @@ components:
             - description: 'Describes the permissions that the current user has
 
                 for this group.'
-    Groups:
-      title: Groups
-      type: object
-      x-box-resource-id: groups
-      x-box-tag: groups
-      description: A list of groups.
-      allOf:
-      - type: object
-        description: The part of an API response that describes pagination
-        properties:
-          total_count:
-            description: 'One greater than the offset of the last entry in the entire collection.
-
-              The total number of entries in the collection may be less than
-
-              `total_count`.
-
-
-              This field is only returned for calls that use offset-based pagination.
-
-              For marker-based paginated APIs, this field will be omitted.'
-            example: 5000
-            type: integer
-            format: int64
-          limit:
-            description: 'The limit that was used for these entries. This will be the same as the
-
-              `limit` query parameter unless that value exceeded the maximum value
-
-              allowed. The maximum value varies by API.'
-            example: 1000
-            type: integer
-            format: int64
-          offset:
-            description: 'The 0-based offset of the first entry in this set. This will be the same
-
-              as the `offset` query parameter.
-
-
-              This field is only returned for calls that use offset-based pagination.
-
-              For marker-based paginated APIs, this field will be omitted.'
-            example: 2000
-            type: integer
-            format: int64
-          order:
-            description: 'The order by which items are returned.
-
-
-              This field is only returned for calls that use offset-based pagination.
-
-              For marker-based paginated APIs, this field will be omitted.'
-            type: array
-            items:
-              type: object
-              description: The order in which a pagination is ordered
-              properties:
-                by:
-                  description: The field to order by
-                  example: type
-                  type: string
-                direction:
-                  type: string
-                  description: The direction to order by, either ascending or descending
-                  example: ASC
-                  enum:
-                  - ASC
-                  - DESC
-      - properties:
-          entries:
-            type: array
-            description: A list of groups
-            items:
-              $ref: '#/components/schemas/Group--Full'
-    Group--Mini:
-      title: Group (Mini)
-      type: object
-      x-box-resource-id: group--mini
-      x-box-variant: mini
-      description: 'Mini representation of a group, including id and name of
-
-        group.'
-      allOf:
-      - $ref: '#/components/schemas/Group--Base'
-      - properties:
-          name:
-            type: string
-            description: The name of the group
-            example: Support
-          group_type:
-            type: string
-            description: The type of the group.
-            example: managed_group
-            enum:
-            - managed_group
-            - all_users_group
   securitySchemes:
     OAuth2Security:
       type: oauth2
