@@ -129,31 +129,23 @@ paths:
                 $ref: '#/components/schemas/ClientError'
 components:
   schemas:
-    EmailAlias:
-      title: Email alias
+    EmailAliases:
+      title: Email aliases
       type: object
-      x-box-resource-id: email_alias
+      x-box-resource-id: email_aliases
       x-box-tag: email_aliases
-      description: An email alias for a user.
+      description: A list of email aliases
       properties:
-        id:
-          type: string
-          description: The unique identifier for this object
-          example: '11446498'
-        type:
-          type: string
-          description: '`email_alias`'
-          example: email_alias
-          enum:
-          - email_alias
-        email:
-          type: string
-          description: The email address
-          example: alias@example.com
-        is_confirmed:
-          type: boolean
-          description: Whether the email address has been confirmed
-          example: true
+        total_count:
+          description: The number of email aliases.
+          example: 5000
+          type: integer
+          format: int64
+        entries:
+          type: array
+          description: A list of email aliases
+          items:
+            $ref: '#/components/schemas/EmailAlias'
     ClientError:
       title: Client error
       type: object
@@ -221,23 +213,31 @@ components:
             when contacting Box support.'
           type: string
           example: abcdef123456
-    EmailAliases:
-      title: Email aliases
+    EmailAlias:
+      title: Email alias
       type: object
-      x-box-resource-id: email_aliases
+      x-box-resource-id: email_alias
       x-box-tag: email_aliases
-      description: A list of email aliases
+      description: An email alias for a user.
       properties:
-        total_count:
-          description: The number of email aliases.
-          example: 5000
-          type: integer
-          format: int64
-        entries:
-          type: array
-          description: A list of email aliases
-          items:
-            $ref: '#/components/schemas/EmailAlias'
+        id:
+          type: string
+          description: The unique identifier for this object
+          example: '11446498'
+        type:
+          type: string
+          description: '`email_alias`'
+          example: email_alias
+          enum:
+          - email_alias
+        email:
+          type: string
+          description: The email address
+          example: alias@example.com
+        is_confirmed:
+          type: boolean
+          description: Whether the email address has been confirmed
+          example: true
   securitySchemes:
     OAuth2Security:
       type: oauth2

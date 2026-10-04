@@ -177,6 +177,51 @@ paths:
                 $ref: '#/components/schemas/ClientError'
 components:
   schemas:
+    TermsOfServiceUserStatuses:
+      title: Terms of service user statuses
+      type: object
+      x-box-resource-id: terms_of_services_user_statuses
+      x-box-tag: terms_of_service_user_statuses
+      description: A list of terms of service user statuses
+      properties:
+        total_count:
+          description: The total number of objects.
+          example: 2
+          type: integer
+          format: int64
+        entries:
+          type: array
+          description: A list of terms of service user statuses
+          items:
+            $ref: '#/components/schemas/TermsOfServiceUserStatus'
+    User--Base:
+      title: User (Base)
+      type: object
+      x-box-resource-id: user--base
+      x-box-tag: users
+      x-box-variants:
+      - base
+      - mini
+      - standard
+      - full
+      x-box-variant: base
+      description: 'A mini representation of a user, used when
+
+        nested within another resource.'
+      required:
+      - type
+      - id
+      properties:
+        id:
+          type: string
+          description: The unique identifier for this user
+          example: '11446498'
+        type:
+          type: string
+          description: '`user`'
+          example: user
+          enum:
+          - user
     TermsOfServiceUserStatus:
       title: Terms of service user status
       type: object
@@ -219,34 +264,32 @@ components:
           format: date-time
           description: When the legal item was modified.
           example: '2012-12-12T10:53:43-08:00'
-    User--Base:
-      title: User (Base)
+    TermsOfService--Base:
+      title: Terms of service (Base)
       type: object
-      x-box-resource-id: user--base
-      x-box-tag: users
+      x-box-resource-id: terms_of_service--base
+      x-box-tag: terms_of_services
       x-box-variants:
       - base
-      - mini
       - standard
-      - full
       x-box-variant: base
-      description: 'A mini representation of a user, used when
+      description: 'The root-level record that is supposed to represent a
 
-        nested within another resource.'
+        single Terms of Service.'
       required:
-      - type
       - id
+      - type
       properties:
         id:
           type: string
-          description: The unique identifier for this user
+          description: The unique identifier for this terms of service.
           example: '11446498'
         type:
           type: string
-          description: '`user`'
-          example: user
+          description: '`terms_of_service`'
+          example: terms_of_service
           enum:
-          - user
+          - terms_of_service
     ClientError:
       title: Client error
       type: object
@@ -314,23 +357,6 @@ components:
             when contacting Box support.'
           type: string
           example: abcdef123456
-    TermsOfServiceUserStatuses:
-      title: Terms of service user statuses
-      type: object
-      x-box-resource-id: terms_of_services_user_statuses
-      x-box-tag: terms_of_service_user_statuses
-      description: A list of terms of service user statuses
-      properties:
-        total_count:
-          description: The total number of objects.
-          example: 2
-          type: integer
-          format: int64
-        entries:
-          type: array
-          description: A list of terms of service user statuses
-          items:
-            $ref: '#/components/schemas/TermsOfServiceUserStatus'
     User--Mini:
       title: User (Mini)
       type: object
@@ -352,32 +378,6 @@ components:
             format: email
             description: The primary email address of this user
             example: ceo@example.com
-    TermsOfService--Base:
-      title: Terms of service (Base)
-      type: object
-      x-box-resource-id: terms_of_service--base
-      x-box-tag: terms_of_services
-      x-box-variants:
-      - base
-      - standard
-      x-box-variant: base
-      description: 'The root-level record that is supposed to represent a
-
-        single Terms of Service.'
-      required:
-      - id
-      - type
-      properties:
-        id:
-          type: string
-          description: The unique identifier for this terms of service.
-          example: '11446498'
-        type:
-          type: string
-          description: '`terms_of_service`'
-          example: terms_of_service
-          enum:
-          - terms_of_service
   securitySchemes:
     OAuth2Security:
       type: oauth2

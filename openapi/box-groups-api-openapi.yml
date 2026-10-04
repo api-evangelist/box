@@ -514,6 +514,28 @@ paths:
                 $ref: '#/components/schemas/ClientError'
 components:
   schemas:
+    Group--Mini:
+      title: Group (Mini)
+      type: object
+      x-box-resource-id: group--mini
+      x-box-variant: mini
+      description: 'Mini representation of a group, including id and name of
+
+        group.'
+      allOf:
+      - $ref: '#/components/schemas/Group--Base'
+      - properties:
+          name:
+            type: string
+            description: The name of the group
+            example: Support
+          group_type:
+            type: string
+            description: The type of the group.
+            example: managed_group
+            enum:
+            - managed_group
+            - all_users_group
     Groups:
       title: Groups
       type: object
@@ -588,73 +610,6 @@ components:
             description: A list of groups
             items:
               $ref: '#/components/schemas/Group--Full'
-    ClientError:
-      title: Client error
-      type: object
-      x-box-resource-id: client_error
-      description: A generic error
-      properties:
-        type:
-          description: error
-          example: error
-          type: string
-          enum:
-          - error
-        status:
-          description: The HTTP status of the response.
-          example: 400
-          type: integer
-          format: int32
-        code:
-          description: A Box-specific error code
-          example: item_name_invalid
-          type: string
-          enum:
-          - created
-          - accepted
-          - no_content
-          - redirect
-          - not_modified
-          - bad_request
-          - unauthorized
-          - forbidden
-          - not_found
-          - method_not_allowed
-          - conflict
-          - precondition_failed
-          - too_many_requests
-          - internal_server_error
-          - unavailable
-          - item_name_invalid
-          - insufficient_scope
-        message:
-          description: A short message describing the error.
-          example: Method Not Allowed
-          type: string
-        context_info:
-          description: 'A free-form object that contains additional context
-
-            about the error. The possible fields are defined on
-
-            a per-endpoint basis. `message` is only one example.'
-          type:
-          - object
-          - 'null'
-          properties:
-            message:
-              type: string
-              description: More details on the error.
-              example: Something went wrong.
-        help_url:
-          description: A URL that links to more information about why this error occurred.
-          example: https://developer.box.com/guides/api-calls/permissions-and-errors/common-errors/
-          type: string
-        request_id:
-          description: 'A unique identifier for this response, which can be used
-
-            when contacting Box support.'
-          type: string
-          example: abcdef123456
     Group:
       title: Group
       type: object
@@ -676,28 +631,6 @@ components:
             format: date-time
             description: When the group object was last modified
             example: '2012-12-12T10:53:43-08:00'
-    Group--Mini:
-      title: Group (Mini)
-      type: object
-      x-box-resource-id: group--mini
-      x-box-variant: mini
-      description: 'Mini representation of a group, including id and name of
-
-        group.'
-      allOf:
-      - $ref: '#/components/schemas/Group--Base'
-      - properties:
-          name:
-            type: string
-            description: The name of the group
-            example: Support
-          group_type:
-            type: string
-            description: The type of the group.
-            example: managed_group
-            enum:
-            - managed_group
-            - all_users_group
     Group--Base:
       title: Group (Base)
       type: object
@@ -817,6 +750,73 @@ components:
             - description: 'Describes the permissions that the current user has
 
                 for this group.'
+    ClientError:
+      title: Client error
+      type: object
+      x-box-resource-id: client_error
+      description: A generic error
+      properties:
+        type:
+          description: error
+          example: error
+          type: string
+          enum:
+          - error
+        status:
+          description: The HTTP status of the response.
+          example: 400
+          type: integer
+          format: int32
+        code:
+          description: A Box-specific error code
+          example: item_name_invalid
+          type: string
+          enum:
+          - created
+          - accepted
+          - no_content
+          - redirect
+          - not_modified
+          - bad_request
+          - unauthorized
+          - forbidden
+          - not_found
+          - method_not_allowed
+          - conflict
+          - precondition_failed
+          - too_many_requests
+          - internal_server_error
+          - unavailable
+          - item_name_invalid
+          - insufficient_scope
+        message:
+          description: A short message describing the error.
+          example: Method Not Allowed
+          type: string
+        context_info:
+          description: 'A free-form object that contains additional context
+
+            about the error. The possible fields are defined on
+
+            a per-endpoint basis. `message` is only one example.'
+          type:
+          - object
+          - 'null'
+          properties:
+            message:
+              type: string
+              description: More details on the error.
+              example: Something went wrong.
+        help_url:
+          description: A URL that links to more information about why this error occurred.
+          example: https://developer.box.com/guides/api-calls/permissions-and-errors/common-errors/
+          type: string
+        request_id:
+          description: 'A unique identifier for this response, which can be used
+
+            when contacting Box support.'
+          type: string
+          example: abcdef123456
   securitySchemes:
     OAuth2Security:
       type: oauth2

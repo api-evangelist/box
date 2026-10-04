@@ -397,6 +397,266 @@ paths:
                 $ref: '#/components/schemas/ClientError'
 components:
   schemas:
+    User--Base:
+      title: User (Base)
+      type: object
+      x-box-resource-id: user--base
+      x-box-tag: users
+      x-box-variants:
+      - base
+      - mini
+      - standard
+      - full
+      x-box-variant: base
+      description: 'A mini representation of a user, used when
+
+        nested within another resource.'
+      required:
+      - type
+      - id
+      properties:
+        id:
+          type: string
+          description: The unique identifier for this user
+          example: '11446498'
+        type:
+          type: string
+          description: '`user`'
+          example: user
+          enum:
+          - user
+    File--Mini:
+      title: File (Mini)
+      type:
+      - object
+      - 'null'
+      x-box-resource-id: file--mini
+      x-box-variant: mini
+      description: 'A mini representation of a file, used when
+
+        nested under another resource.'
+      allOf:
+      - $ref: '#/components/schemas/File--Base'
+      - properties:
+          sequence_id:
+            allOf:
+            - type:
+              - string
+              - 'null'
+              example: '3'
+              description: 'A numeric identifier that represents the most recent user event
+
+                that has been applied to this item.
+
+
+                This can be used in combination with the `GET /events`-endpoint
+
+                to filter out user events that would have occurred before this
+
+                identifier was read.
+
+
+                An example would be where a Box Drive-like application
+
+                would fetch an item via the API, and then listen to incoming
+
+                user events for changes to the item. The application would
+
+                ignore any user events where the `sequence_id` in the event
+
+                is smaller than or equal to the `sequence_id` in the originally
+
+                fetched resource.'
+            - {}
+          name:
+            type: string
+            description: The name of the file
+            example: Contract.pdf
+          sha1:
+            type: string
+            format: digest
+            example: 85136C79CBF9FE36BB9D05D0639C70C265C18D37
+            description: 'The SHA1 hash of the file. This can be used to compare the contents
+
+              of a file on Box with a local file.'
+          file_version:
+            allOf:
+            - $ref: '#/components/schemas/FileVersion--Mini'
+            - description: The information about the current version of the file.
+    TaskAssignments:
+      title: Task assignments
+      type: object
+      x-box-resource-id: task_assignments
+      x-box-tag: task_assignments
+      description: A list of task assignments
+      properties:
+        total_count:
+          description: The total number of items in this collection.
+          example: 100
+          type: integer
+          format: int64
+        entries:
+          type: array
+          description: A list of task assignments
+          items:
+            $ref: '#/components/schemas/TaskAssignment'
+    Tasks:
+      title: Tasks
+      type: object
+      x-box-resource-id: tasks
+      x-box-tag: tasks
+      description: A list of tasks
+      properties:
+        total_count:
+          description: 'One greater than the offset of the last entry in the entire collection.
+
+            The total number of entries in the collection may be less than
+
+            `total_count`.'
+          example: 5000
+          type: integer
+          format: int64
+        entries:
+          type: array
+          description: A list of tasks
+          items:
+            $ref: '#/components/schemas/Task'
+    File--Base:
+      title: File (Base)
+      type:
+      - object
+      - 'null'
+      x-box-resource-id: file--base
+      x-box-sanitized: true
+      x-box-tag: files
+      x-box-variants:
+      - base
+      - mini
+      - standard
+      - full
+      x-box-variant: base
+      description: 'The bare basic representation of a file, the minimal
+
+        amount of fields returned when using the `fields` query
+
+        parameter.'
+      required:
+      - id
+      - type
+      properties:
+        id:
+          type: string
+          description: 'The unique identifier that represent a file.
+
+
+            The ID for any file can be determined
+
+            by visiting a file in the web application
+
+            and copying the ID from the URL. For example,
+
+            for the URL `https://*.app.box.com/files/123`
+
+            the `file_id` is `123`.'
+          example: '12345'
+        etag:
+          type:
+          - string
+          - 'null'
+          example: '1'
+          description: 'The HTTP `etag` of this file. This can be used within some API
+
+            endpoints in the `If-Match` and `If-None-Match` headers to only
+
+            perform changes on the file if (no) changes have happened.'
+        type:
+          type: string
+          description: '`file`'
+          example: file
+          enum:
+          - file
+    FileVersion--Mini:
+      title: File version (Mini)
+      type: object
+      x-box-resource-id: file_version--mini
+      x-box-variant: mini
+      description: 'A mini representation of a file version, used when
+
+        nested within another resource.'
+      allOf:
+      - $ref: '#/components/schemas/FileVersion--Base'
+      - properties:
+          sha1:
+            type: string
+            description: The SHA1 hash of this version of the file.
+            example: 134b65991ed521fcfe4724b7d814ab8ded5185dc
+    TaskAssignment:
+      title: Task assignment
+      type: object
+      x-box-resource-id: task_assignment
+      x-box-tag: task_assignments
+      description: A task assignment defines which task is assigned to which user to complete.
+      properties:
+        id:
+          type: string
+          description: The unique identifier for this task assignment
+          example: '11446498'
+        type:
+          type: string
+          description: '`task_assignment`'
+          example: task_assignment
+          enum:
+          - task_assignment
+        item:
+          allOf:
+          - $ref: '#/components/schemas/File--Mini'
+          - description: The file that the task has been assigned to.
+        assigned_to:
+          allOf:
+          - $ref: '#/components/schemas/User--Mini'
+          - description: The user that the task has been assigned to.
+        message:
+          type: string
+          example: Please review
+          description: 'A message that will is included with the task
+
+            assignment. This is visible to the assigned user in the web and mobile
+
+            UI.'
+        completed_at:
+          type: string
+          format: date-time
+          description: 'The date at which this task assignment was
+
+            completed. This will be `null` if the task is not completed yet.'
+          example: '2012-12-12T10:53:43-08:00'
+        assigned_at:
+          type: string
+          format: date-time
+          description: The date at which this task was assigned to the user.
+          example: '2012-12-12T10:53:43-08:00'
+        reminded_at:
+          type: string
+          format: date-time
+          description: 'The date at which the assigned user was reminded of this task
+
+            assignment.'
+          example: '2012-12-12T10:53:43-08:00'
+        resolution_state:
+          type: string
+          description: 'The current state of the assignment. The available states depend on
+
+            the `action` value of the task object.'
+          example: incomplete
+          enum:
+          - completed
+          - incomplete
+          - approved
+          - rejected
+        assigned_by:
+          allOf:
+          - $ref: '#/components/schemas/User--Mini'
+          - description: The user who assigned this task.
     Task:
       title: Task
       type: object
@@ -477,81 +737,6 @@ components:
           enum:
           - all_assignees
           - any_assignee
-    FileVersion--Base:
-      title: File version (Base)
-      type: object
-      x-box-resource-id: file_version--base
-      x-box-sanitized: true
-      x-box-variants:
-      - base
-      - mini
-      - standard
-      - full
-      x-box-variant: base
-      description: 'The bare basic representation of a file version, the minimal
-
-        amount of fields returned when using the `fields` query
-
-        parameter.'
-      required:
-      - id
-      - type
-      properties:
-        id:
-          type: string
-          description: The unique identifier that represent a file version.
-          example: '12345'
-        type:
-          type: string
-          description: '`file_version`'
-          example: file_version
-          enum:
-          - file_version
-    User--Base:
-      title: User (Base)
-      type: object
-      x-box-resource-id: user--base
-      x-box-tag: users
-      x-box-variants:
-      - base
-      - mini
-      - standard
-      - full
-      x-box-variant: base
-      description: 'A mini representation of a user, used when
-
-        nested within another resource.'
-      required:
-      - type
-      - id
-      properties:
-        id:
-          type: string
-          description: The unique identifier for this user
-          example: '11446498'
-        type:
-          type: string
-          description: '`user`'
-          example: user
-          enum:
-          - user
-    TaskAssignments:
-      title: Task assignments
-      type: object
-      x-box-resource-id: task_assignments
-      x-box-tag: task_assignments
-      description: A list of task assignments
-      properties:
-        total_count:
-          description: The total number of items in this collection.
-          example: 100
-          type: integer
-          format: int64
-        entries:
-          type: array
-          description: A list of task assignments
-          items:
-            $ref: '#/components/schemas/TaskAssignment'
     ClientError:
       title: Client error
       type: object
@@ -619,103 +804,18 @@ components:
             when contacting Box support.'
           type: string
           example: abcdef123456
-    TaskAssignment:
-      title: Task assignment
+    FileVersion--Base:
+      title: File version (Base)
       type: object
-      x-box-resource-id: task_assignment
-      x-box-tag: task_assignments
-      description: A task assignment defines which task is assigned to which user to complete.
-      properties:
-        id:
-          type: string
-          description: The unique identifier for this task assignment
-          example: '11446498'
-        type:
-          type: string
-          description: '`task_assignment`'
-          example: task_assignment
-          enum:
-          - task_assignment
-        item:
-          allOf:
-          - $ref: '#/components/schemas/File--Mini'
-          - description: The file that the task has been assigned to.
-        assigned_to:
-          allOf:
-          - $ref: '#/components/schemas/User--Mini'
-          - description: The user that the task has been assigned to.
-        message:
-          type: string
-          example: Please review
-          description: 'A message that will is included with the task
-
-            assignment. This is visible to the assigned user in the web and mobile
-
-            UI.'
-        completed_at:
-          type: string
-          format: date-time
-          description: 'The date at which this task assignment was
-
-            completed. This will be `null` if the task is not completed yet.'
-          example: '2012-12-12T10:53:43-08:00'
-        assigned_at:
-          type: string
-          format: date-time
-          description: The date at which this task was assigned to the user.
-          example: '2012-12-12T10:53:43-08:00'
-        reminded_at:
-          type: string
-          format: date-time
-          description: 'The date at which the assigned user was reminded of this task
-
-            assignment.'
-          example: '2012-12-12T10:53:43-08:00'
-        resolution_state:
-          type: string
-          description: 'The current state of the assignment. The available states depend on
-
-            the `action` value of the task object.'
-          example: incomplete
-          enum:
-          - completed
-          - incomplete
-          - approved
-          - rejected
-        assigned_by:
-          allOf:
-          - $ref: '#/components/schemas/User--Mini'
-          - description: The user who assigned this task.
-    FileVersion--Mini:
-      title: File version (Mini)
-      type: object
-      x-box-resource-id: file_version--mini
-      x-box-variant: mini
-      description: 'A mini representation of a file version, used when
-
-        nested within another resource.'
-      allOf:
-      - $ref: '#/components/schemas/FileVersion--Base'
-      - properties:
-          sha1:
-            type: string
-            description: The SHA1 hash of this version of the file.
-            example: 134b65991ed521fcfe4724b7d814ab8ded5185dc
-    File--Base:
-      title: File (Base)
-      type:
-      - object
-      - 'null'
-      x-box-resource-id: file--base
+      x-box-resource-id: file_version--base
       x-box-sanitized: true
-      x-box-tag: files
       x-box-variants:
       - base
       - mini
       - standard
       - full
       x-box-variant: base
-      description: 'The bare basic representation of a file, the minimal
+      description: 'The bare basic representation of a file version, the minimal
 
         amount of fields returned when using the `fields` query
 
@@ -726,35 +826,14 @@ components:
       properties:
         id:
           type: string
-          description: 'The unique identifier that represent a file.
-
-
-            The ID for any file can be determined
-
-            by visiting a file in the web application
-
-            and copying the ID from the URL. For example,
-
-            for the URL `https://*.app.box.com/files/123`
-
-            the `file_id` is `123`.'
+          description: The unique identifier that represent a file version.
           example: '12345'
-        etag:
-          type:
-          - string
-          - 'null'
-          example: '1'
-          description: 'The HTTP `etag` of this file. This can be used within some API
-
-            endpoints in the `If-Match` and `If-None-Match` headers to only
-
-            perform changes on the file if (no) changes have happened.'
         type:
           type: string
-          description: '`file`'
-          example: file
+          description: '`file_version`'
+          example: file_version
           enum:
-          - file
+          - file_version
     User--Mini:
       title: User (Mini)
       type: object
@@ -776,85 +855,6 @@ components:
             format: email
             description: The primary email address of this user
             example: ceo@example.com
-    Tasks:
-      title: Tasks
-      type: object
-      x-box-resource-id: tasks
-      x-box-tag: tasks
-      description: A list of tasks
-      properties:
-        total_count:
-          description: 'One greater than the offset of the last entry in the entire collection.
-
-            The total number of entries in the collection may be less than
-
-            `total_count`.'
-          example: 5000
-          type: integer
-          format: int64
-        entries:
-          type: array
-          description: A list of tasks
-          items:
-            $ref: '#/components/schemas/Task'
-    File--Mini:
-      title: File (Mini)
-      type:
-      - object
-      - 'null'
-      x-box-resource-id: file--mini
-      x-box-variant: mini
-      description: 'A mini representation of a file, used when
-
-        nested under another resource.'
-      allOf:
-      - $ref: '#/components/schemas/File--Base'
-      - properties:
-          sequence_id:
-            allOf:
-            - type:
-              - string
-              - 'null'
-              example: '3'
-              description: 'A numeric identifier that represents the most recent user event
-
-                that has been applied to this item.
-
-
-                This can be used in combination with the `GET /events`-endpoint
-
-                to filter out user events that would have occurred before this
-
-                identifier was read.
-
-
-                An example would be where a Box Drive-like application
-
-                would fetch an item via the API, and then listen to incoming
-
-                user events for changes to the item. The application would
-
-                ignore any user events where the `sequence_id` in the event
-
-                is smaller than or equal to the `sequence_id` in the originally
-
-                fetched resource.'
-            - {}
-          name:
-            type: string
-            description: The name of the file
-            example: Contract.pdf
-          sha1:
-            type: string
-            format: digest
-            example: 85136C79CBF9FE36BB9D05D0639C70C265C18D37
-            description: 'The SHA1 hash of the file. This can be used to compare the contents
-
-              of a file on Box with a local file.'
-          file_version:
-            allOf:
-            - $ref: '#/components/schemas/FileVersion--Mini'
-            - description: The information about the current version of the file.
   securitySchemes:
     OAuth2Security:
       type: oauth2

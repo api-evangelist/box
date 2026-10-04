@@ -273,6 +273,108 @@ paths:
                 $ref: '#/components/schemas/ClientError'
 components:
   schemas:
+    StoragePolicyAssignments:
+      title: Storage policy assignments
+      type: object
+      x-box-resource-id: storage_policy_assignments
+      x-box-tag: storage_policy_assignments
+      description: A list of storage policy assignments.
+      allOf:
+      - type: object
+        description: 'The part of an API response that describes marker
+
+          based pagination'
+        properties:
+          limit:
+            description: 'The limit that was used for these entries. This will be the same as the
+
+              `limit` query parameter unless that value exceeded the maximum value
+
+              allowed. The maximum value varies by API.'
+            example: 1000
+            type: integer
+            format: int64
+          next_marker:
+            description: The marker for the start of the next page of results.
+            example: JV9IRGZmieiBasejOG9yDCRNgd2ymoZIbjsxbJMjIs3kioVii
+            type:
+            - string
+            - 'null'
+          prev_marker:
+            description: The marker for the start of the previous page of results.
+            example: JV9IRGZmieiBasejOG9yDCRNgd2ymoZIbjsxbJMjIs3kioVih
+            type:
+            - string
+            - 'null'
+      - properties:
+          entries:
+            type: array
+            description: A list of storage policy assignments
+            items:
+              $ref: '#/components/schemas/StoragePolicyAssignment'
+    StoragePolicyAssignment:
+      title: Storage policy assignment
+      type: object
+      x-box-resource-id: storage_policy_assignment
+      x-box-tag: storage_policy_assignments
+      description: The assignment of a storage policy to a user or enterprise
+      required:
+      - id
+      - type
+      properties:
+        id:
+          type: string
+          description: The unique identifier for a storage policy assignment.
+          example: ZW50ZXJwcmlzZV8xMjM0NTY3ODkw
+        type:
+          type: string
+          description: '`storage_policy_assignment`'
+          example: storage_policy_assignment
+          enum:
+          - storage_policy_assignment
+        storage_policy:
+          allOf:
+          - $ref: '#/components/schemas/StoragePolicy--Mini'
+          - description: The assigned storage policy
+        assigned_to:
+          allOf:
+          - title: Reference
+            description: The bare basic reference for an object
+            type: object
+            properties:
+              id:
+                type: string
+                description: The unique identifier for this object
+                example: '11446498'
+              type:
+                type: string
+                description: The type for this object
+                example: file
+          - description: The enterprise or use the policy is assigned to
+    StoragePolicy--Mini:
+      title: Storage policy (Mini)
+      type: object
+      x-box-resource-id: storage_policy--mini
+      x-box-tag: storage_policies
+      x-box-variants:
+      - standard
+      - mini
+      x-box-variant: mini
+      description: A mini description of a Storage Policy object
+      required:
+      - id
+      - type
+      properties:
+        id:
+          type: string
+          description: The unique identifier for this storage policy
+          example: '11446498'
+        type:
+          type: string
+          description: '`storage_policy`'
+          example: storage_policy
+          enum:
+          - storage_policy
     ClientError:
       title: Client error
       type: object
@@ -340,108 +442,6 @@ components:
             when contacting Box support.'
           type: string
           example: abcdef123456
-    StoragePolicyAssignments:
-      title: Storage policy assignments
-      type: object
-      x-box-resource-id: storage_policy_assignments
-      x-box-tag: storage_policy_assignments
-      description: A list of storage policy assignments.
-      allOf:
-      - type: object
-        description: 'The part of an API response that describes marker
-
-          based pagination'
-        properties:
-          limit:
-            description: 'The limit that was used for these entries. This will be the same as the
-
-              `limit` query parameter unless that value exceeded the maximum value
-
-              allowed. The maximum value varies by API.'
-            example: 1000
-            type: integer
-            format: int64
-          next_marker:
-            description: The marker for the start of the next page of results.
-            example: JV9IRGZmieiBasejOG9yDCRNgd2ymoZIbjsxbJMjIs3kioVii
-            type:
-            - string
-            - 'null'
-          prev_marker:
-            description: The marker for the start of the previous page of results.
-            example: JV9IRGZmieiBasejOG9yDCRNgd2ymoZIbjsxbJMjIs3kioVih
-            type:
-            - string
-            - 'null'
-      - properties:
-          entries:
-            type: array
-            description: A list of storage policy assignments
-            items:
-              $ref: '#/components/schemas/StoragePolicyAssignment'
-    StoragePolicy--Mini:
-      title: Storage policy (Mini)
-      type: object
-      x-box-resource-id: storage_policy--mini
-      x-box-tag: storage_policies
-      x-box-variants:
-      - standard
-      - mini
-      x-box-variant: mini
-      description: A mini description of a Storage Policy object
-      required:
-      - id
-      - type
-      properties:
-        id:
-          type: string
-          description: The unique identifier for this storage policy
-          example: '11446498'
-        type:
-          type: string
-          description: '`storage_policy`'
-          example: storage_policy
-          enum:
-          - storage_policy
-    StoragePolicyAssignment:
-      title: Storage policy assignment
-      type: object
-      x-box-resource-id: storage_policy_assignment
-      x-box-tag: storage_policy_assignments
-      description: The assignment of a storage policy to a user or enterprise
-      required:
-      - id
-      - type
-      properties:
-        id:
-          type: string
-          description: The unique identifier for a storage policy assignment.
-          example: ZW50ZXJwcmlzZV8xMjM0NTY3ODkw
-        type:
-          type: string
-          description: '`storage_policy_assignment`'
-          example: storage_policy_assignment
-          enum:
-          - storage_policy_assignment
-        storage_policy:
-          allOf:
-          - $ref: '#/components/schemas/StoragePolicy--Mini'
-          - description: The assigned storage policy
-        assigned_to:
-          allOf:
-          - title: Reference
-            description: The bare basic reference for an object
-            type: object
-            properties:
-              id:
-                type: string
-                description: The unique identifier for this object
-                example: '11446498'
-              type:
-                type: string
-                description: The type for this object
-                example: file
-          - description: The enterprise or use the policy is assigned to
   securitySchemes:
     OAuth2Security:
       type: oauth2

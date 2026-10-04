@@ -176,6 +176,63 @@ paths:
                 $ref: '#/components/schemas/ClientError'
 components:
   schemas:
+    Invite:
+      title: Invite
+      type: object
+      x-box-resource-id: invite
+      x-box-tag: invites
+      description: An invite for a user to an enterprise.
+      required:
+      - id
+      - type
+      properties:
+        id:
+          type: string
+          description: The unique identifier for this invite
+          example: '11446498'
+        type:
+          type: string
+          description: '`invite`'
+          example: invite
+          enum:
+          - invite
+        invited_to:
+          title: Enterprise
+          type: object
+          description: A representation of a Box enterprise
+          properties:
+            id:
+              type: string
+              description: The unique identifier for this enterprise.
+              example: '11446498'
+            type:
+              type: string
+              description: '`enterprise`'
+              example: enterprise
+              enum:
+              - enterprise
+            name:
+              description: The name of the enterprise
+              example: Acme Inc.
+              type: string
+        actionable_by:
+          $ref: '#/components/schemas/User--Mini'
+        invited_by:
+          $ref: '#/components/schemas/User--Mini'
+        status:
+          description: The status of the invite
+          type: string
+          example: pending
+        created_at:
+          type: string
+          format: date-time
+          description: When the invite was created
+          example: '2012-12-12T10:53:43-08:00'
+        modified_at:
+          type: string
+          format: date-time
+          description: When the invite was modified.
+          example: '2012-12-12T10:53:43-08:00'
     ClientError:
       title: Client error
       type: object
@@ -243,27 +300,6 @@ components:
             when contacting Box support.'
           type: string
           example: abcdef123456
-    User--Mini:
-      title: User (Mini)
-      type: object
-      x-box-resource-id: user--mini
-      x-box-variant: mini
-      description: 'A mini representation of a user, as can be returned when nested within other
-
-        resources.'
-      allOf:
-      - $ref: '#/components/schemas/User--Base'
-      - properties:
-          name:
-            type: string
-            description: The display name of this user
-            example: Aaron Levie
-            maxLength: 50
-          login:
-            type: string
-            format: email
-            description: The primary email address of this user
-            example: ceo@example.com
     User--Base:
       title: User (Base)
       type: object
@@ -292,63 +328,27 @@ components:
           example: user
           enum:
           - user
-    Invite:
-      title: Invite
+    User--Mini:
+      title: User (Mini)
       type: object
-      x-box-resource-id: invite
-      x-box-tag: invites
-      description: An invite for a user to an enterprise.
-      required:
-      - id
-      - type
-      properties:
-        id:
-          type: string
-          description: The unique identifier for this invite
-          example: '11446498'
-        type:
-          type: string
-          description: '`invite`'
-          example: invite
-          enum:
-          - invite
-        invited_to:
-          title: Enterprise
-          type: object
-          description: A representation of a Box enterprise
-          properties:
-            id:
-              type: string
-              description: The unique identifier for this enterprise.
-              example: '11446498'
-            type:
-              type: string
-              description: '`enterprise`'
-              example: enterprise
-              enum:
-              - enterprise
-            name:
-              description: The name of the enterprise
-              example: Acme Inc.
-              type: string
-        actionable_by:
-          $ref: '#/components/schemas/User--Mini'
-        invited_by:
-          $ref: '#/components/schemas/User--Mini'
-        status:
-          description: The status of the invite
-          type: string
-          example: pending
-        created_at:
-          type: string
-          format: date-time
-          description: When the invite was created
-          example: '2012-12-12T10:53:43-08:00'
-        modified_at:
-          type: string
-          format: date-time
-          description: When the invite was modified.
-          example: '2012-12-12T10:53:43-08:00'
+      x-box-resource-id: user--mini
+      x-box-variant: mini
+      description: 'A mini representation of a user, as can be returned when nested within other
+
+        resources.'
+      allOf:
+      - $ref: '#/components/schemas/User--Base'
+      - properties:
+          name:
+            type: string
+            description: The display name of this user
+            example: Aaron Levie
+            maxLength: 50
+          login:
+            type: string
+            format: email
+            description: The primary email address of this user
+            example: ceo@example.com
   securitySchemes:
     OAuth2Security:
       type: oauth2

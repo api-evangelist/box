@@ -419,6 +419,153 @@ components:
           example: user
           enum:
           - user
+    Comments:
+      title: Comments
+      type: object
+      x-box-resource-id: comments
+      x-box-tag: comments
+      description: A list of comments
+      allOf:
+      - type: object
+        description: The part of an API response that describes pagination
+        properties:
+          total_count:
+            description: 'One greater than the offset of the last entry in the entire collection.
+
+              The total number of entries in the collection may be less than
+
+              `total_count`.
+
+
+              This field is only returned for calls that use offset-based pagination.
+
+              For marker-based paginated APIs, this field will be omitted.'
+            example: 5000
+            type: integer
+            format: int64
+          limit:
+            description: 'The limit that was used for these entries. This will be the same as the
+
+              `limit` query parameter unless that value exceeded the maximum value
+
+              allowed. The maximum value varies by API.'
+            example: 1000
+            type: integer
+            format: int64
+          offset:
+            description: 'The 0-based offset of the first entry in this set. This will be the same
+
+              as the `offset` query parameter.
+
+
+              This field is only returned for calls that use offset-based pagination.
+
+              For marker-based paginated APIs, this field will be omitted.'
+            example: 2000
+            type: integer
+            format: int64
+          order:
+            description: 'The order by which items are returned.
+
+
+              This field is only returned for calls that use offset-based pagination.
+
+              For marker-based paginated APIs, this field will be omitted.'
+            type: array
+            items:
+              type: object
+              description: The order in which a pagination is ordered
+              properties:
+                by:
+                  description: The field to order by
+                  example: type
+                  type: string
+                direction:
+                  type: string
+                  description: The direction to order by, either ascending or descending
+                  example: ASC
+                  enum:
+                  - ASC
+                  - DESC
+      - properties:
+          entries:
+            type: array
+            description: A list of comments
+            items:
+              $ref: '#/components/schemas/Comment--Full'
+    Comment--Base:
+      title: Comment (Base)
+      type: object
+      x-box-resource-id: comment--base
+      x-box-sanitized: true
+      x-box-tag: comments
+      x-box-variants:
+      - base
+      - standard
+      - full
+      x-box-variant: base
+      description: Base representation of a comment.
+      properties:
+        id:
+          type: string
+          description: The unique identifier for this comment.
+          example: '11446498'
+        type:
+          type: string
+          description: '`comment`'
+          example: comment
+          enum:
+          - comment
+    Comment:
+      title: Comment
+      type: object
+      description: Standard representation of a comment.
+      x-box-resource-id: comment
+      x-box-variant: standard
+      allOf:
+      - $ref: '#/components/schemas/Comment--Base'
+      - properties:
+          is_reply_comment:
+            type: boolean
+            description: 'Whether or not this comment is a reply to another
+
+              comment'
+            example: true
+          message:
+            type: string
+            example: '@Aaron Levie these tigers are cool!'
+            description: The text of the comment, as provided by the user
+          created_by:
+            allOf:
+            - $ref: '#/components/schemas/User--Mini'
+            - description: 'A mini user object representing the author of the
+
+                comment'
+          created_at:
+            type: string
+            format: date-time
+            description: The time this comment was created
+            example: '2012-12-12T10:53:43-08:00'
+          modified_at:
+            type: string
+            format: date-time
+            description: The time this comment was last modified
+            example: '2012-12-12T10:53:43-08:00'
+          item:
+            allOf:
+            - title: Reference
+              description: The bare basic reference for an object
+              type: object
+              properties:
+                id:
+                  type: string
+                  description: The unique identifier for this object
+                  example: '11446498'
+                type:
+                  type: string
+                  description: The type for this object
+                  example: file
+            - description: The file this comment was placed on
     ClientError:
       title: Client error
       type: object
@@ -509,80 +656,6 @@ components:
               where `id` is user''s Box ID and `username` is
 
               their display name.'
-    Comments:
-      title: Comments
-      type: object
-      x-box-resource-id: comments
-      x-box-tag: comments
-      description: A list of comments
-      allOf:
-      - type: object
-        description: The part of an API response that describes pagination
-        properties:
-          total_count:
-            description: 'One greater than the offset of the last entry in the entire collection.
-
-              The total number of entries in the collection may be less than
-
-              `total_count`.
-
-
-              This field is only returned for calls that use offset-based pagination.
-
-              For marker-based paginated APIs, this field will be omitted.'
-            example: 5000
-            type: integer
-            format: int64
-          limit:
-            description: 'The limit that was used for these entries. This will be the same as the
-
-              `limit` query parameter unless that value exceeded the maximum value
-
-              allowed. The maximum value varies by API.'
-            example: 1000
-            type: integer
-            format: int64
-          offset:
-            description: 'The 0-based offset of the first entry in this set. This will be the same
-
-              as the `offset` query parameter.
-
-
-              This field is only returned for calls that use offset-based pagination.
-
-              For marker-based paginated APIs, this field will be omitted.'
-            example: 2000
-            type: integer
-            format: int64
-          order:
-            description: 'The order by which items are returned.
-
-
-              This field is only returned for calls that use offset-based pagination.
-
-              For marker-based paginated APIs, this field will be omitted.'
-            type: array
-            items:
-              type: object
-              description: The order in which a pagination is ordered
-              properties:
-                by:
-                  description: The field to order by
-                  example: type
-                  type: string
-                direction:
-                  type: string
-                  description: The direction to order by, either ascending or descending
-                  example: ASC
-                  enum:
-                  - ASC
-                  - DESC
-      - properties:
-          entries:
-            type: array
-            description: A list of comments
-            items:
-              $ref: '#/components/schemas/Comment--Full'
     User--Mini:
       title: User (Mini)
       type: object
@@ -604,79 +677,6 @@ components:
             format: email
             description: The primary email address of this user
             example: ceo@example.com
-    Comment--Base:
-      title: Comment (Base)
-      type: object
-      x-box-resource-id: comment--base
-      x-box-sanitized: true
-      x-box-tag: comments
-      x-box-variants:
-      - base
-      - standard
-      - full
-      x-box-variant: base
-      description: Base representation of a comment.
-      properties:
-        id:
-          type: string
-          description: The unique identifier for this comment.
-          example: '11446498'
-        type:
-          type: string
-          description: '`comment`'
-          example: comment
-          enum:
-          - comment
-    Comment:
-      title: Comment
-      type: object
-      description: Standard representation of a comment.
-      x-box-resource-id: comment
-      x-box-variant: standard
-      allOf:
-      - $ref: '#/components/schemas/Comment--Base'
-      - properties:
-          is_reply_comment:
-            type: boolean
-            description: 'Whether or not this comment is a reply to another
-
-              comment'
-            example: true
-          message:
-            type: string
-            example: '@Aaron Levie these tigers are cool!'
-            description: The text of the comment, as provided by the user
-          created_by:
-            allOf:
-            - $ref: '#/components/schemas/User--Mini'
-            - description: 'A mini user object representing the author of the
-
-                comment'
-          created_at:
-            type: string
-            format: date-time
-            description: The time this comment was created
-            example: '2012-12-12T10:53:43-08:00'
-          modified_at:
-            type: string
-            format: date-time
-            description: The time this comment was last modified
-            example: '2012-12-12T10:53:43-08:00'
-          item:
-            allOf:
-            - title: Reference
-              description: The bare basic reference for an object
-              type: object
-              properties:
-                id:
-                  type: string
-                  description: The unique identifier for this object
-                  example: '11446498'
-                type:
-                  type: string
-                  description: The type for this object
-                  example: file
-            - description: The file this comment was placed on
   securitySchemes:
     OAuth2Security:
       type: oauth2

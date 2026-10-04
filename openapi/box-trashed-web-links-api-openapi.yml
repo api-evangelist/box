@@ -244,6 +244,238 @@ paths:
                 $ref: '#/components/schemas/ClientError'
 components:
   schemas:
+    User--Base:
+      title: User (Base)
+      type: object
+      x-box-resource-id: user--base
+      x-box-tag: users
+      x-box-variants:
+      - base
+      - mini
+      - standard
+      - full
+      x-box-variant: base
+      description: 'A mini representation of a user, used when
+
+        nested within another resource.'
+      required:
+      - type
+      - id
+      properties:
+        id:
+          type: string
+          description: The unique identifier for this user
+          example: '11446498'
+        type:
+          type: string
+          description: '`user`'
+          example: user
+          enum:
+          - user
+    Folder--Mini:
+      title: Folder (Mini)
+      type: object
+      x-box-resource-id: folder--mini
+      x-box-variant: mini
+      description: 'A mini representation of a file version, used when
+
+        nested under another resource.'
+      allOf:
+      - $ref: '#/components/schemas/Folder--Base'
+      - properties:
+          sequence_id:
+            allOf:
+            - type:
+              - string
+              - 'null'
+              example: '3'
+              description: 'A numeric identifier that represents the most recent user event
+
+                that has been applied to this item.
+
+
+                This can be used in combination with the `GET /events`-endpoint
+
+                to filter out user events that would have occurred before this
+
+                identifier was read.
+
+
+                An example would be where a Box Drive-like application
+
+                would fetch an item via the API, and then listen to incoming
+
+                user events for changes to the item. The application would
+
+                ignore any user events where the `sequence_id` in the event
+
+                is smaller than or equal to the `sequence_id` in the originally
+
+                fetched resource.'
+            - {}
+          name:
+            type: string
+            description: The name of the folder.
+            example: Contracts
+    TrashWebLinkRestored:
+      title: Trashed Web Link (Restored)
+      type: object
+      x-box-resource-id: trash_web_link_restored
+      x-box-tag: trashed_web_links
+      description: Represents a web link restored from the trash.
+      required:
+      - sequence_id
+      - path_collection
+      properties:
+        type:
+          type: string
+          description: '`web_link`'
+          example: web_link
+          enum:
+          - web_link
+        id:
+          type: string
+          description: The unique identifier for this web link
+          example: '11446498'
+        sequence_id:
+          allOf:
+          - type:
+            - string
+            - 'null'
+            example: '3'
+            description: 'A numeric identifier that represents the most recent user event
+
+              that has been applied to this item.
+
+
+              This can be used in combination with the `GET /events`-endpoint
+
+              to filter out user events that would have occurred before this
+
+              identifier was read.
+
+
+              An example would be where a Box Drive-like application
+
+              would fetch an item via the API, and then listen to incoming
+
+              user events for changes to the item. The application would
+
+              ignore any user events where the `sequence_id` in the event
+
+              is smaller than or equal to the `sequence_id` in the originally
+
+              fetched resource.'
+          - {}
+        etag:
+          type: string
+          example: '1'
+          description: 'The entity tag of this web link. Used with `If-Match`
+
+            headers.'
+        name:
+          type: string
+          description: The name of the web link
+          example: My Bookmark
+        url:
+          type: string
+          example: https://www.example.com/example/1234
+          description: The URL this web link points to
+        parent:
+          allOf:
+          - $ref: '#/components/schemas/Folder--Mini'
+          - description: The parent object the web link belongs to
+        description:
+          type: string
+          example: Example page
+          description: 'The description accompanying the web link. This is
+
+            visible within the Box web application.'
+        path_collection:
+          allOf:
+          - title: Path collection
+            description: A list of parent folders for an item.
+            type: object
+            required:
+            - total_count
+            - entries
+            properties:
+              total_count:
+                description: The number of folders in this list.
+                example: 1
+                type: integer
+                format: int64
+              entries:
+                type: array
+                description: The parent folders for this item
+                items:
+                  $ref: '#/components/schemas/Folder--Mini'
+          - description: 'The tree of folders that this web link is contained in,
+
+              starting at the root.'
+          - {}
+        created_at:
+          type: string
+          format: date-time
+          description: When this file was created on Box’s servers.
+          example: '2012-12-12T10:53:43-08:00'
+        modified_at:
+          type: string
+          format: date-time
+          description: 'When this file was last updated on the Box
+
+            servers.'
+          example: '2012-12-12T10:53:43-08:00'
+        trashed_at:
+          type:
+          - string
+          - 'null'
+          description: 'The time at which this bookmark was put in the
+
+            trash - becomes `null` after restore.'
+          example: null
+        purged_at:
+          type:
+          - string
+          - 'null'
+          description: 'The time at which this bookmark will be permanently
+
+            deleted - becomes `null` after restore.'
+          example: null
+        created_by:
+          allOf:
+          - $ref: '#/components/schemas/User--Mini'
+          - description: The user who created this web link
+        modified_by:
+          allOf:
+          - $ref: '#/components/schemas/User--Mini'
+          - description: The user who last modified this web link
+        owned_by:
+          allOf:
+          - $ref: '#/components/schemas/User--Mini'
+          - description: The user who owns this web link
+        shared_link:
+          type:
+          - string
+          - 'null'
+          description: 'The shared link for this bookmark. This will
+
+            be `null` if a bookmark had been trashed, even though the original shared
+
+            link does become active again.'
+          example: null
+        item_status:
+          type: string
+          example: trashed
+          enum:
+          - active
+          - trashed
+          - deleted
+          description: 'Whether this item is deleted or not. Values include `active`,
+
+            `trashed` if the file has been moved to the trash, and `deleted` if
+
+            the file has been permanently deleted'
     TrashWebLink:
       title: Trashed Web Link
       type: object
@@ -426,245 +658,6 @@ components:
             `trashed` if the file has been moved to the trash, and `deleted` if
 
             the file has been permanently deleted'
-    Folder--Base:
-      title: Folder (Base)
-      type: object
-      x-box-resource-id: folder--base
-      x-box-sanitized: true
-      x-box-tag: folders
-      x-box-variants:
-      - base
-      - mini
-      - standard
-      - full
-      x-box-variant: base
-      description: 'The bare basic representation of a folder, the minimal
-
-        amount of fields returned when using the `fields` query
-
-        parameter.'
-      required:
-      - id
-      - type
-      properties:
-        id:
-          type: string
-          description: 'The unique identifier that represent a folder.
-
-
-            The ID for any folder can be determined
-
-            by visiting a folder in the web application
-
-            and copying the ID from the URL. For example,
-
-            for the URL `https://*.app.box.com/folders/123`
-
-            the `folder_id` is `123`.'
-          example: '12345'
-        etag:
-          type:
-          - string
-          - 'null'
-          example: '1'
-          description: 'The HTTP `etag` of this folder. This can be used within some API
-
-            endpoints in the `If-Match` and `If-None-Match` headers to only
-
-            perform changes on the folder if (no) changes have happened.'
-        type:
-          type: string
-          description: '`folder`'
-          example: folder
-          enum:
-          - folder
-    TrashWebLinkRestored:
-      title: Trashed Web Link (Restored)
-      type: object
-      x-box-resource-id: trash_web_link_restored
-      x-box-tag: trashed_web_links
-      description: Represents a web link restored from the trash.
-      required:
-      - sequence_id
-      - path_collection
-      properties:
-        type:
-          type: string
-          description: '`web_link`'
-          example: web_link
-          enum:
-          - web_link
-        id:
-          type: string
-          description: The unique identifier for this web link
-          example: '11446498'
-        sequence_id:
-          allOf:
-          - type:
-            - string
-            - 'null'
-            example: '3'
-            description: 'A numeric identifier that represents the most recent user event
-
-              that has been applied to this item.
-
-
-              This can be used in combination with the `GET /events`-endpoint
-
-              to filter out user events that would have occurred before this
-
-              identifier was read.
-
-
-              An example would be where a Box Drive-like application
-
-              would fetch an item via the API, and then listen to incoming
-
-              user events for changes to the item. The application would
-
-              ignore any user events where the `sequence_id` in the event
-
-              is smaller than or equal to the `sequence_id` in the originally
-
-              fetched resource.'
-          - {}
-        etag:
-          type: string
-          example: '1'
-          description: 'The entity tag of this web link. Used with `If-Match`
-
-            headers.'
-        name:
-          type: string
-          description: The name of the web link
-          example: My Bookmark
-        url:
-          type: string
-          example: https://www.example.com/example/1234
-          description: The URL this web link points to
-        parent:
-          allOf:
-          - $ref: '#/components/schemas/Folder--Mini'
-          - description: The parent object the web link belongs to
-        description:
-          type: string
-          example: Example page
-          description: 'The description accompanying the web link. This is
-
-            visible within the Box web application.'
-        path_collection:
-          allOf:
-          - title: Path collection
-            description: A list of parent folders for an item.
-            type: object
-            required:
-            - total_count
-            - entries
-            properties:
-              total_count:
-                description: The number of folders in this list.
-                example: 1
-                type: integer
-                format: int64
-              entries:
-                type: array
-                description: The parent folders for this item
-                items:
-                  $ref: '#/components/schemas/Folder--Mini'
-          - description: 'The tree of folders that this web link is contained in,
-
-              starting at the root.'
-          - {}
-        created_at:
-          type: string
-          format: date-time
-          description: When this file was created on Box’s servers.
-          example: '2012-12-12T10:53:43-08:00'
-        modified_at:
-          type: string
-          format: date-time
-          description: 'When this file was last updated on the Box
-
-            servers.'
-          example: '2012-12-12T10:53:43-08:00'
-        trashed_at:
-          type:
-          - string
-          - 'null'
-          description: 'The time at which this bookmark was put in the
-
-            trash - becomes `null` after restore.'
-          example: null
-        purged_at:
-          type:
-          - string
-          - 'null'
-          description: 'The time at which this bookmark will be permanently
-
-            deleted - becomes `null` after restore.'
-          example: null
-        created_by:
-          allOf:
-          - $ref: '#/components/schemas/User--Mini'
-          - description: The user who created this web link
-        modified_by:
-          allOf:
-          - $ref: '#/components/schemas/User--Mini'
-          - description: The user who last modified this web link
-        owned_by:
-          allOf:
-          - $ref: '#/components/schemas/User--Mini'
-          - description: The user who owns this web link
-        shared_link:
-          type:
-          - string
-          - 'null'
-          description: 'The shared link for this bookmark. This will
-
-            be `null` if a bookmark had been trashed, even though the original shared
-
-            link does become active again.'
-          example: null
-        item_status:
-          type: string
-          example: trashed
-          enum:
-          - active
-          - trashed
-          - deleted
-          description: 'Whether this item is deleted or not. Values include `active`,
-
-            `trashed` if the file has been moved to the trash, and `deleted` if
-
-            the file has been permanently deleted'
-    User--Base:
-      title: User (Base)
-      type: object
-      x-box-resource-id: user--base
-      x-box-tag: users
-      x-box-variants:
-      - base
-      - mini
-      - standard
-      - full
-      x-box-variant: base
-      description: 'A mini representation of a user, used when
-
-        nested within another resource.'
-      required:
-      - type
-      - id
-      properties:
-        id:
-          type: string
-          description: The unique identifier for this user
-          example: '11446498'
-        type:
-          type: string
-          description: '`user`'
-          example: user
-          enum:
-          - user
     ClientError:
       title: Client error
       type: object
@@ -732,51 +725,58 @@ components:
             when contacting Box support.'
           type: string
           example: abcdef123456
-    Folder--Mini:
-      title: Folder (Mini)
+    Folder--Base:
+      title: Folder (Base)
       type: object
-      x-box-resource-id: folder--mini
-      x-box-variant: mini
-      description: 'A mini representation of a file version, used when
+      x-box-resource-id: folder--base
+      x-box-sanitized: true
+      x-box-tag: folders
+      x-box-variants:
+      - base
+      - mini
+      - standard
+      - full
+      x-box-variant: base
+      description: 'The bare basic representation of a folder, the minimal
 
-        nested under another resource.'
-      allOf:
-      - $ref: '#/components/schemas/Folder--Base'
-      - properties:
-          sequence_id:
-            allOf:
-            - type:
-              - string
-              - 'null'
-              example: '3'
-              description: 'A numeric identifier that represents the most recent user event
+        amount of fields returned when using the `fields` query
 
-                that has been applied to this item.
-
-
-                This can be used in combination with the `GET /events`-endpoint
-
-                to filter out user events that would have occurred before this
-
-                identifier was read.
+        parameter.'
+      required:
+      - id
+      - type
+      properties:
+        id:
+          type: string
+          description: 'The unique identifier that represent a folder.
 
 
-                An example would be where a Box Drive-like application
+            The ID for any folder can be determined
 
-                would fetch an item via the API, and then listen to incoming
+            by visiting a folder in the web application
 
-                user events for changes to the item. The application would
+            and copying the ID from the URL. For example,
 
-                ignore any user events where the `sequence_id` in the event
+            for the URL `https://*.app.box.com/folders/123`
 
-                is smaller than or equal to the `sequence_id` in the originally
+            the `folder_id` is `123`.'
+          example: '12345'
+        etag:
+          type:
+          - string
+          - 'null'
+          example: '1'
+          description: 'The HTTP `etag` of this folder. This can be used within some API
 
-                fetched resource.'
-            - {}
-          name:
-            type: string
-            description: The name of the folder.
-            example: Contracts
+            endpoints in the `If-Match` and `If-None-Match` headers to only
+
+            perform changes on the folder if (no) changes have happened.'
+        type:
+          type: string
+          description: '`folder`'
+          example: folder
+          enum:
+          - folder
     User--Mini:
       title: User (Mini)
       type: object

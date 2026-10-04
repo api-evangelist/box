@@ -314,6 +314,113 @@ components:
           example: user
           enum:
           - user
+    ShieldInformationBarrierSegment:
+      title: Shield information barrier segment
+      type: object
+      x-box-resource-id: shield_information_barrier_segment
+      x-box-tag: shield_information_barrier_segments
+      description: A shield information barrier segment object
+      properties:
+        id:
+          type: string
+          example: '11446498'
+          description: The unique identifier for the shield information barrier segment
+        type:
+          type: string
+          description: The type of the shield information barrier segment
+          example: shield_information_barrier_segment
+          enum:
+          - shield_information_barrier_segment
+        shield_information_barrier:
+          $ref: '#/components/schemas/ShieldInformationBarrier--Base'
+        name:
+          type: string
+          example: Investment Banking
+          description: Name of the shield information barrier segment
+        description:
+          type: string
+          example: "'Corporate division that engages in advisory_based financial\n transactions on behalf of individuals, corporations, and governments.'"
+          description: Description of the shield information barrier segment
+        created_at:
+          type: string
+          format: date-time
+          example: '2020-06-26T18:44:45.869Z'
+          description: 'ISO date time string when this shield information
+
+            barrier object was created.'
+        created_by:
+          allOf:
+          - $ref: '#/components/schemas/User--Base'
+          - description: The user who created this shield information barrier segment.
+        updated_at:
+          type: string
+          format: date-time
+          example: '2020-07-26T18:44:45.869Z'
+          description: 'ISO date time string when this
+
+            shield information barrier segment was updated.'
+        updated_by:
+          allOf:
+          - $ref: '#/components/schemas/User--Base'
+          - description: The user that updated this shield information barrier segment.
+    ShieldInformationBarrierSegments:
+      title: List of Shield Information Barrier Segments
+      type: object
+      x-box-resource-id: shield_information_barrier_segments
+      x-box-tag: shield_information_barrier_segments
+      description: List of Shield Information Barrier Segment objects
+      allOf:
+      - type: object
+        description: 'The part of an API response that describes marker
+
+          based pagination'
+        properties:
+          limit:
+            description: 'The limit that was used for these entries. This will be the same as the
+
+              `limit` query parameter unless that value exceeded the maximum value
+
+              allowed. The maximum value varies by API.'
+            example: 1000
+            type: integer
+            format: int64
+          next_marker:
+            description: The marker for the start of the next page of results.
+            example: JV9IRGZmieiBasejOG9yDCRNgd2ymoZIbjsxbJMjIs3kioVii
+            type:
+            - string
+            - 'null'
+      - properties:
+          entries:
+            type: array
+            description: 'A list of shield information barrier
+
+              segments'
+            items:
+              $ref: '#/components/schemas/ShieldInformationBarrierSegment'
+    ShieldInformationBarrier--Base:
+      title: Shield information barrier (Base)
+      type: object
+      x-box-resource-id: shield_information_barrier--base
+      x-box-tag: shield_information_barriers
+      x-box-variants:
+      - base
+      - standard
+      x-box-variant: base
+      description: 'A base representation of a
+
+        shield information barrier object'
+      properties:
+        id:
+          type: string
+          example: '11446498'
+          description: The unique identifier for the shield information barrier
+        type:
+          type: string
+          description: The type of the shield information barrier
+          example: shield_information_barrier
+          enum:
+          - shield_information_barrier
     ClientError:
       title: Client error
       type: object
@@ -381,113 +488,6 @@ components:
             when contacting Box support.'
           type: string
           example: abcdef123456
-    ShieldInformationBarrierSegments:
-      title: List of Shield Information Barrier Segments
-      type: object
-      x-box-resource-id: shield_information_barrier_segments
-      x-box-tag: shield_information_barrier_segments
-      description: List of Shield Information Barrier Segment objects
-      allOf:
-      - type: object
-        description: 'The part of an API response that describes marker
-
-          based pagination'
-        properties:
-          limit:
-            description: 'The limit that was used for these entries. This will be the same as the
-
-              `limit` query parameter unless that value exceeded the maximum value
-
-              allowed. The maximum value varies by API.'
-            example: 1000
-            type: integer
-            format: int64
-          next_marker:
-            description: The marker for the start of the next page of results.
-            example: JV9IRGZmieiBasejOG9yDCRNgd2ymoZIbjsxbJMjIs3kioVii
-            type:
-            - string
-            - 'null'
-      - properties:
-          entries:
-            type: array
-            description: 'A list of shield information barrier
-
-              segments'
-            items:
-              $ref: '#/components/schemas/ShieldInformationBarrierSegment'
-    ShieldInformationBarrierSegment:
-      title: Shield information barrier segment
-      type: object
-      x-box-resource-id: shield_information_barrier_segment
-      x-box-tag: shield_information_barrier_segments
-      description: A shield information barrier segment object
-      properties:
-        id:
-          type: string
-          example: '11446498'
-          description: The unique identifier for the shield information barrier segment
-        type:
-          type: string
-          description: The type of the shield information barrier segment
-          example: shield_information_barrier_segment
-          enum:
-          - shield_information_barrier_segment
-        shield_information_barrier:
-          $ref: '#/components/schemas/ShieldInformationBarrier--Base'
-        name:
-          type: string
-          example: Investment Banking
-          description: Name of the shield information barrier segment
-        description:
-          type: string
-          example: "'Corporate division that engages in advisory_based financial\n transactions on behalf of individuals, corporations, and governments.'"
-          description: Description of the shield information barrier segment
-        created_at:
-          type: string
-          format: date-time
-          example: '2020-06-26T18:44:45.869Z'
-          description: 'ISO date time string when this shield information
-
-            barrier object was created.'
-        created_by:
-          allOf:
-          - $ref: '#/components/schemas/User--Base'
-          - description: The user who created this shield information barrier segment.
-        updated_at:
-          type: string
-          format: date-time
-          example: '2020-07-26T18:44:45.869Z'
-          description: 'ISO date time string when this
-
-            shield information barrier segment was updated.'
-        updated_by:
-          allOf:
-          - $ref: '#/components/schemas/User--Base'
-          - description: The user that updated this shield information barrier segment.
-    ShieldInformationBarrier--Base:
-      title: Shield information barrier (Base)
-      type: object
-      x-box-resource-id: shield_information_barrier--base
-      x-box-tag: shield_information_barriers
-      x-box-variants:
-      - base
-      - standard
-      x-box-variant: base
-      description: 'A base representation of a
-
-        shield information barrier object'
-      properties:
-        id:
-          type: string
-          example: '11446498'
-          description: The unique identifier for the shield information barrier
-        type:
-          type: string
-          description: The type of the shield information barrier
-          example: shield_information_barrier
-          enum:
-          - shield_information_barrier
   securitySchemes:
     OAuth2Security:
       type: oauth2
