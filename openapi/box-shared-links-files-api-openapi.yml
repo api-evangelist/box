@@ -802,6 +802,136 @@ paths:
                 $ref: '#/components/schemas/ClientError'
 components:
   schemas:
+    Metadata:
+      title: Metadata instance
+      type: object
+      x-box-resource-id: metadata
+      x-box-tag: file_metadata
+      x-box-variant: standard
+      description: 'An instance of a metadata template, which has been applied to a file or
+
+        folder.'
+      allOf:
+      - $ref: '#/components/schemas/Metadata--Base'
+    Folder--Base:
+      title: Folder (Base)
+      type: object
+      x-box-resource-id: folder--base
+      x-box-sanitized: true
+      x-box-tag: folders
+      x-box-variants:
+      - base
+      - mini
+      - standard
+      - full
+      x-box-variant: base
+      description: 'The bare basic representation of a folder, the minimal
+
+        amount of fields returned when using the `fields` query
+
+        parameter.'
+      required:
+      - id
+      - type
+      properties:
+        id:
+          type: string
+          description: 'The unique identifier that represent a folder.
+
+
+            The ID for any folder can be determined
+
+            by visiting a folder in the web application
+
+            and copying the ID from the URL. For example,
+
+            for the URL `https://*.app.box.com/folders/123`
+
+            the `folder_id` is `123`.'
+          example: '12345'
+        etag:
+          type:
+          - string
+          - 'null'
+          example: '1'
+          description: 'The HTTP `etag` of this folder. This can be used within some API
+
+            endpoints in the `If-Match` and `If-None-Match` headers to only
+
+            perform changes on the folder if (no) changes have happened.'
+        type:
+          type: string
+          description: '`folder`'
+          example: folder
+          enum:
+          - folder
+    ClientError:
+      title: Client error
+      type: object
+      x-box-resource-id: client_error
+      description: A generic error
+      properties:
+        type:
+          description: error
+          example: error
+          type: string
+          enum:
+          - error
+        status:
+          description: The HTTP status of the response.
+          example: 400
+          type: integer
+          format: int32
+        code:
+          description: A Box-specific error code
+          example: item_name_invalid
+          type: string
+          enum:
+          - created
+          - accepted
+          - no_content
+          - redirect
+          - not_modified
+          - bad_request
+          - unauthorized
+          - forbidden
+          - not_found
+          - method_not_allowed
+          - conflict
+          - precondition_failed
+          - too_many_requests
+          - internal_server_error
+          - unavailable
+          - item_name_invalid
+          - insufficient_scope
+        message:
+          description: A short message describing the error.
+          example: Method Not Allowed
+          type: string
+        context_info:
+          description: 'A free-form object that contains additional context
+
+            about the error. The possible fields are defined on
+
+            a per-endpoint basis. `message` is only one example.'
+          type:
+          - object
+          - 'null'
+          properties:
+            message:
+              type: string
+              description: More details on the error.
+              example: Something went wrong.
+        help_url:
+          description: A URL that links to more information about why this error occurred.
+          example: https://developer.box.com/guides/api-calls/permissions-and-errors/common-errors/
+          type: string
+        request_id:
+          description: 'A unique identifier for this response, which can be used
+
+            when contacting Box support.'
+          type: string
+          example: abcdef123456
     User--Base:
       title: User (Base)
       type: object
@@ -830,17 +960,6 @@ components:
           example: user
           enum:
           - user
-    Metadata:
-      title: Metadata instance
-      type: object
-      x-box-resource-id: metadata
-      x-box-tag: file_metadata
-      x-box-variant: standard
-      description: 'An instance of a metadata template, which has been applied to a file or
-
-        folder.'
-      allOf:
-      - $ref: '#/components/schemas/Metadata--Base'
     File--Mini:
       title: File (Mini)
       type:
@@ -944,463 +1063,47 @@ components:
             type: string
             description: The name of the folder.
             example: Contracts
-    File--Base:
-      title: File (Base)
-      type:
-      - object
-      - 'null'
-      x-box-resource-id: file--base
+    Metadata--Base:
+      title: Metadata instance (Base)
+      type: object
+      x-box-resource-id: metadata--base
       x-box-sanitized: true
-      x-box-tag: files
+      x-box-tag: file_metadata
       x-box-variants:
       - base
-      - mini
       - standard
       - full
       x-box-variant: base
-      description: 'The bare basic representation of a file, the minimal
-
-        amount of fields returned when using the `fields` query
-
-        parameter.'
-      required:
-      - id
-      - type
+      description: The base representation of a metadata instance.
       properties:
-        id:
+        $parent:
           type: string
-          description: 'The unique identifier that represent a file.
+          example: folder_59449484661,
+          description: 'The identifier of the item that this metadata instance
 
+            has been attached to. This combines the `type` and the `id`
 
-            The ID for any file can be determined
-
-            by visiting a file in the web application
-
-            and copying the ID from the URL. For example,
-
-            for the URL `https://*.app.box.com/files/123`
-
-            the `file_id` is `123`.'
-          example: '12345'
-        etag:
-          type:
-          - string
-          - 'null'
-          example: '1'
-          description: 'The HTTP `etag` of this file. This can be used within some API
-
-            endpoints in the `If-Match` and `If-None-Match` headers to only
-
-            perform changes on the file if (no) changes have happened.'
-        type:
+            of the parent in the form `{type}_{id}`.'
+        $template:
           type: string
-          description: '`file`'
-          example: file
-          enum:
-          - file
-    File:
-      title: File
-      type: object
-      x-box-resource-id: file
-      x-box-variant: standard
-      description: 'A standard representation of a file, as returned from any
-
-        file API endpoints by default'
-      allOf:
-      - $ref: '#/components/schemas/File--Mini'
-      - properties:
-          description:
-            type: string
-            description: The optional description of this file
-            maxLength: 256
-            example: Contract for Q1 renewal
-          size:
-            type: integer
-            description: 'The file size in bytes. Be careful parsing this integer as it can
-
-              get very large and cause an integer overflow.'
-            example: 629644
-          path_collection:
-            allOf:
-            - title: Path collection
-              description: A list of parent folders for an item.
-              type: object
-              required:
-              - total_count
-              - entries
-              properties:
-                total_count:
-                  description: The number of folders in this list.
-                  example: 1
-                  type: integer
-                  format: int64
-                entries:
-                  type: array
-                  description: The parent folders for this item
-                  items:
-                    $ref: '#/components/schemas/Folder--Mini'
-            - description: 'The tree of folders that this file is contained in,
-
-                starting at the root.'
-            - {}
-          created_at:
-            type: string
-            format: date-time
-            description: The date and time when the file was created on Box.
-            example: '2012-12-12T10:53:43-08:00'
-          modified_at:
-            type: string
-            format: date-time
-            description: The date and time when the file was last updated on Box.
-            example: '2012-12-12T10:53:43-08:00'
-          trashed_at:
-            type:
-            - string
-            - 'null'
-            format: date-time
-            description: The time at which this file was put in the trash.
-            example: '2012-12-12T10:53:43-08:00'
-          purged_at:
-            type:
-            - string
-            - 'null'
-            format: date-time
-            description: 'The time at which this file is expected to be purged
-
-              from the trash.'
-            example: '2012-12-12T10:53:43-08:00'
-          content_created_at:
-            type:
-            - string
-            - 'null'
-            format: date-time
-            description: 'The date and time at which this file was originally
-
-              created, which might be before it was uploaded to Box.'
-            example: '2012-12-12T10:53:43-08:00'
-          content_modified_at:
-            type:
-            - string
-            - 'null'
-            format: date-time
-            description: 'The date and time at which this file was last updated,
-
-              which might be before it was uploaded to Box.'
-            example: '2012-12-12T10:53:43-08:00'
-          created_by:
-            allOf:
-            - $ref: '#/components/schemas/User--Mini'
-            - description: The user who created this file
-          modified_by:
-            allOf:
-            - $ref: '#/components/schemas/User--Mini'
-            - description: The user who last modified this file
-            - {}
-          owned_by:
-            allOf:
-            - $ref: '#/components/schemas/User--Mini'
-            - description: The user who owns this file
-            - {}
-          shared_link:
-            allOf:
-            - title: Shared link
-              description: 'Shared links provide direct, read-only access to files or folder on Box.
-
-
-                Shared links with open access level allow anyone with the URL
-
-                to access the item, while shared links with company or collaborators access
-
-                levels can only be accessed by appropriately authenticated Box users.'
-              type: object
-              required:
-              - url
-              - accessed
-              - effective_access
-              - effective_permission
-              - is_password_enabled
-              - download_count
-              - preview_count
-              properties:
-                url:
-                  type: string
-                  format: url
-                  description: 'The URL that can be used to access the item on Box.
-
-
-                    This URL will display the item in Box''s preview UI where the file
-
-                    can be downloaded if allowed.
-
-
-                    This URL will continue to work even when a custom `vanity_url`
-
-                    has been set for this shared link.'
-                  example: https://www.box.com/s/vspke7y05sb214wjokpk
-                download_url:
-                  type:
-                  - string
-                  - 'null'
-                  format: url
-                  x-box-premium-feature: true
-                  description: 'A URL that can be used to download the file. This URL can be used in
-
-                    a browser to download the file. This URL includes the file
-
-                    extension so that the file will be saved with the right file type.
-
-
-                    This property will be `null` for folders.'
-                  example: https://www.box.com/shared/static/rh935iit6ewrmw0unyul.jpeg
-                vanity_url:
-                  type:
-                  - string
-                  - 'null'
-                  format: url
-                  description: 'The "Custom URL" that can also be used to preview the item on Box.  Custom
-
-                    URLs can only be created or modified in the Box Web application.'
-                  example: https://acme.app.box.com/v/my_url/
-                vanity_name:
-                  type:
-                  - string
-                  - 'null'
-                  description: The custom name of a shared link, as used in the `vanity_url` field.
-                  example: my_url
-                access:
-                  type: string
-                  description: "The access level for this shared link.\n\n* `open` - provides access to this item to anyone with this link\n* `company` - only provides access to this item to people the same company\n* `collaborators` - only provides access to this item to people who are\n   collaborators on this item\n\nIf this field is omitted when creating the shared link, the access level\nwill be set to the default access level specified by the enterprise admin."
-                  enum:
-                  - open
-                  - company
-                  - collaborators
-                  example: open
-                effective_access:
-                  type: string
-                  description: 'The effective access level for the shared link. This can be a more
-
-                    restrictive access level than the value in the `access` field when the
-
-                    enterprise settings restrict the allowed access levels.'
-                  enum:
-                  - open
-                  - company
-                  - collaborators
-                  example: company
-                effective_permission:
-                  type: string
-                  description: 'The effective permissions for this shared link.
-
-                    These result in the more restrictive combination of
-
-                    the share link permissions and the item permissions set
-
-                    by the administrator, the owner, and any ancestor item
-
-                    such as a folder.'
-                  enum:
-                  - can_edit
-                  - can_download
-                  - can_preview
-                  - no_access
-                  example: can_download
-                unshared_at:
-                  type:
-                  - string
-                  - 'null'
-                  format: date-time
-                  description: 'The date and time when this link will be unshared. This field can only be
-
-                    set by users with paid accounts.'
-                  example: '2018-04-13T13:53:23-07:00'
-                is_password_enabled:
-                  type: boolean
-                  description: Defines if the shared link requires a password to access the item.
-                  example: true
-                permissions:
-                  type: object
-                  description: 'Defines if this link allows a user to preview, edit, and download an item.
-
-                    These permissions refer to the shared link only and
-
-                    do not supersede permissions applied to the item itself.'
-                  required:
-                  - can_download
-                  - can_preview
-                  - can_edit
-                  properties:
-                    can_download:
-                      type: boolean
-                      example: true
-                      description: 'Defines if the shared link allows for the item to be downloaded. For
-
-                        shared links on folders, this also applies to any items in the folder.
-
-
-                        This value can be set to `true` when the effective access level is
-
-                        set to `open` or `company`, not `collaborators`.'
-                    can_preview:
-                      type: boolean
-                      example: true
-                      description: 'Defines if the shared link allows for the item to be previewed.
-
-
-                        This value is always `true`. For shared links on folders this also
-
-                        applies to any items in the folder.'
-                    can_edit:
-                      type: boolean
-                      example: false
-                      description: 'Defines if the shared link allows for the item to be edited.
-
-
-                        This value can only be `true` if `can_download` is also `true` and if
-
-                        the item has a type of `file`.'
-                download_count:
-                  type: integer
-                  example: 3
-                  description: The number of times this item has been downloaded.
-                preview_count:
-                  type: integer
-                  example: 3
-                  description: The number of times this item has been previewed.
-            - description: 'The shared link for this file. This will be
-
-                `null` if no shared link has been created for this
-
-                file.'
-            - {}
-          parent:
-            allOf:
-            - $ref: '#/components/schemas/Folder--Mini'
-            - description: The folder that this file is located within.
-          item_status:
-            type: string
-            description: 'Defines if this item has been deleted or not.
-
-
-              * `active` when the item has is not in the trash
-
-              * `trashed` when the item has been moved to the trash but not deleted
-
-              * `deleted` when the item has been permanently deleted.'
-            enum:
-            - active
-            - trashed
-            - deleted
-            example: active
-    FileOrFolderScope:
-      title: File or folder scope
-      type: object
-      description: A relation between a resource (file or folder) and the scopes for which the resource can be accessed
-      properties:
-        scope:
+          example: marketingCollateral
+          description: The name of the template
+        $scope:
           type: string
-          description: The scopes for the resource access
-          example: item_download
-          enum:
-          - annotation_edit
-          - annotation_view_all
-          - annotation_view_self
-          - base_explorer
-          - base_picker
-          - base_preview
-          - base_upload
-          - item_delete
-          - item_download
-          - item_preview
-          - item_rename
-          - item_share
-        object:
-          allOf:
-          - oneOf:
-            - $ref: '#/components/schemas/Folder--Mini'
-            - $ref: '#/components/schemas/File--Mini'
-          - description: The file or folder resource
-    FileVersion--Mini:
-      title: File version (Mini)
-      type: object
-      x-box-resource-id: file_version--mini
-      x-box-variant: mini
-      description: 'A mini representation of a file version, used when
+          example: enterprise_27335
+          description: 'An ID for the scope in which this template
 
-        nested within another resource.'
-      allOf:
-      - $ref: '#/components/schemas/FileVersion--Base'
-      - properties:
-          sha1:
-            type: string
-            description: The SHA1 hash of this version of the file.
-            example: 134b65991ed521fcfe4724b7d814ab8ded5185dc
-    ClientError:
-      title: Client error
-      type: object
-      x-box-resource-id: client_error
-      description: A generic error
-      properties:
-        type:
-          description: error
-          example: error
-          type: string
-          enum:
-          - error
-        status:
-          description: The HTTP status of the response.
-          example: 400
+            has been applied. This will be `enterprise_{enterprise_id}` for templates
+
+            defined for use in this enterprise, and `global` for general templates
+
+            that are available to all enterprises using Box.'
+        $version:
           type: integer
-          format: int32
-        code:
-          description: A Box-specific error code
-          example: item_name_invalid
-          type: string
-          enum:
-          - created
-          - accepted
-          - no_content
-          - redirect
-          - not_modified
-          - bad_request
-          - unauthorized
-          - forbidden
-          - not_found
-          - method_not_allowed
-          - conflict
-          - precondition_failed
-          - too_many_requests
-          - internal_server_error
-          - unavailable
-          - item_name_invalid
-          - insufficient_scope
-        message:
-          description: A short message describing the error.
-          example: Method Not Allowed
-          type: string
-        context_info:
-          description: 'A free-form object that contains additional context
+          example: 1
+          description: 'The version of the metadata instance. This version starts at 0 and
 
-            about the error. The possible fields are defined on
-
-            a per-endpoint basis. `message` is only one example.'
-          type:
-          - object
-          - 'null'
-          properties:
-            message:
-              type: string
-              description: More details on the error.
-              example: Something went wrong.
-        help_url:
-          description: A URL that links to more information about why this error occurred.
-          example: https://developer.box.com/guides/api-calls/permissions-and-errors/common-errors/
-          type: string
-        request_id:
-          description: 'A unique identifier for this response, which can be used
-
-            when contacting Box support.'
-          type: string
-          example: abcdef123456
+            increases every time a user-defined property is modified.'
     File--Full:
       title: File (Full)
       type: object
@@ -1938,19 +1641,314 @@ components:
               - can_preview
               - can_download
               - can_edit
-    Folder--Base:
-      title: Folder (Base)
+    File:
+      title: File
       type: object
-      x-box-resource-id: folder--base
+      x-box-resource-id: file
+      x-box-variant: standard
+      description: 'A standard representation of a file, as returned from any
+
+        file API endpoints by default'
+      allOf:
+      - $ref: '#/components/schemas/File--Mini'
+      - properties:
+          description:
+            type: string
+            description: The optional description of this file
+            maxLength: 256
+            example: Contract for Q1 renewal
+          size:
+            type: integer
+            description: 'The file size in bytes. Be careful parsing this integer as it can
+
+              get very large and cause an integer overflow.'
+            example: 629644
+          path_collection:
+            allOf:
+            - title: Path collection
+              description: A list of parent folders for an item.
+              type: object
+              required:
+              - total_count
+              - entries
+              properties:
+                total_count:
+                  description: The number of folders in this list.
+                  example: 1
+                  type: integer
+                  format: int64
+                entries:
+                  type: array
+                  description: The parent folders for this item
+                  items:
+                    $ref: '#/components/schemas/Folder--Mini'
+            - description: 'The tree of folders that this file is contained in,
+
+                starting at the root.'
+            - {}
+          created_at:
+            type: string
+            format: date-time
+            description: The date and time when the file was created on Box.
+            example: '2012-12-12T10:53:43-08:00'
+          modified_at:
+            type: string
+            format: date-time
+            description: The date and time when the file was last updated on Box.
+            example: '2012-12-12T10:53:43-08:00'
+          trashed_at:
+            type:
+            - string
+            - 'null'
+            format: date-time
+            description: The time at which this file was put in the trash.
+            example: '2012-12-12T10:53:43-08:00'
+          purged_at:
+            type:
+            - string
+            - 'null'
+            format: date-time
+            description: 'The time at which this file is expected to be purged
+
+              from the trash.'
+            example: '2012-12-12T10:53:43-08:00'
+          content_created_at:
+            type:
+            - string
+            - 'null'
+            format: date-time
+            description: 'The date and time at which this file was originally
+
+              created, which might be before it was uploaded to Box.'
+            example: '2012-12-12T10:53:43-08:00'
+          content_modified_at:
+            type:
+            - string
+            - 'null'
+            format: date-time
+            description: 'The date and time at which this file was last updated,
+
+              which might be before it was uploaded to Box.'
+            example: '2012-12-12T10:53:43-08:00'
+          created_by:
+            allOf:
+            - $ref: '#/components/schemas/User--Mini'
+            - description: The user who created this file
+          modified_by:
+            allOf:
+            - $ref: '#/components/schemas/User--Mini'
+            - description: The user who last modified this file
+            - {}
+          owned_by:
+            allOf:
+            - $ref: '#/components/schemas/User--Mini'
+            - description: The user who owns this file
+            - {}
+          shared_link:
+            allOf:
+            - title: Shared link
+              description: 'Shared links provide direct, read-only access to files or folder on Box.
+
+
+                Shared links with open access level allow anyone with the URL
+
+                to access the item, while shared links with company or collaborators access
+
+                levels can only be accessed by appropriately authenticated Box users.'
+              type: object
+              required:
+              - url
+              - accessed
+              - effective_access
+              - effective_permission
+              - is_password_enabled
+              - download_count
+              - preview_count
+              properties:
+                url:
+                  type: string
+                  format: url
+                  description: 'The URL that can be used to access the item on Box.
+
+
+                    This URL will display the item in Box''s preview UI where the file
+
+                    can be downloaded if allowed.
+
+
+                    This URL will continue to work even when a custom `vanity_url`
+
+                    has been set for this shared link.'
+                  example: https://www.box.com/s/vspke7y05sb214wjokpk
+                download_url:
+                  type:
+                  - string
+                  - 'null'
+                  format: url
+                  x-box-premium-feature: true
+                  description: 'A URL that can be used to download the file. This URL can be used in
+
+                    a browser to download the file. This URL includes the file
+
+                    extension so that the file will be saved with the right file type.
+
+
+                    This property will be `null` for folders.'
+                  example: https://www.box.com/shared/static/rh935iit6ewrmw0unyul.jpeg
+                vanity_url:
+                  type:
+                  - string
+                  - 'null'
+                  format: url
+                  description: 'The "Custom URL" that can also be used to preview the item on Box.  Custom
+
+                    URLs can only be created or modified in the Box Web application.'
+                  example: https://acme.app.box.com/v/my_url/
+                vanity_name:
+                  type:
+                  - string
+                  - 'null'
+                  description: The custom name of a shared link, as used in the `vanity_url` field.
+                  example: my_url
+                access:
+                  type: string
+                  description: "The access level for this shared link.\n\n* `open` - provides access to this item to anyone with this link\n* `company` - only provides access to this item to people the same company\n* `collaborators` - only provides access to this item to people who are\n   collaborators on this item\n\nIf this field is omitted when creating the shared link, the access level\nwill be set to the default access level specified by the enterprise admin."
+                  enum:
+                  - open
+                  - company
+                  - collaborators
+                  example: open
+                effective_access:
+                  type: string
+                  description: 'The effective access level for the shared link. This can be a more
+
+                    restrictive access level than the value in the `access` field when the
+
+                    enterprise settings restrict the allowed access levels.'
+                  enum:
+                  - open
+                  - company
+                  - collaborators
+                  example: company
+                effective_permission:
+                  type: string
+                  description: 'The effective permissions for this shared link.
+
+                    These result in the more restrictive combination of
+
+                    the share link permissions and the item permissions set
+
+                    by the administrator, the owner, and any ancestor item
+
+                    such as a folder.'
+                  enum:
+                  - can_edit
+                  - can_download
+                  - can_preview
+                  - no_access
+                  example: can_download
+                unshared_at:
+                  type:
+                  - string
+                  - 'null'
+                  format: date-time
+                  description: 'The date and time when this link will be unshared. This field can only be
+
+                    set by users with paid accounts.'
+                  example: '2018-04-13T13:53:23-07:00'
+                is_password_enabled:
+                  type: boolean
+                  description: Defines if the shared link requires a password to access the item.
+                  example: true
+                permissions:
+                  type: object
+                  description: 'Defines if this link allows a user to preview, edit, and download an item.
+
+                    These permissions refer to the shared link only and
+
+                    do not supersede permissions applied to the item itself.'
+                  required:
+                  - can_download
+                  - can_preview
+                  - can_edit
+                  properties:
+                    can_download:
+                      type: boolean
+                      example: true
+                      description: 'Defines if the shared link allows for the item to be downloaded. For
+
+                        shared links on folders, this also applies to any items in the folder.
+
+
+                        This value can be set to `true` when the effective access level is
+
+                        set to `open` or `company`, not `collaborators`.'
+                    can_preview:
+                      type: boolean
+                      example: true
+                      description: 'Defines if the shared link allows for the item to be previewed.
+
+
+                        This value is always `true`. For shared links on folders this also
+
+                        applies to any items in the folder.'
+                    can_edit:
+                      type: boolean
+                      example: false
+                      description: 'Defines if the shared link allows for the item to be edited.
+
+
+                        This value can only be `true` if `can_download` is also `true` and if
+
+                        the item has a type of `file`.'
+                download_count:
+                  type: integer
+                  example: 3
+                  description: The number of times this item has been downloaded.
+                preview_count:
+                  type: integer
+                  example: 3
+                  description: The number of times this item has been previewed.
+            - description: 'The shared link for this file. This will be
+
+                `null` if no shared link has been created for this
+
+                file.'
+            - {}
+          parent:
+            allOf:
+            - $ref: '#/components/schemas/Folder--Mini'
+            - description: The folder that this file is located within.
+          item_status:
+            type: string
+            description: 'Defines if this item has been deleted or not.
+
+
+              * `active` when the item has is not in the trash
+
+              * `trashed` when the item has been moved to the trash but not deleted
+
+              * `deleted` when the item has been permanently deleted.'
+            enum:
+            - active
+            - trashed
+            - deleted
+            example: active
+    File--Base:
+      title: File (Base)
+      type:
+      - object
+      - 'null'
+      x-box-resource-id: file--base
       x-box-sanitized: true
-      x-box-tag: folders
+      x-box-tag: files
       x-box-variants:
       - base
       - mini
       - standard
       - full
       x-box-variant: base
-      description: 'The bare basic representation of a folder, the minimal
+      description: 'The bare basic representation of a file, the minimal
 
         amount of fields returned when using the `fields` query
 
@@ -1961,35 +1959,71 @@ components:
       properties:
         id:
           type: string
-          description: 'The unique identifier that represent a folder.
+          description: 'The unique identifier that represent a file.
 
 
-            The ID for any folder can be determined
+            The ID for any file can be determined
 
-            by visiting a folder in the web application
+            by visiting a file in the web application
 
             and copying the ID from the URL. For example,
 
-            for the URL `https://*.app.box.com/folders/123`
+            for the URL `https://*.app.box.com/files/123`
 
-            the `folder_id` is `123`.'
+            the `file_id` is `123`.'
           example: '12345'
         etag:
           type:
           - string
           - 'null'
           example: '1'
-          description: 'The HTTP `etag` of this folder. This can be used within some API
+          description: 'The HTTP `etag` of this file. This can be used within some API
 
             endpoints in the `If-Match` and `If-None-Match` headers to only
 
-            perform changes on the folder if (no) changes have happened.'
+            perform changes on the file if (no) changes have happened.'
         type:
           type: string
-          description: '`folder`'
-          example: folder
+          description: '`file`'
+          example: file
           enum:
-          - folder
+          - file
+    FileVersion--Mini:
+      title: File version (Mini)
+      type: object
+      x-box-resource-id: file_version--mini
+      x-box-variant: mini
+      description: 'A mini representation of a file version, used when
+
+        nested within another resource.'
+      allOf:
+      - $ref: '#/components/schemas/FileVersion--Base'
+      - properties:
+          sha1:
+            type: string
+            description: The SHA1 hash of this version of the file.
+            example: 134b65991ed521fcfe4724b7d814ab8ded5185dc
+    User--Mini:
+      title: User (Mini)
+      type: object
+      x-box-resource-id: user--mini
+      x-box-variant: mini
+      description: 'A mini representation of a user, as can be returned when nested within other
+
+        resources.'
+      allOf:
+      - $ref: '#/components/schemas/User--Base'
+      - properties:
+          name:
+            type: string
+            description: The display name of this user
+            example: Aaron Levie
+            maxLength: 50
+          login:
+            type: string
+            format: email
+            description: The primary email address of this user
+            example: ceo@example.com
     FileVersion--Base:
       title: File version (Base)
       type: object
@@ -2020,68 +2054,34 @@ components:
           example: file_version
           enum:
           - file_version
-    Metadata--Base:
-      title: Metadata instance (Base)
+    FileOrFolderScope:
+      title: File or folder scope
       type: object
-      x-box-resource-id: metadata--base
-      x-box-sanitized: true
-      x-box-tag: file_metadata
-      x-box-variants:
-      - base
-      - standard
-      - full
-      x-box-variant: base
-      description: The base representation of a metadata instance.
+      description: A relation between a resource (file or folder) and the scopes for which the resource can be accessed
       properties:
-        $parent:
+        scope:
           type: string
-          example: folder_59449484661,
-          description: 'The identifier of the item that this metadata instance
-
-            has been attached to. This combines the `type` and the `id`
-
-            of the parent in the form `{type}_{id}`.'
-        $template:
-          type: string
-          example: marketingCollateral
-          description: The name of the template
-        $scope:
-          type: string
-          example: enterprise_27335
-          description: 'An ID for the scope in which this template
-
-            has been applied. This will be `enterprise_{enterprise_id}` for templates
-
-            defined for use in this enterprise, and `global` for general templates
-
-            that are available to all enterprises using Box.'
-        $version:
-          type: integer
-          example: 1
-          description: 'The version of the metadata instance. This version starts at 0 and
-
-            increases every time a user-defined property is modified.'
-    User--Mini:
-      title: User (Mini)
-      type: object
-      x-box-resource-id: user--mini
-      x-box-variant: mini
-      description: 'A mini representation of a user, as can be returned when nested within other
-
-        resources.'
-      allOf:
-      - $ref: '#/components/schemas/User--Base'
-      - properties:
-          name:
-            type: string
-            description: The display name of this user
-            example: Aaron Levie
-            maxLength: 50
-          login:
-            type: string
-            format: email
-            description: The primary email address of this user
-            example: ceo@example.com
+          description: The scopes for the resource access
+          example: item_download
+          enum:
+          - annotation_edit
+          - annotation_view_all
+          - annotation_view_self
+          - base_explorer
+          - base_picker
+          - base_preview
+          - base_upload
+          - item_delete
+          - item_download
+          - item_preview
+          - item_rename
+          - item_share
+        object:
+          allOf:
+          - oneOf:
+            - $ref: '#/components/schemas/Folder--Mini'
+            - $ref: '#/components/schemas/File--Mini'
+          - description: The file or folder resource
   securitySchemes:
     OAuth2Security:
       type: oauth2

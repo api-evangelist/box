@@ -332,6 +332,123 @@ paths:
                 $ref: '#/components/schemas/ClientError'
 components:
   schemas:
+    ZipDownloadStatus:
+      title: Zip download status
+      type: object
+      x-box-resource-id: zip_download_status
+      x-box-tag: zip_downloads
+      x-box-reference-category: zip_downloads
+      description: The status of a `zip` archive being downloaded.
+      properties:
+        total_file_count:
+          type: integer
+          description: The total number of files in the archive.
+          example: 20
+          minimum: 0
+          maximum: 10000
+        downloaded_file_count:
+          type: integer
+          description: The number of files that have already been downloaded.
+          example: 10
+          minimum: 0
+        skipped_file_count:
+          type: integer
+          description: 'The number of files that have been skipped as they could not be
+
+            downloaded. In many cases this is due to permission issues that have
+
+            surfaced between the creation of the request for the archive and the
+
+            archive being downloaded.'
+          example: 5
+          minimum: 0
+        skipped_folder_count:
+          type: integer
+          description: 'The number of folders that have been skipped as they could not be
+
+            downloaded. In many cases this is due to permission issues that have
+
+            surfaced between the creation of the request for the archive and the
+
+            archive being downloaded.'
+          example: 5
+          minimum: 0
+        state:
+          type: string
+          description: The state of the archive being downloaded.
+          default: in_progress
+          example: succeeded
+          enum:
+          - in_progress
+          - failed
+          - succeeded
+    ClientError:
+      title: Client error
+      type: object
+      x-box-resource-id: client_error
+      description: A generic error
+      properties:
+        type:
+          description: error
+          example: error
+          type: string
+          enum:
+          - error
+        status:
+          description: The HTTP status of the response.
+          example: 400
+          type: integer
+          format: int32
+        code:
+          description: A Box-specific error code
+          example: item_name_invalid
+          type: string
+          enum:
+          - created
+          - accepted
+          - no_content
+          - redirect
+          - not_modified
+          - bad_request
+          - unauthorized
+          - forbidden
+          - not_found
+          - method_not_allowed
+          - conflict
+          - precondition_failed
+          - too_many_requests
+          - internal_server_error
+          - unavailable
+          - item_name_invalid
+          - insufficient_scope
+        message:
+          description: A short message describing the error.
+          example: Method Not Allowed
+          type: string
+        context_info:
+          description: 'A free-form object that contains additional context
+
+            about the error. The possible fields are defined on
+
+            a per-endpoint basis. `message` is only one example.'
+          type:
+          - object
+          - 'null'
+          properties:
+            message:
+              type: string
+              description: More details on the error.
+              example: Something went wrong.
+        help_url:
+          description: A URL that links to more information about why this error occurred.
+          example: https://developer.box.com/guides/api-calls/permissions-and-errors/common-errors/
+          type: string
+        request_id:
+          description: 'A unique identifier for this response, which can be used
+
+            when contacting Box support.'
+          type: string
+          example: abcdef123456
     ZipDownload:
       title: Zip download
       type: object
@@ -460,73 +577,6 @@ components:
 
                     downloaded `zip` archive.'
                   example: 3aa6a7.pdf
-    ClientError:
-      title: Client error
-      type: object
-      x-box-resource-id: client_error
-      description: A generic error
-      properties:
-        type:
-          description: error
-          example: error
-          type: string
-          enum:
-          - error
-        status:
-          description: The HTTP status of the response.
-          example: 400
-          type: integer
-          format: int32
-        code:
-          description: A Box-specific error code
-          example: item_name_invalid
-          type: string
-          enum:
-          - created
-          - accepted
-          - no_content
-          - redirect
-          - not_modified
-          - bad_request
-          - unauthorized
-          - forbidden
-          - not_found
-          - method_not_allowed
-          - conflict
-          - precondition_failed
-          - too_many_requests
-          - internal_server_error
-          - unavailable
-          - item_name_invalid
-          - insufficient_scope
-        message:
-          description: A short message describing the error.
-          example: Method Not Allowed
-          type: string
-        context_info:
-          description: 'A free-form object that contains additional context
-
-            about the error. The possible fields are defined on
-
-            a per-endpoint basis. `message` is only one example.'
-          type:
-          - object
-          - 'null'
-          properties:
-            message:
-              type: string
-              description: More details on the error.
-              example: Something went wrong.
-        help_url:
-          description: A URL that links to more information about why this error occurred.
-          example: https://developer.box.com/guides/api-calls/permissions-and-errors/common-errors/
-          type: string
-        request_id:
-          description: 'A unique identifier for this response, which can be used
-
-            when contacting Box support.'
-          type: string
-          example: abcdef123456
     ZipDownloadRequest:
       title: Create a `zip` archive
       type: object
@@ -565,56 +615,6 @@ components:
 
             `.zip` file extension, for example `January Financials.zip`.'
           example: January Financials
-    ZipDownloadStatus:
-      title: Zip download status
-      type: object
-      x-box-resource-id: zip_download_status
-      x-box-tag: zip_downloads
-      x-box-reference-category: zip_downloads
-      description: The status of a `zip` archive being downloaded.
-      properties:
-        total_file_count:
-          type: integer
-          description: The total number of files in the archive.
-          example: 20
-          minimum: 0
-          maximum: 10000
-        downloaded_file_count:
-          type: integer
-          description: The number of files that have already been downloaded.
-          example: 10
-          minimum: 0
-        skipped_file_count:
-          type: integer
-          description: 'The number of files that have been skipped as they could not be
-
-            downloaded. In many cases this is due to permission issues that have
-
-            surfaced between the creation of the request for the archive and the
-
-            archive being downloaded.'
-          example: 5
-          minimum: 0
-        skipped_folder_count:
-          type: integer
-          description: 'The number of folders that have been skipped as they could not be
-
-            downloaded. In many cases this is due to permission issues that have
-
-            surfaced between the creation of the request for the archive and the
-
-            archive being downloaded.'
-          example: 5
-          minimum: 0
-        state:
-          type: string
-          description: The state of the archive being downloaded.
-          default: in_progress
-          example: succeeded
-          enum:
-          - in_progress
-          - failed
-          - succeeded
   securitySchemes:
     OAuth2Security:
       type: oauth2

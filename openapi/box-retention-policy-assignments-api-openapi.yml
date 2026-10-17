@@ -476,6 +476,106 @@ paths:
                 $ref: '#/components/schemas/ClientError'
 components:
   schemas:
+    ClientError:
+      title: Client error
+      type: object
+      x-box-resource-id: client_error
+      description: A generic error
+      properties:
+        type:
+          description: error
+          example: error
+          type: string
+          enum:
+          - error
+        status:
+          description: The HTTP status of the response.
+          example: 400
+          type: integer
+          format: int32
+        code:
+          description: A Box-specific error code
+          example: item_name_invalid
+          type: string
+          enum:
+          - created
+          - accepted
+          - no_content
+          - redirect
+          - not_modified
+          - bad_request
+          - unauthorized
+          - forbidden
+          - not_found
+          - method_not_allowed
+          - conflict
+          - precondition_failed
+          - too_many_requests
+          - internal_server_error
+          - unavailable
+          - item_name_invalid
+          - insufficient_scope
+        message:
+          description: A short message describing the error.
+          example: Method Not Allowed
+          type: string
+        context_info:
+          description: 'A free-form object that contains additional context
+
+            about the error. The possible fields are defined on
+
+            a per-endpoint basis. `message` is only one example.'
+          type:
+          - object
+          - 'null'
+          properties:
+            message:
+              type: string
+              description: More details on the error.
+              example: Something went wrong.
+        help_url:
+          description: A URL that links to more information about why this error occurred.
+          example: https://developer.box.com/guides/api-calls/permissions-and-errors/common-errors/
+          type: string
+        request_id:
+          description: 'A unique identifier for this response, which can be used
+
+            when contacting Box support.'
+          type: string
+          example: abcdef123456
+    RetentionPolicyAssignments:
+      title: Retention policy assignments
+      type: object
+      x-box-resource-id: retention_policy_assignments
+      x-box-tag: retention_policy_assignments
+      description: A list of retention policy assignments.
+      allOf:
+      - properties:
+          entries:
+            type: array
+            description: A list of retention policy assignments
+            items:
+              $ref: '#/components/schemas/RetentionPolicyAssignment'
+      - type: object
+        description: 'The part of an API response that describes marker
+
+          based pagination'
+        properties:
+          limit:
+            description: 'The limit that was used for these entries. This will be the same as the
+
+              `limit` query parameter unless that value exceeded the maximum value
+
+              allowed. The maximum value varies by API.'
+            example: 1000
+            type: integer
+            format: int64
+          next_marker:
+            description: The marker for the start of the next page of results.
+            example: JV9IRGZmieiBasejOG9yDCRNgd2ymoZIbjsxbJMjIs3kioVii
+            type:
+            - string
+            - 'null'
     User--Base:
       title: User (Base)
       type: object
@@ -504,136 +604,6 @@ components:
           example: user
           enum:
           - user
-    RetentionPolicy--Base:
-      title: Retention policy (Base)
-      type: object
-      x-box-resource-id: retention_policy--base
-      x-box-tag: retention_policies
-      x-box-variants:
-      - base
-      - mini
-      - standard
-      x-box-variant: base
-      description: A base representation of a retention policy.
-      required:
-      - id
-      - type
-      properties:
-        id:
-          type: string
-          description: The unique identifier that represents a retention policy.
-          example: '12345'
-        type:
-          type: string
-          description: '`retention_policy`'
-          example: retention_policy
-          enum:
-          - retention_policy
-    RetentionPolicyAssignment:
-      title: Retention policy assignment
-      type: object
-      x-box-resource-id: retention_policy_assignment
-      x-box-tag: retention_policy_assignments
-      description: 'A retention assignment represents a rule specifying
-
-        the files a retention policy retains.
-
-        Assignments can retain files based on their folder or metadata,
-
-        or hold all files in the enterprise.'
-      required:
-      - id
-      - type
-      properties:
-        id:
-          type: string
-          description: The unique identifier for a retention policy assignment.
-          example: '11446498'
-        type:
-          type: string
-          description: '`retention_policy_assignment`'
-          example: retention_policy_assignment
-          enum:
-          - retention_policy_assignment
-        retention_policy:
-          allOf:
-          - $ref: '#/components/schemas/RetentionPolicy--Mini'
-          - description: 'A mini representation of a retention policy object
-
-              that has been assigned to the content.'
-        assigned_to:
-          type: object
-          description: 'The `type` and `id` of the content that is under
-
-            retention. The `type` can either be `folder`
-
-            `enterprise`, or `metadata_template`.'
-          properties:
-            id:
-              type:
-              - string
-              - 'null'
-              example: a983f69f-e85f-4ph4-9f46-4afdf9c1af65
-              description: 'The ID of the folder, enterprise, or metadata template
-
-                the policy is assigned to.
-
-                Set to null or omit when type is set to enterprise.'
-            type:
-              type: string
-              example: metadata_template
-              description: The type of resource the policy is assigned to.
-              enum:
-              - folder
-              - enterprise
-              - metadata_template
-        filter_fields:
-          type:
-          - array
-          - 'null'
-          description: 'An array of field objects. Values are only returned if the `assigned_to`
-
-            type is `metadata_template`. Otherwise, the array is blank.'
-          items:
-            type:
-            - object
-            - 'null'
-            properties:
-              field:
-                type:
-                - string
-                - 'null'
-                description: The metadata attribute key id.
-                example: a0f4ee4e-1dc1-4h90-a8a9-aef55fc681d4
-              value:
-                type:
-                - string
-                - 'null'
-                description: 'The metadata attribute field id. For value, only
-
-                  enum and multiselect types are supported.'
-                example: 0c27b756-0p87-4fe0-a43a-59fb661ccc4e
-        assigned_by:
-          allOf:
-          - $ref: '#/components/schemas/User--Mini'
-          - description: 'A mini user object representing the user that
-
-              created the retention policy assignment.'
-        assigned_at:
-          type: string
-          format: date-time
-          description: 'When the retention policy assignment object was
-
-            created.'
-          example: '2012-12-12T10:53:43-08:00'
-        start_date_field:
-          type: string
-          description: 'The date the retention policy assignment begins.
-
-            If the `assigned_to` type is `metadata_template`,
-
-            this field can be a date field''s metadata attribute key id.'
-          example: upload_date
     File--Mini:
       title: File (Mini)
       type:
@@ -742,6 +712,175 @@ components:
             enum:
             - permanently_delete
             - remove_retention
+    RetentionPolicyAssignment:
+      title: Retention policy assignment
+      type: object
+      x-box-resource-id: retention_policy_assignment
+      x-box-tag: retention_policy_assignments
+      description: 'A retention assignment represents a rule specifying
+
+        the files a retention policy retains.
+
+        Assignments can retain files based on their folder or metadata,
+
+        or hold all files in the enterprise.'
+      required:
+      - id
+      - type
+      properties:
+        id:
+          type: string
+          description: The unique identifier for a retention policy assignment.
+          example: '11446498'
+        type:
+          type: string
+          description: '`retention_policy_assignment`'
+          example: retention_policy_assignment
+          enum:
+          - retention_policy_assignment
+        retention_policy:
+          allOf:
+          - $ref: '#/components/schemas/RetentionPolicy--Mini'
+          - description: 'A mini representation of a retention policy object
+
+              that has been assigned to the content.'
+        assigned_to:
+          type: object
+          description: 'The `type` and `id` of the content that is under
+
+            retention. The `type` can either be `folder`
+
+            `enterprise`, or `metadata_template`.'
+          properties:
+            id:
+              type:
+              - string
+              - 'null'
+              example: a983f69f-e85f-4ph4-9f46-4afdf9c1af65
+              description: 'The ID of the folder, enterprise, or metadata template
+
+                the policy is assigned to.
+
+                Set to null or omit when type is set to enterprise.'
+            type:
+              type: string
+              example: metadata_template
+              description: The type of resource the policy is assigned to.
+              enum:
+              - folder
+              - enterprise
+              - metadata_template
+        filter_fields:
+          type:
+          - array
+          - 'null'
+          description: 'An array of field objects. Values are only returned if the `assigned_to`
+
+            type is `metadata_template`. Otherwise, the array is blank.'
+          items:
+            type:
+            - object
+            - 'null'
+            properties:
+              field:
+                type:
+                - string
+                - 'null'
+                description: The metadata attribute key id.
+                example: a0f4ee4e-1dc1-4h90-a8a9-aef55fc681d4
+              value:
+                type:
+                - string
+                - 'null'
+                description: 'The metadata attribute field id. For value, only
+
+                  enum and multiselect types are supported.'
+                example: 0c27b756-0p87-4fe0-a43a-59fb661ccc4e
+        assigned_by:
+          allOf:
+          - $ref: '#/components/schemas/User--Mini'
+          - description: 'A mini user object representing the user that
+
+              created the retention policy assignment.'
+        assigned_at:
+          type: string
+          format: date-time
+          description: 'When the retention policy assignment object was
+
+            created.'
+          example: '2012-12-12T10:53:43-08:00'
+        start_date_field:
+          type: string
+          description: 'The date the retention policy assignment begins.
+
+            If the `assigned_to` type is `metadata_template`,
+
+            this field can be a date field''s metadata attribute key id.'
+          example: upload_date
+    RetentionPolicy--Base:
+      title: Retention policy (Base)
+      type: object
+      x-box-resource-id: retention_policy--base
+      x-box-tag: retention_policies
+      x-box-variants:
+      - base
+      - mini
+      - standard
+      x-box-variant: base
+      description: A base representation of a retention policy.
+      required:
+      - id
+      - type
+      properties:
+        id:
+          type: string
+          description: The unique identifier that represents a retention policy.
+          example: '12345'
+        type:
+          type: string
+          description: '`retention_policy`'
+          example: retention_policy
+          enum:
+          - retention_policy
+    FilesUnderRetention:
+      title: Files under retention
+      type: object
+      x-box-resource-id: files_under_retention
+      x-box-tag: retention_policy_assignments
+      description: A list of files under retention.
+      allOf:
+      - type: object
+        description: 'The part of an API response that describes marker
+
+          based pagination'
+        properties:
+          limit:
+            description: 'The limit that was used for these entries. This will be the same as the
+
+              `limit` query parameter unless that value exceeded the maximum value
+
+              allowed. The maximum value varies by API.'
+            example: 1000
+            type: integer
+            format: int64
+          next_marker:
+            description: The marker for the start of the next page of results.
+            example: JV9IRGZmieiBasejOG9yDCRNgd2ymoZIbjsxbJMjIs3kioVii
+            type:
+            - string
+            - 'null'
+          prev_marker:
+            description: The marker for the start of the previous page of results.
+            example: JV9IRGZmieiBasejOG9yDCRNgd2ymoZIbjsxbJMjIs3kioVih
+            type:
+            - string
+            - 'null'
+      - properties:
+          entries:
+            type: array
+            description: A list of files
+            items:
+              $ref: '#/components/schemas/File--Mini'
     File--Base:
       title: File (Base)
       type:
@@ -796,78 +935,6 @@ components:
           example: file
           enum:
           - file
-    RetentionPolicyAssignments:
-      title: Retention policy assignments
-      type: object
-      x-box-resource-id: retention_policy_assignments
-      x-box-tag: retention_policy_assignments
-      description: A list of retention policy assignments.
-      allOf:
-      - properties:
-          entries:
-            type: array
-            description: A list of retention policy assignments
-            items:
-              $ref: '#/components/schemas/RetentionPolicyAssignment'
-      - type: object
-        description: 'The part of an API response that describes marker
-
-          based pagination'
-        properties:
-          limit:
-            description: 'The limit that was used for these entries. This will be the same as the
-
-              `limit` query parameter unless that value exceeded the maximum value
-
-              allowed. The maximum value varies by API.'
-            example: 1000
-            type: integer
-            format: int64
-          next_marker:
-            description: The marker for the start of the next page of results.
-            example: JV9IRGZmieiBasejOG9yDCRNgd2ymoZIbjsxbJMjIs3kioVii
-            type:
-            - string
-            - 'null'
-    FilesUnderRetention:
-      title: Files under retention
-      type: object
-      x-box-resource-id: files_under_retention
-      x-box-tag: retention_policy_assignments
-      description: A list of files under retention.
-      allOf:
-      - type: object
-        description: 'The part of an API response that describes marker
-
-          based pagination'
-        properties:
-          limit:
-            description: 'The limit that was used for these entries. This will be the same as the
-
-              `limit` query parameter unless that value exceeded the maximum value
-
-              allowed. The maximum value varies by API.'
-            example: 1000
-            type: integer
-            format: int64
-          next_marker:
-            description: The marker for the start of the next page of results.
-            example: JV9IRGZmieiBasejOG9yDCRNgd2ymoZIbjsxbJMjIs3kioVii
-            type:
-            - string
-            - 'null'
-          prev_marker:
-            description: The marker for the start of the previous page of results.
-            example: JV9IRGZmieiBasejOG9yDCRNgd2ymoZIbjsxbJMjIs3kioVih
-            type:
-            - string
-            - 'null'
-      - properties:
-          entries:
-            type: array
-            description: A list of files
-            items:
-              $ref: '#/components/schemas/File--Mini'
     FileVersion--Mini:
       title: File version (Mini)
       type: object
@@ -883,73 +950,6 @@ components:
             type: string
             description: The SHA1 hash of this version of the file.
             example: 134b65991ed521fcfe4724b7d814ab8ded5185dc
-    ClientError:
-      title: Client error
-      type: object
-      x-box-resource-id: client_error
-      description: A generic error
-      properties:
-        type:
-          description: error
-          example: error
-          type: string
-          enum:
-          - error
-        status:
-          description: The HTTP status of the response.
-          example: 400
-          type: integer
-          format: int32
-        code:
-          description: A Box-specific error code
-          example: item_name_invalid
-          type: string
-          enum:
-          - created
-          - accepted
-          - no_content
-          - redirect
-          - not_modified
-          - bad_request
-          - unauthorized
-          - forbidden
-          - not_found
-          - method_not_allowed
-          - conflict
-          - precondition_failed
-          - too_many_requests
-          - internal_server_error
-          - unavailable
-          - item_name_invalid
-          - insufficient_scope
-        message:
-          description: A short message describing the error.
-          example: Method Not Allowed
-          type: string
-        context_info:
-          description: 'A free-form object that contains additional context
-
-            about the error. The possible fields are defined on
-
-            a per-endpoint basis. `message` is only one example.'
-          type:
-          - object
-          - 'null'
-          properties:
-            message:
-              type: string
-              description: More details on the error.
-              example: Something went wrong.
-        help_url:
-          description: A URL that links to more information about why this error occurred.
-          example: https://developer.box.com/guides/api-calls/permissions-and-errors/common-errors/
-          type: string
-        request_id:
-          description: 'A unique identifier for this response, which can be used
-
-            when contacting Box support.'
-          type: string
-          example: abcdef123456
     FileVersion--Base:
       title: File version (Base)
       type: object
