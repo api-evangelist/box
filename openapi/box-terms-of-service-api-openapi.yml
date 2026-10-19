@@ -1,55 +1,46 @@
 openapi: 3.2.0
 info:
-  title: Box Platform Terms of Service API
+  title: Box Platform Terms of service API
   description: Box Platform provides functionality to provide access to content stored within Box. It provides endpoints for basic manipulation of files and folders, management of users within an enterprise, as well as more complex topics such as legal holds and retention policies.
   termsOfService: https://cloud.app.box.com/s/rmwxu64h1ipr41u49w3bbuvbsa29wku9
   contact:
     name: Box, Inc
-    url: https://box.dev
+    url: https://developer.box.com
     email: devrel@box.com
   license:
     name: Apache-2.0
-    url: http://www.apache.org/licenses/LICENSE-2.0
-  version: 2.0.0
-  x-box-commit-hash: '5819125043'
+    url: https://www.apache.org/licenses/LICENSE-2.0
+  version: '2024.0'
+  x-box-commit-hash: 53bdced3cd
 servers:
 - url: https://api.box.com/2.0
-  description: Box Platform API server
+  description: Box Platform API server.
 security:
 - OAuth2Security: []
 tags:
 - name: Terms of Service
-  description: 'A set of endpoints used to
-
-    manage terms of service agreements.'
+  description: A set of endpoints used to manage terms of service agreements.
   x-box-tag: terms_of_services
 paths:
   /terms_of_services:
     get:
       operationId: get_terms_of_services
-      x-box-tag: terms_of_services
-      summary: Box List terms of services
-      tags:
-      - Terms of Service
-      description: 'Returns the current terms of service text and settings
-
-        for the enterprise.'
+      summary: List terms of services
+      description: Returns the current terms of service text and settings for the enterprise.
       parameters:
       - name: tos_type
-        description: Limits the results to the terms of service of the given type.
         in: query
+        description: Limits the results to the terms of service of the given type.
         required: false
-        example: managed
         schema:
           type: string
           enum:
           - external
           - managed
+        example: managed
       responses:
         '200':
-          description: 'Returns a collection of terms of service text and settings for the
-
-            enterprise.'
+          description: Returns a collection of terms of service text and settings for the enterprise.
           content:
             application/json:
               schema:
@@ -60,37 +51,50 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ClientError'
-    post:
-      operationId: post_terms_of_services
+      x-box-tag: terms_of_services
       tags:
       - Terms of Service
-      summary: Box Create terms of service
-      x-box-tag: terms_of_services
-      description: 'Creates a terms of service for a given enterprise
-
-        and type of user.'
+      x-box-unsupported-on-free-developer: true
+      x-codeSamples:
+      - lang: curl
+        label: List terms of services
+        source: "curl -i -X GET \"https://api.box.com/2.0/terms_of_services\" \\\n     -H \"authorization: Bearer <ACCESS_TOKEN>\""
+      - lang: dotnet
+        label: List terms of services
+        source: await client.TermsOfServices.GetTermsOfServiceAsync();
+      - lang: swift
+        label: List terms of services
+        source: try await client.termsOfServices.getTermsOfService()
+      - lang: java
+        label: List terms of services
+        source: client.getTermsOfServices().getTermsOfService()
+      - lang: node
+        label: List terms of services
+        source: await client.termsOfServices.getTermsOfService();
+      - lang: python
+        label: List terms of services
+        source: client.terms_of_services.get_terms_of_service()
+    post:
+      operationId: post_terms_of_services
+      summary: Create terms of service
+      description: Creates a terms of service for a given enterprise and type of user.
       requestBody:
         content:
           application/json:
             schema:
               type: object
-              required:
-              - status
-              - text
               properties:
                 status:
                   description: Whether this terms of service is active.
-                  example: enabled
                   type: string
+                  example: enabled
                   enum:
                   - enabled
                   - disabled
                 tos_type:
-                  description: 'The type of user to set the terms of
-
-                    service for.'
-                  example: managed
+                  description: The type of user to set the terms of service for.
                   type: string
+                  example: managed
                   enum:
                   - external
                   - managed
@@ -99,11 +103,14 @@ paths:
 
 
                     The text can be set to empty if the `status` is set to `disabled`.'
-                  example: By collaborating on this file you are accepting...
                   type: string
+                  example: By collaborating on this file you are accepting...
+              required:
+              - status
+              - text
       responses:
         '200':
-          description: Returns a new task object
+          description: Returns a new task object.
           content:
             application/json:
               schema:
@@ -114,22 +121,42 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ClientError'
+      x-box-tag: terms_of_services
+      tags:
+      - Terms of Service
+      x-box-unsupported-on-free-developer: true
+      x-codeSamples:
+      - lang: curl
+        label: Create terms of service
+        source: "curl -i -X POST \"https://api.box.com/2.0/terms_of_services\" \\\n     -H \"authorization: Bearer <ACCESS_TOKEN>\" \\\n     -H \"content-type: application/json\" \\\n     -d '{\n       \"status\": \"enabled\",\n       \"text\": \"By collaborating on this file you are accepting...\"\n     }'"
+      - lang: dotnet
+        label: Create terms of service
+        source: 'await client.TermsOfServices.CreateTermsOfServiceAsync(requestBody: new CreateTermsOfServiceRequestBody(status: CreateTermsOfServiceRequestBodyStatusField.Disabled, text: "Test TOS") { TosType = CreateTermsOfServiceRequestBodyTosTypeField.Managed });'
+      - lang: swift
+        label: Create terms of service
+        source: 'try await client.termsOfServices.createTermsOfService(requestBody: CreateTermsOfServiceRequestBody(status: CreateTermsOfServiceRequestBodyStatusField.disabled, tosType: CreateTermsOfServiceRequestBodyTosTypeField.managed, text: "Test TOS"))'
+      - lang: java
+        label: Create terms of service
+        source: client.getTermsOfServices().createTermsOfService(new CreateTermsOfServiceRequestBody.Builder(CreateTermsOfServiceRequestBodyStatusField.DISABLED, "Test TOS").tosType(CreateTermsOfServiceRequestBodyTosTypeField.MANAGED).build())
+      - lang: node
+        label: Create terms of service
+        source: "await client.termsOfServices.createTermsOfService({\n  status: 'disabled' as CreateTermsOfServiceRequestBodyStatusField,\n  tosType: 'managed' as CreateTermsOfServiceRequestBodyTosTypeField,\n  text: 'Test TOS',\n} satisfies CreateTermsOfServiceRequestBody);"
+      - lang: python
+        label: Create terms of service
+        source: "client.terms_of_services.create_terms_of_service(\n    CreateTermsOfServiceStatus.DISABLED,\n    \"Test TOS\",\n    tos_type=CreateTermsOfServiceTosType.MANAGED,\n)"
   /terms_of_services/{terms_of_service_id}:
     get:
       operationId: get_terms_of_services_id
-      summary: Box Get terms of service
-      tags:
-      - Terms of Service
-      x-box-tag: terms_of_services
+      summary: Get terms of service
       description: Fetches a specific terms of service.
       parameters:
       - name: terms_of_service_id
-        description: The ID of the terms of service.
-        example: '324234'
         in: path
+        description: The ID of the terms of service.
         required: true
         schema:
           type: string
+        example: '324234'
       responses:
         '200':
           description: Returns a terms of service object.
@@ -143,34 +170,36 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ClientError'
-    put:
-      operationId: put_terms_of_services_id
-      summary: Box Update terms of service
+      x-box-tag: terms_of_services
       tags:
       - Terms of Service
-      x-box-tag: terms_of_services
+      x-box-unsupported-on-free-developer: true
+      x-codeSamples:
+      - lang: curl
+        label: Get terms of service
+        source: "curl -i -X GET \"https://api.box.com/2.0/terms_of_services/324234\" \\\n     -H \"authorization: Bearer <ACCESS_TOKEN>\""
+    put:
+      operationId: put_terms_of_services_id
+      summary: Update terms of service
       description: Updates a specific terms of service.
       parameters:
       - name: terms_of_service_id
-        description: The ID of the terms of service.
-        example: '324234'
         in: path
+        description: The ID of the terms of service.
         required: true
         schema:
           type: string
+        example: '324234'
       requestBody:
         content:
           application/json:
             schema:
               type: object
-              required:
-              - status
-              - text
               properties:
                 status:
                   description: Whether this terms of service is active.
-                  example: enabled
                   type: string
+                  example: enabled
                   enum:
                   - enabled
                   - disabled
@@ -179,8 +208,11 @@ paths:
 
 
                     The text can be set to empty if the `status` is set to `disabled`.'
-                  example: By collaborating on this file you are accepting...
                   type: string
+                  example: By collaborating on this file you are accepting...
+              required:
+              - status
+              - text
       responses:
         '200':
           description: Returns an updated terms of service object.
@@ -194,21 +226,80 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ClientError'
+      x-box-tag: terms_of_services
+      tags:
+      - Terms of Service
+      x-box-unsupported-on-free-developer: true
+      x-codeSamples:
+      - lang: curl
+        label: Update terms of service
+        source: "curl -i -X PUT \"https://api.box.com/2.0/terms_of_services/324234\" \\\n     -H \"authorization: Bearer <ACCESS_TOKEN>\" \\\n     -H \"content-type: application/json\" \\\n     -d '{\n       \"status\": \"enabled\",\n       \"text\": \"By collaborating on this file you are accepting...\"\n     }'"
+      - lang: dotnet
+        label: Update terms of service
+        source: 'await client.TermsOfServices.UpdateTermsOfServiceByIdAsync(termsOfServiceId: tos.Id, requestBody: new UpdateTermsOfServiceByIdRequestBody(status: UpdateTermsOfServiceByIdRequestBodyStatusField.Disabled, text: "TOS"));'
+      - lang: swift
+        label: Update terms of service
+        source: 'try await client.termsOfServices.updateTermsOfServiceById(termsOfServiceId: tos.id, requestBody: UpdateTermsOfServiceByIdRequestBody(status: UpdateTermsOfServiceByIdRequestBodyStatusField.disabled, text: "TOS"))'
+      - lang: java
+        label: Update terms of service
+        source: client.getTermsOfServices().updateTermsOfServiceById(tos.getId(), new UpdateTermsOfServiceByIdRequestBody(UpdateTermsOfServiceByIdRequestBodyStatusField.DISABLED, "TOS"))
+      - lang: node
+        label: Update terms of service
+        source: "await client.termsOfServices.updateTermsOfServiceById(tos.id, {\n  status: 'disabled' as UpdateTermsOfServiceByIdRequestBodyStatusField,\n  text: 'TOS',\n} satisfies UpdateTermsOfServiceByIdRequestBody);"
+      - lang: python
+        label: Update terms of service
+        source: "client.terms_of_services.update_terms_of_service_by_id(\n    tos.id, UpdateTermsOfServiceByIdStatus.DISABLED, \"TOS\"\n)"
 components:
   schemas:
-    TermsOfService:
-      title: Terms of service
+    TermsOfService--Base:
+      description: The root-level record that is supposed to represent a single Terms of Service.
       type: object
-      x-box-resource-id: terms_of_service
-      x-box-variant: standard
-      description: 'The root-level record that is supposed to represent a
-
-        single Terms of Service.'
+      properties:
+        id:
+          description: The unique identifier for this terms of service.
+          type: string
+          example: '11446498'
+        type:
+          description: The value will always be `terms_of_service`.
+          type: string
+          example: terms_of_service
+          enum:
+          - terms_of_service
+      required:
+      - id
+      - type
+      title: Terms of service (Base)
+      x-box-resource-id: terms_of_service--base
+      x-box-tag: terms_of_services
+      x-box-variant: base
+      x-box-variants:
+      - base
+      - standard
+    TermsOfServices:
+      description: A list of terms of services.
+      type: object
+      properties:
+        total_count:
+          description: The total number of objects.
+          type: integer
+          format: int64
+          example: 2
+        entries:
+          description: A list of terms of service objects.
+          type: array
+          items:
+            $ref: '#/components/schemas/TermsOfService'
+      title: Terms of services
+      x-box-resource-id: terms_of_services
+      x-box-tag: terms_of_services
+    TermsOfService:
+      description: The root-level record that is supposed to represent a single Terms of Service.
+      type: object
       allOf:
       - $ref: '#/components/schemas/TermsOfService--Base'
       - properties:
           status:
-            description: Whether these terms are enabled or not
+            description: Whether these terms are enabled or not.
             type: string
             example: enabled
             enum:
@@ -218,110 +309,67 @@ components:
             allOf:
             - title: Enterprise
               type: object
-              description: A representation of a Box enterprise
+              description: A representation of a Box enterprise.
               properties:
                 id:
-                  type: string
                   description: The unique identifier for this enterprise.
+                  type: string
                   example: '11446498'
                 type:
+                  description: The value will always be `enterprise`.
                   type: string
-                  description: '`enterprise`'
                   example: enterprise
                   enum:
                   - enterprise
                 name:
-                  description: The name of the enterprise
-                  example: Acme Inc.
+                  description: The name of the enterprise.
                   type: string
-            - description: The enterprise these terms apply to
+                  example: Acme Inc.
+            - description: The enterprise these terms apply to.
           tos_type:
-            description: Whether to apply these terms to managed users or external users
+            description: Whether to apply these terms to managed users or external users.
             type: string
             example: managed
             enum:
             - managed
             - external
           text:
-            description: 'The text for your terms and conditions. This text could be
-
-              empty if the `status` is set to `disabled`.'
+            description: The text for your terms and conditions. This text could be empty if the `status` is set to `disabled`.
             type: string
             example: By using this service, you agree to ...
           created_at:
+            description: When the legal item was created.
             type: string
             format: date-time
-            description: When the legal item was created
             example: '2012-12-12T10:53:43-08:00'
           modified_at:
+            description: When the legal item was modified.
             type: string
             format: date-time
-            description: When the legal item was modified.
             example: '2012-12-12T10:53:43-08:00'
-    TermsOfServices:
-      title: Terms of services
-      type: object
-      x-box-resource-id: terms_of_services
+      title: Terms of service
+      x-box-resource-id: terms_of_service
       x-box-tag: terms_of_services
-      description: A list of terms of services
-      properties:
-        total_count:
-          description: The total number of objects.
-          example: 2
-          type: integer
-          format: int64
-        entries:
-          type: array
-          description: A list of terms of service objects
-          items:
-            $ref: '#/components/schemas/TermsOfService'
-    TermsOfService--Base:
-      title: Terms of service (Base)
-      type: object
-      x-box-resource-id: terms_of_service--base
-      x-box-tag: terms_of_services
-      x-box-variants:
-      - base
-      - standard
-      x-box-variant: base
-      description: 'The root-level record that is supposed to represent a
-
-        single Terms of Service.'
-      required:
-      - id
-      - type
-      properties:
-        id:
-          type: string
-          description: The unique identifier for this terms of service.
-          example: '11446498'
-        type:
-          type: string
-          description: '`terms_of_service`'
-          example: terms_of_service
-          enum:
-          - terms_of_service
+      x-box-variant: standard
     ClientError:
-      title: Client error
+      description: A generic error.
       type: object
-      x-box-resource-id: client_error
-      description: A generic error
       properties:
         type:
-          description: error
-          example: error
+          description: The value will always be `error`.
           type: string
+          example: error
           enum:
           - error
         status:
           description: The HTTP status of the response.
-          example: 400
           type: integer
           format: int32
+          example: 400
         code:
-          description: A Box-specific error code
-          example: item_name_invalid
+          description: A Box-specific error code.
           type: string
+          example: item_name_invalid
           enum:
           - created
           - accepted
@@ -335,6 +383,7 @@ components:
           - method_not_allowed
           - conflict
           - precondition_failed
+          - unprocessable_entity
           - too_many_requests
           - internal_server_error
           - unavailable
@@ -342,35 +391,30 @@ components:
           - insufficient_scope
         message:
           description: A short message describing the error.
-          example: Method Not Allowed
           type: string
+          example: Method Not Allowed
         context_info:
-          description: 'A free-form object that contains additional context
-
-            about the error. The possible fields are defined on
-
-            a per-endpoint basis. `message` is only one example.'
+          description: A free-form object that contains additional context about the error. The possible fields are defined on a per-endpoint basis. `message` is only one example.
           type:
           - object
           - 'null'
-          properties:
-            message:
-              type: string
-              description: More details on the error.
-              example: Something went wrong.
+          example:
+            message: Something went wrong
+          additionalProperties: {}
         help_url:
           description: A URL that links to more information about why this error occurred.
-          example: https://developer.box.com/guides/api-calls/permissions-and-errors/common-errors/
           type: string
+          example: https://developer.box.com/guides/api-calls/permissions-and-errors/common-errors/
         request_id:
-          description: 'A unique identifier for this response, which can be used
-
-            when contacting Box support.'
+          description: A unique identifier for this response, which can be used when contacting Box support.
           type: string
           example: abcdef123456
+      title: Client error
+      x-box-resource-id: client_error
   securitySchemes:
     OAuth2Security:
       type: oauth2
+      description: The access token received from the authorization server in the OAuth 2.0 flow.
       flows:
         authorizationCode:
           authorizationUrl: https://account.box.com/api/oauth2/authorize
@@ -386,5 +430,8 @@ components:
             manage_data_retention: Manage data retention polices
             manage_legal_hold: Manage Legal Holds
 externalDocs:
-  description: Box Developer Documentation
+  description: Box Developer Documentation.
   url: https://developer.box.com
+x-mint:
+  mcp:
+    enabled: true

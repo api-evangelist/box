@@ -5,83 +5,64 @@ info:
   termsOfService: https://cloud.app.box.com/s/rmwxu64h1ipr41u49w3bbuvbsa29wku9
   contact:
     name: Box, Inc
-    url: https://box.dev
+    url: https://developer.box.com
     email: devrel@box.com
   license:
     name: Apache-2.0
-    url: http://www.apache.org/licenses/LICENSE-2.0
-  version: 2.0.0
-  x-box-commit-hash: '5819125043'
+    url: https://www.apache.org/licenses/LICENSE-2.0
+  version: '2024.0'
+  x-box-commit-hash: 53bdced3cd
 servers:
 - url: https://api.box.com/2.0
-  description: Box Platform API server
+  description: Box Platform API server.
 security:
 - OAuth2Security: []
 tags:
 - name: Standard and Zones Storage Policies
-  description: 'Storage policy assignment represents the
-
-    storage zone for items in a given enterprise.'
+  description: Storage policy assignment represents the storage zone for items in a given enterprise.
   x-box-tag: storage_policies
 paths:
   /storage_policies:
     get:
       operationId: get_storage_policies
-      summary: Box List storage policies
-      tags:
-      - Standard and Zones Storage Policies
-      x-box-tag: storage_policies
+      summary: List storage policies
       description: Fetches all the storage policies in the enterprise.
       parameters:
       - name: fields
-        description: 'A comma-separated list of attributes to include in the
-
-          response. This can be used to request fields that are
-
-          not normally returned in a standard response.
-
-
-          Be aware that specifying this parameter will have the
-
-          effect that none of the standard fields are returned in
-
-          the response unless explicitly specified, instead only
-
-          fields for the mini representation are returned, additional
-
-          to the fields requested.'
         in: query
-        example:
-        - id
-        - type
-        - name
+        description: 'A comma-separated list of attributes to include in the response. This can be used to request fields that are not normally returned in a standard response.
+
+
+          Be aware that specifying this parameter will have the effect that none of the standard fields are returned in the response unless explicitly specified, instead only fields for the mini representation are returned, additional to the fields requested.'
         required: false
-        explode: false
         schema:
           type: array
           items:
             type: string
+        example:
+        - id
+        - type
+        - name
+        explode: false
       - name: marker
-        description: 'Defines the position marker at which to begin returning results. This is
-
-          used when paginating using marker-based pagination.
+        in: query
+        description: 'Defines the position marker at which to begin returning results. This is used when paginating using marker-based pagination.
 
 
           This requires `usemarker` to be set to `true`.'
-        in: query
         required: false
-        example: JV9IRGZmieiBasejOG9yDCRNgd2ymoZIbjsxbJMjIs3kioVii
         schema:
           type: string
+        example: JV9IRGZmieiBasejOG9yDCRNgd2ymoZIbjsxbJMjIs3kioVii
       - name: limit
-        description: The maximum number of items to return per page.
         in: query
+        description: The maximum number of items to return per page.
         required: false
-        example: 1000
         schema:
           type: integer
           format: int64
           maximum: 1000
+        example: 1000
       responses:
         '200':
           description: Returns a collection of storage policies.
@@ -95,22 +76,42 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ClientError'
+      x-box-tag: storage_policies
+      tags:
+      - Standard and Zones Storage Policies
+      x-box-unsupported-on-free-developer: true
+      x-codeSamples:
+      - lang: curl
+        label: List storage policies
+        source: "curl -i -X GET \"https://api.box.com/2.0/storage_policies\" \\\n     -H \"authorization: Bearer <ACCESS_TOKEN>\""
+      - lang: dotnet
+        label: List storage policies
+        source: await client.StoragePolicies.GetStoragePoliciesAsync();
+      - lang: swift
+        label: List storage policies
+        source: try await client.storagePolicies.getStoragePolicies()
+      - lang: java
+        label: List storage policies
+        source: client.getStoragePolicies().getStoragePolicies()
+      - lang: node
+        label: List storage policies
+        source: await client.storagePolicies.getStoragePolicies();
+      - lang: python
+        label: List storage policies
+        source: client.storage_policies.get_storage_policies()
   /storage_policies/{storage_policy_id}:
     get:
       operationId: get_storage_policies_id
-      summary: Box Get storage policy
-      tags:
-      - Standard and Zones Storage Policies
-      x-box-tag: storage_policies
+      summary: Get storage policy
       description: Fetches a specific storage policy.
       parameters:
       - name: storage_policy_id
-        description: The ID of the storage policy.
-        example: '34342'
         in: path
+        description: The ID of the storage policy.
         required: true
         schema:
           type: string
+        example: '34342'
       responses:
         '200':
           description: Returns a storage policy object.
@@ -124,81 +125,97 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ClientError'
+      x-box-tag: storage_policies
+      tags:
+      - Standard and Zones Storage Policies
+      x-box-unsupported-on-free-developer: true
+      x-codeSamples:
+      - lang: curl
+        label: Get storage policy
+        source: "curl -i -X GET \"https://api.box.com/2.0/storage_policies/34342\" \\\n     -H \"authorization: Bearer <ACCESS_TOKEN>\""
+      - lang: dotnet
+        label: Get storage policy
+        source: 'await client.StoragePolicies.GetStoragePolicyByIdAsync(storagePolicyId: storagePolicy.Id);'
+      - lang: swift
+        label: Get storage policy
+        source: 'try await client.storagePolicies.getStoragePolicyById(storagePolicyId: storagePolicy.id)'
+      - lang: java
+        label: Get storage policy
+        source: client.getStoragePolicies().getStoragePolicyById(storagePolicy.getId())
+      - lang: node
+        label: Get storage policy
+        source: await client.storagePolicies.getStoragePolicyById(storagePolicy.id);
+      - lang: python
+        label: Get storage policy
+        source: client.storage_policies.get_storage_policy_by_id(storage_policy.id)
 components:
   schemas:
-    StoragePolicy:
-      title: Storage policy
+    StoragePolicies:
+      description: A list of storage policies.
       type: object
-      x-box-resource-id: storage_policy
-      x-box-variant: standard
+      allOf:
+      - type: object
+        description: The part of an API response that describes marker based pagination.
+        properties:
+          limit:
+            description: The limit that was used for these entries. This will be the same as the `limit` query parameter unless that value exceeded the maximum value allowed. The maximum value varies by API.
+            type: integer
+            format: int64
+            example: 1000
+          next_marker:
+            description: The marker for the start of the next page of results.
+            type:
+            - string
+            - 'null'
+            example: JV9IRGZmieiBasejOG9yDCRNgd2ymoZIbjsxbJMjIs3kioVii
+          prev_marker:
+            description: The marker for the start of the previous page of results.
+            type:
+            - string
+            - 'null'
+            example: JV9IRGZmieiBasejOG9yDCRNgd2ymoZIbjsxbJMjIs3kioVih
+      - properties:
+          entries:
+            description: A list of storage policies.
+            type: array
+            items:
+              $ref: '#/components/schemas/StoragePolicy'
+      title: Storage policies
+      x-box-resource-id: storage_policies
+      x-box-tag: storage_policies
+    StoragePolicy:
       description: The Storage Policy object describes the storage zone.
+      type: object
       allOf:
       - $ref: '#/components/schemas/StoragePolicy--Mini'
       - properties:
           name:
-            description: A descriptive name of the region
+            description: A descriptive name of the region.
             type: string
             example: Montreal / Dublin
-    StoragePolicies:
-      title: Storage policies
-      type: object
-      x-box-resource-id: storage_policies
+      title: Storage policy
+      x-box-resource-id: storage_policy
       x-box-tag: storage_policies
-      description: A list of storage policies.
-      allOf:
-      - type: object
-        description: 'The part of an API response that describes marker
-
-          based pagination'
-        properties:
-          limit:
-            description: 'The limit that was used for these entries. This will be the same as the
-
-              `limit` query parameter unless that value exceeded the maximum value
-
-              allowed. The maximum value varies by API.'
-            example: 1000
-            type: integer
-            format: int64
-          next_marker:
-            description: The marker for the start of the next page of results.
-            example: JV9IRGZmieiBasejOG9yDCRNgd2ymoZIbjsxbJMjIs3kioVii
-            type:
-            - string
-            - 'null'
-          prev_marker:
-            description: The marker for the start of the previous page of results.
-            example: JV9IRGZmieiBasejOG9yDCRNgd2ymoZIbjsxbJMjIs3kioVih
-            type:
-            - string
-            - 'null'
-      - properties:
-          entries:
-            type: array
-            description: A list of storage policies
-            items:
-              $ref: '#/components/schemas/StoragePolicy'
+      x-box-variant: standard
     ClientError:
-      title: Client error
+      description: A generic error.
       type: object
-      x-box-resource-id: client_error
-      description: A generic error
       properties:
         type:
-          description: error
-          example: error
+          description: The value will always be `error`.
           type: string
+          example: error
           enum:
           - error
         status:
           description: The HTTP status of the response.
-          example: 400
           type: integer
           format: int32
+          example: 400
         code:
-          description: A Box-specific error code
-          example: item_name_invalid
+          description: A Box-specific error code.
           type: string
+          example: item_name_invalid
           enum:
           - created
           - accepted
@@ -212,6 +229,7 @@ components:
           - method_not_allowed
           - conflict
           - precondition_failed
+          - unprocessable_entity
           - too_many_requests
           - internal_server_error
           - unavailable
@@ -219,59 +237,54 @@ components:
           - insufficient_scope
         message:
           description: A short message describing the error.
-          example: Method Not Allowed
           type: string
+          example: Method Not Allowed
         context_info:
-          description: 'A free-form object that contains additional context
-
-            about the error. The possible fields are defined on
-
-            a per-endpoint basis. `message` is only one example.'
+          description: A free-form object that contains additional context about the error. The possible fields are defined on a per-endpoint basis. `message` is only one example.
           type:
           - object
           - 'null'
-          properties:
-            message:
-              type: string
-              description: More details on the error.
-              example: Something went wrong.
+          example:
+            message: Something went wrong
+          additionalProperties: {}
         help_url:
           description: A URL that links to more information about why this error occurred.
-          example: https://developer.box.com/guides/api-calls/permissions-and-errors/common-errors/
           type: string
+          example: https://developer.box.com/guides/api-calls/permissions-and-errors/common-errors/
         request_id:
-          description: 'A unique identifier for this response, which can be used
-
-            when contacting Box support.'
+          description: A unique identifier for this response, which can be used when contacting Box support.
           type: string
           example: abcdef123456
+      title: Client error
+      x-box-resource-id: client_error
     StoragePolicy--Mini:
-      title: Storage policy (Mini)
+      description: A mini description of a Storage Policy object.
       type: object
-      x-box-resource-id: storage_policy--mini
-      x-box-tag: storage_policies
-      x-box-variants:
-      - standard
-      - mini
-      x-box-variant: mini
-      description: A mini description of a Storage Policy object
-      required:
-      - id
-      - type
       properties:
         id:
+          description: The unique identifier for this storage policy.
           type: string
-          description: The unique identifier for this storage policy
           example: '11446498'
         type:
+          description: The value will always be `storage_policy`.
           type: string
-          description: '`storage_policy`'
           example: storage_policy
           enum:
           - storage_policy
+      required:
+      - id
+      - type
+      title: Storage policy (Mini)
+      x-box-resource-id: storage_policy--mini
+      x-box-tag: storage_policies
+      x-box-variant: mini
+      x-box-variants:
+      - standard
+      - mini
   securitySchemes:
     OAuth2Security:
       type: oauth2
+      description: The access token received from the authorization server in the OAuth 2.0 flow.
       flows:
         authorizationCode:
           authorizationUrl: https://account.box.com/api/oauth2/authorize
@@ -287,5 +300,8 @@ components:
             manage_data_retention: Manage data retention polices
             manage_legal_hold: Manage Legal Holds
 externalDocs:
-  description: Box Developer Documentation
+  description: Box Developer Documentation.
   url: https://developer.box.com
+x-mint:
+  mcp:
+    enabled: true

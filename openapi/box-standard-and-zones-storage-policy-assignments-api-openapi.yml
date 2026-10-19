@@ -5,72 +5,59 @@ info:
   termsOfService: https://cloud.app.box.com/s/rmwxu64h1ipr41u49w3bbuvbsa29wku9
   contact:
     name: Box, Inc
-    url: https://box.dev
+    url: https://developer.box.com
     email: devrel@box.com
   license:
     name: Apache-2.0
-    url: http://www.apache.org/licenses/LICENSE-2.0
-  version: 2.0.0
-  x-box-commit-hash: '5819125043'
+    url: https://www.apache.org/licenses/LICENSE-2.0
+  version: '2024.0'
+  x-box-commit-hash: 53bdced3cd
 servers:
 - url: https://api.box.com/2.0
-  description: Box Platform API server
+  description: Box Platform API server.
 security:
 - OAuth2Security: []
 tags:
 - name: Standard and Zones Storage Policy Assignments
-  description: 'Storage policy assignment represents the
-
-    relation between storage zone and the
-
-    assigned item (for example a file stored
-
-    in a specific zone).'
+  description: Storage policy assignment represents the relation between storage zone and the assigned item (for example a file stored in a specific zone).
   x-box-tag: storage_policy_assignments
 paths:
   /storage_policy_assignments:
     get:
       operationId: get_storage_policy_assignments
-      summary: Box List storage policy assignments
-      tags:
-      - Standard and Zones Storage Policy Assignments
-      x-box-tag: storage_policy_assignments
+      summary: List storage policy assignments
       description: Fetches all the storage policy assignment for an enterprise or user.
       parameters:
       - name: marker
-        description: 'Defines the position marker at which to begin returning results. This is
-
-          used when paginating using marker-based pagination.
+        in: query
+        description: 'Defines the position marker at which to begin returning results. This is used when paginating using marker-based pagination.
 
 
           This requires `usemarker` to be set to `true`.'
-        in: query
         required: false
-        example: JV9IRGZmieiBasejOG9yDCRNgd2ymoZIbjsxbJMjIs3kioVii
         schema:
           type: string
+        example: JV9IRGZmieiBasejOG9yDCRNgd2ymoZIbjsxbJMjIs3kioVii
       - name: resolved_for_type
         in: query
-        example: user
-        description: The target type to return assignments for
+        description: The target type to return assignments for.
         required: true
         schema:
           type: string
           enum:
           - user
           - enterprise
+        example: user
       - name: resolved_for_id
         in: query
+        description: The ID of the user or enterprise to return assignments for.
         required: true
-        example: '984322'
-        description: The ID of the user or enterprise to return assignments for
         schema:
           type: string
+        example: '984322'
       responses:
         '200':
-          description: 'Returns a collection of storage policies for
-
-            the enterprise or user.'
+          description: Returns a collection of storage policies for the enterprise or user.
           content:
             application/json:
               schema:
@@ -81,61 +68,77 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ClientError'
-    post:
-      operationId: post_storage_policy_assignments
-      summary: Box Assign storage policy
+      x-box-tag: storage_policy_assignments
       tags:
       - Standard and Zones Storage Policy Assignments
-      x-box-tag: storage_policy_assignments
+      x-box-unsupported-on-free-developer: true
+      x-codeSamples:
+      - lang: curl
+        label: List storage policy assignments
+        source: "curl -i -X GET \"https://api.box.com/2.0/storage_policy_assignments?resolved_for_type=user&resolved_for_id=984322\" \\\n     -H \"authorization: Bearer <ACCESS_TOKEN>\""
+      - lang: dotnet
+        label: List storage policy assignments
+        source: 'await client.StoragePolicyAssignments.GetStoragePolicyAssignmentsAsync(queryParams: new GetStoragePolicyAssignmentsQueryParams(resolvedForType: GetStoragePolicyAssignmentsQueryParamsResolvedForTypeField.User, resolvedForId: userId));'
+      - lang: swift
+        label: List storage policy assignments
+        source: 'try await client.storagePolicyAssignments.getStoragePolicyAssignments(queryParams: GetStoragePolicyAssignmentsQueryParams(resolvedForType: GetStoragePolicyAssignmentsQueryParamsResolvedForTypeField.user, resolvedForId: userId))'
+      - lang: java
+        label: List storage policy assignments
+        source: client.getStoragePolicyAssignments().getStoragePolicyAssignments(new GetStoragePolicyAssignmentsQueryParams(GetStoragePolicyAssignmentsQueryParamsResolvedForTypeField.USER, userId))
+      - lang: node
+        label: List storage policy assignments
+        source: "await client.storagePolicyAssignments.getStoragePolicyAssignments({\n  resolvedForType:\n    'user' as GetStoragePolicyAssignmentsQueryParamsResolvedForTypeField,\n  resolvedForId: userId,\n} satisfies GetStoragePolicyAssignmentsQueryParams);"
+      - lang: python
+        label: List storage policy assignments
+        source: "client.storage_policy_assignments.get_storage_policy_assignments(\n    GetStoragePolicyAssignmentsResolvedForType.USER, user_id\n)"
+    post:
+      operationId: post_storage_policy_assignments
+      summary: Assign storage policy
       description: Creates a storage policy assignment for an enterprise or user.
       requestBody:
         content:
           application/json:
             schema:
               type: object
-              required:
-              - storage_policy
-              - assigned_to
               properties:
                 storage_policy:
+                  description: The storage policy to assign to the user or enterprise.
                   type: object
-                  description: 'The storage policy to assign to the user or
-
-                    enterprise'
-                  required:
-                  - type
-                  - id
                   properties:
                     type:
-                      type: string
                       description: The type to assign.
+                      type: string
                       example: storage_policy
                       enum:
                       - storage_policy
                     id:
-                      type: string
                       description: The ID of the storage policy to assign.
+                      type: string
                       example: '1434325'
-                assigned_to:
-                  type: object
-                  description: 'The user or enterprise to assign the storage
-
-                    policy to.'
                   required:
                   - type
                   - id
+                assigned_to:
+                  description: The user or enterprise to assign the storage policy to.
+                  type: object
                   properties:
                     type:
-                      type: string
                       description: The type to assign the policy to.
+                      type: string
                       example: user
                       enum:
                       - user
                       - enterprise
                     id:
+                      description: The ID of the user or enterprise.
                       type: string
-                      description: The ID of the user or enterprise
                       example: '9987987'
+                  required:
+                  - type
+                  - id
+              required:
+              - storage_policy
+              - assigned_to
       responses:
         '200':
           description: Returns the new storage policy assignment created.
@@ -149,22 +152,42 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ClientError'
+      x-box-tag: storage_policy_assignments
+      tags:
+      - Standard and Zones Storage Policy Assignments
+      x-box-unsupported-on-free-developer: true
+      x-codeSamples:
+      - lang: curl
+        label: Assign storage policy
+        source: "curl -i -X POST \"https://api.box.com/2.0/storage_policy_assignments\" \\\n     -H \"authorization: Bearer <ACCESS_TOKEN>\" \\\n     -H \"content-type: application/json\" \\\n     -d '{\n       \"storage_policy\": {\n         \"type\": \"storage_policy\",\n         \"id\": \"1434325\"\n       },\n       \"assigned_to\": {\n         \"type\": \"user\",\n         \"id\": \"9987987\"\n       }\n     }'"
+      - lang: dotnet
+        label: Assign storage policy
+        source: 'await client.StoragePolicyAssignments.CreateStoragePolicyAssignmentAsync(requestBody: new CreateStoragePolicyAssignmentRequestBody(storagePolicy: new CreateStoragePolicyAssignmentRequestBodyStoragePolicyField(id: policyId), assignedTo: new CreateStoragePolicyAssignmentRequestBodyAssignedToField(id: userId, type: CreateStoragePolicyAssignmentRequestBodyAssignedToTypeField.User)));'
+      - lang: swift
+        label: Assign storage policy
+        source: 'try await client.storagePolicyAssignments.createStoragePolicyAssignment(requestBody: CreateStoragePolicyAssignmentRequestBody(storagePolicy: CreateStoragePolicyAssignmentRequestBodyStoragePolicyField(id: policyId), assignedTo: CreateStoragePolicyAssignmentRequestBodyAssignedToField(id: userId, type: CreateStoragePolicyAssignmentRequestBodyAssignedToTypeField.user)))'
+      - lang: java
+        label: Assign storage policy
+        source: client.getStoragePolicyAssignments().createStoragePolicyAssignment(new CreateStoragePolicyAssignmentRequestBody(new CreateStoragePolicyAssignmentRequestBodyStoragePolicyField(policyId), new CreateStoragePolicyAssignmentRequestBodyAssignedToField(CreateStoragePolicyAssignmentRequestBodyAssignedToTypeField.USER, userId)))
+      - lang: node
+        label: Assign storage policy
+        source: "await client.storagePolicyAssignments.createStoragePolicyAssignment({\n  storagePolicy: new CreateStoragePolicyAssignmentRequestBodyStoragePolicyField(\n    { id: policyId },\n  ),\n  assignedTo: {\n    id: userId,\n    type: 'user' as CreateStoragePolicyAssignmentRequestBodyAssignedToTypeField,\n  } satisfies CreateStoragePolicyAssignmentRequestBodyAssignedToField,\n} satisfies CreateStoragePolicyAssignmentRequestBody);"
+      - lang: python
+        label: Assign storage policy
+        source: "client.storage_policy_assignments.create_storage_policy_assignment(\n    CreateStoragePolicyAssignmentStoragePolicy(id=policy_id),\n    CreateStoragePolicyAssignmentAssignedTo(\n        id=user_id, type=CreateStoragePolicyAssignmentAssignedToTypeField.USER\n    ),\n)"
   /storage_policy_assignments/{storage_policy_assignment_id}:
     get:
       operationId: get_storage_policy_assignments_id
-      summary: Box Get storage policy assignment
-      tags:
-      - Standard and Zones Storage Policy Assignments
-      x-box-tag: storage_policy_assignments
+      summary: Get storage policy assignment
       description: Fetches a specific storage policy assignment.
       parameters:
       - name: storage_policy_assignment_id
-        description: The ID of the storage policy assignment.
-        example: '932483'
         in: path
+        description: The ID of the storage policy assignment.
         required: true
         schema:
           type: string
+        example: '932483'
       responses:
         '200':
           description: Returns a storage policy assignment object.
@@ -178,48 +201,66 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ClientError'
-    put:
-      operationId: put_storage_policy_assignments_id
-      summary: Box Update storage policy assignment
+      x-box-tag: storage_policy_assignments
       tags:
       - Standard and Zones Storage Policy Assignments
-      x-box-tag: storage_policy_assignments
+      x-box-unsupported-on-free-developer: true
+      x-codeSamples:
+      - lang: curl
+        label: Get storage policy assignment
+        source: "curl -i -X GET \"https://api.box.com/2.0/storage_policy_assignments/932483\" \\\n     -H \"authorization: Bearer <ACCESS_TOKEN>\""
+      - lang: dotnet
+        label: Get storage policy assignment
+        source: 'await client.StoragePolicyAssignments.GetStoragePolicyAssignmentByIdAsync(storagePolicyAssignmentId: storagePolicyAssignment.Id);'
+      - lang: swift
+        label: Get storage policy assignment
+        source: 'try await client.storagePolicyAssignments.getStoragePolicyAssignmentById(storagePolicyAssignmentId: storagePolicyAssignment.id)'
+      - lang: java
+        label: Get storage policy assignment
+        source: client.getStoragePolicyAssignments().getStoragePolicyAssignmentById(storagePolicyAssignment.getId())
+      - lang: node
+        label: Get storage policy assignment
+        source: "await client.storagePolicyAssignments.getStoragePolicyAssignmentById(\n  storagePolicyAssignment.id,\n);"
+      - lang: python
+        label: Get storage policy assignment
+        source: "client.storage_policy_assignments.get_storage_policy_assignment_by_id(\n    storage_policy_assignment.id\n)"
+    put:
+      operationId: put_storage_policy_assignments_id
+      summary: Update storage policy assignment
       description: Updates a specific storage policy assignment.
       parameters:
       - name: storage_policy_assignment_id
-        description: The ID of the storage policy assignment.
-        example: '932483'
         in: path
+        description: The ID of the storage policy assignment.
         required: true
         schema:
           type: string
+        example: '932483'
       requestBody:
         content:
           application/json:
             schema:
               type: object
-              required:
-              - storage_policy
               properties:
                 storage_policy:
+                  description: The storage policy to assign to the user or enterprise.
                   type: object
-                  description: 'The storage policy to assign to the user or
-
-                    enterprise'
-                  required:
-                  - type
-                  - id
                   properties:
                     type:
-                      type: string
                       description: The type to assign.
+                      type: string
                       example: storage_policy
                       enum:
                       - storage_policy
                     id:
-                      type: string
                       description: The ID of the storage policy to assign.
+                      type: string
                       example: '1434325'
+                  required:
+                  - type
+                  - id
+              required:
+              - storage_policy
       responses:
         '200':
           description: Returns an updated storage policy assignment object.
@@ -233,67 +274,139 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ClientError'
-    delete:
-      operationId: delete_storage_policy_assignments_id
-      summary: Box Unassign storage policy
+      x-box-tag: storage_policy_assignments
       tags:
       - Standard and Zones Storage Policy Assignments
-      x-box-tag: storage_policy_assignments
+      x-box-unsupported-on-free-developer: true
+      x-codeSamples:
+      - lang: curl
+        label: Update storage policy assignment
+        source: "curl -i -X PUT \"https://api.box.com/2.0/storage_policy_assignments/932483\" \\\n     -H \"authorization: Bearer <ACCESS_TOKEN>\" \\\n     -H \"content-type: application/json\" \\\n     -d '{\n       \"storage_policy\": {\n         \"type\": \"storage_policy\",\n         \"id\": \"1434325\"\n       }\n     }'"
+      - lang: dotnet
+        label: Update storage policy assignment
+        source: 'await client.StoragePolicyAssignments.UpdateStoragePolicyAssignmentByIdAsync(storagePolicyAssignmentId: storagePolicyAssignment.Id, requestBody: new UpdateStoragePolicyAssignmentByIdRequestBody(storagePolicy: new UpdateStoragePolicyAssignmentByIdRequestBodyStoragePolicyField(id: storagePolicy2.Id)));'
+      - lang: swift
+        label: Update storage policy assignment
+        source: 'try await client.storagePolicyAssignments.updateStoragePolicyAssignmentById(storagePolicyAssignmentId: storagePolicyAssignment.id, requestBody: UpdateStoragePolicyAssignmentByIdRequestBody(storagePolicy: UpdateStoragePolicyAssignmentByIdRequestBodyStoragePolicyField(id: storagePolicy2.id)))'
+      - lang: java
+        label: Update storage policy assignment
+        source: client.getStoragePolicyAssignments().updateStoragePolicyAssignmentById(storagePolicyAssignment.getId(), new UpdateStoragePolicyAssignmentByIdRequestBody(new UpdateStoragePolicyAssignmentByIdRequestBodyStoragePolicyField(storagePolicy2.getId())))
+      - lang: node
+        label: Update storage policy assignment
+        source: "await client.storagePolicyAssignments.updateStoragePolicyAssignmentById(\n  storagePolicyAssignment.id,\n  {\n    storagePolicy:\n      new UpdateStoragePolicyAssignmentByIdRequestBodyStoragePolicyField({\n        id: storagePolicy2.id,\n      }),\n  } satisfies UpdateStoragePolicyAssignmentByIdRequestBody,\n);"
+      - lang: python
+        label: Update storage policy assignment
+        source: "client.storage_policy_assignments.update_storage_policy_assignment_by_id(\n    storage_policy_assignment.id,\n    UpdateStoragePolicyAssignmentByIdStoragePolicy(id=storage_policy_2.id),\n)"
+    delete:
+      operationId: delete_storage_policy_assignments_id
+      summary: Unassign storage policy
       description: 'Delete a storage policy assignment.
 
 
-        Deleting a storage policy assignment on a user
-
-        will have the user inherit the enterprise''s default
-
-        storage policy.
+        Deleting a storage policy assignment on a user will have the user inherit the enterprise''s default storage policy.
 
 
-        There is a rate limit for calling this endpoint of only
-
-        twice per user in a 24 hour time frame.'
+        There is a rate limit for calling this endpoint of only twice per user in a 24 hour time frame.'
       parameters:
       - name: storage_policy_assignment_id
-        description: The ID of the storage policy assignment.
-        example: '932483'
         in: path
+        description: The ID of the storage policy assignment.
         required: true
         schema:
           type: string
+        example: '932483'
       responses:
         '204':
-          description: 'Returns an empty response when the storage policy
-
-            assignment is successfully deleted.'
+          description: Returns an empty response when the storage policy assignment is successfully deleted.
         default:
           description: An unexpected client error.
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ClientError'
+      x-box-tag: storage_policy_assignments
+      tags:
+      - Standard and Zones Storage Policy Assignments
+      x-box-unsupported-on-free-developer: true
+      x-codeSamples:
+      - lang: curl
+        label: Unassign storage policy
+        source: "curl -i -X DELETE \"https://api.box.com/2.0/storage_policy_assignments/932483\" \\\n     -H \"authorization: Bearer <ACCESS_TOKEN>\" \\\n     -d '{\n       \"items\": {\n         \"type\": \"storage_policy\",\n         \"id\": \"1434325\"\n       }\n     }'"
+      - lang: dotnet
+        label: Unassign storage policy
+        source: 'await client.StoragePolicyAssignments.DeleteStoragePolicyAssignmentByIdAsync(storagePolicyAssignmentId: storagePolicyAssignment.Id);'
+      - lang: swift
+        label: Unassign storage policy
+        source: 'try await client.storagePolicyAssignments.deleteStoragePolicyAssignmentById(storagePolicyAssignmentId: storagePolicyAssignment.id)'
+      - lang: java
+        label: Unassign storage policy
+        source: client.getStoragePolicyAssignments().deleteStoragePolicyAssignmentById(storagePolicyAssignment.getId())
+      - lang: node
+        label: Unassign storage policy
+        source: "await client.storagePolicyAssignments.deleteStoragePolicyAssignmentById(\n  storagePolicyAssignment.id,\n);"
+      - lang: python
+        label: Unassign storage policy
+        source: "client.storage_policy_assignments.delete_storage_policy_assignment_by_id(\n    storage_policy_assignment.id\n)"
 components:
   schemas:
-    ClientError:
-      title: Client error
+    StoragePolicyAssignment:
+      description: The assignment of a storage policy to a user or enterprise.
       type: object
-      x-box-resource-id: client_error
-      description: A generic error
+      properties:
+        id:
+          description: The unique identifier for a storage policy assignment.
+          type: string
+          example: ZW50ZXJwcmlzZV8xMjM0NTY3ODkw
+        type:
+          description: The value will always be `storage_policy_assignment`.
+          type: string
+          example: storage_policy_assignment
+          enum:
+          - storage_policy_assignment
+        storage_policy:
+          allOf:
+          - $ref: '#/components/schemas/StoragePolicy--Mini'
+          - description: The assigned storage policy.
+        assigned_to:
+          allOf:
+          - title: Reference
+            description: The bare basic reference for an object.
+            type: object
+            properties:
+              id:
+                description: The unique identifier for this object.
+                type: string
+                example: '11446498'
+              type:
+                description: The type for this object.
+                type: string
+                example: file
+          - description: The enterprise or use the policy is assigned to.
+      required:
+      - id
+      - type
+      title: Storage policy assignment
+      x-box-resource-id: storage_policy_assignment
+      x-box-tag: storage_policy_assignments
+    ClientError:
+      description: A generic error.
+      type: object
       properties:
         type:
-          description: error
-          example: error
+          description: The value will always be `error`.
           type: string
+          example: error
           enum:
           - error
         status:
           description: The HTTP status of the response.
-          example: 400
           type: integer
           format: int32
+          example: 400
         code:
-          description: A Box-specific error code
-          example: item_name_invalid
+          description: A Box-specific error code.
           type: string
+          example: item_name_invalid
           enum:
           - created
           - accepted
@@ -307,6 +420,7 @@ components:
           - method_not_allowed
           - conflict
           - precondition_failed
+          - unprocessable_entity
           - too_many_requests
           - internal_server_error
           - unavailable
@@ -314,137 +428,87 @@ components:
           - insufficient_scope
         message:
           description: A short message describing the error.
-          example: Method Not Allowed
           type: string
+          example: Method Not Allowed
         context_info:
-          description: 'A free-form object that contains additional context
-
-            about the error. The possible fields are defined on
-
-            a per-endpoint basis. `message` is only one example.'
+          description: A free-form object that contains additional context about the error. The possible fields are defined on a per-endpoint basis. `message` is only one example.
           type:
           - object
           - 'null'
-          properties:
-            message:
-              type: string
-              description: More details on the error.
-              example: Something went wrong.
+          example:
+            message: Something went wrong
+          additionalProperties: {}
         help_url:
           description: A URL that links to more information about why this error occurred.
-          example: https://developer.box.com/guides/api-calls/permissions-and-errors/common-errors/
           type: string
+          example: https://developer.box.com/guides/api-calls/permissions-and-errors/common-errors/
         request_id:
-          description: 'A unique identifier for this response, which can be used
-
-            when contacting Box support.'
+          description: A unique identifier for this response, which can be used when contacting Box support.
           type: string
           example: abcdef123456
+      title: Client error
+      x-box-resource-id: client_error
     StoragePolicyAssignments:
-      title: Storage policy assignments
-      type: object
-      x-box-resource-id: storage_policy_assignments
-      x-box-tag: storage_policy_assignments
       description: A list of storage policy assignments.
+      type: object
       allOf:
       - type: object
-        description: 'The part of an API response that describes marker
-
-          based pagination'
+        description: The part of an API response that describes marker based pagination.
         properties:
           limit:
-            description: 'The limit that was used for these entries. This will be the same as the
-
-              `limit` query parameter unless that value exceeded the maximum value
-
-              allowed. The maximum value varies by API.'
-            example: 1000
+            description: The limit that was used for these entries. This will be the same as the `limit` query parameter unless that value exceeded the maximum value allowed. The maximum value varies by API.
             type: integer
             format: int64
+            example: 1000
           next_marker:
             description: The marker for the start of the next page of results.
-            example: JV9IRGZmieiBasejOG9yDCRNgd2ymoZIbjsxbJMjIs3kioVii
             type:
             - string
             - 'null'
+            example: JV9IRGZmieiBasejOG9yDCRNgd2ymoZIbjsxbJMjIs3kioVii
           prev_marker:
             description: The marker for the start of the previous page of results.
-            example: JV9IRGZmieiBasejOG9yDCRNgd2ymoZIbjsxbJMjIs3kioVih
             type:
             - string
             - 'null'
+            example: JV9IRGZmieiBasejOG9yDCRNgd2ymoZIbjsxbJMjIs3kioVih
       - properties:
           entries:
+            description: A list of storage policy assignments.
             type: array
-            description: A list of storage policy assignments
             items:
               $ref: '#/components/schemas/StoragePolicyAssignment'
-    StoragePolicyAssignment:
-      title: Storage policy assignment
-      type: object
-      x-box-resource-id: storage_policy_assignment
+      title: Storage policy assignments
+      x-box-resource-id: storage_policy_assignments
       x-box-tag: storage_policy_assignments
-      description: The assignment of a storage policy to a user or enterprise
-      required:
-      - id
-      - type
-      properties:
-        id:
-          type: string
-          description: The unique identifier for a storage policy assignment.
-          example: ZW50ZXJwcmlzZV8xMjM0NTY3ODkw
-        type:
-          type: string
-          description: '`storage_policy_assignment`'
-          example: storage_policy_assignment
-          enum:
-          - storage_policy_assignment
-        storage_policy:
-          allOf:
-          - $ref: '#/components/schemas/StoragePolicy--Mini'
-          - description: The assigned storage policy
-        assigned_to:
-          allOf:
-          - title: Reference
-            description: The bare basic reference for an object
-            type: object
-            properties:
-              id:
-                type: string
-                description: The unique identifier for this object
-                example: '11446498'
-              type:
-                type: string
-                description: The type for this object
-                example: file
-          - description: The enterprise or use the policy is assigned to
     StoragePolicy--Mini:
-      title: Storage policy (Mini)
+      description: A mini description of a Storage Policy object.
       type: object
-      x-box-resource-id: storage_policy--mini
-      x-box-tag: storage_policies
-      x-box-variants:
-      - standard
-      - mini
-      x-box-variant: mini
-      description: A mini description of a Storage Policy object
-      required:
-      - id
-      - type
       properties:
         id:
+          description: The unique identifier for this storage policy.
           type: string
-          description: The unique identifier for this storage policy
           example: '11446498'
         type:
+          description: The value will always be `storage_policy`.
           type: string
-          description: '`storage_policy`'
           example: storage_policy
           enum:
           - storage_policy
+      required:
+      - id
+      - type
+      title: Storage policy (Mini)
+      x-box-resource-id: storage_policy--mini
+      x-box-tag: storage_policies
+      x-box-variant: mini
+      x-box-variants:
+      - standard
+      - mini
   securitySchemes:
     OAuth2Security:
       type: oauth2
+      description: The access token received from the authorization server in the OAuth 2.0 flow.
       flows:
         authorizationCode:
           authorizationUrl: https://account.box.com/api/oauth2/authorize
@@ -460,5 +524,8 @@ components:
             manage_data_retention: Manage data retention polices
             manage_legal_hold: Manage Legal Holds
 externalDocs:
-  description: Box Developer Documentation
+  description: Box Developer Documentation.
   url: https://developer.box.com
+x-mint:
+  mcp:
+    enabled: true

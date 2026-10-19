@@ -1,0 +1,1035 @@
+openapi: 3.2.0
+info:
+  title: Box Platform Box Sign templates API
+  description: Box Platform provides functionality to provide access to content stored within Box. It provides endpoints for basic manipulation of files and folders, management of users within an enterprise, as well as more complex topics such as legal holds and retention policies.
+  termsOfService: https://cloud.app.box.com/s/rmwxu64h1ipr41u49w3bbuvbsa29wku9
+  contact:
+    name: Box, Inc
+    url: https://developer.box.com
+    email: devrel@box.com
+  license:
+    name: Apache-2.0
+    url: https://www.apache.org/licenses/LICENSE-2.0
+  version: '2024.0'
+  x-box-commit-hash: 53bdced3cd
+servers:
+- url: https://api.box.com/2.0
+  description: Box Platform API server.
+security:
+- OAuth2Security: []
+tags:
+- name: Box Sign templates
+  description: Sign templates allow you to use a predefined Box Sign template when creating a signature request. The template includes placeholders that are automatically populated with data when creating the request.
+  x-box-tag: sign_templates
+paths:
+  /sign_templates:
+    get:
+      operationId: get_sign_templates
+      summary: List Box Sign templates
+      description: Gets Box Sign templates created by a user.
+      parameters:
+      - name: marker
+        in: query
+        description: 'Defines the position marker at which to begin returning results. This is used when paginating using marker-based pagination.
+
+
+          This requires `usemarker` to be set to `true`.'
+        required: false
+        schema:
+          type: string
+        example: JV9IRGZmieiBasejOG9yDCRNgd2ymoZIbjsxbJMjIs3kioVii
+      - name: limit
+        in: query
+        description: The maximum number of items to return per page.
+        required: false
+        schema:
+          type: integer
+          format: int64
+          maximum: 1000
+        example: 1000
+      responses:
+        '200':
+          description: Returns a collection of templates.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SignTemplates'
+        '401':
+          description: Returned when the access token provided in the `Authorization` header is not recognized or not provided.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ClientError'
+        default:
+          description: An unexpected client error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ClientError'
+      x-box-tag: sign_templates
+      tags:
+      - Box Sign templates
+      x-codeSamples:
+      - lang: curl
+        label: List Box Sign templates
+        source: "curl -L -X GET \"https://api.box.com/2.0/sign_templates?marker=JV9IRGZmieiBasejOG9yDCRNgd2ymoZIbjsxbJMjIs3kioVii&limit=1000\" \\\n     -H \"authorization: Bearer <ACCESS_TOKEN>\""
+      - lang: dotnet
+        label: List Box Sign templates
+        source: 'await client.SignTemplates.GetSignTemplatesAsync(queryParams: new GetSignTemplatesQueryParams() { Limit = 2L });'
+      - lang: swift
+        label: List Box Sign templates
+        source: 'try await client.signTemplates.getSignTemplates(queryParams: GetSignTemplatesQueryParams(limit: Int64(2)))'
+      - lang: java
+        label: List Box Sign templates
+        source: client.getSignTemplates().getSignTemplates(new GetSignTemplatesQueryParams.Builder().limit(2L).build())
+      - lang: node
+        label: List Box Sign templates
+        source: "await client.signTemplates.getSignTemplates({\n  limit: 2,\n} satisfies GetSignTemplatesQueryParams);"
+      - lang: python
+        label: List Box Sign templates
+        source: client.sign_templates.get_sign_templates(limit=2)
+  /sign_templates/{template_id}:
+    get:
+      operationId: get_sign_templates_id
+      summary: Get Box Sign template by ID
+      description: Fetches details of a specific Box Sign template.
+      parameters:
+      - name: template_id
+        in: path
+        description: The ID of a Box Sign template.
+        required: true
+        schema:
+          type: string
+        example: 123075213-7d117509-8f05-42e4-a5ef-5190a319d41d
+      responses:
+        '200':
+          description: Returns details of a template.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SignTemplate'
+        '401':
+          description: Returned when the access token provided in the `Authorization` header is not recognized or not provided.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ClientError'
+        '404':
+          description: Returned if the template is not found or the user does not have access to the associated template.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ClientError'
+        default:
+          description: An unexpected client error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ClientError'
+      x-box-tag: sign_templates
+      tags:
+      - Box Sign templates
+      x-codeSamples:
+      - lang: curl
+        label: Get Box Sign template by ID
+        source: "curl -L -X GET \"https://api.box.com/2.0/sign_templates/12345678\" \\\n     -H \"accept: application/json\" \\\n     -H \"authorization: Bearer <ACCESS_TOKEN>\""
+      - lang: dotnet
+        label: Get Box Sign template by ID
+        source: 'await client.SignTemplates.GetSignTemplateByIdAsync(templateId: NullableUtils.Unwrap(NullableUtils.Unwrap(signTemplates.Entries)[0].Id));'
+      - lang: swift
+        label: Get Box Sign template by ID
+        source: 'try await client.signTemplates.getSignTemplateById(templateId: signTemplates.entries![0].id!)'
+      - lang: java
+        label: Get Box Sign template by ID
+        source: client.getSignTemplates().getSignTemplateById(signTemplates.getEntries().get(0).getId())
+      - lang: node
+        label: Get Box Sign template by ID
+        source: await client.signTemplates.getSignTemplateById(signTemplates.entries![0].id!);
+      - lang: python
+        label: Get Box Sign template by ID
+        source: client.sign_templates.get_sign_template_by_id(sign_templates.entries[0].id)
+components:
+  schemas:
+    File--Mini:
+      description: A mini representation of a file, used when nested under another resource.
+      type:
+      - object
+      - 'null'
+      allOf:
+      - $ref: '#/components/schemas/File--Base'
+      - properties:
+          sequence_id:
+            allOf:
+            - type:
+              - string
+              - 'null'
+              example: '3'
+              description: 'A numeric identifier that represents the most recent user event that has been applied to this item.
+
+
+                This can be used in combination with the `GET /events`-endpoint to filter out user events that would have occurred before this identifier was read.
+
+
+                An example would be where a Box Drive-like application would fetch an item via the API, and then listen to incoming user events for changes to the item. The application would ignore any user events where the `sequence_id` in the event is smaller than or equal to the `sequence_id` in the originally fetched resource.'
+            - {}
+          name:
+            description: The name of the file.
+            type: string
+            example: Contract.pdf
+          sha1:
+            description: The SHA1 hash of the file. This can be used to compare the contents of a file on Box with a local file.
+            type: string
+            format: digest
+            example: 85136C79CBF9FE36BB9D05D0639C70C265C18D37
+          file_version:
+            allOf:
+            - $ref: '#/components/schemas/FileVersion--Mini'
+            - description: The information about the current version of the file.
+      title: File (Mini)
+      x-box-resource-id: file--mini
+      x-box-tag: files
+      x-box-variant: mini
+    SignRequestSignerInputNumberWithPeriodValidation:
+      description: Specifies the number with period formatting rules for a text field input by the signer. If set, this validation is mandatory.
+      type: object
+      properties:
+        validation_type:
+          description: Validates that the text input uses a number format with a period as the decimal separator (for example, 1.23).
+          type: string
+          example: number_with_period
+          enum:
+          - number_with_period
+      title: Sign Request Signer Input Number With Period Validation
+    ClientError:
+      description: A generic error.
+      type: object
+      properties:
+        type:
+          description: The value will always be `error`.
+          type: string
+          example: error
+          enum:
+          - error
+        status:
+          description: The HTTP status of the response.
+          type: integer
+          format: int32
+          example: 400
+        code:
+          description: A Box-specific error code.
+          type: string
+          example: item_name_invalid
+          enum:
+          - created
+          - accepted
+          - no_content
+          - redirect
+          - not_modified
+          - bad_request
+          - unauthorized
+          - forbidden
+          - not_found
+          - method_not_allowed
+          - conflict
+          - precondition_failed
+          - unprocessable_entity
+          - too_many_requests
+          - internal_server_error
+          - unavailable
+          - item_name_invalid
+          - insufficient_scope
+        message:
+          description: A short message describing the error.
+          type: string
+          example: Method Not Allowed
+        context_info:
+          description: A free-form object that contains additional context about the error. The possible fields are defined on a per-endpoint basis. `message` is only one example.
+          type:
+          - object
+          - 'null'
+          example:
+            message: Something went wrong
+          additionalProperties: {}
+        help_url:
+          description: A URL that links to more information about why this error occurred.
+          type: string
+          example: https://developer.box.com/guides/api-calls/permissions-and-errors/common-errors/
+        request_id:
+          description: A unique identifier for this response, which can be used when contacting Box support.
+          type: string
+          example: abcdef123456
+      title: Client error
+      x-box-resource-id: client_error
+    FileVersion--Mini:
+      description: A mini representation of a file version, used when nested within another resource.
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/FileVersion--Base'
+      - properties:
+          sha1:
+            description: The SHA1 hash of this version of the file.
+            type: string
+            example: 134b65991ed521fcfe4724b7d814ab8ded5185dc
+      title: File version (Mini)
+      x-box-resource-id: file_version--mini
+      x-box-variant: mini
+    SignRequestSignerInputEmailValidation:
+      description: Specifies the formatting rules that signers must follow for text field inputs. If set, this validation is mandatory.
+      type: object
+      properties:
+        validation_type:
+          description: Validates that the text input is an email address.
+          type: string
+          example: email
+          enum:
+          - email
+      required:
+      - validation_type
+      title: Sign Request Signer Input Email Validation
+    SignRequestSignerInputNumberWithCommaValidation:
+      description: Specifies the number with comma formatting rules for a text field input by the signer. If set, this validation is mandatory.
+      type: object
+      properties:
+        validation_type:
+          description: Validates that the text input uses a number format with a comma as the decimal separator (for example, 1,23).
+          type: string
+          example: number_with_comma
+          enum:
+          - number_with_comma
+      title: Sign Request Signer Input Number With Comma Validation
+    SignTemplate:
+      description: A Box Sign template object.
+      type: object
+      allOf:
+      - properties:
+          type:
+            description: The value will always be `sign-template`.
+            type: string
+            example: sign-template
+            enum:
+            - sign-template
+          id:
+            description: Template identifier.
+            type: string
+            example: 4206996024-14944f75-c34b-478a-95a1-264b1ff80d35
+          name:
+            description: The name of the template.
+            type:
+            - string
+            - 'null'
+            example: Official contract
+          email_subject:
+            description: Subject of signature request email. This is cleaned by sign request. If this field is not passed, a default subject will be used.
+            type:
+            - string
+            - 'null'
+            example: Sign Request from Acme
+          email_message:
+            description: Message to include in signature request email. The field is cleaned through sanitization of specific characters. However, some html tags are allowed. Links included in the message are also converted to hyperlinks in the email. The message may contain the following html tags including `a`, `abbr`, `acronym`, `b`, `blockquote`, `code`, `em`, `i`, `ul`, `li`, `ol`, and `strong`. Be aware that when the text to html ratio is too high, the email may end up in spam filters. Custom styles on these tags are not allowed. If this field is not passed, a default message will be used.
+            type:
+            - string
+            - 'null'
+            example: Hello! Please sign the document below
+          days_valid:
+            description: Set the number of days after which the created signature request will automatically expire if not completed. By default, we do not apply any expiration date on signature requests, and the signature request does not expire.
+            type:
+            - integer
+            - 'null'
+            example: 2
+            maximum: 730
+            minimum: 0
+          parent_folder:
+            allOf:
+            - $ref: '#/components/schemas/Folder--Mini'
+            - description: The destination folder to place final, signed document and signing log. Only `ID` and `type` fields are required. The root folder, folder ID `0`, cannot be used.
+          source_files:
+            description: List of files to create a signing document from. Only the ID and type fields are required for each file.
+            type: array
+            items:
+              $ref: '#/components/schemas/File--Mini'
+          are_fields_locked:
+            description: Indicates if the template input fields are editable or not.
+            type: boolean
+            example: false
+          are_options_locked:
+            description: Indicates if the template document options are editable or not, for example renaming the document.
+            type: boolean
+            example: true
+          are_recipients_locked:
+            description: Indicates if the template signers are editable or not.
+            type: boolean
+            example: false
+          are_email_settings_locked:
+            description: Indicates if the template email settings are editable or not.
+            type: boolean
+            example: true
+          are_files_locked:
+            description: Indicates if the template files are editable or not. This includes deleting or renaming template files.
+            type: boolean
+            example: true
+          signers:
+            description: 'Array of signers for the template.
+
+
+              **Note**: It may happen that some signers specified in the template belong to conflicting [segments](/reference/resources/shield-information-barrier-segment-member) (user groups). This means that due to the security policies, users are assigned to segments to prevent exchanges or communication that could lead to ethical conflicts. In such a case, an attempt to send a sign request based on a template that lists signers in conflicting segments will result in an error.
+
+
+              Read more about [segments and ethical walls](https://support.box.com/hc/en-us/articles/9920431507603-Understanding-Information-Barriers#h_01GFVJEHQA06N7XEZ4GCZ9GFAQ).'
+            type: array
+            items:
+              $ref: '#/components/schemas/TemplateSigner'
+          additional_info:
+            description: Additional information on which fields are required and which fields are not editable.
+            type: object
+            properties:
+              non_editable:
+                description: Non editable fields.
+                type: array
+                items:
+                  type: string
+                  enum:
+                  - email_subject
+                  - email_message
+                  - name
+                  - days_valid
+                  - signers
+                  - source_files
+                example:
+                - email_subject
+                - name
+              required:
+                description: Required fields.
+                type: object
+                properties:
+                  signers:
+                    description: Required signer fields.
+                    type: array
+                    items:
+                      type: array
+                      items:
+                        type: string
+                        enum:
+                        - email
+                      example:
+                      - email
+                    example:
+                    - - email
+                    - - email
+          ready_sign_link:
+            description: 'Box''s ready-sign link feature enables you to create a link to a signature request that you''ve created from a template. Use this link when you want to post a signature request on a public form — such as an email, social media post, or web page — without knowing who the signers will be. Note: The ready-sign link feature is limited to Enterprise Plus customers and not available to Box Verified Enterprises.'
+            type:
+            - object
+            - 'null'
+            properties:
+              url:
+                description: The URL that can be sent to signers.
+                type: string
+                example: '"https://app.box.com/sign/
+
+                  ready-sign-link/a1cdf2c7-fa81-4a67-8163-1e5f4dbe5178"'
+              name:
+                description: Request name.
+                type:
+                - string
+                - 'null'
+                example: Official contract
+              instructions:
+                description: Extra instructions for all signers.
+                type:
+                - string
+                - 'null'
+                example: Hello! Please sign the document below
+              folder_id:
+                description: The destination folder to place final, signed document and signing log. Only `ID` and `type` fields are required. The root folder, folder ID `0`, cannot be used.
+                type:
+                - string
+                - 'null'
+                example: '12345'
+              is_notification_disabled:
+                description: Whether to disable notifications when a signer has signed.
+                type: boolean
+                example: true
+              is_active:
+                description: Whether the ready sign link is enabled or not.
+                type: boolean
+                example: false
+          custom_branding:
+            description: Custom branding applied to notifications and signature requests.
+            type:
+            - object
+            - 'null'
+            properties:
+              company_name:
+                description: Name of the company.
+                type:
+                - string
+                - 'null'
+                example: Corporation inc.
+              logo_uri:
+                description: Custom branding logo URI in the form of a base64 image.
+                type:
+                - string
+                - 'null'
+                example: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAA
+
+                  AAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNk+A
+
+                  8AAQUBAScY42YAAAAASUVORK5CYII='
+              branding_color:
+                description: Custom branding color in hex.
+                type:
+                - string
+                - 'null'
+                example: 9E5E6F
+              email_footer_text:
+                description: Content of the email footer.
+                type:
+                - string
+                - 'null'
+                example: Contact email email@mail.com
+          request_flow:
+            description: The sign flow of sign requests created from the template. Values can include `standard` or `cfr11`.
+            type:
+            - string
+            - 'null'
+            example: standard
+      title: Box Sign template
+      x-box-resource-id: sign_template
+      x-box-tag: sign_templates
+    SignRequestSignerInputSSNValidation:
+      description: Specifies the validation rules for a text field input by the signer. If set, this validation is mandatory.
+      type: object
+      properties:
+        validation_type:
+          description: Validates that the text input is a Social Security Number (SSN).
+          type: string
+          example: ssn
+          enum:
+          - ssn
+      required:
+      - validation_type
+      title: Sign Request Signer Input SSN Validation
+    SignRequestSignerInputZIPValidation:
+      description: Specifies the validation rules for a text field input by the signer. If set, this validation is mandatory.
+      type: object
+      properties:
+        validation_type:
+          description: Validates that the text input is a ZIP code.
+          type: string
+          example: zip
+          enum:
+          - zip
+      required:
+      - validation_type
+      title: Sign Request Signer Input ZIP Validation
+    FileVersion--Base:
+      description: The bare basic representation of a file version, the minimal amount of fields returned when using the `fields` query parameter.
+      type: object
+      properties:
+        id:
+          description: The unique identifier that represent a file version.
+          type: string
+          example: '12345'
+        type:
+          description: The value will always be `file_version`.
+          type: string
+          example: file_version
+          enum:
+          - file_version
+      required:
+      - id
+      - type
+      title: File version (Base)
+      x-box-resource-id: file_version--base
+      x-box-variant: base
+      x-box-variants:
+      - base
+      - mini
+      - standard
+      - full
+    SignRequestSignerInputDateUSValidation:
+      description: Specifies the US date formatting rules for a text field input by the signer. If set, this validation is mandatory. The date format follows `MM/DD/YYYY` pattern.
+      type: object
+      properties:
+        validation_type:
+          description: Validates that the text input uses the US date format `MM/DD/YYYY`.
+          type: string
+          example: date_us
+          enum:
+          - date_us
+      title: Sign Request Signer Input Date US Validation
+    TemplateSignerInput:
+      description: Input created by a Signer on a Template.
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/SignRequestPrefillTag'
+      - properties:
+          type:
+            description: Type of input.
+            type: string
+            example: text
+            enum:
+            - signature
+            - date
+            - text
+            - checkbox
+            - attachment
+            - radio
+            - dropdown
+          content_type:
+            description: Content type of input.
+            type: string
+            example: text
+            enum:
+            - signature
+            - initial
+            - stamp
+            - date
+            - checkbox
+            - text
+            - full_name
+            - first_name
+            - last_name
+            - company
+            - title
+            - email
+            - attachment
+            - radio
+            - dropdown
+          is_required:
+            description: Whether or not the input is required.
+            type: boolean
+            example: true
+          page_index:
+            description: Index of page that the input is on.
+            type: integer
+            example: 4
+          document_id:
+            description: Document identifier.
+            type:
+            - string
+            - 'null'
+            example: 123075213-eb54b537-8b25-445e-87c1-5a1c67d8cbd7
+          dropdown_choices:
+            description: When the input is of the type `dropdown` this values will be filled with all the dropdown options.
+            type:
+            - array
+            - 'null'
+            items:
+              type: string
+            example:
+            - 'Yes'
+            - 'No'
+            - Maybe
+          group_id:
+            description: When the input is of type `radio` they can be grouped to gather with this identifier.
+            type:
+            - string
+            - 'null'
+            example: da317330-225a-4c72-89ad-0d6dcaaf4df6
+          coordinates:
+            description: Where the input is located on a page.
+            type: object
+            properties:
+              x:
+                description: Relative x coordinate to the page the input is on, ranging from 0 to 1.
+                type: number
+                example: 0.672258592471358
+              y:
+                description: Relative y coordinate to the page the input is on, ranging from 0 to 1.
+                type: number
+                example: 0.18654283173599448
+          dimensions:
+            description: The size of the input.
+            type: object
+            properties:
+              width:
+                description: Relative width to the page the input is on, ranging from 0 to 1.
+                type: number
+                example: 0.2618657937806874
+              height:
+                description: Relative height to the page the input is on, ranging from 0 to 1.
+                type: number
+                example: 0.05311728090109673
+          label:
+            description: The label field is used especially for text, attachment, radio, and checkbox type inputs.
+            type:
+            - string
+            - 'null'
+            example: Legal name
+          read_only:
+            description: Indicates whether this input is read-only (cannot be modified by signers).
+            type: boolean
+            example: true
+          validation:
+            description: Specifies the formatting rules that signers must follow for text field inputs. If set, this validation is mandatory.
+            example:
+              validation_type: email
+            anyOf:
+            - $ref: '#/components/schemas/SignRequestSignerInputValidation'
+            - title: OpenAPI 3.0 null schema type
+              description: The definition for a null schema type in OpenAPI `3.0`.
+              type:
+              - object
+              - 'null'
+              additionalProperties: false
+      required:
+      - page_index
+      title: Template Signer Input
+    SignRequestSignerInputDateAsiaValidation:
+      description: Specifies the date formatting rules used in Asia for a text field input by the signer. If set, this validation is mandatory. The date format follows `YYYY/MM/DD` pattern.
+      type: object
+      properties:
+        validation_type:
+          description: Validates that the text input uses the Asian date format `YYYY/MM/DD`.
+          type: string
+          example: date_asia
+          enum:
+          - date_asia
+      title: Sign Request Signer Input Date Asia Validation
+    SignTemplates:
+      description: A list of templates, as returned from any Box Sign API endpoints by default.
+      type: object
+      allOf:
+      - type: object
+        description: The part of an API response that describes marker based pagination.
+        properties:
+          limit:
+            description: The limit that was used for these entries. This will be the same as the `limit` query parameter unless that value exceeded the maximum value allowed. The maximum value varies by API.
+            type: integer
+            format: int64
+            example: 1000
+          next_marker:
+            description: The marker for the start of the next page of results.
+            type:
+            - string
+            - 'null'
+            example: JV9IRGZmieiBasejOG9yDCRNgd2ymoZIbjsxbJMjIs3kioVii
+          prev_marker:
+            description: The marker for the start of the previous page of results.
+            type:
+            - string
+            - 'null'
+            example: JV9IRGZmieiBasejOG9yDCRNgd2ymoZIbjsxbJMjIs3kioVih
+      - properties:
+          entries:
+            description: A list of templates.
+            type: array
+            items:
+              $ref: '#/components/schemas/SignTemplate'
+      title: Box Sign templates
+      x-box-resource-id: sign_templates
+      x-box-tag: sign_templates
+    Folder--Base:
+      description: The bare basic representation of a folder, the minimal amount of fields returned when using the `fields` query parameter.
+      type: object
+      properties:
+        id:
+          description: 'The unique identifier that represent a folder.
+
+
+            The ID for any folder can be determined by visiting a folder in the web application and copying the ID from the URL. For example, for the URL `https://*.app.box.com/folders/123` the `folder_id` is `123`.'
+          type: string
+          example: '12345'
+        etag:
+          description: The HTTP `etag` of this folder. This can be used within some API endpoints in the `If-Match` and `If-None-Match` headers to only perform changes on the folder if (no) changes have happened.
+          type:
+          - string
+          - 'null'
+          example: '1'
+        type:
+          description: The value will always be `folder`.
+          type: string
+          example: folder
+          enum:
+          - folder
+      required:
+      - id
+      - type
+      title: Folder (Base)
+      x-box-resource-id: folder--base
+      x-box-tag: folders
+      x-box-variant: base
+      x-box-variants:
+      - base
+      - mini
+      - standard
+      - full
+    SignRequestSignerInputZIP4Validation:
+      description: Specifies the validation rules for a text field input by the signer. If set, this validation is mandatory.
+      type: object
+      properties:
+        validation_type:
+          description: Validates that the text input is a ZIP+4 code.
+          type: string
+          example: zip_4
+          enum:
+          - zip_4
+      required:
+      - validation_type
+      title: Sign Request Signer Input ZIP 4 Validation
+    SignRequestSignerInputDateISOValidation:
+      description: Specifies the ISO date formatting rules for a text field input by the signer. If set, this validation is mandatory. The date format follows `YYYY-MM-DD` pattern.
+      type: object
+      properties:
+        validation_type:
+          description: Validates that the text input uses the ISO date format `YYYY-MM-DD`.
+          type: string
+          example: date_iso
+          enum:
+          - date_iso
+      title: Sign Request Signer Input Date ISO Validation
+    SignRequestSignerInputZIPJPValidation:
+      description: Specifies the validation rules for a text field input by the signer. If set, this validation is mandatory.
+      type: object
+      properties:
+        validation_type:
+          description: Validates that the text input is a Japanese ZIP code.
+          type: string
+          example: zip_jp
+          enum:
+          - zip_jp
+      required:
+      - validation_type
+      title: Sign Request Signer Input ZIP JP Validation
+    File--Base:
+      description: The bare basic representation of a file, the minimal amount of fields returned when using the `fields` query parameter.
+      type:
+      - object
+      - 'null'
+      properties:
+        id:
+          description: 'The unique identifier that represent a file.
+
+
+            The ID for any file can be determined by visiting a file in the web application and copying the ID from the URL. For example, for the URL `https://*.app.box.com/files/123` the `file_id` is `123`.'
+          type: string
+          example: '12345'
+        etag:
+          description: The HTTP `etag` of this file. This can be used within some API endpoints in the `If-Match` and `If-None-Match` headers to only perform changes on the file if (no) changes have happened.
+          type:
+          - string
+          - 'null'
+          example: '1'
+        type:
+          description: The value will always be `file`.
+          type: string
+          example: file
+          enum:
+          - file
+      required:
+      - id
+      - type
+      title: File (Base)
+      x-box-resource-id: file--base
+      x-box-tag: files
+      x-box-variant: base
+      x-box-variants:
+      - base
+      - mini
+      - standard
+      - full
+    SignRequestSignerInputCustomValidation:
+      description: Specifies the custom validation rules for a text field input by the signer. If set, this validation is mandatory.
+      type: object
+      properties:
+        validation_type:
+          description: Defines the validation format for the text input as custom. A custom regular expression is used for validation.
+          type: string
+          example: custom
+          enum:
+          - custom
+        custom_regex:
+          description: Regular expression used for validation.
+          type:
+          - string
+          - 'null'
+          example: (^[a-zA-Z0-9._%+-]+)
+        custom_error_message:
+          description: Error message shown if input fails custom regular expression validation.
+          type:
+          - string
+          - 'null'
+          example: Please enter a valid value.
+      required:
+      - validation_type
+      - custom_regex
+      - custom_error_message
+      title: Sign Request Signer Input Custom Validation
+    SignRequestSignerInputDateEUValidation:
+      description: Specifies the date formatting rules used in Europe for a text field input by the signer. If set, this validation is mandatory. The date format follows `DD/MM/YYYY` pattern.
+      type: object
+      properties:
+        validation_type:
+          description: Validates that the text input uses the European date format `DD/MM/YYYY`.
+          type: string
+          example: date_eu
+          enum:
+          - date_eu
+      title: Sign Request Signer Input Date EU Validation
+    SignRequestPrefillTag:
+      description: Prefill tags are used to prefill placeholders with signer input data. Only one value field can be included.
+      type: object
+      properties:
+        document_tag_id:
+          description: This references the ID of a specific tag contained in a file of the signature request.
+          type:
+          - string
+          - 'null'
+          example: '1234'
+        text_value:
+          description: Text prefill value.
+          type:
+          - string
+          - 'null'
+          example: text
+        checkbox_value:
+          description: Checkbox prefill value.
+          type:
+          - boolean
+          - 'null'
+          example: true
+        date_value:
+          description: Date prefill value.
+          type:
+          - string
+          - 'null'
+          format: date
+          example: '2021-04-26'
+      title: Sign request prefill tag
+    Folder--Mini:
+      description: A mini representation of a file version, used when nested under another resource.
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/Folder--Base'
+      - properties:
+          sequence_id:
+            allOf:
+            - type:
+              - string
+              - 'null'
+              example: '3'
+              description: 'A numeric identifier that represents the most recent user event that has been applied to this item.
+
+
+                This can be used in combination with the `GET /events`-endpoint to filter out user events that would have occurred before this identifier was read.
+
+
+                An example would be where a Box Drive-like application would fetch an item via the API, and then listen to incoming user events for changes to the item. The application would ignore any user events where the `sequence_id` in the event is smaller than or equal to the `sequence_id` in the originally fetched resource.'
+            - {}
+          name:
+            description: The name of the folder.
+            type: string
+            example: Contracts
+      title: Folder (Mini)
+      x-box-resource-id: folder--mini
+      x-box-tag: folders
+      x-box-variant: mini
+    TemplateSigner:
+      description: The schema for a Signer for Templates.
+      type: object
+      properties:
+        inputs:
+          type: array
+          items:
+            $ref: '#/components/schemas/TemplateSignerInput'
+          readOnly: true
+        email:
+          description: Email address of the signer.
+          type:
+          - string
+          - 'null'
+          example: example@mail.com
+        role:
+          description: Defines the role of the signer in the signature request. A role of `signer` needs to sign the document, a role `approver` approves the document and a `final_copy_reader` role only receives the final signed document and signing log.
+          type: string
+          example: signer
+          default: signer
+          enum:
+          - signer
+          - approver
+          - final_copy_reader
+        is_in_person:
+          description: Used in combination with an embed URL for a sender. After the sender signs, they will be redirected to the next `in_person` signer.
+          type: boolean
+          example: true
+        order:
+          description: Order of the signer.
+          type: integer
+          example: 2
+          minimum: 0
+        signer_group_id:
+          description: If provided, this value points signers that are assigned the same inputs and belongs to same signer group. A signer group is not a Box Group. It is an entity that belongs to the template itself and can only be used within Box Sign requests created from it.
+          type:
+          - string
+          - 'null'
+          example: cd4ff89-8fc1-42cf-8b29-1890dedd26d7
+        label:
+          description: A placeholder label for the signer set by the template creator to differentiate between signers.
+          type:
+          - string
+          - 'null'
+          example: Jane Doe
+        public_id:
+          description: An identifier for the signer. This can be used to identify a signer within the template.
+          type: string
+          example: RJZYYVPR
+        is_password_required:
+          description: If true for signers with a defined email, the password provided when the template was created is used by default. If true for signers without a specified / defined email, the creator needs to provide a password when using the template.
+          type:
+          - boolean
+          - 'null'
+          example: true
+        is_phone_number_required:
+          description: If true for signers with a defined email, the phone number provided when the template was created is used by default. If true for signers without a specified / defined email, the template creator needs to provide a phone number when creating a request.
+          type:
+          - boolean
+          - 'null'
+          example: true
+        login_required:
+          description: If true, the signer is required to login to access the document.
+          type:
+          - boolean
+          - 'null'
+          example: true
+      title: Signer fields for Templates
+    SignRequestSignerInputValidation:
+      description: Specifies the formatting rules that signers must follow for text field inputs. If set, this validation is mandatory. The format can be selected from a predefined list of options (e.g., email, phone number, date) or defined using a custom regular expression.
+      oneOf:
+      - $ref: '#/components/schemas/SignRequestSignerInputEmailValidation'
+      - $ref: '#/components/schemas/SignRequestSignerInputCustomValidation'
+      - $ref: '#/components/schemas/SignRequestSignerInputZIPValidation'
+      - $ref: '#/components/schemas/SignRequestSignerInputZIP4Validation'
+      - $ref: '#/components/schemas/SignRequestSignerInputZIPJPValidation'
+      - $ref: '#/components/schemas/SignRequestSignerInputSSNValidation'
+      - $ref: '#/components/schemas/SignRequestSignerInputNumberWithPeriodValidation'
+      - $ref: '#/components/schemas/SignRequestSignerInputNumberWithCommaValidation'
+      - $ref: '#/components/schemas/SignRequestSignerInputDateISOValidation'
+      - $ref: '#/components/schemas/SignRequestSignerInputDateUSValidation'
+      - $ref: '#/components/schemas/SignRequestSignerInputDateEUValidation'
+      - $ref: '#/components/schemas/SignRequestSignerInputDateAsiaValidation'
+      title: Sign Request Signer Input Validation
+  securitySchemes:
+    OAuth2Security:
+      type: oauth2
+      description: The access token received from the authorization server in the OAuth 2.0 flow.
+      flows:
+        authorizationCode:
+          authorizationUrl: https://account.box.com/api/oauth2/authorize
+          tokenUrl: https://api.box.com/oauth2/token
+          scopes:
+            root_readonly: Read all files and folders stored in Box
+            root_readwrite: Read and write all files and folders stored in Box
+            manage_app_users: Provision and manage app users
+            manage_managed_users: Provision and manage managed users
+            manage_groups: Manage an enterprise's groups
+            manage_webhook: Create webhooks programmatically through the API
+            manage_enterprise_properties: Manage enterprise properties
+            manage_data_retention: Manage data retention polices
+            manage_legal_hold: Manage Legal Holds
+externalDocs:
+  description: Box Developer Documentation.
+  url: https://developer.box.com
+x-mint:
+  mcp:
+    enabled: true

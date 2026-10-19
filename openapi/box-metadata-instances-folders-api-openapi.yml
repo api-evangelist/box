@@ -1,72 +1,59 @@
 openapi: 3.2.0
 info:
-  title: Box Platform Metadata Instances (Folders) API
+  title: Box Platform Metadata instances (Folders) API
   description: Box Platform provides functionality to provide access to content stored within Box. It provides endpoints for basic manipulation of files and folders, management of users within an enterprise, as well as more complex topics such as legal holds and retention policies.
   termsOfService: https://cloud.app.box.com/s/rmwxu64h1ipr41u49w3bbuvbsa29wku9
   contact:
     name: Box, Inc
-    url: https://box.dev
+    url: https://developer.box.com
     email: devrel@box.com
   license:
     name: Apache-2.0
-    url: http://www.apache.org/licenses/LICENSE-2.0
-  version: 2.0.0
-  x-box-commit-hash: '5819125043'
+    url: https://www.apache.org/licenses/LICENSE-2.0
+  version: '2024.0'
+  x-box-commit-hash: 53bdced3cd
 servers:
 - url: https://api.box.com/2.0
-  description: Box Platform API server
+  description: Box Platform API server.
 security:
 - OAuth2Security: []
 tags:
-- name: Metadata Instances (Folders)
-  description: 'A metadata instance describes the relation between a template and a folder,
-
-    including the values that are assigned for every field.'
+- name: Metadata instances (Folders)
+  description: A metadata instance describes the relation between a template and a folder, including the values that are assigned for every field.
   x-box-tag: folder_metadata
 paths:
   /folders/{folder_id}/metadata:
     get:
       operationId: get_folders_id_metadata
-      summary: Box List metadata instances on folder
-      tags:
-      - Metadata Instances (Folders)
-      x-box-tag: folder_metadata
-      x-box-sanitized: true
-      description: 'Retrieves all metadata for a given folder. This can not be used on the root
-
-        folder with ID `0`.'
+      summary: List metadata instances on folder
+      description: Retrieves all metadata for a given folder. This can not be used on the root folder with ID `0`.
       parameters:
       - name: folder_id
+        in: path
         description: 'The unique identifier that represent a folder.
 
 
-          The ID for any folder can be determined
-
-          by visiting this folder in the web application
-
-          and copying the ID from the URL. For example,
-
-          for the URL `https://*.app.box.com/folder/123`
-
-          the `folder_id` is `123`.
+          The ID for any folder can be determined by visiting this folder in the web application and copying the ID from the URL. For example, for the URL `https://*.app.box.com/folder/123` the `folder_id` is `123`.
 
 
-          The root folder of a Box account is
-
-          always represented by the ID `0`.'
-        example: '12345'
-        in: path
+          The root folder of a Box account is always represented by the ID `0`.'
         required: true
         schema:
           type: string
+        example: '12345'
+      - name: view
+        in: query
+        description: Taxonomy field values are returned in `API view` by default, meaning the value is represented with a taxonomy node identifier. To retrieve the `Hydrated view`, where taxonomy values are represented with the full taxonomy node information, set this parameter to `hydrated`. This is the only supported value for this parameter.
+        required: false
+        schema:
+          type: string
+        example: hydrated
       responses:
         '200':
           description: 'Returns all the metadata associated with a folder.
 
 
-            This API does not support pagination and will therefore always return
-
-            all of the metadata associated to the folder.'
+            This API does not support pagination and will therefore always return all of the metadata associated to the folder.'
           content:
             application/json:
               schema:
@@ -75,7 +62,7 @@ paths:
           description: 'Returned when the request parameters are not valid.
 
 
-            * `forbidden` - this operation is not allowed on the Root folder.'
+            - `forbidden` - this operation is not allowed on the Root folder.'
           content:
             application/json:
               schema:
@@ -92,65 +79,67 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ClientError'
+      x-box-tag: folder_metadata
+      tags:
+      - Metadata instances (Folders)
+      x-codeSamples:
+      - lang: curl
+        label: List metadata instances on folder
+        source: "curl -i -X GET \"https://api.box.com/2.0/folders/4353455/metadata\" \\\n     -H \"authorization: Bearer <ACCESS_TOKEN>\""
+      - lang: dotnet
+        label: List metadata instances on folder
+        source: 'await client.FolderMetadata.GetFolderMetadataAsync(folderId: folder.Id);'
+      - lang: swift
+        label: List metadata instances on folder
+        source: 'try await client.folderMetadata.getFolderMetadata(folderId: folder.id)'
+      - lang: java
+        label: List metadata instances on folder
+        source: client.getFolderMetadata().getFolderMetadata(folder.getId())
+      - lang: node
+        label: List metadata instances on folder
+        source: await client.folderMetadata.getFolderMetadata(folder.id);
+      - lang: python
+        label: List metadata instances on folder
+        source: client.folder_metadata.get_folder_metadata(folder.id)
   /folders/{folder_id}/metadata/{scope}/{template_key}:
     get:
       operationId: get_folders_id_metadata_id_id
-      summary: Box Get metadata instance on folder
-      tags:
-      - Metadata Instances (Folders)
-      x-box-tag: folder_metadata
-      x-box-sanitized: true
-      description: 'Retrieves the instance of a metadata template that has been applied to a
-
-        folder. This can not be used on the root folder with ID `0`.'
+      summary: Get metadata instance on folder
+      description: Retrieves the instance of a metadata template that has been applied to a folder. This can not be used on the root folder with ID `0`.
       parameters:
       - name: folder_id
+        in: path
         description: 'The unique identifier that represent a folder.
 
 
-          The ID for any folder can be determined
-
-          by visiting this folder in the web application
-
-          and copying the ID from the URL. For example,
-
-          for the URL `https://*.app.box.com/folder/123`
-
-          the `folder_id` is `123`.
+          The ID for any folder can be determined by visiting this folder in the web application and copying the ID from the URL. For example, for the URL `https://*.app.box.com/folder/123` the `folder_id` is `123`.
 
 
-          The root folder of a Box account is
-
-          always represented by the ID `0`.'
-        example: '12345'
-        in: path
+          The root folder of a Box account is always represented by the ID `0`.'
         required: true
         schema:
           type: string
+        example: '12345'
       - name: scope
-        description: The scope of the metadata template
-        example: global
         in: path
+        description: The scope of the metadata template.
         required: true
         schema:
           type: string
           enum:
           - global
           - enterprise
+        example: global
       - name: template_key
-        description: The name of the metadata template
-        example: properties
         in: path
+        description: The name of the metadata template.
         required: true
         schema:
           type: string
+        example: properties
       responses:
         '201':
-          description: 'An instance of the metadata template that includes
-
-            additional "key:value" pairs defined by the user or
-
-            an application.'
+          description: An instance of the metadata template that includes additional "key:value" pairs defined by the user or an application.
           content:
             application/json:
               schema:
@@ -162,24 +151,16 @@ paths:
               schema:
                 $ref: '#/components/schemas/ClientError'
         '404':
-          description: 'Returned if the metadata template specified
-
-            was not applied to this folder or the user does not have access to the
-
-            folder.
+          description: 'Returned if the metadata template specified was not applied to this folder or the user does not have access to the folder.
 
 
-            * `instance_not_found` - The metadata template was not applied to the
-
-            folder.'
+            - `instance_not_found` - The metadata template was not applied to the folder.'
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ClientError'
         '405':
-          description: 'Returned when the method was not allowed. This often happens when the
-
-            folder ID is not valid or the root folder with ID `0`.'
+          description: Returned when the method was not allowed. This often happens when the folder ID is not valid or the root folder with ID `0`.
           content:
             application/json:
               schema:
@@ -190,70 +171,69 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ClientError'
+      x-box-tag: folder_metadata
+      tags:
+      - Metadata instances (Folders)
+      x-codeSamples:
+      - lang: curl
+        label: Get metadata instance on folder
+        source: "curl -i -X GET \"https://api.box.com/2.0/folders/4353455/metadata/enterprise_27335/blueprintTemplate\" \\\n     -H \"authorization: Bearer <ACCESS_TOKEN>\""
+      - lang: dotnet
+        label: Get metadata instance on folder
+        source: 'await client.FolderMetadata.GetFolderMetadataByIdAsync(folderId: folder.Id, scope: GetFolderMetadataByIdScope.Global, templateKey: "properties");'
+      - lang: swift
+        label: Get metadata instance on folder
+        source: 'try await client.folderMetadata.getFolderMetadataById(folderId: folder.id, scope: GetFolderMetadataByIdScope.global, templateKey: "properties")'
+      - lang: java
+        label: Get metadata instance on folder
+        source: client.getFolderMetadata().getFolderMetadataById(folder.getId(), GetFolderMetadataByIdScope.GLOBAL, "properties")
+      - lang: node
+        label: Get metadata instance on folder
+        source: "await client.folderMetadata.getFolderMetadataById(\n  folder.id,\n  'global' as GetFolderMetadataByIdScope,\n  'properties',\n);"
+      - lang: python
+        label: Get metadata instance on folder
+        source: "client.folder_metadata.get_folder_metadata_by_id(\n    folder.id, GetFolderMetadataByIdScope.GLOBAL, \"properties\"\n)"
     post:
       operationId: post_folders_id_metadata_id_id
-      summary: Box Create metadata instance on folder
-      tags:
-      - Metadata Instances (Folders)
-      x-box-tag: folder_metadata
-      x-box-sanitized: true
-      x-box-enable-explorer: false
+      summary: Create metadata instance on folder
       description: 'Applies an instance of a metadata template to a folder.
 
 
-        In most cases only values that are present in the metadata template
-
-        will be accepted, except for the `global.properties` template which accepts
-
-        any key-value pair.
+        In most cases only values that are present in the metadata template will be accepted, except for the `global.properties` template which accepts any key-value pair.
 
 
-        To display the metadata template in the Box web app the enterprise needs to be
-
-        configured to enable **Cascading Folder Level Metadata** for the user in the
-
-        admin console.'
+        To display the metadata template in the Box web app the enterprise needs to be configured to enable **Cascading Folder Level Metadata** for the user in the admin console.'
       parameters:
       - name: folder_id
+        in: path
         description: 'The unique identifier that represent a folder.
 
 
-          The ID for any folder can be determined
-
-          by visiting this folder in the web application
-
-          and copying the ID from the URL. For example,
-
-          for the URL `https://*.app.box.com/folder/123`
-
-          the `folder_id` is `123`.
+          The ID for any folder can be determined by visiting this folder in the web application and copying the ID from the URL. For example, for the URL `https://*.app.box.com/folder/123` the `folder_id` is `123`.
 
 
-          The root folder of a Box account is
-
-          always represented by the ID `0`.'
-        example: '12345'
-        in: path
+          The root folder of a Box account is always represented by the ID `0`.'
         required: true
         schema:
           type: string
+        example: '12345'
       - name: scope
-        description: The scope of the metadata template
-        example: global
         in: path
+        description: The scope of the metadata template.
         required: true
         schema:
           type: string
           enum:
           - global
           - enterprise
+        example: global
       - name: template_key
-        description: The name of the metadata template
-        example: properties
         in: path
+        description: The name of the metadata template.
         required: true
         schema:
           type: string
+        example: properties
       requestBody:
         content:
           application/json:
@@ -265,21 +245,11 @@ paths:
                 allOf:
                 - {}
                 - example: Aaron Levie
-                - description: 'A value for each of the fields that are present on the metadata
-
-                    template.
-
-                    For the `global.properties` template this can be a list of zero
-
-                    or more fields, as this template allows for any generic key-value
-
-                    pairs to be stored in the template.'
+                - description: A value for each of the fields that are present on the metadata template. For the `global.properties` template this can be a list of zero or more fields, as this template allows for any generic key-value pairs to be stored in the template. For a taxonomy field, the value should be a list of the node identifiers of the selected taxonomy nodes, since taxonomy fields support multi-select. If a single select taxonomy field is being set, the list should contain a single node identifier.
               x-box-example-key: name
       responses:
         '201':
-          description: 'Returns the instance of the template that was applied to the folder,
-
-            including the data that was applied to the template.'
+          description: Returns the instance of the template that was applied to the folder, including the data that was applied to the template.
           content:
             application/json:
               schema:
@@ -288,133 +258,117 @@ paths:
           description: 'Returns an error when the request body is not valid.
 
 
-            * `schema_validation_failed` - The request body contains a value for
-
-            a field that either does not exist, or for which the value or type does
-
-            not match the expected field type. An example might be an unknown option
-
-            for an `enum` or `multiSelect` field.'
+            - `schema_validation_failed` - The request body contains a value for a field that either does not exist, or for which the value or type does not match the expected field type. An example might be an unknown option for an `enum` or `multiSelect` field.'
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ClientError'
+                $ref: '#/components/schemas/MetadataError'
         '404':
           description: 'Returns an error when the folder or metadata template was not found.
 
 
-            * `not_found` - The folder could not be found, or the user does not have
+            - `not_found` - The folder could not be found, or the user does not have access to the folder.
 
-            access to the folder.
-
-            * `instance_tuple_not_found` - The metadata template was not found.'
+            - `instance_tuple_not_found` - The metadata template was not found.'
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ClientError'
         '409':
-          description: 'Returns an error when an instance of this metadata template is already
-
-            present on the folder.
+          description: 'Returns an error when an instance of this metadata template is already present on the folder.
 
 
-            * `tuple_already_exists` - An instance of them metadata template already
-
-            exists on the file.'
+            - `tuple_already_exists` - An instance of the metadata template already exists on the folder.'
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ClientError'
+                $ref: '#/components/schemas/MetadataError'
         default:
           description: An unexpected client error.
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ClientError'
+      x-box-tag: folder_metadata
+      tags:
+      - Metadata instances (Folders)
+      x-box-enable-explorer: false
+      x-codeSamples:
+      - lang: curl
+        label: Create metadata instance on folder
+        source: "curl -i -X POST \"https://api.box.com/2.0/folders/4353455/metadata/enterprise_27335/blueprintTemplate\" \\\n     -H \"authorization: Bearer <ACCESS_TOKEN>\" \\\n     -H \"content-type: application/json\" \\\n     -d '{\n       \"audience\": \"internal\",\n       \"documentType\": \"Q1 plans\",\n       \"competitiveDocument\": \"no\",\n       \"status\": \"active\",\n       \"author\": \"Jones\",\n       \"currentState\": \"proposal\"\n     }'"
+      - lang: dotnet
+        label: Create metadata instance on folder
+        source: 'await client.FolderMetadata.CreateFolderMetadataByIdAsync(folderId: folder.Id, scope: CreateFolderMetadataByIdScope.Enterprise, templateKey: templateKey, requestBody: new Dictionary<string, object>() { { "name", "John" }, { "age", 23 }, { "birthDate", "2001-01-03T02:20:50.520Z" }, { "countryCode", "US" }, { "sports", Array.AsReadOnly(new [] {"basketball","tennis"}) } });'
+      - lang: swift
+        label: Create metadata instance on folder
+        source: 'try await client.folderMetadata.createFolderMetadataById(folderId: folder.id, scope: CreateFolderMetadataByIdScope.global, templateKey: "properties", requestBody: ["abc": "xyz"])'
+      - lang: java
+        label: Create metadata instance on folder
+        source: client.getFolderMetadata().createFolderMetadataById(folder.getId(), CreateFolderMetadataByIdScope.ENTERPRISE, templateKey, mapOf(entryOf("name", "John"), entryOf("age", 23), entryOf("birthDate", "2001-01-03T02:20:50.520Z"), entryOf("countryCode", "US"), entryOf("sports", Arrays.asList("basketball", "tennis"))))
+      - lang: node
+        label: Create metadata instance on folder
+        source: "await client.folderMetadata.createFolderMetadataById(\n  folder.id,\n  'enterprise' as CreateFolderMetadataByIdScope,\n  templateKey,\n  {\n    ['name']: 'John',\n    ['age']: 23,\n    ['birthDate']: '2001-01-03T02:20:50.520Z',\n    ['countryCode']: 'US',\n    ['sports']: ['basketball', 'tennis'],\n  },\n);"
+      - lang: python
+        label: Create metadata instance on folder
+        source: "client.folder_metadata.create_folder_metadata_by_id(\n    folder.id,\n    CreateFolderMetadataByIdScope.ENTERPRISE,\n    template_key,\n    {\n        \"name\": \"John\",\n        \"age\": 23,\n        \"birthDate\": \"2001-01-03T02:20:50.520Z\",\n        \"countryCode\": \"US\",\n        \"sports\": [\"basketball\", \"tennis\"],\n    },\n)"
     put:
       operationId: put_folders_id_metadata_id_id
-      summary: Box Update metadata instance on folder
-      tags:
-      - Metadata Instances (Folders)
-      x-box-tag: folder_metadata
-      x-box-sanitized: true
+      summary: Update metadata instance on folder
       description: 'Updates a piece of metadata on a folder.
 
 
-        The metadata instance can only be updated if the template has already been
-
-        applied to the folder before. When editing metadata, only values that match
-
-        the metadata template schema will be accepted.
+        The metadata instance can only be updated if the template has already been applied to the folder before. When editing metadata, only values that match the metadata template schema will be accepted.
 
 
-        The update is applied atomically. If any errors occur during the
-
-        application of the operations, the metadata instance will not be changed.'
+        The update is applied atomically. If any errors occur during the application of the operations, the metadata instance will not be changed.'
       parameters:
       - name: folder_id
+        in: path
         description: 'The unique identifier that represent a folder.
 
 
-          The ID for any folder can be determined
-
-          by visiting this folder in the web application
-
-          and copying the ID from the URL. For example,
-
-          for the URL `https://*.app.box.com/folder/123`
-
-          the `folder_id` is `123`.
+          The ID for any folder can be determined by visiting this folder in the web application and copying the ID from the URL. For example, for the URL `https://*.app.box.com/folder/123` the `folder_id` is `123`.
 
 
-          The root folder of a Box account is
-
-          always represented by the ID `0`.'
-        example: '12345'
-        in: path
+          The root folder of a Box account is always represented by the ID `0`.'
         required: true
         schema:
           type: string
+        example: '12345'
       - name: scope
-        description: The scope of the metadata template
-        example: global
         in: path
+        description: The scope of the metadata template.
         required: true
         schema:
           type: string
           enum:
           - global
           - enterprise
+        example: global
       - name: template_key
-        description: The name of the metadata template
-        example: properties
         in: path
+        description: The name of the metadata template.
         required: true
         schema:
           type: string
+        example: properties
       requestBody:
         content:
           application/json-patch+json:
             schema:
-              description: 'A [JSON-Patch](https://tools.ietf.org/html/rfc6902)
-
-                specification for the changes to make to the metadata
-
-                instance.
+              description: 'A [JSON-Patch](https://tools.ietf.org/html/rfc6902) specification for the changes to make to the metadata instance.
 
 
-                The changes are represented as a JSON array of
-
-                operation objects.'
+                The changes are represented as a JSON array of operation objects.'
               type: array
               items:
                 title: A metadata instance update operation
-                description: 'A [JSON-Patch](https://tools.ietf.org/html/rfc6902) operation for a
-
-                  change to make to the metadata instance.'
+                description: A [JSON-Patch](https://tools.ietf.org/html/rfc6902) operation for a change to make to the metadata instance.
                 type: object
                 properties:
                   op:
+                    description: The type of change to perform on the template. Some of these are hazardous as they will change existing templates.
                     type: string
                     example: add
                     enum:
@@ -424,55 +378,22 @@ paths:
                     - test
                     - move
                     - copy
-                    description: 'The type of change to perform on the template. Some
-
-                      of these are hazardous as they will change existing templates.'
                   path:
+                    description: 'The location in the metadata JSON object to apply the changes to, in the format of a [JSON-Pointer](https://tools.ietf.org/html/rfc6901).
+
+
+                      The path must always be prefixed with a `/` to represent the root of the template. The characters `~` and `/` are reserved characters and must be escaped in the key.'
                     type: string
                     example: /currentState
-                    description: 'The location in the metadata JSON object
-
-                      to apply the changes to, in the format of a
-
-                      [JSON-Pointer](https://tools.ietf.org/html/rfc6901).
-
-
-                      The path must always be prefixed with a `/` to represent the root
-
-                      of the template. The characters `~` and `/` are reserved
-
-                      characters and must be escaped in the key.'
                   value:
-                    type: string
-                    example: reviewed
-                    description: 'The value to be set or tested.
-
-
-                      Required for `add`, `replace`, and `test` operations. For `add`,
-
-                      if the value exists already the previous value will be overwritten
-
-                      by the new value. For `replace`, the value must exist before
-
-                      replacing.
-
-
-                      For `test`, the existing value at the `path` location must match
-
-                      the specified value.'
+                    $ref: '#/components/schemas/MetadataInstanceValue'
                   from:
+                    description: The location in the metadata JSON object to move or copy a value from. Required for `move` or `copy` operations and must be in the format of a [JSON-Pointer](https://tools.ietf.org/html/rfc6901).
                     type: string
                     example: /nextState
-                    description: 'The location in the metadata JSON object to move or copy a value
-
-                      from. Required for `move` or `copy` operations and must be in the
-
-                      format of a [JSON-Pointer](https://tools.ietf.org/html/rfc6901).'
       responses:
         '200':
-          description: 'Returns the updated metadata template instance, with the
-
-            custom template data included.'
+          description: Returns the updated metadata template instance, with the custom template data included.
           content:
             application/json:
               schema:
@@ -481,17 +402,13 @@ paths:
           description: 'Returns an error when the request body is not valid.
 
 
-            * `bad_request` - The request body format is not an array of valid JSON
-
-            Patch objects.'
+            - `bad_request` - The request body format is not an array of valid JSON Patch objects.'
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ClientError'
         '500':
-          description: 'Returns an error in some edge cases when the request body is not a valid
-
-            array of JSON Patch items.'
+          description: Returns an error in some edge cases when the request body is not a valid array of JSON Patch items.
           content:
             application/json:
               schema:
@@ -502,91 +419,82 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ClientError'
+      x-box-tag: folder_metadata
+      tags:
+      - Metadata instances (Folders)
+      x-codeSamples:
+      - lang: curl
+        label: Update metadata instance on folder
+        source: "curl -i -X PUT \"https://api.box.com/2.0/folders/4353455/metadata/enterprise_27335/blueprintTemplate\" \\\n     -H \"authorization: Bearer <ACCESS_TOKEN>\" \\\n     -H \"content-type: application/json-patch+json\" \\\n     -d '[\n        {\n          \"op\": \"test\",\n          \"path\": \"/competitiveDocument\",\n          \"value\": \"no\"\n        },\n        {\n          \"op\": \"remove\",\n          \"path\": \"/competitiveDocument\"\n        },\n        {\n          \"op\": \"test\",\n          \"path\": \"/status\",\n          \"value\": \"active\"\n        },\n        {\n          \"op\": \"replace\",\n          \"path\": \"/status\",\n          \"value\": \"inactive\"\n        },\n        {\n          \"op\": \"test\",\n          \"path\": \"/author\",\n          \"value\": \"Jones\"\n        },\n        {\n          \"op\": \"copy\",\n          \"from\": \"/author\",\n          \"path\": \"/editor\"\n        },\n        {\n          \"op\": \"test\",\n          \"path\": \"/currentState\",\n          \"value\": \"proposal\"\n        },\n        {\n          \"op\": \"move\",\n          \"from\": \"/currentState\",\n          \"path\": \"/previousState\"\n        },\n        {\n          \"op\": \"add\",\n          \"path\": \"/currentState\",\n          \"value\": \"reviewed\"\n        }\n      ]'"
+      - lang: dotnet
+        label: Update metadata instance on folder
+        source: 'await client.FolderMetadata.UpdateFolderMetadataByIdAsync(folderId: folder.Id, scope: UpdateFolderMetadataByIdScope.Enterprise, templateKey: templateKey, requestBody: Array.AsReadOnly(new [] {new UpdateFolderMetadataByIdRequestBody() { Op = UpdateFolderMetadataByIdRequestBodyOpField.Replace, Path = "/name", Value = "Jack" },new UpdateFolderMetadataByIdRequestBody() { Op = UpdateFolderMetadataByIdRequestBodyOpField.Replace, Path = "/age", Value = 24L },new UpdateFolderMetadataByIdRequestBody() { Op = UpdateFolderMetadataByIdRequestBodyOpField.Replace, Path = "/birthDate", Value = "2000-01-03T02:20:50.520Z" },new UpdateFolderMetadataByIdRequestBody() { Op = UpdateFolderMetadataByIdRequestBodyOpField.Replace, Path = "/countryCode", Value = "CA" },new UpdateFolderMetadataByIdRequestBody() { Op = UpdateFolderMetadataByIdRequestBodyOpField.Replace, Path = "/sports", Value = Array.AsReadOnly(new [] {"football"}) }}));'
+      - lang: java
+        label: Update metadata instance on folder
+        source: client.getFolderMetadata().updateFolderMetadataById(folder.getId(), UpdateFolderMetadataByIdScope.ENTERPRISE, templateKey, Arrays.asList(new UpdateFolderMetadataByIdRequestBody.Builder().op(UpdateFolderMetadataByIdRequestBodyOpField.REPLACE).path("/name").value("Jack").build(), new UpdateFolderMetadataByIdRequestBody.Builder().op(UpdateFolderMetadataByIdRequestBodyOpField.REPLACE).path("/age").value(24L).build(), new UpdateFolderMetadataByIdRequestBody.Builder().op(UpdateFolderMetadataByIdRequestBodyOpField.REPLACE).path("/birthDate").value("2000-01-03T02:20:50.520Z").build(), new UpdateFolderMetadataByIdRequestBody.Builder().op(UpdateFolderMetadataByIdRequestBodyOpField.REPLACE).path("/countryCode").value("CA").build(), new UpdateFolderMetadataByIdRequestBody.Builder().op(UpdateFolderMetadataByIdRequestBodyOpField.REPLACE).path("/sports").value(Arrays.asList("football")).build()))
+      - lang: node
+        label: Update metadata instance on folder
+        source: "await client.folderMetadata.updateFolderMetadataById(\n  folder.id,\n  'enterprise' as UpdateFolderMetadataByIdScope,\n  templateKey,\n  [\n    {\n      op: 'replace' as UpdateFolderMetadataByIdRequestBodyOpField,\n      path: '/name',\n      value: 'Jack',\n    } satisfies UpdateFolderMetadataByIdRequestBody,\n    {\n      op: 'replace' as UpdateFolderMetadataByIdRequestBodyOpField,\n      path: '/age',\n      value: 24,\n    } satisfies UpdateFolderMetadataByIdRequestBody,\n    {\n      op: 'replace' as UpdateFolderMetadataByIdRequestBodyOpField,\n      path: '/birthDate',\n      value: '2000-01-03T02:20:50.520Z',\n    } satisfies UpdateFolderMetadataByIdRequestBody,\n    {\n      op: 'replace' as UpdateFolderMetadataByIdRequestBodyOpField,\n      path: '/countryCode',\n      value: 'CA',\n    } satisfies UpdateFolderMetadataByIdRequestBody,\n    {\n      op: 'replace' as UpdateFolderMetadataByIdRequestBodyOpField,\n      path: '/sports',\n      value: ['football'],\n    } satisfies UpdateFolderMetadataByIdRequestBody,\n  ],\n);"
+      - lang: python
+        label: Update metadata instance on folder
+        source: "client.folder_metadata.update_folder_metadata_by_id(\n    folder.id,\n    UpdateFolderMetadataByIdScope.ENTERPRISE,\n    template_key,\n    [\n        UpdateFolderMetadataByIdRequestBody(\n            op=UpdateFolderMetadataByIdRequestBodyOpField.REPLACE,\n            path=\"/name\",\n            value=\"Jack\",\n        ),\n        UpdateFolderMetadataByIdRequestBody(\n            op=UpdateFolderMetadataByIdRequestBodyOpField.REPLACE, path=\"/age\", value=24\n        ),\n        UpdateFolderMetadataByIdRequestBody(\n            op=UpdateFolderMetadataByIdRequestBodyOpField.REPLACE,\n            path=\"/birthDate\",\n            value=\"2000-01-03T02:20:50.520Z\",\n        ),\n        UpdateFolderMetadataByIdRequestBody(\n            op=UpdateFolderMetadataByIdRequestBodyOpField.REPLACE,\n            path=\"/countryCode\",\n            value=\"CA\",\n        ),\n        UpdateFolderMetadataByIdRequestBody(\n            op=UpdateFolderMetadataByIdRequestBodyOpField.REPLACE,\n            path=\"/sports\",\n            value=[\"football\"],\n        ),\n    ],\n)"
     delete:
       operationId: delete_folders_id_metadata_id_id
-      summary: Box Remove metadata instance from folder
-      tags:
-      - Metadata Instances (Folders)
-      x-box-tag: folder_metadata
-      x-box-sanitized: true
+      summary: Remove metadata instance from folder
       description: Deletes a piece of folder metadata.
       parameters:
       - name: folder_id
+        in: path
         description: 'The unique identifier that represent a folder.
 
 
-          The ID for any folder can be determined
-
-          by visiting this folder in the web application
-
-          and copying the ID from the URL. For example,
-
-          for the URL `https://*.app.box.com/folder/123`
-
-          the `folder_id` is `123`.
+          The ID for any folder can be determined by visiting this folder in the web application and copying the ID from the URL. For example, for the URL `https://*.app.box.com/folder/123` the `folder_id` is `123`.
 
 
-          The root folder of a Box account is
-
-          always represented by the ID `0`.'
-        example: '12345'
-        in: path
+          The root folder of a Box account is always represented by the ID `0`.'
         required: true
         schema:
           type: string
+        example: '12345'
       - name: scope
-        description: The scope of the metadata template
-        example: global
         in: path
+        description: The scope of the metadata template.
         required: true
         schema:
           type: string
           enum:
           - global
           - enterprise
+        example: global
       - name: template_key
-        description: The name of the metadata template
-        example: properties
         in: path
+        description: The name of the metadata template.
         required: true
         schema:
           type: string
+        example: properties
       responses:
         '204':
-          description: 'Returns an empty response when the metadata is
-
-            successfully deleted.'
+          description: Returns an empty response when the metadata is successfully deleted.
         '400':
-          description: 'Returned when the request parameters are not valid. This may happen of the
-
-            `scope` is not valid.'
+          description: Returned when the request parameters are not valid. This may happen of the `scope` is not valid.
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ClientError'
         '404':
-          description: 'Returns an error when the folder does not have an instance of the metadata
-
-            template applied to it, or when the user does not have access to the
-
-            folder.
+          description: 'Returns an error when the folder does not have an instance of the metadata template applied to it, or when the user does not have access to the folder.
 
 
-            * `instance_not_found` - An instance of the metadata template with the
+            - `instance_not_found` - An instance of the metadata template with the given `scope` and `templateKey` was not found on this folder.
 
-            given `scope` and `templateKey` was not found on this folder.
-
-            * `not_found` - The folder was not found, or the user does not have access
-
-            to the folder.'
+            - `not_found` - The folder was not found, or the user does not have access to the folder.'
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ClientError'
         '405':
-          description: 'Returned when the method was not allowed. This often happens when the
-
-            folder ID is not valid or the root folder with ID `0`.'
+          description: Returned when the method was not allowed. This often happens when the folder ID is not valid or the root folder with ID `0`.
           content:
             application/json:
               schema:
@@ -597,29 +505,127 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ClientError'
+      x-box-tag: folder_metadata
+      tags:
+      - Metadata instances (Folders)
+      x-codeSamples:
+      - lang: curl
+        label: Remove metadata instance from folder
+        source: "curl -i -X DELETE \"https://api.box.com/2.0/folders/4353455/metadata/enterprise_27335/blueprintTemplate\" \\\n     -H \"authorization: Bearer <ACCESS_TOKEN>\""
+      - lang: dotnet
+        label: Remove metadata instance from folder
+        source: 'await client.FolderMetadata.DeleteFolderMetadataByIdAsync(folderId: folder.Id, scope: DeleteFolderMetadataByIdScope.Enterprise, templateKey: templateKey);'
+      - lang: swift
+        label: Remove metadata instance from folder
+        source: 'try await client.folderMetadata.deleteFolderMetadataById(folderId: folder.id, scope: DeleteFolderMetadataByIdScope.global, templateKey: "properties")'
+      - lang: java
+        label: Remove metadata instance from folder
+        source: client.getFolderMetadata().deleteFolderMetadataById(folder.getId(), DeleteFolderMetadataByIdScope.ENTERPRISE, templateKey)
+      - lang: node
+        label: Remove metadata instance from folder
+        source: "await client.folderMetadata.deleteFolderMetadataById(\n  folder.id,\n  'enterprise' as DeleteFolderMetadataByIdScope,\n  templateKey,\n);"
+      - lang: python
+        label: Remove metadata instance from folder
+        source: "client.folder_metadata.delete_folder_metadata_by_id(\n    folder.id, DeleteFolderMetadataByIdScope.ENTERPRISE, template_key\n)"
 components:
   schemas:
-    ClientError:
-      title: Client error
+    Metadata--Full:
+      description: An instance of a metadata template, which has been applied to a file or folder.
       type: object
-      x-box-resource-id: client_error
-      description: A generic error
+      allOf:
+      - $ref: '#/components/schemas/Metadata'
+      - properties:
+          $canEdit:
+            description: Whether the user can edit this metadata instance.
+            type: boolean
+            example: true
+          $id:
+            description: A UUID to identify the metadata instance.
+            type: string
+            format: uuid
+            example: 01234500-12f1-1234-aa12-b1d234cb567e
+            maxLength: 36
+          $type:
+            description: A unique identifier for the "type" of this instance. This is an internal system property and should not be used by a client application.
+            type: string
+            example: properties-6bcba49f-ca6d-4d2a-a758-57fe6edf44d0
+          $typeVersion:
+            description: The last-known version of the template of the object. This is an internal system property and should not be used by a client application.
+            type: integer
+            example: 2
+      - additionalProperties:
+          allOf:
+          - {}
+          - example: Aaron Levie
+          - description: A value for each of the fields that are present on the metadata template. For the `global.properties` template this can be a list of zero or more fields, as this template allows for any generic key-value pairs to be stored stored in the template.
+          x-box-example-key: name
+      title: Metadata instance (Full)
+      x-box-resource-id: metadata--full
+      x-box-tag: file_metadata
+      x-box-variant: full
+    Metadatas:
+      description: A list of metadata instances that have been applied to a file or folder.
+      type: object
+      properties:
+        entries:
+          description: A list of metadata instances, as applied to this file or folder.
+          type: array
+          items:
+            $ref: '#/components/schemas/Metadata'
+        limit:
+          description: The limit that was used for this page of results.
+          type: integer
+          example: 100
+      title: Metadata instances
+      x-box-resource-id: metadatas
+      x-box-tag: file_metadata
+    Metadata--Base:
+      description: The base representation of a metadata instance.
+      type: object
+      properties:
+        $parent:
+          description: The identifier of the item that this metadata instance has been attached to. This combines the `type` and the `id` of the parent in the form `{type}_{id}`.
+          type: string
+          example: folder_59449484661,
+        $template:
+          description: The name of the template.
+          type: string
+          example: marketingCollateral
+        $scope:
+          description: An ID for the scope in which this template has been applied. This will be `enterprise_{enterprise_id}` for templates defined for use in this enterprise, and `global` for general templates that are available to all enterprises using Box.
+          type: string
+          example: enterprise_27335
+        $version:
+          description: The version of the metadata instance. This version starts at 0 and increases every time a user-defined property is modified.
+          type: integer
+          example: 1
+      title: Metadata instance (Base)
+      x-box-resource-id: metadata--base
+      x-box-tag: file_metadata
+      x-box-variant: base
+      x-box-variants:
+      - base
+      - standard
+      - full
+    ClientError:
+      description: A generic error.
+      type: object
       properties:
         type:
-          description: error
-          example: error
+          description: The value will always be `error`.
           type: string
+          example: error
           enum:
           - error
         status:
           description: The HTTP status of the response.
-          example: 400
           type: integer
           format: int32
+          example: 400
         code:
-          description: A Box-specific error code
-          example: item_name_invalid
+          description: A Box-specific error code.
           type: string
+          example: item_name_invalid
           enum:
           - created
           - accepted
@@ -633,6 +639,7 @@ components:
           - method_not_allowed
           - conflict
           - precondition_failed
+          - unprocessable_entity
           - too_many_requests
           - internal_server_error
           - unavailable
@@ -640,146 +647,75 @@ components:
           - insufficient_scope
         message:
           description: A short message describing the error.
-          example: Method Not Allowed
           type: string
+          example: Method Not Allowed
         context_info:
-          description: 'A free-form object that contains additional context
-
-            about the error. The possible fields are defined on
-
-            a per-endpoint basis. `message` is only one example.'
+          description: A free-form object that contains additional context about the error. The possible fields are defined on a per-endpoint basis. `message` is only one example.
           type:
           - object
           - 'null'
-          properties:
-            message:
-              type: string
-              description: More details on the error.
-              example: Something went wrong.
+          example:
+            message: Something went wrong
+          additionalProperties: {}
         help_url:
           description: A URL that links to more information about why this error occurred.
-          example: https://developer.box.com/guides/api-calls/permissions-and-errors/common-errors/
           type: string
+          example: https://developer.box.com/guides/api-calls/permissions-and-errors/common-errors/
         request_id:
-          description: 'A unique identifier for this response, which can be used
-
-            when contacting Box support.'
+          description: A unique identifier for this response, which can be used when contacting Box support.
           type: string
           example: abcdef123456
-    Metadata--Base:
-      title: Metadata instance (Base)
-      type: object
-      x-box-resource-id: metadata--base
-      x-box-sanitized: true
-      x-box-tag: file_metadata
-      x-box-variants:
-      - base
-      - standard
-      - full
-      x-box-variant: base
-      description: The base representation of a metadata instance.
-      properties:
-        $parent:
+      title: Client error
+      x-box-resource-id: client_error
+    MetadataInstanceValue:
+      description: 'The value to be set or tested.
+
+
+        Required for `add`, `replace`, and `test` operations. For `add`, if the value exists already the previous value will be overwritten by the new value. For `replace`, the value must exist before replacing.
+
+
+        For `test`, the existing value at the `path` location must match the specified value.'
+      example: reviewed
+      oneOf:
+      - type: string
+      - type: integer
+      - type: number
+        format: float
+      - type: array
+        items:
           type: string
-          example: folder_59449484661,
-          description: 'The identifier of the item that this metadata instance
-
-            has been attached to. This combines the `type` and the `id`
-
-            of the parent in the form `{type}_{id}`.'
-        $template:
-          type: string
-          example: marketingCollateral
-          description: The name of the template
-        $scope:
-          type: string
-          example: enterprise_27335
-          description: 'An ID for the scope in which this template
-
-            has been applied. This will be `enterprise_{enterprise_id}` for templates
-
-            defined for use in this enterprise, and `global` for general templates
-
-            that are available to all enterprises using Box.'
-        $version:
-          type: integer
-          example: 1
-          description: 'The version of the metadata instance. This version starts at 0 and
-
-            increases every time a user-defined property is modified.'
-    Metadata--Full:
-      title: Metadata instance (Full)
-      type: object
-      x-box-resource-id: metadata--full
-      x-box-variant: full
-      description: 'An instance of a metadata template, which has been applied to a file or
-
-        folder.'
-      allOf:
-      - $ref: '#/components/schemas/Metadata'
-      - properties:
-          $canEdit:
-            type: boolean
-            example: true
-            description: Whether the user can edit this metadata instance.
-          $id:
-            type: string
-            format: uuid
-            example: 01234500-12f1-1234-aa12-b1d234cb567e
-            maxLength: 36
-            description: A UUID to identify the metadata instance.
-          $type:
-            type: string
-            example: properties-6bcba49f-ca6d-4d2a-a758-57fe6edf44d0
-            description: 'A unique identifier for the "type" of this instance. This is an
-
-              internal system property and should not be used by a client
-
-              application.'
-          $typeVersion:
-            type: integer
-            example: 2
-            description: 'The last-known version of the template of the object. This is an
-
-              internal system property and should not be used by a client
-
-              application.'
-      - additionalProperties:
-          allOf:
-          - {}
-          - example: Aaron Levie
-          - description: "A value for each of the fields that are present\non the metadata template.\nFor the `global.properties` template this can be\na list of zero or more fields,\nas this template allows for any generic key-value pairs \nto be stored stored in the template."
-          x-box-example-key: name
+      title: Metadata Instance Value
     Metadata:
-      title: Metadata instance
+      description: An instance of a metadata template, which has been applied to a file or folder.
       type: object
+      allOf:
+      - $ref: '#/components/schemas/Metadata--Base'
+      title: Metadata instance
       x-box-resource-id: metadata
       x-box-tag: file_metadata
       x-box-variant: standard
-      description: 'An instance of a metadata template, which has been applied to a file or
-
-        folder.'
-      allOf:
-      - $ref: '#/components/schemas/Metadata--Base'
-    Metadatas:
-      title: Metadata instances
+    MetadataError:
+      description: A generic metadata operation error.
       type: object
-      x-box-resource-id: metadatas
-      x-box-tag: file_metadata
-      description: A list of metadata instances that have been applied to a file or folder.
       properties:
-        entries:
-          type: array
-          description: A list of metadata instances, as applied to this file or folder.
-          items:
-            $ref: '#/components/schemas/Metadata'
-        limit:
-          description: The limit that was used for this page of results.
-          example: 100
-          type: integer
+        code:
+          description: A Box-specific error code.
+          type: string
+          example: bad_request
+        message:
+          description: A short message describing the error.
+          type: string
+          example: Encountered invalid value for template field key=someKey field type=properties
+        request_id:
+          description: A unique identifier for this response, which can be used when contacting Box support.
+          type: string
+          example: abcdef123456
+      title: Metadata Error
+      x-box-resource-id: metadata_error
   securitySchemes:
     OAuth2Security:
       type: oauth2
+      description: The access token received from the authorization server in the OAuth 2.0 flow.
       flows:
         authorizationCode:
           authorizationUrl: https://account.box.com/api/oauth2/authorize
@@ -795,5 +731,8 @@ components:
             manage_data_retention: Manage data retention polices
             manage_legal_hold: Manage Legal Holds
 externalDocs:
-  description: Box Developer Documentation
+  description: Box Developer Documentation.
   url: https://developer.box.com
+x-mint:
+  mcp:
+    enabled: true

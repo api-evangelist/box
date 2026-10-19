@@ -1,79 +1,49 @@
 openapi: 3.2.0
 info:
-  title: Box Platform Classifications on Files API
+  title: Box Platform Classifications on files API
   description: Box Platform provides functionality to provide access to content stored within Box. It provides endpoints for basic manipulation of files and folders, management of users within an enterprise, as well as more complex topics such as legal holds and retention policies.
   termsOfService: https://cloud.app.box.com/s/rmwxu64h1ipr41u49w3bbuvbsa29wku9
   contact:
     name: Box, Inc
-    url: https://box.dev
+    url: https://developer.box.com
     email: devrel@box.com
   license:
     name: Apache-2.0
-    url: http://www.apache.org/licenses/LICENSE-2.0
-  version: 2.0.0
-  x-box-commit-hash: '5819125043'
+    url: https://www.apache.org/licenses/LICENSE-2.0
+  version: '2024.0'
+  x-box-commit-hash: 53bdced3cd
 servers:
 - url: https://api.box.com/2.0
-  description: Box Platform API server
+  description: Box Platform API server.
 security:
 - OAuth2Security: []
 tags:
-- name: Classifications on Files
-  description: 'Classification labels are
-
-    used for files that are
-
-    sensitive or under security
-
-    restrictions.'
+- name: Classifications on files
+  description: Classification labels are used for files that are sensitive or under security restrictions.
   x-box-tag: file_classifications
 paths:
   /files/{file_id}/metadata/enterprise/securityClassification-6VMVochwUWo:
     get:
       operationId: get_files_id_metadata_enterprise_securityClassification-6VMVochwUWo
-      summary: Box Get classification on file
-      tags:
-      - Classifications on Files
-      x-box-tag: file_classifications
-      x-box-sanitized: true
-      description: 'Retrieves the classification metadata instance that
-
-        has been applied to a file.
+      summary: Get classification on file
+      description: 'Retrieves the classification metadata instance that has been applied to a file.
 
 
-        This API can also be called by including the enterprise ID in the
-
-        URL explicitly, for example
-
-        `/files/:id//enterprise_12345/securityClassification-6VMVochwUWo`.'
+        This API can also be called by including the enterprise ID in the URL explicitly, for example `/files/:id//enterprise_12345/securityClassification-6VMVochwUWo`.'
       parameters:
       - name: file_id
+        in: path
         description: 'The unique identifier that represents a file.
 
 
-          The ID for any file can be determined
-
-          by visiting a file in the web application
-
-          and copying the ID from the URL. For example,
-
-          for the URL `https://*.app.box.com/files/123`
-
-          the `file_id` is `123`.'
-        example: '12345'
-        in: path
+          The ID for any file can be determined by visiting a file in the web application and copying the ID from the URL. For example, for the URL `https://*.app.box.com/files/123` the `file_id` is `123`.'
         required: true
         schema:
           type: string
+        example: '12345'
       responses:
-        '201':
-          description: 'Returns an instance of the `securityClassification` metadata
-
-            template, which contains a `Box__Security__Classification__Key`
-
-            field that lists all the classifications available to this
-
-            enterprise.'
+        '200':
+          description: Returns an instance of the `securityClassification` metadata template, which contains a `Box__Security__Classification__Key` field that lists all the classifications available to this enterprise.
           content:
             application/json:
               schema:
@@ -85,16 +55,10 @@ paths:
               schema:
                 $ref: '#/components/schemas/ClientError'
         '404':
-          description: 'Returned if the metadata template specified
-
-            was not applied to this file or the user does not have access to the
-
-            file.
+          description: 'Returned if the metadata template specified was not applied to this file or the user does not have access to the file.
 
 
-            * `instance_not_found` - The metadata template was not applied to the
-
-            file.'
+            - `instance_not_found` - The metadata template was not applied to the file.'
           content:
             application/json:
               schema:
@@ -111,42 +75,47 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ClientError'
+      x-box-tag: file_classifications
+      tags:
+      - Classifications on files
+      x-box-unsupported-on-free-developer: true
+      x-codeSamples:
+      - lang: curl
+        label: Get classification on file
+        source: "curl -i -X GET \"https://api.box.com/2.0/files/12345/metadata/enterprise/securityClassification-6VMVochwUWo\" \\\n     -H \"authorization: Bearer <ACCESS_TOKEN>\""
+      - lang: dotnet
+        label: Get classification on file
+        source: 'await client.FileClassifications.GetClassificationOnFileAsync(fileId: file.Id);'
+      - lang: swift
+        label: Get classification on file
+        source: 'try await client.fileClassifications.getClassificationOnFile(fileId: file.id)'
+      - lang: java
+        label: Get classification on file
+        source: client.getFileClassifications().getClassificationOnFile(file.getId())
+      - lang: node
+        label: Get classification on file
+        source: await client.fileClassifications.getClassificationOnFile(file.id);
+      - lang: python
+        label: Get classification on file
+        source: client.file_classifications.get_classification_on_file(file.id)
     post:
       operationId: post_files_id_metadata_enterprise_securityClassification-6VMVochwUWo
-      summary: Box Add classification to file
-      tags:
-      - Classifications on Files
-      x-box-tag: file_classifications
-      x-box-sanitized: true
-      description: 'Adds a classification to a file by specifying the label of the
-
-        classification to add.
+      summary: Add classification to file
+      description: 'Adds a classification to a file by specifying the label of the classification to add.
 
 
-        This API can also be called by including the enterprise ID in the
-
-        URL explicitly, for example
-
-        `/files/:id//enterprise_12345/securityClassification-6VMVochwUWo`.'
+        This API can also be called by including the enterprise ID in the URL explicitly, for example `/files/:id//enterprise_12345/securityClassification-6VMVochwUWo`.'
       parameters:
       - name: file_id
+        in: path
         description: 'The unique identifier that represents a file.
 
 
-          The ID for any file can be determined
-
-          by visiting a file in the web application
-
-          and copying the ID from the URL. For example,
-
-          for the URL `https://*.app.box.com/files/123`
-
-          the `file_id` is `123`.'
-        example: '12345'
-        in: path
+          The ID for any file can be determined by visiting a file in the web application and copying the ID from the URL. For example, for the URL `https://*.app.box.com/files/123` the `file_id` is `123`.'
         required: true
         schema:
           type: string
+        example: '12345'
       requestBody:
         content:
           application/json:
@@ -154,23 +123,15 @@ paths:
               type: object
               properties:
                 Box__Security__Classification__Key:
-                  type: string
                   description: 'The name of the classification to apply to this file.
 
 
-                    To list the available classifications in an enterprise,
-
-                    use the classification API to retrieve the
-
-                    [classification template](e://get_metadata_templates_enterprise_securityClassification-6VMVochwUWo_schema)
-
-                    which lists all available classification keys.'
+                    To list the available classifications in an enterprise, use the classification API to retrieve the [classification template](/reference/get-metadata-templates-enterprise-securityClassification-6VMVochwUWo-schema) which lists all available classification keys.'
+                  type: string
                   example: Sensitive
       responses:
         '201':
-          description: 'Returns the classification template instance
-
-            that was applied to the file.'
+          description: Returns the classification template instance that was applied to the file.
           content:
             application/json:
               schema:
@@ -179,13 +140,7 @@ paths:
           description: 'Returns an error when the request body is not valid.
 
 
-            * `schema_validation_failed` - The request body contains a value for a for
-
-            a field that either does not exist, or for which the value or type does
-
-            not match the expected field type. An example might be an unknown option
-
-            for an `enum` or `multiSelect` field.'
+            - `schema_validation_failed` - The request body contains a value for a field that either does not exist, or for which the value or type does not match the expected field type. An example might be an unknown option for an `enum` or `multiSelect` field.'
           content:
             application/json:
               schema:
@@ -194,24 +149,18 @@ paths:
           description: 'Returns an error when the file or metadata template was not found.
 
 
-            * `not_found` - The file could not be found, or the user does not have
+            - `not_found` - The file could not be found, or the user does not have access to the file.
 
-            access to the file.
-
-            * `instance_tuple_not_found` - The metadata template was not found.'
+            - `instance_tuple_not_found` - The metadata template was not found.'
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ClientError'
         '409':
-          description: 'Returns an error when an instance of this metadata template is already
-
-            present on the file.
+          description: 'Returns an error when an instance of this metadata template is already present on the file.
 
 
-            * `tuple_already_exists` - An instance of them metadata template already
-
-            exists on the file.'
+            - `tuple_already_exists` - An instance of them metadata template already exists on the file.'
           content:
             application/json:
               schema:
@@ -222,91 +171,82 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ClientError'
+      x-box-tag: file_classifications
+      tags:
+      - Classifications on files
+      x-box-unsupported-on-free-developer: true
+      x-codeSamples:
+      - lang: curl
+        label: Add classification to file
+        source: "curl -i -X POST \"https://api.box.com/2.0/files/12345/metadata/enterprise/securityClassification-6VMVochwUWo\" \\\n     -H \"authorization: Bearer <ACCESS_TOKEN>\" \\\n     -H \"content-type: application/json\" \\\n     -d '{\n       \"Box__Security__Classification__Key\": \"Sensitive\"\n\n     }'"
+      - lang: dotnet
+        label: Add classification to file
+        source: 'await client.FileClassifications.AddClassificationToFileAsync(fileId: file.Id, requestBody: new AddClassificationToFileRequestBody() { BoxSecurityClassificationKey = classification.Key });'
+      - lang: swift
+        label: Add classification to file
+        source: 'try await client.fileClassifications.addClassificationToFile(fileId: file.id, requestBody: AddClassificationToFileRequestBody(boxSecurityClassificationKey: classification.key))'
+      - lang: java
+        label: Add classification to file
+        source: client.getFileClassifications().addClassificationToFile(file.getId(), new AddClassificationToFileRequestBody.Builder().boxSecurityClassificationKey(classification.getKey()).build())
+      - lang: node
+        label: Add classification to file
+        source: "await client.fileClassifications.addClassificationToFile(file.id, {\n  requestBody: {\n    boxSecurityClassificationKey: classification.key,\n  } satisfies AddClassificationToFileRequestBody,\n} satisfies AddClassificationToFileOptionalsInput);"
+      - lang: python
+        label: Add classification to file
+        source: "client.file_classifications.add_classification_to_file(\n    file.id, box_security_classification_key=classification.key\n)"
     put:
       operationId: put_files_id_metadata_enterprise_securityClassification-6VMVochwUWo
-      summary: Box Update classification on file
-      tags:
-      - Classifications on Files
-      x-box-tag: file_classifications
-      x-box-sanitized: true
+      summary: Update classification on file
       description: 'Updates a classification on a file.
 
 
-        The classification can only be updated if a classification has already been
-
-        applied to the file before. When editing classifications, only values are
-
-        defined for the enterprise will be accepted.'
+        The classification can only be updated if a classification has already been applied to the file before. When editing classifications, only values are defined for the enterprise will be accepted.'
       parameters:
       - name: file_id
+        in: path
         description: 'The unique identifier that represents a file.
 
 
-          The ID for any file can be determined
-
-          by visiting a file in the web application
-
-          and copying the ID from the URL. For example,
-
-          for the URL `https://*.app.box.com/files/123`
-
-          the `file_id` is `123`.'
-        example: '12345'
-        in: path
+          The ID for any file can be determined by visiting a file in the web application and copying the ID from the URL. For example, for the URL `https://*.app.box.com/files/123` the `file_id` is `123`.'
         required: true
         schema:
           type: string
+        example: '12345'
       requestBody:
         content:
           application/json-patch+json:
             schema:
-              required:
-              - items
-              description: 'A list containing the one change to make, to
-
-                update the classification label.'
+              description: A list containing the one change to make, to update the classification label.
               type: array
               items:
                 type: object
-                description: 'The operation to perform on the classification
-
-                  metadata template instance. In this case, it use
-
-                  used to replace the value stored for the
-
-                  `Box__Security__Classification__Key` field with a new
-
-                  value.'
+                description: The operation to perform on the classification metadata template instance. In this case, it use used to replace the value stored for the `Box__Security__Classification__Key` field with a new value.
                 required:
                 - op
                 - path
                 - value
                 properties:
                   op:
+                    description: The value will always be `replace`.
                     type: string
                     example: replace
-                    description: '`replace`'
                     enum:
                     - replace
                   path:
+                    description: Defines classifications available in the enterprise.
                     type: string
                     example: /Box__Security__Classification__Key
-                    description: "Defines classifications \navailable in the enterprise."
                     enum:
                     - /Box__Security__Classification__Key
                   value:
-                    type: string
                     description: 'The name of the classification to apply to this file.
 
 
-                      To list the available classifications in an enterprise,
-
-                      use the classification API to retrieve the
-
-                      [classification template](e://get_metadata_templates_enterprise_securityClassification-6VMVochwUWo_schema)
-
-                      which lists all available classification keys.'
+                      To list the available classifications in an enterprise, use the classification API to retrieve the [classification template](/reference/get-metadata-templates-enterprise-securityClassification-6VMVochwUWo-schema) which lists all available classification keys.'
+                    type: string
                     example: Sensitive
+              required:
+              - items
       responses:
         '200':
           description: Returns the updated classification metadata template instance.
@@ -318,17 +258,13 @@ paths:
           description: 'Returns an error when the request body is not valid.
 
 
-            * `bad_request` - The request body format is not an array of valid JSON
-
-            Patch operations.'
+            - `bad_request` - The request body format is not an array of valid JSON Patch operations.'
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ClientError'
         '500':
-          description: 'Returns an error in some edge cases when the request body is not a valid
-
-            array of JSON Patch items.'
+          description: Returns an error in some edge cases when the request body is not a valid array of JSON Patch items.
           content:
             application/json:
               schema:
@@ -339,45 +275,50 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ClientError'
+      x-box-tag: file_classifications
+      tags:
+      - Classifications on files
+      x-box-unsupported-on-free-developer: true
+      x-codeSamples:
+      - lang: curl
+        label: Update classification on file
+        source: "curl -i -X PUT \"https://api.box.com/2.0/files/12345/metadata/enterprise/securityClassification-6VMVochwUWo\" \\\n     -H \"authorization: Bearer <ACCESS_TOKEN>\" \\\n     -H \"content-type: application/json-patch+json\" \\\n     -d '[{\n       \"op\": \"replace\",\n       \"path\": \"/Box__Security__Classification__Key\",\n       \"value\": \"Internal\"\n     }]'"
+      - lang: dotnet
+        label: Update classification on file
+        source: 'await client.FileClassifications.UpdateClassificationOnFileAsync(fileId: file.Id, requestBody: Array.AsReadOnly(new [] {new UpdateClassificationOnFileRequestBody(value: secondClassification.Key)}));'
+      - lang: swift
+        label: Update classification on file
+        source: 'try await client.fileClassifications.updateClassificationOnFile(fileId: file.id, requestBody: [UpdateClassificationOnFileRequestBody(value: secondClassification.key)])'
+      - lang: java
+        label: Update classification on file
+        source: client.getFileClassifications().updateClassificationOnFile(file.getId(), Arrays.asList(new UpdateClassificationOnFileRequestBody(secondClassification.getKey())))
+      - lang: node
+        label: Update classification on file
+        source: "await client.fileClassifications.updateClassificationOnFile(file.id, [\n  new UpdateClassificationOnFileRequestBody({\n    value: secondClassification.key,\n  }),\n]);"
+      - lang: python
+        label: Update classification on file
+        source: "client.file_classifications.update_classification_on_file(\n    file.id, [UpdateClassificationOnFileRequestBody(value=second_classification.key)]\n)"
     delete:
       operationId: delete_files_id_metadata_enterprise_securityClassification-6VMVochwUWo
-      summary: Box Remove classification from file
-      tags:
-      - Classifications on Files
-      x-box-tag: file_classifications
-      x-box-sanitized: true
+      summary: Remove classification from file
       description: 'Removes any classifications from a file.
 
 
-        This API can also be called by including the enterprise ID in the
-
-        URL explicitly, for example
-
-        `/files/:id//enterprise_12345/securityClassification-6VMVochwUWo`.'
+        This API can also be called by including the enterprise ID in the URL explicitly, for example `/files/:id//enterprise_12345/securityClassification-6VMVochwUWo`.'
       parameters:
       - name: file_id
+        in: path
         description: 'The unique identifier that represents a file.
 
 
-          The ID for any file can be determined
-
-          by visiting a file in the web application
-
-          and copying the ID from the URL. For example,
-
-          for the URL `https://*.app.box.com/files/123`
-
-          the `file_id` is `123`.'
-        example: '12345'
-        in: path
+          The ID for any file can be determined by visiting a file in the web application and copying the ID from the URL. For example, for the URL `https://*.app.box.com/files/123` the `file_id` is `123`.'
         required: true
         schema:
           type: string
+        example: '12345'
       responses:
         '204':
-          description: 'Returns an empty response when the classification is
-
-            successfully deleted.'
+          description: Returns an empty response when the classification is successfully deleted.
         '400':
           description: Returned when the request parameters are not valid.
           content:
@@ -385,20 +326,12 @@ paths:
               schema:
                 $ref: '#/components/schemas/ClientError'
         '404':
-          description: 'Returns an error when the file does not have any classification applied
-
-            to it, or when the user does not have access to the
-
-            file.
+          description: 'Returns an error when the file does not have any classification applied to it, or when the user does not have access to the file.
 
 
-            * `instance_not_found` - An instance of the classification metadata
+            - `instance_not_found` - An instance of the classification metadata template with the was not found on this file.
 
-            template with the was not found on this file.
-
-            * `not_found` - The file was not found, or the user does not have access
-
-            to the file.'
+            - `not_found` - The file was not found, or the user does not have access to the file.'
           content:
             application/json:
               schema:
@@ -415,29 +348,50 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ClientError'
+      x-box-tag: file_classifications
+      tags:
+      - Classifications on files
+      x-box-unsupported-on-free-developer: true
+      x-codeSamples:
+      - lang: curl
+        label: Remove classification from file
+        source: "curl -i -X DELETE \"https://api.box.com/2.0/files/12345/metadata/enterprise/securityClassification-6VMVochwUWo\" \\\n     -H \"authorization: Bearer <ACCESS_TOKEN>\""
+      - lang: dotnet
+        label: Remove classification from file
+        source: 'await client.FileClassifications.DeleteClassificationFromFileAsync(fileId: file.Id);'
+      - lang: swift
+        label: Remove classification from file
+        source: 'try await client.fileClassifications.deleteClassificationFromFile(fileId: file.id)'
+      - lang: java
+        label: Remove classification from file
+        source: client.getFileClassifications().deleteClassificationFromFile(file.getId())
+      - lang: node
+        label: Remove classification from file
+        source: await client.fileClassifications.deleteClassificationFromFile(file.id);
+      - lang: python
+        label: Remove classification from file
+        source: client.file_classifications.delete_classification_from_file(file.id)
 components:
   schemas:
     ClientError:
-      title: Client error
+      description: A generic error.
       type: object
-      x-box-resource-id: client_error
-      description: A generic error
       properties:
         type:
-          description: error
-          example: error
+          description: The value will always be `error`.
           type: string
+          example: error
           enum:
           - error
         status:
           description: The HTTP status of the response.
-          example: 400
           type: integer
           format: int32
+          example: 400
         code:
-          description: A Box-specific error code
-          example: item_name_invalid
+          description: A Box-specific error code.
           type: string
+          example: item_name_invalid
           enum:
           - created
           - accepted
@@ -451,6 +405,7 @@ components:
           - method_not_allowed
           - conflict
           - precondition_failed
+          - unprocessable_entity
           - too_many_requests
           - internal_server_error
           - unavailable
@@ -458,100 +413,77 @@ components:
           - insufficient_scope
         message:
           description: A short message describing the error.
-          example: Method Not Allowed
           type: string
+          example: Method Not Allowed
         context_info:
-          description: 'A free-form object that contains additional context
-
-            about the error. The possible fields are defined on
-
-            a per-endpoint basis. `message` is only one example.'
+          description: A free-form object that contains additional context about the error. The possible fields are defined on a per-endpoint basis. `message` is only one example.
           type:
           - object
           - 'null'
-          properties:
-            message:
-              type: string
-              description: More details on the error.
-              example: Something went wrong.
+          example:
+            message: Something went wrong
+          additionalProperties: {}
         help_url:
           description: A URL that links to more information about why this error occurred.
-          example: https://developer.box.com/guides/api-calls/permissions-and-errors/common-errors/
           type: string
+          example: https://developer.box.com/guides/api-calls/permissions-and-errors/common-errors/
         request_id:
-          description: 'A unique identifier for this response, which can be used
-
-            when contacting Box support.'
+          description: A unique identifier for this response, which can be used when contacting Box support.
           type: string
           example: abcdef123456
+      title: Client error
+      x-box-resource-id: client_error
     Classification:
-      title: Classification
+      description: 'An instance of the classification metadata template, containing the classification applied to the file or folder.
+
+
+        To get more details about the classification applied to an item, request the classification metadata template.'
       type: object
-      x-box-resource-id: classification
-      x-box-tag: classifications
-      description: 'An instance of the classification metadata template, containing
-
-        the classification applied to the file or folder.
-
-
-        To get more details about the classification applied to an item,
-
-        request the classification metadata template.'
       properties:
         Box__Security__Classification__Key:
+          description: The name of the classification applied to the item.
           type: string
           example: Sensitive
-          description: The name of the classification applied to the item.
         $parent:
+          description: The identifier of the item that this metadata instance has been attached to. This combines the `type` and the `id` of the parent in the form `{type}_{id}`.
           type: string
           example: folder_59449484661,
-          description: 'The identifier of the item that this metadata instance
-
-            has been attached to. This combines the `type` and the `id`
-
-            of the parent in the form `{type}_{id}`.'
         $template:
+          description: The value will always be `securityClassification-6VMVochwUWo`.
           type: string
           example: securityClassification-6VMVochwUWo
-          description: '`securityClassification-6VMVochwUWo`'
           enum:
           - securityClassification-6VMVochwUWo
         $scope:
-          type: string
-          example: enterprise_27335
-          description: 'The scope of the enterprise that this classification has been
-
-            applied for.
+          description: 'The scope of the enterprise that this classification has been applied for.
 
 
             This will be in the format `enterprise_{enterprise_id}`.'
+          type: string
+          example: enterprise_27335
         $version:
+          description: The version of the metadata instance. This version starts at 0 and increases every time a classification is updated.
           type: integer
           example: 1
-          description: 'The version of the metadata instance. This version starts at 0 and
-
-            increases every time a classification is updated.'
         $type:
+          description: The unique ID of this classification instance. This will be include the name of the classification template and a unique ID.
           type: string
           example: securityClassification-6VMVochwUWo-fd31537a-0f95-4d86-9f2b-5974a29978f8
-          description: 'The unique ID of this classification instance. This will be include
-
-            the name of the classification template and a unique ID.'
         $typeVersion:
+          description: The version of the metadata template. This version starts at 0 and increases every time the template is updated. This is mostly for internal use.
           type: number
           example: 5
-          description: 'The version of the metadata template. This version starts at 0 and
-
-            increases every time the template is updated. This is mostly for internal
-
-            use.'
         $canEdit:
+          description: Whether an end user can change the classification.
           type: boolean
           example: true
-          description: Whether an end user can change the classification.
+      title: Classification
+      x-box-resource-id: classification
+      x-box-tag: classifications
   securitySchemes:
     OAuth2Security:
       type: oauth2
+      description: The access token received from the authorization server in the OAuth 2.0 flow.
       flows:
         authorizationCode:
           authorizationUrl: https://account.box.com/api/oauth2/authorize
@@ -567,5 +499,8 @@ components:
             manage_data_retention: Manage data retention polices
             manage_legal_hold: Manage Legal Holds
 externalDocs:
-  description: Box Developer Documentation
+  description: Box Developer Documentation.
   url: https://developer.box.com
+x-mint:
+  mcp:
+    enabled: true

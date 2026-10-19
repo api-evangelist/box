@@ -1,0 +1,1368 @@
+openapi: 3.2.0
+info:
+  title: Box Platform AI Studio API
+  description: Box Platform provides functionality to provide access to content stored within Box. It provides endpoints for basic manipulation of files and folders, management of users within an enterprise, as well as more complex topics such as legal holds and retention policies.
+  termsOfService: https://cloud.app.box.com/s/rmwxu64h1ipr41u49w3bbuvbsa29wku9
+  contact:
+    name: Box, Inc
+    url: https://developer.box.com
+    email: devrel@box.com
+  license:
+    name: Apache-2.0
+    url: https://www.apache.org/licenses/LICENSE-2.0
+  version: '2024.0'
+  x-box-commit-hash: 53bdced3cd
+servers:
+- url: https://api.box.com/2.0
+  description: Box Platform API server.
+security:
+- OAuth2Security: []
+tags:
+- name: AI Studio
+  description: A set of endpoints used to interact with AI Studio.
+  x-box-tag: ai_studio
+paths:
+  /ai_agents:
+    get:
+      operationId: get_ai_agents
+      summary: List AI agents
+      description: Lists AI agents based on the provided parameters.
+      parameters:
+      - name: mode
+        in: query
+        description: 'The mode to filter the agent config to return. Possible values are: `ask`, `text_gen`, and `extract`.'
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+        example:
+        - ask
+        - text_gen
+        - extract
+        explode: false
+      - name: fields
+        in: query
+        description: The fields to return in the response.
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+        example:
+        - ask
+        - text_gen
+        - extract
+        explode: false
+      - name: agent_state
+        in: query
+        description: 'The state of the agents to return. Possible values are: `enabled`, `disabled` and `enabled_for_selected_users`.'
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+        example:
+        - enabled
+        explode: false
+      - name: include_box_default
+        in: query
+        description: Whether to include the Box default agents in the response.
+        required: false
+        schema:
+          type: boolean
+          default: false
+        example: true
+      - name: marker
+        in: query
+        description: Defines the position marker at which to begin returning results.
+        required: false
+        schema:
+          type: string
+        example: JV9IRGZmieiBasejOG9yDCRNgd2ymoZIbjsxbJMjIs3kioVii
+      - name: limit
+        in: query
+        description: The maximum number of items to return per page.
+        required: false
+        schema:
+          type: integer
+          format: int64
+          maximum: 1000
+        example: 1000
+      responses:
+        '200':
+          description: A successful response including the agents list.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AiMultipleAgentResponse'
+        '400':
+          description: An unexpected client error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ClientError'
+        '500':
+          description: An unexpected server error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ClientError'
+      x-box-tag: ai_studio
+      tags:
+      - AI Studio
+      x-box-unsupported-on-free-developer: true
+      x-codeSamples:
+      - lang: curl
+        label: List AI agents
+        source: "curl -i -X GET \"https://api.box.com/2.0/ai_agents\" \\\n     -H \"authorization: Bearer <ACCESS_TOKEN>\""
+      - lang: dotnet
+        label: List AI agents
+        source: await client.AiStudio.GetAiAgentsAsync();
+      - lang: swift
+        label: List AI agents
+        source: try await client.aiStudio.getAiAgents()
+      - lang: java
+        label: List AI agents
+        source: client.getAiStudio().getAiAgents()
+      - lang: node
+        label: List AI agents
+        source: await client.aiStudio.getAiAgents();
+      - lang: python
+        label: List AI agents
+        source: client.ai_studio.get_ai_agents()
+    post:
+      operationId: post_ai_agents
+      summary: Create AI agent
+      description: 'Creates an AI agent. At least one of the following capabilities must be provided: `ask`, `text_gen`, `extract`.'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateAiAgent'
+      responses:
+        '200':
+          description: Definition of created AI agent.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AiSingleAgentResponse--Full'
+        '400':
+          description: An unexpected client error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ClientError'
+        '500':
+          description: An unexpected server error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ClientError'
+      x-box-tag: ai_studio
+      tags:
+      - AI Studio
+      x-box-unsupported-on-free-developer: true
+      x-codeSamples:
+      - lang: curl
+        label: Create AI agent
+        source: "curl -i -L -X POST \"https://api.box.com/2.0/ai_agents\" \\\n     -H \"authorization: Bearer <ACCESS_TOKEN>\" \\\n     -H \"content-type: application/json\" \\\n     -d '{\n       \"type\": \"ai_agent\",\n       \"name\": \"My AI Agent\",\n       \"access_state\": \"enabled\",\n       \"ask\": {\n         \"type\": \"ai_agent_ask\",\n         \"access_state\": \"enabled\",\n         \"description\": \"Answers questions about documents\"\n       }\n     }'"
+      - lang: dotnet
+        label: Create AI agent
+        source: 'await client.AiStudio.CreateAiAgentAsync(requestBody: new CreateAiAgent(name: agentName, accessState: "enabled") { Ask = new AiStudioAgentAsk(accessState: "enabled", description: "desc1") });'
+      - lang: swift
+        label: Create AI agent
+        source: 'try await client.aiStudio.createAiAgent(requestBody: CreateAiAgent(name: agentName, accessState: "enabled", ask: AiStudioAgentAsk(accessState: "enabled", description: "desc1")))'
+      - lang: java
+        label: Create AI agent
+        source: client.getAiStudio().createAiAgent(new CreateAiAgent.Builder(agentName, "enabled").ask(new AiStudioAgentAsk("enabled", "desc1")).build())
+      - lang: node
+        label: Create AI agent
+        source: "await client.aiStudio.createAiAgent({\n  name: agentName,\n  accessState: 'enabled',\n  ask: new AiStudioAgentAsk({ accessState: 'enabled', description: 'desc1' }),\n} satisfies CreateAiAgentInput);"
+      - lang: python
+        label: Create AI agent
+        source: "client.ai_studio.create_ai_agent(\n    agent_name,\n    \"enabled\",\n    ask=AiStudioAgentAsk(access_state=\"enabled\", description=\"desc1\"),\n)"
+  /ai_agents/{agent_id}:
+    put:
+      operationId: put_ai_agents_id
+      summary: Update AI agent
+      description: Updates an AI agent.
+      parameters:
+      - name: agent_id
+        in: path
+        description: The ID of the agent to update.
+        required: true
+        schema:
+          type: string
+        example: '1234'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateAiAgent'
+      responses:
+        '200':
+          description: Definition of created AI agent.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AiSingleAgentResponse--Full'
+        '400':
+          description: An unexpected client error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ClientError'
+        '500':
+          description: An unexpected server error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ClientError'
+      x-box-tag: ai_studio
+      tags:
+      - AI Studio
+      x-box-unsupported-on-free-developer: true
+      x-codeSamples:
+      - lang: curl
+        label: Update AI agent
+        source: "curl -i -X PUT \"https://api.box.com/2.0/ai_agents/1234567890\" \\\n     -H \"authorization: Bearer <ACCESS_TOKEN>\""
+      - lang: dotnet
+        label: Update AI agent
+        source: 'await client.AiStudio.UpdateAiAgentByIdAsync(agentId: createdAgent.Id, requestBody: new CreateAiAgent(name: agentName, accessState: "enabled") { Ask = new AiStudioAgentAsk(accessState: "disabled", description: "desc2") });'
+      - lang: swift
+        label: Update AI agent
+        source: 'try await client.aiStudio.updateAiAgentById(agentId: createdAgent.id, requestBody: CreateAiAgent(name: agentName, accessState: "enabled", ask: AiStudioAgentAsk(accessState: "disabled", description: "desc2")))'
+      - lang: java
+        label: Update AI agent
+        source: client.getAiStudio().updateAiAgentById(createdAgent.getId(), new CreateAiAgent.Builder(agentName, "enabled").ask(new AiStudioAgentAsk("disabled", "desc2")).build())
+      - lang: node
+        label: Update AI agent
+        source: "await client.aiStudio.updateAiAgentById(createdAgent.id, {\n  name: agentName,\n  accessState: 'enabled',\n  ask: new AiStudioAgentAsk({ accessState: 'disabled', description: 'desc2' }),\n} satisfies CreateAiAgentInput);"
+      - lang: python
+        label: Update AI agent
+        source: "client.ai_studio.update_ai_agent_by_id(\n    created_agent.id,\n    agent_name,\n    \"enabled\",\n    ask=AiStudioAgentAsk(access_state=\"disabled\", description=\"desc2\"),\n)"
+    get:
+      operationId: get_ai_agents_id
+      summary: Get AI agent by agent ID
+      description: Gets an AI Agent using the `agent_id` parameter.
+      parameters:
+      - name: agent_id
+        in: path
+        description: The agent id to get.
+        required: true
+        schema:
+          type: string
+        example: '1234'
+      - name: fields
+        in: query
+        description: The fields to return in the response.
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+        example:
+        - ask
+        - text_gen
+        - extract
+        explode: false
+      responses:
+        '200':
+          description: A successful response including the agent.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AiSingleAgentResponse--Full'
+        '400':
+          description: An unexpected client error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ClientError'
+        '500':
+          description: An unexpected server error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ClientError'
+      x-box-tag: ai_studio
+      tags:
+      - AI Studio
+      x-box-unsupported-on-free-developer: true
+      x-codeSamples:
+      - lang: curl
+        label: Get AI agent by agent ID
+        source: "curl -i -X GET \"https://api.box.com/2.0/ai_agents/1234567890\" \\\n     -H \"authorization: Bearer <ACCESS_TOKEN>\""
+      - lang: dotnet
+        label: Get AI agent by agent ID
+        source: 'await client.AiStudio.GetAiAgentByIdAsync(agentId: createdAgent.Id, queryParams: new GetAiAgentByIdQueryParams() { Fields = Array.AsReadOnly(new [] {"ask"}) });'
+      - lang: swift
+        label: Get AI agent by agent ID
+        source: 'try await client.aiStudio.getAiAgentById(agentId: createdAgent.id, queryParams: GetAiAgentByIdQueryParams(fields: ["ask"]))'
+      - lang: java
+        label: Get AI agent by agent ID
+        source: client.getAiStudio().getAiAgentById(createdAgent.getId(), new GetAiAgentByIdQueryParams.Builder().fields(Arrays.asList("ask")).build())
+      - lang: node
+        label: Get AI agent by agent ID
+        source: "await client.aiStudio.getAiAgentById(createdAgent.id, {\n  queryParams: { fields: ['ask'] } satisfies GetAiAgentByIdQueryParams,\n} satisfies GetAiAgentByIdOptionalsInput);"
+      - lang: python
+        label: Get AI agent by agent ID
+        source: client.ai_studio.get_ai_agent_by_id(created_agent.id, fields=["ask"])
+    delete:
+      operationId: delete_ai_agents_id
+      summary: Delete AI agent
+      description: Deletes an AI agent using the provided parameters.
+      parameters:
+      - name: agent_id
+        in: path
+        description: The ID of the agent to delete.
+        required: true
+        schema:
+          type: string
+        example: '1234'
+      responses:
+        '204':
+          description: A successful response with no content.
+        '400':
+          description: An unexpected client error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ClientError'
+        '404':
+          description: Returned if the AI agent is not found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ClientError'
+        '500':
+          description: An unexpected server error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ClientError'
+      x-box-tag: ai_studio
+      tags:
+      - AI Studio
+      x-box-unsupported-on-free-developer: true
+      x-codeSamples:
+      - lang: curl
+        label: Delete AI agent
+        source: "curl -L -X DELETE \"https://api.box.com/2.0/ai_agents/12345\" \\\n      -H 'Authorization: Bearer <ACCESS_TOKEN>'"
+      - lang: dotnet
+        label: Delete AI agent
+        source: 'await client.AiStudio.DeleteAiAgentByIdAsync(agentId: createdAgent.Id);'
+      - lang: swift
+        label: Delete AI agent
+        source: 'try await client.aiStudio.deleteAiAgentById(agentId: createdAgent.id)'
+      - lang: java
+        label: Delete AI agent
+        source: client.getAiStudio().deleteAiAgentById(createdAgent.getId())
+      - lang: node
+        label: Delete AI agent
+        source: await client.aiStudio.deleteAiAgentById(createdAgent.id);
+      - lang: python
+        label: Delete AI agent
+        source: client.ai_studio.delete_ai_agent_by_id(created_agent.id)
+components:
+  schemas:
+    AiStudioAgentTextGenResponse:
+      description: The AI agent to be used to generate text.
+      type: object
+      properties:
+        type:
+          description: The type of AI agent used for generating text.
+          type: string
+          example: ai_agent_text_gen
+          enum:
+          - ai_agent_text_gen
+        access_state:
+          description: 'The state of the AI Agent capability. Possible values are: `enabled` and `disabled`.'
+          type: string
+          example: enabled
+          title: Capability Access State
+          x-box-tag: ai_studio
+        description:
+          description: The description of the AI agent.
+          type: string
+          example: This is ASK Agent
+        custom_instructions:
+          description: Custom instructions for the AI agent.
+          type:
+          - string
+          - 'null'
+          example: This is a custom instruction
+        suggested_questions:
+          description: Suggested questions for the AI agent. If null, suggested question will be generated. If empty, no suggested questions will be displayed.
+          type: array
+          items:
+            type: string
+          example:
+          - What is in this file?
+          - What are the main highlights of this document?
+          maxItems: 4
+        basic_gen:
+          $ref: '#/components/schemas/AiStudioAgentBasicGenToolResponse'
+      required:
+      - type
+      - access_state
+      - description
+      title: AI agent capability text generation
+      x-box-resource-id: ai_studio_agent_text_gen_response
+      x-box-tag: ai_studio
+    AiStudioAgentTextGen:
+      description: The AI agent to be used to generate text.
+      type: object
+      properties:
+        type:
+          description: The type of AI agent used for generating text.
+          type: string
+          example: ai_agent_text_gen
+          enum:
+          - ai_agent_text_gen
+        access_state:
+          description: 'The state of the AI Agent capability. Possible values are: `enabled` and `disabled`.'
+          type: string
+          example: enabled
+          title: Capability Access State
+          x-box-tag: ai_studio
+        description:
+          description: The description of the AI agent.
+          type: string
+          example: This is ASK Agent
+        custom_instructions:
+          description: Custom instructions for the AI agent.
+          type:
+          - string
+          - 'null'
+          example: This is a custom instruction
+        suggested_questions:
+          description: Suggested questions for the AI agent. If null, suggested question will be generated. If empty, no suggested questions will be displayed.
+          type: array
+          items:
+            type: string
+          example:
+          - What is in this file?
+          - What are the main highlights of this document?
+          maxItems: 4
+        basic_gen:
+          $ref: '#/components/schemas/AiStudioAgentBasicGenTool'
+      required:
+      - type
+      - access_state
+      - description
+      title: AI agent capability text generation request
+      x-box-resource-id: ai_studio_agent_text_gen
+      x-box-tag: ai_studio
+    AiAgentBasicTextToolTextGen:
+      description: AI agent processor used to handle basic text.
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/AiAgentBasicTextToolBase'
+      - properties:
+          system_message:
+            description: System messages aim at helping the LLM understand its role and what it is supposed to do. The input for `{current_date}` is optional, depending on the use.
+            type: string
+            example: You are a helpful travel assistant specialized in budget travel
+          prompt_template:
+            description: 'The prompt template contains contextual information of the request and the user prompt.
+
+
+              When using the `prompt_template` parameter, you **must include** input for `{user_question}`. Inputs for `{current_date}` and `{content}` are optional, depending on the use.'
+            type: string
+            example: It is `{current_date}`, and I have $8000 and want to spend a week in the Azores. `{user_question}`
+            maxLength: 10000
+            pattern: \{user_question\}
+      title: AI agent basic text tool
+      x-box-tag: ai
+    AiAgentSpreadsheetTool:
+      description: The AI agent tool used to handle spreadsheets and tabular data.
+      type: object
+      properties:
+        model:
+          description: The model used for the AI agent for spreadsheets. For specific model values, see the [available models list](/guides/box-ai/ai-models).
+          type: string
+          example: azure__openai__gpt_4o_mini
+        num_tokens_for_completion:
+          description: The number of tokens for completion.
+          type: integer
+          example: 8400
+          minimum: 1
+        llm_endpoint_params:
+          $ref: '#/components/schemas/AiLlmEndpointParams'
+      title: AI agent spreadsheet tool
+      x-box-tag: ai
+    ClientError:
+      description: A generic error.
+      type: object
+      properties:
+        type:
+          description: The value will always be `error`.
+          type: string
+          example: error
+          enum:
+          - error
+        status:
+          description: The HTTP status of the response.
+          type: integer
+          format: int32
+          example: 400
+        code:
+          description: A Box-specific error code.
+          type: string
+          example: item_name_invalid
+          enum:
+          - created
+          - accepted
+          - no_content
+          - redirect
+          - not_modified
+          - bad_request
+          - unauthorized
+          - forbidden
+          - not_found
+          - method_not_allowed
+          - conflict
+          - precondition_failed
+          - unprocessable_entity
+          - too_many_requests
+          - internal_server_error
+          - unavailable
+          - item_name_invalid
+          - insufficient_scope
+        message:
+          description: A short message describing the error.
+          type: string
+          example: Method Not Allowed
+        context_info:
+          description: A free-form object that contains additional context about the error. The possible fields are defined on a per-endpoint basis. `message` is only one example.
+          type:
+          - object
+          - 'null'
+          example:
+            message: Something went wrong
+          additionalProperties: {}
+        help_url:
+          description: A URL that links to more information about why this error occurred.
+          type: string
+          example: https://developer.box.com/guides/api-calls/permissions-and-errors/common-errors/
+        request_id:
+          description: A unique identifier for this response, which can be used when contacting Box support.
+          type: string
+          example: abcdef123456
+      title: Client error
+      x-box-resource-id: client_error
+    AiSingleAgentResponse--Full:
+      description: Full representation of an AI Agent instance.
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/AiSingleAgentResponse'
+      - properties:
+          ask:
+            $ref: '#/components/schemas/AiStudioAgentAskResponse'
+          text_gen:
+            $ref: '#/components/schemas/AiStudioAgentTextGenResponse'
+          extract:
+            $ref: '#/components/schemas/AiStudioAgentExtractResponse'
+      required:
+      - id
+      - origin
+      - name
+      - access_state
+      title: AI agent (Full)
+      x-box-resource-id: ai_single_agent_response--full
+      x-box-tag: ai_studio
+      x-box-variant: full
+      x-box-variants:
+      - standard
+      - full
+    AiStudioAgentLongTextToolResponse:
+      description: AI agent processor used to to handle longer text.
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/AiStudioAgentLongTextTool'
+      - properties:
+          warnings:
+            description: Warnings concerning tool.
+            type: array
+            items:
+              type: string
+            example:
+            - MODEL_INACTIVE
+      title: AI agent long text tool
+      x-box-tag: ai
+    AiStudioAgentSpreadsheetToolResponse:
+      description: The AI agent tool used to handle spreadsheets and tabular data.
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/AiStudioAgentSpreadsheetTool'
+      - properties:
+          warnings:
+            description: Warnings concerning tool.
+            type: array
+            items:
+              type: string
+            example:
+            - MODEL_INACTIVE
+      title: AI agent spreadsheet tool
+      x-box-tag: ai
+    AiAgentBasicGenTool:
+      description: AI agent basic tool used to generate text.
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/AiAgentLongTextToolTextGen'
+      - properties:
+          content_template:
+            description: How the content should be included in a request to the LLM. Input for `{content}` is optional, depending on the use.
+            type: string
+            example: '---{content}---'
+      title: AI agent basic text generation tool
+      x-box-tag: ai
+    AiAgentBasicTextTool:
+      description: AI agent processor used to handle basic text.
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/AiAgentBasicTextToolBase'
+      - properties:
+          system_message:
+            description: System messages try to help the LLM "understand" its role and what it is supposed to do.
+            type: string
+            example: You are a helpful travel assistant specialized in budget travel
+          prompt_template:
+            description: The prompt template contains contextual information of the request and the user prompt. When passing `prompt_template` parameters, you **must include** inputs for `{user_question}` and `{content}`. `{current_date}` is optional, depending on the use.
+            type: string
+            example: It is `{current_date}`, consider these travel options `{content}` and answer the `{user_question}`.
+            maxLength: 10000
+            pattern: (\{user_question\}[\s\S]*?\{content\}|\{content\}[\s\S]*?\{user_question\})
+      title: AI agent basic text tool
+      x-box-tag: ai
+    User--Base:
+      description: A mini representation of a user, used when nested within another resource.
+      type: object
+      properties:
+        id:
+          description: The unique identifier for this user.
+          type: string
+          example: '11446498'
+        type:
+          description: The value will always be `user`.
+          type: string
+          example: user
+          enum:
+          - user
+      required:
+      - type
+      - id
+      title: User (Base)
+      x-box-resource-id: user--base
+      x-box-tag: users
+      x-box-variant: base
+      x-box-variants:
+      - base
+      - mini
+      - standard
+      - full
+    AiAgentAllowedEntity:
+      description: The entity with type and ID.
+      type: object
+      oneOf:
+      - $ref: '#/components/schemas/User--Base'
+      - $ref: '#/components/schemas/Group--Base'
+      title: The entity with type and ID
+      x-box-resource-id: ai_agent_allowed_entity
+    AiStudioAgentBasicTextToolResponse:
+      description: AI agent processor used to handle basic text.
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/AiStudioAgentBasicTextTool'
+      - properties:
+          warnings:
+            description: Warnings concerning tool.
+            type: array
+            items:
+              type: string
+            example:
+            - MODEL_INACTIVE
+      title: AI agent basic text tool
+      x-box-tag: ai
+    AiLlmEndpointParamsGoogle:
+      description: AI LLM endpoint params Google object.
+      type: object
+      properties:
+        type:
+          description: The type of the AI LLM endpoint params object for Google. This parameter is **required**.
+          type: string
+          example: google_params
+          enum:
+          - google_params
+        temperature:
+          description: The temperature is used for sampling during response generation, which occurs when `top-P` and `top-K` are applied. Temperature controls the degree of randomness in the token selection.
+          type:
+          - number
+          - 'null'
+          example: 0
+          maximum: 2
+          minimum: 0
+        top_p:
+          description: '`Top-P` changes how the model selects tokens for output. Tokens are selected from the most (see `top-K`) to least probable until the sum of their probabilities equals the `top-P` value.'
+          type:
+          - number
+          - 'null'
+          example: 1
+          maximum: 2
+          minimum: 0.1
+        top_k:
+          description: '`Top-K` changes how the model selects tokens for output. A low `top-K` means the next selected token is the most probable among all tokens in the model''s vocabulary (also called greedy decoding), while a high `top-K` means that the next token is selected from among the three most probable tokens by using temperature.'
+          type:
+          - number
+          - 'null'
+          example: 1
+          maximum: 2
+          minimum: 0.1
+      required:
+      - type
+      title: AI LLM endpoint params Google
+      x-box-resource-id: ai_llm_endpoint_params_google
+    AiMultipleAgentResponse:
+      description: List of AI Agents with pagination.
+      type: object
+      allOf:
+      - type: object
+        description: The part of an API response that describes marker based pagination.
+        properties:
+          limit:
+            description: The limit that was used for these entries. This will be the same as the `limit` query parameter unless that value exceeded the maximum value allowed. The maximum value varies by API.
+            type: integer
+            format: int64
+            example: 1000
+          next_marker:
+            description: The marker for the start of the next page of results.
+            type:
+            - string
+            - 'null'
+            example: JV9IRGZmieiBasejOG9yDCRNgd2ymoZIbjsxbJMjIs3kioVii
+          prev_marker:
+            description: The marker for the start of the previous page of results.
+            type:
+            - string
+            - 'null'
+            example: JV9IRGZmieiBasejOG9yDCRNgd2ymoZIbjsxbJMjIs3kioVih
+      - properties:
+          entries:
+            description: The list of AI Agents.
+            type: array
+            items:
+              $ref: '#/components/schemas/AiSingleAgentResponse--Full'
+      required:
+      - entries
+      title: AI agents list
+      x-box-resource-id: ai_multiple_agent_response
+      x-box-tag: ai_studio
+    CreateAiAgent:
+      description: The schema for AI agent create request.
+      type: object
+      properties:
+        type:
+          description: The type of agent used to handle queries.
+          type: string
+          example: ai_agent
+          enum:
+          - ai_agent
+        name:
+          description: The name of the AI Agent.
+          type: string
+          example: My AI Agent
+        access_state:
+          description: 'The state of the AI Agent. Possible values are: `enabled`, `disabled`, and `enabled_for_selected_users`.'
+          type: string
+          example: enabled
+          title: Access State
+          x-box-tag: ai_studio
+        icon_reference:
+          description: 'The icon reference of the AI Agent. It should have format of the URL `https://cdn01.boxcdn.net/app-assets/aistudio/avatars/<file_name>` where possible values of `file_name` are: `logo_boxAi.png`,`logo_stamp.png`,`logo_legal.png`,`logo_finance.png`,`logo_config.png`,`logo_handshake.png`,`logo_analytics.png`,`logo_classification.png`.'
+          type: string
+          example: https://cdn01.boxcdn.net/app-assets/aistudio/avatars/logo_analytics.svg
+          minLength: 1
+        allowed_entities:
+          description: List of allowed users or groups.
+          type: array
+          items:
+            $ref: '#/components/schemas/AiAgentAllowedEntity'
+        ask:
+          $ref: '#/components/schemas/AiStudioAgentAsk'
+        text_gen:
+          $ref: '#/components/schemas/AiStudioAgentTextGen'
+        extract:
+          $ref: '#/components/schemas/AiStudioAgentExtract'
+      required:
+      - type
+      - name
+      - access_state
+      title: Create AI agent request
+      x-box-tag: ai_studio
+    AiAgentLongTextTool:
+      description: AI agent processor used to to handle longer text.
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/AiAgentBasicTextTool'
+      - properties:
+          embeddings:
+            type: object
+            properties:
+              model:
+                description: The model used for the AI agent for calculating embeddings.
+                type: string
+                example: azure__openai__text_embedding_ada_002
+              strategy:
+                type: object
+                properties:
+                  id:
+                    description: The strategy used for the AI agent for calculating embeddings.
+                    type: string
+                    example: basic
+                  num_tokens_per_chunk:
+                    description: The number of tokens per chunk.
+                    type: integer
+                    example: 64
+                    maximum: 512
+                    minimum: 1
+      title: AI agent long text tool
+      x-box-tag: ai
+    AiStudioAgentBasicGenToolResponse:
+      description: AI agent basic tool used to generate text.
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/AiStudioAgentBasicGenTool'
+      - properties:
+          warnings:
+            description: Warnings concerning tool.
+            type: array
+            items:
+              type: string
+            example:
+            - MODEL_INACTIVE
+      title: AI agent basic text generation tool
+      x-box-tag: ai
+    AiLlmEndpointParamsAWS:
+      description: AI LLM endpoint params AWS object.
+      type: object
+      properties:
+        type:
+          description: The type of the AI LLM endpoint params object for AWS. This parameter is **required**.
+          type: string
+          example: aws_params
+          enum:
+          - aws_params
+        temperature:
+          description: What sampling temperature to use, between 0 and 1. Higher values like 0.8 will make the output more random, while lower values like 0.2 will make it more focused and deterministic. We generally recommend altering this or `top_p` but not both.
+          type:
+          - number
+          - 'null'
+          example: 0.5
+          maximum: 1
+          minimum: 0
+        top_p:
+          description: An alternative to sampling with temperature, called nucleus sampling, where the model considers the results of the tokens with `top_p` probability mass. So 0.1 means only the tokens comprising the top 10% probability mass are considered. We generally recommend altering this or temperature but not both.
+          type:
+          - number
+          - 'null'
+          example: 0.5
+          maximum: 1
+          minimum: 0
+      required:
+      - type
+      title: AI LLM endpoint params AWS
+      x-box-resource-id: ai_llm_endpoint_params_aws
+    Group--Base:
+      description: A base representation of a group.
+      type: object
+      properties:
+        id:
+          description: The unique identifier for this object.
+          type: string
+          example: '11446498'
+        type:
+          description: The value will always be `group`.
+          type: string
+          example: group
+          enum:
+          - group
+      required:
+      - id
+      - type
+      title: Group (Base)
+      x-box-resource-id: group--base
+      x-box-tag: groups
+      x-box-variant: base
+      x-box-variants:
+      - base
+      - mini
+      - standard
+      - full
+    AiSingleAgentResponse:
+      description: Standard representation of an AI Agent instance.
+      type: object
+      properties:
+        id:
+          description: The unique identifier of the AI Agent.
+          type: string
+          example: '1234567890'
+        type:
+          description: The type of agent used to handle queries.
+          type: string
+          example: ai_agent
+          enum:
+          - ai_agent
+        origin:
+          description: The provider of the AI Agent.
+          type: string
+          example: CUSTOM
+        name:
+          description: The name of the AI Agent.
+          type: string
+          example: This is my Agent
+        access_state:
+          description: 'The state of the AI Agent. Possible values are: `enabled`, `disabled`, and `enabled_for_selected_users`.'
+          type: string
+          example: enabled
+          title: Access State
+          x-box-tag: ai_studio
+        created_by:
+          description: The user who created this agent.
+          allOf:
+          - $ref: '#/components/schemas/User--Base'
+        created_at:
+          description: The ISO date-time formatted timestamp of when this AI agent was created.
+          type: string
+          format: date-time
+          example: '2022-01-01T00:00:00Z'
+        modified_by:
+          description: The user who most recently modified this agent.
+          allOf:
+          - $ref: '#/components/schemas/User--Base'
+        modified_at:
+          description: The ISO date-time formatted timestamp of when this AI agent was recently modified.
+          type: string
+          format: date-time
+          example: '2022-01-01T00:00:00Z'
+        icon_reference:
+          description: The icon reference of the AI Agent.
+          type: string
+          example: https://cdn01.boxcdn.net/app-assets/aistudio/avatars/logo_analytics.svg
+          minLength: 1
+        allowed_entities:
+          description: List of allowed users or groups.
+          type: array
+          items:
+            $ref: '#/components/schemas/AiAgentAllowedEntity'
+      required:
+      - id
+      - origin
+      - name
+      - access_state
+      title: AI agent
+      x-box-resource-id: ai_single_agent_response
+      x-box-tag: ai_studio
+      x-box-variant: standard
+      x-box-variants:
+      - standard
+      - full
+    AiStudioAgentLongTextTool:
+      description: AI agent processor used to to handle longer text.
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/AiAgentLongTextTool'
+      - properties:
+          is_custom_instructions_included:
+            description: True if system message contains custom instructions placeholder, false otherwise.
+            type: boolean
+            example: false
+      title: AI agent long text tool request
+      x-box-tag: ai
+    AiStudioAgentBasicGenTool:
+      description: AI agent basic tool used to generate text.
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/AiAgentBasicGenTool'
+      - properties:
+          is_custom_instructions_included:
+            description: True if system message contains custom instructions placeholder, false otherwise.
+            type: boolean
+            example: false
+      title: AI agent basic text generation tool request
+      x-box-tag: ai
+    AiAgentBasicTextToolBase:
+      description: AI agent processor used to handle basic text.
+      type: object
+      properties:
+        model:
+          description: The model used for the AI agent for basic text. For specific model values, see the [available models list](/guides/box-ai/ai-models).
+          type: string
+          example: azure__openai__gpt_4o_mini
+        num_tokens_for_completion:
+          description: The number of tokens for completion.
+          type: integer
+          example: 8400
+          minimum: 1
+        llm_endpoint_params:
+          $ref: '#/components/schemas/AiLlmEndpointParams'
+      title: AI agent basic text tool
+      x-box-tag: ai
+    AiLlmEndpointParams:
+      description: The parameters for the LLM endpoint specific to a model.
+      type: object
+      oneOf:
+      - $ref: '#/components/schemas/AiLlmEndpointParamsOpenAi'
+      - $ref: '#/components/schemas/AiLlmEndpointParamsGoogle'
+      - $ref: '#/components/schemas/AiLlmEndpointParamsAWS'
+      - $ref: '#/components/schemas/AiLlmEndpointParamsIBM'
+      title: AI LLM endpoint parameters
+    AiStudioAgentBasicTextTool:
+      description: AI agent processor used to handle basic text.
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/AiAgentBasicTextTool'
+      - properties:
+          is_custom_instructions_included:
+            description: True if system message contains custom instructions placeholder, false otherwise.
+            type: boolean
+            example: false
+      title: AI agent basic text tool request
+      x-box-tag: ai
+    AiLlmEndpointParamsIBM:
+      description: AI LLM endpoint params IBM object.
+      type: object
+      properties:
+        type:
+          description: The type of the AI LLM endpoint params object for IBM. This parameter is **required**.
+          type: string
+          example: ibm_params
+          enum:
+          - ibm_params
+        temperature:
+          description: What sampling temperature to use, between 0 and 1. Higher values like 0.8 will make the output more random, while lower values like 0.2 will make it more focused and deterministic. We generally recommend altering this or `top_p` but not both.
+          type:
+          - number
+          - 'null'
+          example: 0.5
+        top_p:
+          description: An alternative to sampling with temperature, called nucleus sampling, where the model considers the results of the tokens with `top_p` probability mass. So 0.1 means only the tokens comprising the top 10% probability mass are considered. We generally recommend altering this or temperature but not both.
+          type:
+          - number
+          - 'null'
+          example: 0.5
+          maximum: 1
+          minimum: 0.1
+        top_k:
+          description: '`Top-K` changes how the model selects tokens for output. A low `top-K` means the next selected token is the most probable among all tokens in the model''s vocabulary (also called greedy decoding), while a high `top-K` means that the next token is selected from among the three most probable tokens by using temperature.'
+          type:
+          - number
+          - 'null'
+          example: 1
+      required:
+      - type
+      title: AI LLM endpoint params IBM
+      x-box-resource-id: ai_llm_endpoint_params_ibm
+    AiStudioAgentAsk:
+      description: The AI agent to be used to handle queries.
+      type: object
+      properties:
+        type:
+          description: The type of AI agent used to handle queries.
+          type: string
+          example: ai_agent_ask
+          enum:
+          - ai_agent_ask
+        access_state:
+          description: 'The state of the AI Agent capability. Possible values are: `enabled` and `disabled`.'
+          type: string
+          example: enabled
+          title: Capability Access State
+          x-box-tag: ai_studio
+        description:
+          description: The description of the AI agent.
+          type: string
+          example: This is ASK Agent
+        custom_instructions:
+          description: Custom instructions for the AI agent.
+          type:
+          - string
+          - 'null'
+          example: This is a custom instruction
+        suggested_questions:
+          description: Suggested questions for the AI agent. If null, suggested question will be generated. If empty, no suggested questions will be displayed.
+          type: array
+          items:
+            type: string
+          example:
+          - What is in this file?
+          - What are the main highlights of this document?
+          maxItems: 4
+        long_text:
+          $ref: '#/components/schemas/AiStudioAgentLongTextTool'
+        basic_text:
+          $ref: '#/components/schemas/AiStudioAgentBasicTextTool'
+        basic_image:
+          $ref: '#/components/schemas/AiStudioAgentBasicTextTool'
+        spreadsheet:
+          $ref: '#/components/schemas/AiStudioAgentSpreadsheetTool'
+        long_text_multi:
+          $ref: '#/components/schemas/AiStudioAgentLongTextTool'
+        basic_text_multi:
+          $ref: '#/components/schemas/AiStudioAgentBasicTextTool'
+        basic_image_multi:
+          $ref: '#/components/schemas/AiStudioAgentBasicTextTool'
+      required:
+      - type
+      - access_state
+      - description
+      title: AI agent capability ask request
+      x-box-resource-id: ai_studio_agent_ask
+      x-box-tag: ai_studio
+    AiAgentLongTextToolTextGen:
+      description: AI agent processor used to to handle longer text.
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/AiAgentBasicTextToolTextGen'
+      - properties:
+          embeddings:
+            type: object
+            properties:
+              model:
+                description: The model used for the AI agent for calculating embeddings.
+                type: string
+                example: azure__openai__text_embedding_ada_002
+              strategy:
+                type: object
+                properties:
+                  id:
+                    description: The strategy used for the AI agent for calculating embeddings.
+                    type: string
+                    example: basic
+                  num_tokens_per_chunk:
+                    description: The number of tokens per chunk.
+                    type: integer
+                    example: 64
+                    maximum: 512
+                    minimum: 1
+      title: AI agent long text tool
+      x-box-tag: ai
+    AiStudioAgentExtractResponse:
+      description: The AI agent to be used for metadata extraction.
+      type: object
+      properties:
+        type:
+          description: The type of AI agent to be used for metadata extraction.
+          type: string
+          example: ai_agent_extract
+          enum:
+          - ai_agent_extract
+        access_state:
+          description: 'The state of the AI Agent capability. Possible values are: `enabled` and `disabled`.'
+          type: string
+          example: enabled
+          title: Capability Access State
+          x-box-tag: ai_studio
+        description:
+          description: The description of the AI agent.
+          type: string
+          example: This is ASK Agent
+        custom_instructions:
+          description: Custom instructions for the AI agent.
+          type:
+          - string
+          - 'null'
+          example: This is a custom instruction
+        long_text:
+          $ref: '#/components/schemas/AiStudioAgentLongTextToolResponse'
+        basic_text:
+          $ref: '#/components/schemas/AiStudioAgentBasicTextToolResponse'
+        basic_image:
+          $ref: '#/components/schemas/AiStudioAgentBasicTextToolResponse'
+      required:
+      - type
+      - access_state
+      - description
+      title: AI agent capability extract
+      x-box-resource-id: ai_studio_agent_extract_response
+      x-box-tag: ai_studio
+    AiLlmEndpointParamsOpenAi:
+      description: AI LLM endpoint params OpenAI object.
+      type: object
+      properties:
+        type:
+          description: The type of the AI LLM endpoint params object for OpenAI. This parameter is **required**.
+          type: string
+          example: openai_params
+          enum:
+          - openai_params
+        temperature:
+          description: What sampling temperature to use, between 0 and 2. Higher values like 0.8 will make the output more random, while lower values like 0.2 will make it more focused and deterministic. We generally recommend altering this or `top_p` but not both.
+          type:
+          - number
+          - 'null'
+          example: 0
+          maximum: 2
+          minimum: 0
+        top_p:
+          description: An alternative to sampling with temperature, called nucleus sampling, where the model considers the results of the tokens with `top_p` probability mass. So 0.1 means only the tokens comprising the top 10% probability mass are considered. We generally recommend altering this or temperature but not both.
+          type:
+          - number
+          - 'null'
+          example: 1
+          maximum: 1
+          minimum: 0.1
+        frequency_penalty:
+          description: A number between -2.0 and 2.0. Positive values penalize new tokens based on their existing frequency in the text so far, decreasing the model's likelihood to repeat the same line verbatim.
+          type:
+          - number
+          - 'null'
+          example: 1.5
+          maximum: 2
+          minimum: -2
+        presence_penalty:
+          description: A number between -2.0 and 2.0. Positive values penalize new tokens based on whether they appear in the text so far, increasing the model's likelihood to talk about new topics.
+          type:
+          - number
+          - 'null'
+          example: 1.5
+          maximum: 2
+          minimum: -2
+        stop:
+          description: Up to 4 sequences where the API will stop generating further tokens.
+          type:
+          - string
+          - 'null'
+          example: <|im_end|>
+      required:
+      - type
+      title: AI LLM endpoint params OpenAI
+      x-box-resource-id: ai_llm_endpoint_params_openai
+    AiStudioAgentAskResponse:
+      description: The AI agent to be used to ask questions.
+      type: object
+      properties:
+        type:
+          description: The type of AI agent used to ask questions.
+          type: string
+          example: ai_agent_ask
+          enum:
+          - ai_agent_ask
+        access_state:
+          description: 'The state of the AI Agent capability. Possible values are: `enabled` and `disabled`.'
+          type: string
+          example: enabled
+          title: Capability Access State
+          x-box-tag: ai_studio
+        description:
+          description: The description of the AI agent.
+          type: string
+          example: This is ASK Agent
+        custom_instructions:
+          description: Custom instructions for the AI agent.
+          type:
+          - string
+          - 'null'
+          example: This is a custom instruction
+        suggested_questions:
+          description: Suggested questions for the AI agent. If null, suggested question will be generated. If empty, no suggested questions will be displayed.
+          type: array
+          items:
+            type: string
+          example:
+          - What is in this file?
+          - What are the main highlights of this document?
+          maxItems: 4
+        long_text:
+          $ref: '#/components/schemas/AiStudioAgentLongTextToolResponse'
+        basic_text:
+          $ref: '#/components/schemas/AiStudioAgentBasicTextToolResponse'
+        basic_image:
+          $ref: '#/components/schemas/AiStudioAgentBasicTextToolResponse'
+        spreadsheet:
+          $ref: '#/components/schemas/AiStudioAgentSpreadsheetToolResponse'
+        long_text_multi:
+          $ref: '#/components/schemas/AiStudioAgentLongTextToolResponse'
+        basic_text_multi:
+          $ref: '#/components/schemas/AiStudioAgentBasicTextToolResponse'
+        basic_image_multi:
+          $ref: '#/components/schemas/AiStudioAgentBasicTextToolResponse'
+      required:
+      - type
+      - access_state
+      - description
+      title: AI agent capability ask
+      x-box-resource-id: ai_studio_agent_ask_response
+      x-box-tag: ai_studio
+    AiStudioAgentSpreadsheetTool:
+      description: The AI agent tool used to handle spreadsheets and tabular data.
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/AiAgentSpreadsheetTool'
+      - properties: {}
+      title: AI agent spreadsheet tool
+      x-box-tag: ai
+    AiStudioAgentExtract:
+      description: The AI agent to be used for metadata extraction.
+      type: object
+      properties:
+        type:
+          description: The type of AI agent to be used for metadata extraction.
+          type: string
+          example: ai_agent_extract
+          enum:
+          - ai_agent_extract
+        access_state:
+          description: 'The state of the AI Agent capability. Possible values are: `enabled` and `disabled`.'
+          type: string
+          example: enabled
+          title: Capability Access State
+          x-box-tag: ai_studio
+        description:
+          description: The description of the AI agent.
+          type: string
+          example: This is ASK Agent
+        custom_instructions:
+          description: Custom instructions for the AI agent.
+          type:
+          - string
+          - 'null'
+          example: This is a custom instruction
+        long_text:
+          $ref: '#/components/schemas/AiStudioAgentLongTextTool'
+        basic_text:
+          $ref: '#/components/schemas/AiStudioAgentBasicTextTool'
+        basic_image:
+          $ref: '#/components/schemas/AiStudioAgentBasicTextTool'
+      required:
+      - type
+      - access_state
+      - description
+      title: AI agent capability extract request
+      x-box-resource-id: ai_studio_agent_extract
+      x-box-tag: ai_studio
+  securitySchemes:
+    OAuth2Security:
+      type: oauth2
+      description: The access token received from the authorization server in the OAuth 2.0 flow.
+      flows:
+        authorizationCode:
+          authorizationUrl: https://account.box.com/api/oauth2/authorize
+          tokenUrl: https://api.box.com/oauth2/token
+          scopes:
+            root_readonly: Read all files and folders stored in Box
+            root_readwrite: Read and write all files and folders stored in Box
+            manage_app_users: Provision and manage app users
+            manage_managed_users: Provision and manage managed users
+            manage_groups: Manage an enterprise's groups
+            manage_webhook: Create webhooks programmatically through the API
+            manage_enterprise_properties: Manage enterprise properties
+            manage_data_retention: Manage data retention polices
+            manage_legal_hold: Manage Legal Holds
+externalDocs:
+  description: Box Developer Documentation.
+  url: https://developer.box.com
+x-mint:
+  mcp:
+    enabled: true

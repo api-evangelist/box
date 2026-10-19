@@ -1,0 +1,475 @@
+openapi: 3.2.0
+info:
+  title: Box Platform App item associations API
+  description: Box Platform provides functionality to provide access to content stored within Box. It provides endpoints for basic manipulation of files and folders, management of users within an enterprise, as well as more complex topics such as legal holds and retention policies.
+  termsOfService: https://cloud.app.box.com/s/rmwxu64h1ipr41u49w3bbuvbsa29wku9
+  contact:
+    name: Box, Inc
+    url: https://developer.box.com
+    email: devrel@box.com
+  license:
+    name: Apache-2.0
+    url: https://www.apache.org/licenses/LICENSE-2.0
+  version: '2024.0'
+  x-box-commit-hash: 53bdced3cd
+servers:
+- url: https://api.box.com/2.0
+  description: Box Platform API server.
+security:
+- OAuth2Security: []
+tags:
+- name: App item associations
+  x-box-tag: app_item_associations
+paths:
+  /files/{file_id}/app_item_associations:
+    get:
+      operationId: get_files_id_app_item_associations
+      summary: List file app item associations
+      description: '**This is a beta feature, which means that its availability might be limited.** Returns all app items the file is associated with. This includes app items associated with ancestors of the file. Assuming the context user has access to the file, the type/ids are revealed even if the context user does not have **View** permission on the app item.'
+      parameters:
+      - name: file_id
+        in: path
+        description: 'The unique identifier that represents a file.
+
+
+          The ID for any file can be determined by visiting a file in the web application and copying the ID from the URL. For example, for the URL `https://*.app.box.com/files/123` the `file_id` is `123`.'
+        required: true
+        schema:
+          type: string
+        example: '12345'
+      - name: limit
+        in: query
+        description: The maximum number of items to return per page.
+        required: false
+        schema:
+          type: integer
+          format: int64
+          maximum: 1000
+        example: 1000
+      - name: marker
+        in: query
+        description: 'Defines the position marker at which to begin returning results. This is used when paginating using marker-based pagination.
+
+
+          This requires `usemarker` to be set to `true`.'
+        required: false
+        schema:
+          type: string
+        example: JV9IRGZmieiBasejOG9yDCRNgd2ymoZIbjsxbJMjIs3kioVii
+      - name: application_type
+        in: query
+        description: If given, only return app items for this application type.
+        required: false
+        schema:
+          type: string
+        example: hubs
+      responses:
+        '200':
+          description: Returns a collection of app item objects. If there are no app items on this file, an empty collection will be returned. This list includes app items on ancestors of this File.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AppItemAssociations'
+        '404':
+          description: Returned if the file is not found, or the user does not have access to the file.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ClientError'
+        default:
+          description: An unexpected client error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ClientError'
+      x-box-tag: app_item_associations
+      tags:
+      - App item associations
+      x-codeSamples:
+      - lang: curl
+        label: List file app item associations
+        source: "curl -i -X GET \"https://api.box.com/2.0/files/12345/app_item_associations\" \\\n     -H \"authorization: Bearer <ACCESS_TOKEN>\""
+      - lang: dotnet
+        label: List file app item associations
+        source: 'await client.AppItemAssociations.GetFileAppItemAssociationsAsync(fileId: fileId);'
+      - lang: swift
+        label: List file app item associations
+        source: 'try await client.appItemAssociations.getFileAppItemAssociations(fileId: fileId)'
+      - lang: java
+        label: List file app item associations
+        source: client.getAppItemAssociations().getFileAppItemAssociations(fileId)
+      - lang: node
+        label: List file app item associations
+        source: await client.appItemAssociations.getFileAppItemAssociations(fileId);
+      - lang: python
+        label: List file app item associations
+        source: client.app_item_associations.get_file_app_item_associations(file_id)
+  /folders/{folder_id}/app_item_associations:
+    get:
+      operationId: get_folders_id_app_item_associations
+      summary: List folder app item associations
+      description: '**This is a beta feature, which means that its availability might be limited.** Returns all app items the folder is associated with. This includes app items associated with ancestors of the folder. Assuming the context user has access to the folder, the type/ids are revealed even if the context user does not have **View** permission on the app item.'
+      parameters:
+      - name: folder_id
+        in: path
+        description: 'The unique identifier that represent a folder.
+
+
+          The ID for any folder can be determined by visiting this folder in the web application and copying the ID from the URL. For example, for the URL `https://*.app.box.com/folder/123` the `folder_id` is `123`.
+
+
+          The root folder of a Box account is always represented by the ID `0`.'
+        required: true
+        schema:
+          type: string
+        example: '12345'
+      - name: limit
+        in: query
+        description: The maximum number of items to return per page.
+        required: false
+        schema:
+          type: integer
+          format: int64
+          maximum: 1000
+        example: 1000
+      - name: marker
+        in: query
+        description: 'Defines the position marker at which to begin returning results. This is used when paginating using marker-based pagination.
+
+
+          This requires `usemarker` to be set to `true`.'
+        required: false
+        schema:
+          type: string
+        example: JV9IRGZmieiBasejOG9yDCRNgd2ymoZIbjsxbJMjIs3kioVii
+      - name: application_type
+        in: query
+        description: If given, returns only app items for this application type.
+        required: false
+        schema:
+          type: string
+        example: hubs
+      responses:
+        '200':
+          description: Returns a collection of app item objects. If there are no app items on this folder an empty collection will be returned. This list includes app items on ancestors of this folder.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AppItemAssociations'
+        '404':
+          description: Returned if the folder is not found, or the user does not have access to the folder.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ClientError'
+        default:
+          description: An unexpected client error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ClientError'
+      x-box-tag: app_item_associations
+      tags:
+      - App item associations
+      x-codeSamples:
+      - lang: curl
+        label: List folder app item associations
+        source: "curl -i -X GET \"https://api.box.com/2.0/folders/12345/app_item_associations\" \\\n     -H \"authorization: Bearer <ACCESS_TOKEN>\""
+      - lang: dotnet
+        label: List folder app item associations
+        source: 'await client.AppItemAssociations.GetFolderAppItemAssociationsAsync(folderId: folderId);'
+      - lang: swift
+        label: List folder app item associations
+        source: 'try await client.appItemAssociations.getFolderAppItemAssociations(folderId: folderId)'
+      - lang: java
+        label: List folder app item associations
+        source: client.getAppItemAssociations().getFolderAppItemAssociations(folderId)
+      - lang: node
+        label: List folder app item associations
+        source: await client.appItemAssociations.getFolderAppItemAssociations(folderId);
+      - lang: python
+        label: List folder app item associations
+        source: client.app_item_associations.get_folder_app_item_associations(folder_id)
+components:
+  schemas:
+    AppItemAssociatedItem:
+      description: The file, folder or web link which is associated with the app item.
+      type: object
+      oneOf:
+      - $ref: '#/components/schemas/File--Base'
+      - $ref: '#/components/schemas/Folder--Base'
+      - $ref: '#/components/schemas/WebLink--Base'
+      title: App item associated item
+    AppItem:
+      description: An app item represents an content object owned by an application. It can group files and folders together from different paths. That set can be shared via a collaboration.
+      type: object
+      properties:
+        id:
+          description: The unique identifier for this app item.
+          type: string
+          example: '12345678'
+        type:
+          description: The value will always be `app_item`.
+          type: string
+          example: app_item
+          enum:
+          - app_item
+        application_type:
+          description: The type of the app that owns this app item.
+          type: string
+          example: hubs
+      required:
+      - id
+      - type
+      - application_type
+      title: App item
+      x-box-resource-id: app_item
+      x-box-tag: app_item_associations
+    WebLink--Base:
+      description: 'Web links are objects that point to URLs. These objects are also known as bookmarks within the Box web application.
+
+
+        Web link objects are treated similarly to file objects, they will also support most actions that apply to regular files.'
+      type: object
+      properties:
+        id:
+          description: The unique identifier for this web link.
+          type: string
+          example: '11446498'
+        type:
+          description: The value will always be `web_link`.
+          type: string
+          example: web_link
+          enum:
+          - web_link
+        etag:
+          description: The entity tag of this web link. Used with `If-Match` headers.
+          type: string
+          example: '1'
+      required:
+      - id
+      - type
+      title: Web link (Base)
+      x-box-resource-id: web_link--base
+      x-box-tag: web_links
+      x-box-variant: base
+      x-box-variants:
+      - base
+      - mini
+      - standard
+    ClientError:
+      description: A generic error.
+      type: object
+      properties:
+        type:
+          description: The value will always be `error`.
+          type: string
+          example: error
+          enum:
+          - error
+        status:
+          description: The HTTP status of the response.
+          type: integer
+          format: int32
+          example: 400
+        code:
+          description: A Box-specific error code.
+          type: string
+          example: item_name_invalid
+          enum:
+          - created
+          - accepted
+          - no_content
+          - redirect
+          - not_modified
+          - bad_request
+          - unauthorized
+          - forbidden
+          - not_found
+          - method_not_allowed
+          - conflict
+          - precondition_failed
+          - unprocessable_entity
+          - too_many_requests
+          - internal_server_error
+          - unavailable
+          - item_name_invalid
+          - insufficient_scope
+        message:
+          description: A short message describing the error.
+          type: string
+          example: Method Not Allowed
+        context_info:
+          description: A free-form object that contains additional context about the error. The possible fields are defined on a per-endpoint basis. `message` is only one example.
+          type:
+          - object
+          - 'null'
+          example:
+            message: Something went wrong
+          additionalProperties: {}
+        help_url:
+          description: A URL that links to more information about why this error occurred.
+          type: string
+          example: https://developer.box.com/guides/api-calls/permissions-and-errors/common-errors/
+        request_id:
+          description: A unique identifier for this response, which can be used when contacting Box support.
+          type: string
+          example: abcdef123456
+      title: Client error
+      x-box-resource-id: client_error
+    AppItemAssociation:
+      description: An app item association represents an association between a file or folder and an app item. Associations between a folder and an app item cascade down to all descendants of the folder.
+      type: object
+      properties:
+        id:
+          description: The unique identifier for this app item association.
+          type: string
+          example: '12345678'
+        type:
+          description: The value will always be `app_item_association`.
+          type: string
+          example: app_item_association
+          enum:
+          - app_item_association
+        app_item:
+          allOf:
+          - $ref: '#/components/schemas/AppItem'
+          - description: The app item which is associated with the file or folder.
+        item:
+          $ref: '#/components/schemas/AppItemAssociatedItem'
+      required:
+      - id
+      - type
+      - app_item
+      - item
+      title: App item association
+      x-box-resource-id: app_item_association
+      x-box-tag: app_item_associations
+    File--Base:
+      description: The bare basic representation of a file, the minimal amount of fields returned when using the `fields` query parameter.
+      type:
+      - object
+      - 'null'
+      properties:
+        id:
+          description: 'The unique identifier that represent a file.
+
+
+            The ID for any file can be determined by visiting a file in the web application and copying the ID from the URL. For example, for the URL `https://*.app.box.com/files/123` the `file_id` is `123`.'
+          type: string
+          example: '12345'
+        etag:
+          description: The HTTP `etag` of this file. This can be used within some API endpoints in the `If-Match` and `If-None-Match` headers to only perform changes on the file if (no) changes have happened.
+          type:
+          - string
+          - 'null'
+          example: '1'
+        type:
+          description: The value will always be `file`.
+          type: string
+          example: file
+          enum:
+          - file
+      required:
+      - id
+      - type
+      title: File (Base)
+      x-box-resource-id: file--base
+      x-box-tag: files
+      x-box-variant: base
+      x-box-variants:
+      - base
+      - mini
+      - standard
+      - full
+    Folder--Base:
+      description: The bare basic representation of a folder, the minimal amount of fields returned when using the `fields` query parameter.
+      type: object
+      properties:
+        id:
+          description: 'The unique identifier that represent a folder.
+
+
+            The ID for any folder can be determined by visiting a folder in the web application and copying the ID from the URL. For example, for the URL `https://*.app.box.com/folders/123` the `folder_id` is `123`.'
+          type: string
+          example: '12345'
+        etag:
+          description: The HTTP `etag` of this folder. This can be used within some API endpoints in the `If-Match` and `If-None-Match` headers to only perform changes on the folder if (no) changes have happened.
+          type:
+          - string
+          - 'null'
+          example: '1'
+        type:
+          description: The value will always be `folder`.
+          type: string
+          example: folder
+          enum:
+          - folder
+      required:
+      - id
+      - type
+      title: Folder (Base)
+      x-box-resource-id: folder--base
+      x-box-tag: folders
+      x-box-variant: base
+      x-box-variants:
+      - base
+      - mini
+      - standard
+      - full
+    AppItemAssociations:
+      description: A list of app item associations.
+      type: object
+      allOf:
+      - type: object
+        description: The part of an API response that describes marker based pagination.
+        properties:
+          limit:
+            description: The limit that was used for these entries. This will be the same as the `limit` query parameter unless that value exceeded the maximum value allowed. The maximum value varies by API.
+            type: integer
+            format: int64
+            example: 1000
+          next_marker:
+            description: The marker for the start of the next page of results.
+            type:
+            - string
+            - 'null'
+            example: JV9IRGZmieiBasejOG9yDCRNgd2ymoZIbjsxbJMjIs3kioVii
+          prev_marker:
+            description: The marker for the start of the previous page of results.
+            type:
+            - string
+            - 'null'
+            example: JV9IRGZmieiBasejOG9yDCRNgd2ymoZIbjsxbJMjIs3kioVih
+      - properties:
+          entries:
+            type: array
+            items:
+              $ref: '#/components/schemas/AppItemAssociation'
+      title: App item associations
+      x-box-resource-id: app_item_associations
+      x-box-tag: app_item_associations
+  securitySchemes:
+    OAuth2Security:
+      type: oauth2
+      description: The access token received from the authorization server in the OAuth 2.0 flow.
+      flows:
+        authorizationCode:
+          authorizationUrl: https://account.box.com/api/oauth2/authorize
+          tokenUrl: https://api.box.com/oauth2/token
+          scopes:
+            root_readonly: Read all files and folders stored in Box
+            root_readwrite: Read and write all files and folders stored in Box
+            manage_app_users: Provision and manage app users
+            manage_managed_users: Provision and manage managed users
+            manage_groups: Manage an enterprise's groups
+            manage_webhook: Create webhooks programmatically through the API
+            manage_enterprise_properties: Manage enterprise properties
+            manage_data_retention: Manage data retention polices
+            manage_legal_hold: Manage Legal Holds
+externalDocs:
+  description: Box Developer Documentation.
+  url: https://developer.box.com
+x-mint:
+  mcp:
+    enabled: true

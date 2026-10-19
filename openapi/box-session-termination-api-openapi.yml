@@ -1,70 +1,57 @@
 openapi: 3.2.0
 info:
-  title: Box Platform Session Termination API
+  title: Box Platform Session termination API
   description: Box Platform provides functionality to provide access to content stored within Box. It provides endpoints for basic manipulation of files and folders, management of users within an enterprise, as well as more complex topics such as legal holds and retention policies.
   termsOfService: https://cloud.app.box.com/s/rmwxu64h1ipr41u49w3bbuvbsa29wku9
   contact:
     name: Box, Inc
-    url: https://box.dev
+    url: https://developer.box.com
     email: devrel@box.com
   license:
     name: Apache-2.0
-    url: http://www.apache.org/licenses/LICENSE-2.0
-  version: 2.0.0
-  x-box-commit-hash: '5819125043'
+    url: https://www.apache.org/licenses/LICENSE-2.0
+  version: '2024.0'
+  x-box-commit-hash: 53bdced3cd
 servers:
 - url: https://api.box.com/2.0
-  description: Box Platform API server
+  description: Box Platform API server.
 security:
 - OAuth2Security: []
 tags:
-- name: Session Termination
-  description: 'Session termination API is used to
-
-    validate the roles and permissions of the group,
-
-    and creates asynchronous jobs to terminate the group''s sessions.'
+- name: Session termination
+  description: Session termination API is used to validate the roles and permissions of the group, and creates asynchronous jobs to terminate the group's sessions.
   x-box-tag: session_termination
 paths:
   /users/terminate_sessions:
     post:
       operationId: post_users_terminate_sessions
-      summary: Box Create jobs to terminate users session
-      tags:
-      - Session Termination
-      x-box-tag: session_termination
-      description: 'Validates the roles and permissions of the user,
-
-        and creates asynchronous jobs
-
-        to terminate the user''s sessions.
-
-        Returns the status for the POST request.'
+      summary: Create jobs to terminate users session
+      description: Validates the roles and permissions of the user, and creates asynchronous jobs to terminate the user's sessions. Returns the status for the POST request.
       requestBody:
         content:
           application/json:
             schema:
               type: object
-              required:
-              - user_ids
-              - user_logins
               properties:
                 user_ids:
+                  description: A list of user IDs.
+                  type: array
+                  items:
+                    type: string
                   example:
                   - '123456'
                   - '456789'
+                user_logins:
+                  description: A list of user logins.
                   type: array
-                  description: A list of user IDs
                   items:
                     type: string
-                user_logins:
                   example:
                   - user@sample.com
                   - user2@sample.com
-                  type: array
-                  description: A list of user logins
-                  items:
-                    type: string
+              required:
+              - user_ids
+              - user_logins
       responses:
         '202':
           description: Returns a message about the request status.
@@ -73,7 +60,14 @@ paths:
               schema:
                 $ref: '#/components/schemas/SessionTerminationMessage'
         '400':
-          description: "Returns an error if some of the parameters are\n not valid.\n\n * `Users can not be NULL or EMPTY` when no value is provided\n * `User id format is string` when the provided user id format\n is incorrect\n * `Supported payload format is JSON` when the provided payload\n format is incorrect"
+          description: 'Returns an error if some of the parameters are not valid.
+
+
+            - `Users can not be NULL or EMPTY` when no value is provided.
+
+            - `User id format is string` when the provided user id format is incorrect.
+
+            - `Supported payload format is JSON` when the provided payload format is incorrect.'
           content:
             application/json:
               schema:
@@ -114,36 +108,49 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ClientError'
+      x-box-tag: session_termination
+      tags:
+      - Session termination
+      x-codeSamples:
+      - lang: curl
+        label: Create jobs to terminate users session
+        source: "curl -i -X POST \"https://api.box.com/2.0/users/terminate_sessions\" \\\n    -H \"authorization: Bearer <ACCESS_TOKEN>\" \\\n    -H \"content-type: application/json\" \\\n    -H \"accept: application/json\" \\\n    -d\n  {\n      user_ids: [\"6178859178\", \"4824866571\"]\n      user_logins: [\"user@example.com\", \"user2@example.com\",]\n  }"
+      - lang: dotnet
+        label: Create jobs to terminate users session
+        source: 'await client.SessionTermination.TerminateUsersSessionsAsync(requestBody: new TerminateUsersSessionsRequestBody(userIds: Array.AsReadOnly(new [] {Utils.GetEnvVar("USER_ID")}), userLogins: Array.AsReadOnly(new [] {NullableUtils.Unwrap(user.Login)})));'
+      - lang: swift
+        label: Create jobs to terminate users session
+        source: 'try await client.sessionTermination.terminateUsersSessions(requestBody: TerminateUsersSessionsRequestBody(userIds: [Utils.getEnvironmentVariable(name: "USER_ID")], userLogins: [user.login!]))'
+      - lang: java
+        label: Create jobs to terminate users session
+        source: client.getSessionTermination().terminateUsersSessions(new TerminateUsersSessionsRequestBody(Arrays.asList(getEnvVar("USER_ID")), Arrays.asList(user.getLogin())))
+      - lang: node
+        label: Create jobs to terminate users session
+        source: "await client.sessionTermination.terminateUsersSessions({\n  userIds: [getEnvVar('USER_ID')],\n  userLogins: [user.login!],\n} satisfies TerminateUsersSessionsRequestBody);"
+      - lang: python
+        label: Create jobs to terminate users session
+        source: "client.session_termination.terminate_users_sessions(\n    [get_env_var(\"USER_ID\")], [user.login]\n)"
   /groups/terminate_sessions:
     post:
       operationId: post_groups_terminate_sessions
-      summary: Box Create jobs to terminate user group session
-      tags:
-      - Session Termination
-      x-box-tag: session_termination
-      description: 'Validates the roles and permissions of the group,
-
-        and creates asynchronous jobs
-
-        to terminate the group''s sessions.
-
-        Returns the status for the POST request.'
+      summary: Create jobs to terminate user group session
+      description: Validates the roles and permissions of the group, and creates asynchronous jobs to terminate the group's sessions. Returns the status for the POST request.
       requestBody:
         content:
           application/json:
             schema:
               type: object
-              required:
-              - group_ids
               properties:
                 group_ids:
+                  description: A list of group IDs.
+                  type: array
+                  items:
+                    type: string
                   example:
                   - '123456'
                   - '456789'
-                  type: array
-                  description: A list of group IDs
-                  items:
-                    type: string
+              required:
+              - group_ids
       responses:
         '202':
           description: Returns a message about the request status.
@@ -152,20 +159,14 @@ paths:
               schema:
                 $ref: '#/components/schemas/SessionTerminationMessage'
         '400':
-          description: 'Returns an error if some of the parameters are
-
-            not valid.
+          description: 'Returns an error if some of the parameters are not valid.
 
 
-            * `Groups can not be NULL or EMPTY` when no value is provided
+            - `Groups can not be NULL or EMPTY` when no value is provided.
 
-            * `group id format is string` when the provided group id format
+            - `group id format is string` when the provided group id format is incorrect.
 
-            is incorrect
-
-            * `Supported payload format is JSON` when the provided payload
-
-            format is incorrect'
+            - `Supported payload format is JSON` when the provided payload format is incorrect.'
           content:
             application/json:
               schema:
@@ -206,44 +207,49 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ClientError'
+      x-box-tag: session_termination
+      tags:
+      - Session termination
+      x-codeSamples:
+      - lang: curl
+        label: Create jobs to terminate user group session
+        source: "curl -i -X POST \"https://api.box.com/2.0/groups/terminate_sessions\" \\\n     -H \"authorization: Bearer <ACCESS_TOKEN>\" \\\n     -H \"content-type: application/json\" \\\n     -H \"accept: application/json\" \\\n     -d\n    {\n    \"group_ids\": [\"6178859178\", \"4824866571\"],\n    }"
+      - lang: dotnet
+        label: Create jobs to terminate user group session
+        source: 'await client.SessionTermination.TerminateGroupsSessionsAsync(requestBody: new TerminateGroupsSessionsRequestBody(groupIds: Array.AsReadOnly(new [] {group.Id})));'
+      - lang: swift
+        label: Create jobs to terminate user group session
+        source: 'try await client.sessionTermination.terminateGroupsSessions(requestBody: TerminateGroupsSessionsRequestBody(groupIds: [group.id]))'
+      - lang: java
+        label: Create jobs to terminate user group session
+        source: client.getSessionTermination().terminateGroupsSessions(new TerminateGroupsSessionsRequestBody(Arrays.asList(group.getId())))
+      - lang: node
+        label: Create jobs to terminate user group session
+        source: "await client.sessionTermination.terminateGroupsSessions({\n  groupIds: [group.id],\n} satisfies TerminateGroupsSessionsRequestBody);"
+      - lang: python
+        label: Create jobs to terminate user group session
+        source: client.session_termination.terminate_groups_sessions([group.id])
 components:
   schemas:
-    SessionTerminationMessage:
-      title: Session termination message
-      type: object
-      x-box-resource-id: session_termination
-      x-box-tag: session_termination
-      description: 'A message informing about the
-
-        termination job status'
-      properties:
-        message:
-          type: string
-          description: The unique identifier for the termination job status
-          example: 'Request is successful, please check the admin
-
-            events for the status of the job'
     ClientError:
-      title: Client error
+      description: A generic error.
       type: object
-      x-box-resource-id: client_error
-      description: A generic error
       properties:
         type:
-          description: error
-          example: error
+          description: The value will always be `error`.
           type: string
+          example: error
           enum:
           - error
         status:
           description: The HTTP status of the response.
-          example: 400
           type: integer
           format: int32
+          example: 400
         code:
-          description: A Box-specific error code
-          example: item_name_invalid
+          description: A Box-specific error code.
           type: string
+          example: item_name_invalid
           enum:
           - created
           - accepted
@@ -257,6 +263,7 @@ components:
           - method_not_allowed
           - conflict
           - precondition_failed
+          - unprocessable_entity
           - too_many_requests
           - internal_server_error
           - unavailable
@@ -264,35 +271,43 @@ components:
           - insufficient_scope
         message:
           description: A short message describing the error.
-          example: Method Not Allowed
           type: string
+          example: Method Not Allowed
         context_info:
-          description: 'A free-form object that contains additional context
-
-            about the error. The possible fields are defined on
-
-            a per-endpoint basis. `message` is only one example.'
+          description: A free-form object that contains additional context about the error. The possible fields are defined on a per-endpoint basis. `message` is only one example.
           type:
           - object
           - 'null'
-          properties:
-            message:
-              type: string
-              description: More details on the error.
-              example: Something went wrong.
+          example:
+            message: Something went wrong
+          additionalProperties: {}
         help_url:
           description: A URL that links to more information about why this error occurred.
-          example: https://developer.box.com/guides/api-calls/permissions-and-errors/common-errors/
           type: string
+          example: https://developer.box.com/guides/api-calls/permissions-and-errors/common-errors/
         request_id:
-          description: 'A unique identifier for this response, which can be used
-
-            when contacting Box support.'
+          description: A unique identifier for this response, which can be used when contacting Box support.
           type: string
           example: abcdef123456
+      title: Client error
+      x-box-resource-id: client_error
+    SessionTerminationMessage:
+      description: A message informing about the termination job status.
+      type: object
+      properties:
+        message:
+          description: The unique identifier for the termination job status.
+          type: string
+          example: 'Request is successful, please check the admin
+
+            events for the status of the job'
+      title: Session termination message
+      x-box-resource-id: session_termination
+      x-box-tag: session_termination
   securitySchemes:
     OAuth2Security:
       type: oauth2
+      description: The access token received from the authorization server in the OAuth 2.0 flow.
       flows:
         authorizationCode:
           authorizationUrl: https://account.box.com/api/oauth2/authorize
@@ -308,5 +323,8 @@ components:
             manage_data_retention: Manage data retention polices
             manage_legal_hold: Manage Legal Holds
 externalDocs:
-  description: Box Developer Documentation
+  description: Box Developer Documentation.
   url: https://developer.box.com
+x-mint:
+  mcp:
+    enabled: true

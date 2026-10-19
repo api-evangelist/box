@@ -1,47 +1,40 @@
 openapi: 3.2.0
 info:
-  title: Box Platform Email Aliases API
+  title: Box Platform Email aliases API
   description: Box Platform provides functionality to provide access to content stored within Box. It provides endpoints for basic manipulation of files and folders, management of users within an enterprise, as well as more complex topics such as legal holds and retention policies.
   termsOfService: https://cloud.app.box.com/s/rmwxu64h1ipr41u49w3bbuvbsa29wku9
   contact:
     name: Box, Inc
-    url: https://box.dev
+    url: https://developer.box.com
     email: devrel@box.com
   license:
     name: Apache-2.0
-    url: http://www.apache.org/licenses/LICENSE-2.0
-  version: 2.0.0
-  x-box-commit-hash: '5819125043'
+    url: https://www.apache.org/licenses/LICENSE-2.0
+  version: '2024.0'
+  x-box-commit-hash: 53bdced3cd
 servers:
 - url: https://api.box.com/2.0
-  description: Box Platform API server
+  description: Box Platform API server.
 security:
 - OAuth2Security: []
 tags:
-- name: Email Aliases
-  description: 'Email aliases provide a list of emails additional
-
-    to the user''s primary login email.'
+- name: Email aliases
+  description: Email aliases provide a list of emails additional to the user's primary login email.
   x-box-tag: email_aliases
 paths:
   /users/{user_id}/email_aliases:
     get:
       operationId: get_users_id_email_aliases
-      summary: Box List user's email aliases
-      tags:
-      - Email Aliases
-      x-box-tag: email_aliases
-      description: 'Retrieves all email aliases for a user. The collection
-
-        does not include the primary login for the user.'
+      summary: List user's email aliases
+      description: Retrieves all email aliases for a user. The collection does not include the primary login for the user.
       parameters:
       - name: user_id
-        description: The ID of the user.
-        example: '12345'
         in: path
+        description: The ID of the user.
         required: true
         schema:
           type: string
+        example: '12345'
       responses:
         '200':
           description: Returns a collection of email aliases.
@@ -55,33 +48,55 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ClientError'
+      x-box-tag: email_aliases
+      tags:
+      - Email aliases
+      x-codeSamples:
+      - lang: curl
+        label: List user's email aliases
+        source: "curl -i -X GET \"https://api.box.com/2.0/users/12345/email_aliases\" \\\n     -H \"authorization: Bearer <ACCESS_TOKEN>\""
+      - lang: dotnet
+        label: List user's email aliases
+        source: 'await client.EmailAliases.GetUserEmailAliasesAsync(userId: newUser.Id);'
+      - lang: swift
+        label: List user's email aliases
+        source: 'try await client.emailAliases.getUserEmailAliases(userId: newUser.id)'
+      - lang: java
+        label: List user's email aliases
+        source: client.getEmailAliases().getUserEmailAliases(newUser.getId())
+      - lang: node
+        label: List user's email aliases
+        source: await client.emailAliases.getUserEmailAliases(newUser.id);
+      - lang: python
+        label: List user's email aliases
+        source: client.email_aliases.get_user_email_aliases(new_user.id)
     post:
       operationId: post_users_id_email_aliases
-      x-box-tag: email_aliases
-      summary: Box Create email alias
-      tags:
-      - Email Aliases
+      summary: Create email alias
       description: Adds a new email alias to a user account..
       parameters:
       - name: user_id
-        description: The ID of the user.
-        example: '12345'
         in: path
+        description: The ID of the user.
         required: true
         schema:
           type: string
+        example: '12345'
       requestBody:
         content:
           application/json:
             schema:
               type: object
-              required:
-              - email
               properties:
                 email:
+                  description: 'The email address to add to the account as an alias.
+
+
+                    Note: The domain of the email alias needs to be registered to your enterprise. See the [domain verification guide](https://support.box.com/hc/en-us/articles/4408619650579-Domain-Verification) for steps to add a new domain.'
                   type: string
                   example: alias@example.com
-                  description: "The email address to add to the account as an alias.\n\nNote: The domain of the email alias needs to be registered\n to your enterprise.\nSee the [domain verification guide](\n  https://support.box.com/hc/en-us/articles/4408619650579-Domain-Verification\n  ) for steps to add a new domain."
+              required:
+              - email
       responses:
         '201':
           description: Returns the newly created email alias object.
@@ -95,29 +110,48 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ClientError'
+      x-box-tag: email_aliases
+      tags:
+      - Email aliases
+      x-codeSamples:
+      - lang: curl
+        label: Create email alias
+        source: "curl -i -X POST \"https://api.box.com/2.0/users/12345/email_aliases\" \\\n     -H \"authorization: Bearer <ACCESS_TOKEN>\" \\\n     -H \"content-type: application/json\" \\\n     -d '{\n       \"email\": \"alias@example.com\"\n     }'"
+      - lang: dotnet
+        label: Create email alias
+        source: 'await client.EmailAliases.CreateUserEmailAliasAsync(userId: newUser.Id, requestBody: new CreateUserEmailAliasRequestBody(email: newAliasEmail));'
+      - lang: swift
+        label: Create email alias
+        source: 'try await client.emailAliases.createUserEmailAlias(userId: newUser.id, requestBody: CreateUserEmailAliasRequestBody(email: newAliasEmail))'
+      - lang: java
+        label: Create email alias
+        source: client.getEmailAliases().createUserEmailAlias(newUser.getId(), new CreateUserEmailAliasRequestBody(newAliasEmail))
+      - lang: node
+        label: Create email alias
+        source: "await client.emailAliases.createUserEmailAlias(newUser.id, {\n  email: newAliasEmail,\n} satisfies CreateUserEmailAliasRequestBody);"
+      - lang: python
+        label: Create email alias
+        source: client.email_aliases.create_user_email_alias(new_user.id, new_alias_email)
   /users/{user_id}/email_aliases/{email_alias_id}:
     delete:
       operationId: delete_users_id_email_aliases_id
-      x-box-tag: email_aliases
-      summary: Box Remove email alias
-      tags:
-      - Email Aliases
+      summary: Remove email alias
       description: Removes an email alias from a user.
       parameters:
       - name: user_id
+        in: path
         description: The ID of the user.
+        required: true
+        schema:
+          type: string
         example: '12345'
-        in: path
-        required: true
-        schema:
-          type: string
       - name: email_alias_id
-        description: The ID of the email alias.
-        example: '23432'
         in: path
+        description: The ID of the email alias.
         required: true
         schema:
           type: string
+        example: '23432'
       responses:
         '204':
           description: Removes the alias and returns an empty response.
@@ -127,29 +161,91 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ClientError'
+      x-box-tag: email_aliases
+      tags:
+      - Email aliases
+      x-codeSamples:
+      - lang: curl
+        label: Remove email alias
+        source: "curl -i -X DELETE \"https://api.box.com/2.0/users/12345/email_aliases/23432\" \\\n     -H \"authorization: Bearer <ACCESS_TOKEN>\""
+      - lang: dotnet
+        label: Remove email alias
+        source: 'await client.EmailAliases.DeleteUserEmailAliasByIdAsync(userId: newUser.Id, emailAliasId: NullableUtils.Unwrap(newAlias.Id));'
+      - lang: swift
+        label: Remove email alias
+        source: 'try await client.emailAliases.deleteUserEmailAliasById(userId: newUser.id, emailAliasId: newAlias.id!)'
+      - lang: java
+        label: Remove email alias
+        source: client.getEmailAliases().deleteUserEmailAliasById(newUser.getId(), newAlias.getId())
+      - lang: node
+        label: Remove email alias
+        source: await client.emailAliases.deleteUserEmailAliasById(newUser.id, newAlias.id!);
+      - lang: python
+        label: Remove email alias
+        source: client.email_aliases.delete_user_email_alias_by_id(new_user.id, new_alias.id)
 components:
   schemas:
-    ClientError:
-      title: Client error
+    EmailAlias:
+      description: An email alias for a user.
       type: object
-      x-box-resource-id: client_error
-      description: A generic error
+      properties:
+        id:
+          description: The unique identifier for this object.
+          type: string
+          example: '11446498'
+        type:
+          description: The value will always be `email_alias`.
+          type: string
+          example: email_alias
+          enum:
+          - email_alias
+        email:
+          description: The email address.
+          type: string
+          example: alias@example.com
+        is_confirmed:
+          description: Whether the email address has been confirmed.
+          type: boolean
+          example: true
+      title: Email alias
+      x-box-resource-id: email_alias
+      x-box-tag: email_aliases
+    EmailAliases:
+      description: A list of email aliases.
+      type: object
+      properties:
+        total_count:
+          description: The number of email aliases.
+          type: integer
+          format: int64
+          example: 5000
+        entries:
+          description: A list of email aliases.
+          type: array
+          items:
+            $ref: '#/components/schemas/EmailAlias'
+      title: Email aliases
+      x-box-resource-id: email_aliases
+      x-box-tag: email_aliases
+    ClientError:
+      description: A generic error.
+      type: object
       properties:
         type:
-          description: error
-          example: error
+          description: The value will always be `error`.
           type: string
+          example: error
           enum:
           - error
         status:
           description: The HTTP status of the response.
-          example: 400
           type: integer
           format: int32
+          example: 400
         code:
-          description: A Box-specific error code
-          example: item_name_invalid
+          description: A Box-specific error code.
           type: string
+          example: item_name_invalid
           enum:
           - created
           - accepted
@@ -163,6 +259,7 @@ components:
           - method_not_allowed
           - conflict
           - precondition_failed
+          - unprocessable_entity
           - too_many_requests
           - internal_server_error
           - unavailable
@@ -170,77 +267,30 @@ components:
           - insufficient_scope
         message:
           description: A short message describing the error.
-          example: Method Not Allowed
           type: string
+          example: Method Not Allowed
         context_info:
-          description: 'A free-form object that contains additional context
-
-            about the error. The possible fields are defined on
-
-            a per-endpoint basis. `message` is only one example.'
+          description: A free-form object that contains additional context about the error. The possible fields are defined on a per-endpoint basis. `message` is only one example.
           type:
           - object
           - 'null'
-          properties:
-            message:
-              type: string
-              description: More details on the error.
-              example: Something went wrong.
+          example:
+            message: Something went wrong
+          additionalProperties: {}
         help_url:
           description: A URL that links to more information about why this error occurred.
-          example: https://developer.box.com/guides/api-calls/permissions-and-errors/common-errors/
           type: string
+          example: https://developer.box.com/guides/api-calls/permissions-and-errors/common-errors/
         request_id:
-          description: 'A unique identifier for this response, which can be used
-
-            when contacting Box support.'
+          description: A unique identifier for this response, which can be used when contacting Box support.
           type: string
           example: abcdef123456
-    EmailAlias:
-      title: Email alias
-      type: object
-      x-box-resource-id: email_alias
-      x-box-tag: email_aliases
-      description: An email alias for a user.
-      properties:
-        id:
-          type: string
-          description: The unique identifier for this object
-          example: '11446498'
-        type:
-          type: string
-          description: '`email_alias`'
-          example: email_alias
-          enum:
-          - email_alias
-        email:
-          type: string
-          description: The email address
-          example: alias@example.com
-        is_confirmed:
-          type: boolean
-          description: Whether the email address has been confirmed
-          example: true
-    EmailAliases:
-      title: Email aliases
-      type: object
-      x-box-resource-id: email_aliases
-      x-box-tag: email_aliases
-      description: A list of email aliases
-      properties:
-        total_count:
-          description: The number of email aliases.
-          example: 5000
-          type: integer
-          format: int64
-        entries:
-          type: array
-          description: A list of email aliases
-          items:
-            $ref: '#/components/schemas/EmailAlias'
+      title: Client error
+      x-box-resource-id: client_error
   securitySchemes:
     OAuth2Security:
       type: oauth2
+      description: The access token received from the authorization server in the OAuth 2.0 flow.
       flows:
         authorizationCode:
           authorizationUrl: https://account.box.com/api/oauth2/authorize
@@ -256,5 +306,8 @@ components:
             manage_data_retention: Manage data retention polices
             manage_legal_hold: Manage Legal Holds
 externalDocs:
-  description: Box Developer Documentation
+  description: Box Developer Documentation.
   url: https://developer.box.com
+x-mint:
+  mcp:
+    enabled: true

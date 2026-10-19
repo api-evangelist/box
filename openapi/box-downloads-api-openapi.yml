@@ -5,149 +5,106 @@ info:
   termsOfService: https://cloud.app.box.com/s/rmwxu64h1ipr41u49w3bbuvbsa29wku9
   contact:
     name: Box, Inc
-    url: https://box.dev
+    url: https://developer.box.com
     email: devrel@box.com
   license:
     name: Apache-2.0
-    url: http://www.apache.org/licenses/LICENSE-2.0
-  version: 2.0.0
-  x-box-commit-hash: '5819125043'
+    url: https://www.apache.org/licenses/LICENSE-2.0
+  version: '2024.0'
+  x-box-commit-hash: 53bdced3cd
 servers:
 - url: https://api.box.com/2.0
-  description: Box Platform API server
+  description: Box Platform API server.
 security:
 - OAuth2Security: []
 tags:
 - name: Downloads
-  description: 'Downloads allow saving files to the application''s server,
-
-    or directly by the end user in a browser.'
+  description: Downloads allow saving files to the application's server, or directly by the end user in a browser.
   x-box-tag: downloads
 paths:
   /files/{file_id}/content:
     get:
       operationId: get_files_id_content
-      summary: Box Download file
-      tags:
-      - Downloads
-      x-box-tag: downloads
+      summary: Download file
       description: Returns the contents of a file in binary format.
       parameters:
       - name: file_id
+        in: path
         description: 'The unique identifier that represents a file.
 
 
-          The ID for any file can be determined
-
-          by visiting a file in the web application
-
-          and copying the ID from the URL. For example,
-
-          for the URL `https://*.app.box.com/files/123`
-
-          the `file_id` is `123`.'
-        example: '12345'
-        in: path
+          The ID for any file can be determined by visiting a file in the web application and copying the ID from the URL. For example, for the URL `https://*.app.box.com/files/123` the `file_id` is `123`.'
         required: true
         schema:
           type: string
+        example: '12345'
       - name: range
+        in: header
         description: 'The byte range of the content to download.
 
 
-          The format `bytes={start_byte}-{end_byte}` can be used to specify
-
-          what section of the file to download.'
-        example: bytes=0-1024
-        in: header
+          The format `bytes={start_byte}-{end_byte}` can be used to specify what section of the file to download.'
         required: false
         schema:
           type: string
+        example: bytes=0-1024
       - name: boxapi
+        in: header
         description: 'The URL, and optional password, for the shared link of this item.
 
 
-          This header can be used to access items that have not been
-
-          explicitly shared with a user.
+          This header can be used to access items that have not been explicitly shared with a user.
 
 
-          Use the format `shared_link=[link]` or if a password is required then
-
-          use `shared_link=[link]&shared_link_password=[password]`.
+          Use the format `shared_link=[link]` or if a password is required then use `shared_link=[link]&shared_link_password=[password]`.
 
 
-          This header can be used on the file or folder shared, as well as on any files
-
-          or folders nested within the item.'
+          This header can be used on the file or folder shared, as well as on any files or folders nested within the item.'
+        required: false
+        schema:
+          type: string
         example: shared_link=[link]&shared_link_password=[password]
-        in: header
-        required: false
-        schema:
-          type: string
       - name: version
-        description: The file version to download
+        in: query
+        description: The file version to download.
+        required: false
+        schema:
+          type: string
         example: '4'
-        in: query
-        required: false
-        schema:
-          type: string
       - name: access_token
-        description: 'An optional access token that can be used to pre-authenticate this request, which means that a download link can be shared with a browser or a third party service without them needing to know how to handle the authentication.
-
-          When using this parameter, please make sure that the access token is sufficiently scoped down to only allow read access to that file and no other files or folders.'
-        example: c3FIOG9vSGV4VHo4QzAyg5T1JvNnJoZ3ExaVNyQWw6WjRsanRKZG5lQk9qUE1BVQ
         in: query
+        description: An optional access token that can be used to pre-authenticate this request, which means that a download link can be shared with a browser or a third party service without them needing to know how to handle the authentication. When using this parameter, please make sure that the access token is sufficiently scoped down to only allow read access to that file and no other files or folders.
         required: false
         schema:
           type: string
+        example: c3FIOG9vSGV4VHo4QzAyg5T1JvNnJoZ3ExaVNyQWw6WjRsanRKZG5lQk9qUE1BVQ
       responses:
         '200':
-          description: 'Returns the requested file if the client has the **follow
-
-            redirects** setting enabled to automatically
-
-            follow HTTP `3xx` responses as redirects. If not, the request
-
-            will return `302` instead.
-
-            For details, see
-
-            the [download file guide](g://downloads/file#download-url).'
+          description: Returns the requested file if the client has the **follow redirects** setting enabled to automatically follow HTTP `3xx` responses as redirects. If not, the request will return `302` instead. For details, see the [download file guide](/guides/downloads/file#download-url).
           content:
             application/octet-stream:
               schema:
+                description: The binary content of the file.
                 type: string
                 format: binary
-                description: The binary content of the file
         '202':
-          description: 'If the file is not ready to be downloaded yet `Retry-After` header will
-
-            be returned indicating the time in seconds after which the file will
-
-            be available for the client to download.
+          description: 'If the file is not ready to be downloaded yet `Retry-After` header will be returned indicating the time in seconds after which the file will be available for the client to download.
 
 
-            This response can occur when the file was uploaded immediately before the
-
-            download request.'
+            This response can occur when the file was uploaded immediately before the download request.'
           headers:
             Retry-After:
-              description: The time in seconds after which to retry the download
+              description: The time in seconds after which to retry the download.
               schema:
                 type: integer
         '302':
-          description: 'If the file is available for download the response will include a
-
-            `Location` header for the file on `dl.boxcloud.com`.
+          description: 'If the file is available for download the response will include a `Location` header for the file on `dl.boxcloud.com`.
 
 
-            The `dl.boxcloud.com` URL is not persistent and clients will need
-
-            to follow the redirect to actually download the file.'
+            The `dl.boxcloud.com` URL is not persistent and clients will need to follow the redirect to actually download the file.'
           headers:
             Location:
-              description: A pointer to the download URL
+              description: A pointer to the download URL.
               schema:
                 type: string
                 format: url
@@ -157,29 +114,56 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ClientError'
+      x-box-tag: downloads
+      tags:
+      - Downloads
+      x-codeSamples:
+      - lang: curl
+        label: Download file
+        source: "curl -i -L -X GET \"https://api.box.com/2.0/files/12345/content\" \\\n     -H \"authorization: Bearer <ACCESS_TOKEN>\""
+      - lang: dotnet
+        label: Download file
+        source: 'await client.Downloads.DownloadFileAsync(fileId: uploadedFile.Id);'
+      - lang: swift
+        label: Download file
+        source: "let downloadsDirectoryURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!\nlet destinationURL = downloadsDirectoryURL.appendingPathComponent(\"file.txt\")\n\nlet url = try await client.downloads.downloadFile(fileId: file.id, downloadDestinationURL: destinationURL)\n\nif let fileContent = try? String(contentsOf: url, encoding: .utf8) {\n    print(\"The content of the file: \\(fileContent)\")\n}"
+      - lang: java
+        label: Download file
+        source: client.getDownloads().downloadFile(uploadedFile.getId())
+      - lang: node
+        label: Download file
+        source: 'const fs = require(''fs'');
+
+
+          const fileContent = await client.downloads.downloadFile(''123456789'');
+
+          const fileWriteStream = fs.createWriteStream(''file.pdf'');
+
+          fileContent.pipe(fileWriteStream);'
+      - lang: python
+        label: Download file
+        source: client.downloads.download_file(uploaded_file.id)
 components:
   schemas:
     ClientError:
-      title: Client error
+      description: A generic error.
       type: object
-      x-box-resource-id: client_error
-      description: A generic error
       properties:
         type:
-          description: error
-          example: error
+          description: The value will always be `error`.
           type: string
+          example: error
           enum:
           - error
         status:
           description: The HTTP status of the response.
-          example: 400
           type: integer
           format: int32
+          example: 400
         code:
-          description: A Box-specific error code
-          example: item_name_invalid
+          description: A Box-specific error code.
           type: string
+          example: item_name_invalid
           enum:
           - created
           - accepted
@@ -193,6 +177,7 @@ components:
           - method_not_allowed
           - conflict
           - precondition_failed
+          - unprocessable_entity
           - too_many_requests
           - internal_server_error
           - unavailable
@@ -200,35 +185,30 @@ components:
           - insufficient_scope
         message:
           description: A short message describing the error.
-          example: Method Not Allowed
           type: string
+          example: Method Not Allowed
         context_info:
-          description: 'A free-form object that contains additional context
-
-            about the error. The possible fields are defined on
-
-            a per-endpoint basis. `message` is only one example.'
+          description: A free-form object that contains additional context about the error. The possible fields are defined on a per-endpoint basis. `message` is only one example.
           type:
           - object
           - 'null'
-          properties:
-            message:
-              type: string
-              description: More details on the error.
-              example: Something went wrong.
+          example:
+            message: Something went wrong
+          additionalProperties: {}
         help_url:
           description: A URL that links to more information about why this error occurred.
-          example: https://developer.box.com/guides/api-calls/permissions-and-errors/common-errors/
           type: string
+          example: https://developer.box.com/guides/api-calls/permissions-and-errors/common-errors/
         request_id:
-          description: 'A unique identifier for this response, which can be used
-
-            when contacting Box support.'
+          description: A unique identifier for this response, which can be used when contacting Box support.
           type: string
           example: abcdef123456
+      title: Client error
+      x-box-resource-id: client_error
   securitySchemes:
     OAuth2Security:
       type: oauth2
+      description: The access token received from the authorization server in the OAuth 2.0 flow.
       flows:
         authorizationCode:
           authorizationUrl: https://account.box.com/api/oauth2/authorize
@@ -244,5 +224,8 @@ components:
             manage_data_retention: Manage data retention polices
             manage_legal_hold: Manage Legal Holds
 externalDocs:
-  description: Box Developer Documentation
+  description: Box Developer Documentation.
   url: https://developer.box.com
+x-mint:
+  mcp:
+    enabled: true

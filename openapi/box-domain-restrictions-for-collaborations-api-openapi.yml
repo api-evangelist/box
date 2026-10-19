@@ -1,61 +1,52 @@
 openapi: 3.2.0
 info:
-  title: Box Platform Domain Restrictions for Collaborations API
+  title: Box Platform Domain restrictions for collaborations API
   description: Box Platform provides functionality to provide access to content stored within Box. It provides endpoints for basic manipulation of files and folders, management of users within an enterprise, as well as more complex topics such as legal holds and retention policies.
   termsOfService: https://cloud.app.box.com/s/rmwxu64h1ipr41u49w3bbuvbsa29wku9
   contact:
     name: Box, Inc
-    url: https://box.dev
+    url: https://developer.box.com
     email: devrel@box.com
   license:
     name: Apache-2.0
-    url: http://www.apache.org/licenses/LICENSE-2.0
-  version: 2.0.0
-  x-box-commit-hash: '5819125043'
+    url: https://www.apache.org/licenses/LICENSE-2.0
+  version: '2024.0'
+  x-box-commit-hash: 53bdced3cd
 servers:
 - url: https://api.box.com/2.0
-  description: Box Platform API server
+  description: Box Platform API server.
 security:
 - OAuth2Security: []
 tags:
-- name: Domain Restrictions for Collaborations
-  description: 'A set of endpoints that manage domains for which users
-
-    can collaborate with files and folders in an enterprise.'
+- name: Domain restrictions for collaborations
+  description: A set of endpoints that manage domains for which users can collaborate with files and folders in an enterprise.
   x-box-tag: collaboration_allowlist_entries
 paths:
   /collaboration_whitelist_entries:
     get:
       operationId: get_collaboration_whitelist_entries
-      summary: Box List allowed collaboration domains
-      tags:
-      - Domain Restrictions for Collaborations
-      x-box-tag: collaboration_allowlist_entries
-      description: 'Returns the list domains that have been deemed safe to create collaborations
-
-        for within the current enterprise.'
+      summary: List allowed collaboration domains
+      description: Returns the list domains that have been deemed safe to create collaborations for within the current enterprise.
       parameters:
       - name: marker
-        description: 'Defines the position marker at which to begin returning results. This is
-
-          used when paginating using marker-based pagination.
+        in: query
+        description: 'Defines the position marker at which to begin returning results. This is used when paginating using marker-based pagination.
 
 
           This requires `usemarker` to be set to `true`.'
-        in: query
         required: false
-        example: JV9IRGZmieiBasejOG9yDCRNgd2ymoZIbjsxbJMjIs3kioVii
         schema:
           type: string
+        example: JV9IRGZmieiBasejOG9yDCRNgd2ymoZIbjsxbJMjIs3kioVii
       - name: limit
-        description: The maximum number of items to return per page.
         in: query
+        description: The maximum number of items to return per page.
         required: false
-        example: 1000
         schema:
           type: integer
           format: int64
           maximum: 1000
+        example: 1000
       responses:
         '200':
           description: Returns a collection of domains that are allowed for collaboration.
@@ -69,36 +60,54 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ClientError'
+      x-box-tag: collaboration_allowlist_entries
+      tags:
+      - Domain restrictions for collaborations
+      x-box-unsupported-on-free-developer: true
+      x-codeSamples:
+      - lang: curl
+        label: List allowed collaboration domains
+        source: "curl -i -X GET \"https://api.box.com/2.0/collaboration_whitelist_entries\" \\\n     -H \"authorization: Bearer <ACCESS_TOKEN>\""
+      - lang: dotnet
+        label: List allowed collaboration domains
+        source: await client.CollaborationAllowlistEntries.GetCollaborationWhitelistEntriesAsync();
+      - lang: swift
+        label: List allowed collaboration domains
+        source: try await client.collaborationAllowlistEntries.getCollaborationWhitelistEntries()
+      - lang: java
+        label: List allowed collaboration domains
+        source: client.getCollaborationAllowlistEntries().getCollaborationWhitelistEntries()
+      - lang: node
+        label: List allowed collaboration domains
+        source: await client.collaborationAllowlistEntries.getCollaborationWhitelistEntries();
+      - lang: python
+        label: List allowed collaboration domains
+        source: client.collaboration_allowlist_entries.get_collaboration_whitelist_entries()
     post:
       operationId: post_collaboration_whitelist_entries
-      summary: Box Add domain to list of allowed collaboration domains
-      tags:
-      - Domain Restrictions for Collaborations
-      x-box-tag: collaboration_allowlist_entries
-      description: 'Creates a new entry in the list of allowed domains to allow
-
-        collaboration for.'
+      summary: Add domain to list of allowed collaboration domains
+      description: Creates a new entry in the list of allowed domains to allow collaboration for.
       requestBody:
         content:
           application/json:
             schema:
               type: object
-              required:
-              - domain
-              - direction
               properties:
                 domain:
-                  type: string
                   description: The domain to add to the list of allowed domains.
+                  type: string
                   example: example.com
                 direction:
-                  type: string
                   description: The direction in which to allow collaborations.
+                  type: string
                   example: inbound
                   enum:
                   - inbound
                   - outbound
                   - both
+              required:
+              - domain
+              - direction
       responses:
         '200':
           description: Returns a new entry on the list of allowed domains.
@@ -112,24 +121,42 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ClientError'
+      x-box-tag: collaboration_allowlist_entries
+      tags:
+      - Domain restrictions for collaborations
+      x-box-unsupported-on-free-developer: true
+      x-codeSamples:
+      - lang: curl
+        label: Add domain to list of allowed collaboration domains
+        source: "curl -i -X POST \"https://api.box.com/2.0/collaboration_whitelist_entries\" \\\n     -H \"authorization: Bearer <ACCESS_TOKEN>\" \\\n     -H \"content-type: application/json\" \\\n     -d '{\n       \"domain\": \"example.com\",\n       \"direction\": \"inbound\"\n     }'"
+      - lang: dotnet
+        label: Add domain to list of allowed collaboration domains
+        source: 'await client.CollaborationAllowlistEntries.CreateCollaborationWhitelistEntryAsync(requestBody: new CreateCollaborationWhitelistEntryRequestBody(direction: CreateCollaborationWhitelistEntryRequestBodyDirectionField.Inbound, domain: domain));'
+      - lang: swift
+        label: Add domain to list of allowed collaboration domains
+        source: 'try await client.collaborationAllowlistEntries.createCollaborationWhitelistEntry(requestBody: CreateCollaborationWhitelistEntryRequestBody(direction: CreateCollaborationWhitelistEntryRequestBodyDirectionField.inbound, domain: domain))'
+      - lang: java
+        label: Add domain to list of allowed collaboration domains
+        source: client.getCollaborationAllowlistEntries().createCollaborationWhitelistEntry(new CreateCollaborationWhitelistEntryRequestBody(domain, CreateCollaborationWhitelistEntryRequestBodyDirectionField.INBOUND))
+      - lang: node
+        label: Add domain to list of allowed collaboration domains
+        source: "await client.collaborationAllowlistEntries.createCollaborationWhitelistEntry({\n  direction:\n    'inbound' as CreateCollaborationWhitelistEntryRequestBodyDirectionField,\n  domain: domain,\n} satisfies CreateCollaborationWhitelistEntryRequestBody);"
+      - lang: python
+        label: Add domain to list of allowed collaboration domains
+        source: "client.collaboration_allowlist_entries.create_collaboration_whitelist_entry(\n    domain, CreateCollaborationWhitelistEntryDirection.INBOUND\n)"
   /collaboration_whitelist_entries/{collaboration_whitelist_entry_id}:
     get:
       operationId: get_collaboration_whitelist_entries_id
-      summary: Box Get allowed collaboration domain
-      tags:
-      - Domain Restrictions for Collaborations
-      x-box-tag: collaboration_allowlist_entries
-      description: 'Returns a domain that has been deemed safe to create collaborations
-
-        for within the current enterprise.'
+      summary: Get allowed collaboration domain
+      description: Returns a domain that has been deemed safe to create collaborations for within the current enterprise.
       parameters:
       - name: collaboration_whitelist_entry_id
-        description: The ID of the entry in the list.
         in: path
+        description: The ID of the entry in the list.
         required: true
-        example: '213123'
         schema:
           type: string
+        example: '213123'
       responses:
         '200':
           description: Returns an entry on the list of allowed domains.
@@ -143,57 +170,94 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ClientError'
+      x-box-tag: collaboration_allowlist_entries
+      tags:
+      - Domain restrictions for collaborations
+      x-box-unsupported-on-free-developer: true
+      x-codeSamples:
+      - lang: curl
+        label: Get allowed collaboration domain
+        source: "curl -i -X GET \"https://api.box.com/2.0/collaboration_whitelist_entries/213123\" \\\n     -H \"authorization: Bearer <ACCESS_TOKEN>\""
+      - lang: dotnet
+        label: Get allowed collaboration domain
+        source: 'await client.CollaborationAllowlistEntries.GetCollaborationWhitelistEntryByIdAsync(collaborationWhitelistEntryId: NullableUtils.Unwrap(newEntry.Id));'
+      - lang: swift
+        label: Get allowed collaboration domain
+        source: 'try await client.collaborationAllowlistEntries.getCollaborationWhitelistEntryById(collaborationWhitelistEntryId: newEntry.id!)'
+      - lang: java
+        label: Get allowed collaboration domain
+        source: client.getCollaborationAllowlistEntries().getCollaborationWhitelistEntryById(newEntry.getId())
+      - lang: node
+        label: Get allowed collaboration domain
+        source: "await client.collaborationAllowlistEntries.getCollaborationWhitelistEntryById(\n  newEntry.id!,\n);"
+      - lang: python
+        label: Get allowed collaboration domain
+        source: "client.collaboration_allowlist_entries.get_collaboration_whitelist_entry_by_id(\n    new_entry.id\n)"
     delete:
       operationId: delete_collaboration_whitelist_entries_id
-      summary: Box Remove domain from list of allowed collaboration domains
-      tags:
-      - Domain Restrictions for Collaborations
-      x-box-tag: collaboration_allowlist_entries
-      description: 'Removes a domain from the list of domains that have been deemed safe to create
-
-        collaborations for within the current enterprise.'
+      summary: Remove domain from list of allowed collaboration domains
+      description: Removes a domain from the list of domains that have been deemed safe to create collaborations for within the current enterprise.
       parameters:
       - name: collaboration_whitelist_entry_id
-        description: The ID of the entry in the list.
         in: path
+        description: The ID of the entry in the list.
         required: true
-        example: '213123'
         schema:
           type: string
+        example: '213123'
       responses:
         '204':
-          description: 'A blank response is returned if the entry was
-
-            successfully deleted.'
+          description: A blank response is returned if the entry was successfully deleted.
         default:
           description: An unexpected client error.
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ClientError'
+      x-box-tag: collaboration_allowlist_entries
+      tags:
+      - Domain restrictions for collaborations
+      x-box-unsupported-on-free-developer: true
+      x-codeSamples:
+      - lang: curl
+        label: Remove domain from list of allowed collaboration domains
+        source: "curl -i -X DELETE \"https://api.box.com/2.0/collaboration_whitelist_entries/213123\" \\\n     -H \"authorization: Bearer <ACCESS_TOKEN>\""
+      - lang: dotnet
+        label: Remove domain from list of allowed collaboration domains
+        source: 'await client.CollaborationAllowlistEntries.DeleteCollaborationWhitelistEntryByIdAsync(collaborationWhitelistEntryId: NullableUtils.Unwrap(entry.Id));'
+      - lang: swift
+        label: Remove domain from list of allowed collaboration domains
+        source: 'try await client.collaborationAllowlistEntries.deleteCollaborationWhitelistEntryById(collaborationWhitelistEntryId: entry.id!)'
+      - lang: java
+        label: Remove domain from list of allowed collaboration domains
+        source: client.getCollaborationAllowlistEntries().deleteCollaborationWhitelistEntryById(entry.getId())
+      - lang: node
+        label: Remove domain from list of allowed collaboration domains
+        source: "await client.collaborationAllowlistEntries.deleteCollaborationWhitelistEntryById(\n  entry.id!,\n);"
+      - lang: python
+        label: Remove domain from list of allowed collaboration domains
+        source: "client.collaboration_allowlist_entries.delete_collaboration_whitelist_entry_by_id(\n    entry.id\n)"
 components:
   schemas:
     ClientError:
-      title: Client error
+      description: A generic error.
       type: object
-      x-box-resource-id: client_error
-      description: A generic error
       properties:
         type:
-          description: error
-          example: error
+          description: The value will always be `error`.
           type: string
+          example: error
           enum:
           - error
         status:
           description: The HTTP status of the response.
-          example: 400
           type: integer
           format: int32
+          example: 400
         code:
-          description: A Box-specific error code
-          example: item_name_invalid
+          description: A Box-specific error code.
           type: string
+          example: item_name_invalid
           enum:
           - created
           - accepted
@@ -207,6 +271,7 @@ components:
           - method_not_allowed
           - conflict
           - precondition_failed
+          - unprocessable_entity
           - too_many_requests
           - internal_server_error
           - unavailable
@@ -214,98 +279,81 @@ components:
           - insufficient_scope
         message:
           description: A short message describing the error.
-          example: Method Not Allowed
           type: string
+          example: Method Not Allowed
         context_info:
-          description: 'A free-form object that contains additional context
-
-            about the error. The possible fields are defined on
-
-            a per-endpoint basis. `message` is only one example.'
+          description: A free-form object that contains additional context about the error. The possible fields are defined on a per-endpoint basis. `message` is only one example.
           type:
           - object
           - 'null'
-          properties:
-            message:
-              type: string
-              description: More details on the error.
-              example: Something went wrong.
+          example:
+            message: Something went wrong
+          additionalProperties: {}
         help_url:
           description: A URL that links to more information about why this error occurred.
-          example: https://developer.box.com/guides/api-calls/permissions-and-errors/common-errors/
           type: string
+          example: https://developer.box.com/guides/api-calls/permissions-and-errors/common-errors/
         request_id:
-          description: 'A unique identifier for this response, which can be used
-
-            when contacting Box support.'
+          description: A unique identifier for this response, which can be used when contacting Box support.
           type: string
           example: abcdef123456
+      title: Client error
+      x-box-resource-id: client_error
     CollaborationAllowlistEntries:
-      title: Allowed collaboration domains
-      type: object
-      x-box-resource-id: collaboration_allowlist_entries
-      x-box-tag: collaboration_allowlist_entries
       description: A list of allowed domains for collaboration.
+      type: object
       allOf:
       - type: object
-        description: 'The part of an API response that describes marker
-
-          based pagination'
+        description: The part of an API response that describes marker based pagination.
         properties:
           limit:
-            description: 'The limit that was used for these entries. This will be the same as the
-
-              `limit` query parameter unless that value exceeded the maximum value
-
-              allowed. The maximum value varies by API.'
-            example: 1000
+            description: The limit that was used for these entries. This will be the same as the `limit` query parameter unless that value exceeded the maximum value allowed. The maximum value varies by API.
             type: integer
             format: int64
+            example: 1000
           next_marker:
             description: The marker for the start of the next page of results.
-            example: JV9IRGZmieiBasejOG9yDCRNgd2ymoZIbjsxbJMjIs3kioVii
             type:
             - string
             - 'null'
+            example: JV9IRGZmieiBasejOG9yDCRNgd2ymoZIbjsxbJMjIs3kioVii
           prev_marker:
             description: The marker for the start of the previous page of results.
-            example: JV9IRGZmieiBasejOG9yDCRNgd2ymoZIbjsxbJMjIs3kioVih
             type:
             - string
             - 'null'
+            example: JV9IRGZmieiBasejOG9yDCRNgd2ymoZIbjsxbJMjIs3kioVih
       - properties:
           entries:
+            description: A list of allowed collaboration domains.
             type: array
-            description: A list of allowed collaboration domains
             items:
               $ref: '#/components/schemas/CollaborationAllowlistEntry'
-    CollaborationAllowlistEntry:
-      title: Allowed collaboration domain
-      type: object
-      x-box-resource-id: collaboration_allowlist_entry
+      title: Allowed collaboration domains
+      x-box-resource-id: collaboration_allowlist_entries
       x-box-tag: collaboration_allowlist_entries
-      description: 'An entry that describes an approved domain for which users can collaborate
-
-        with files and folders in your enterprise or vice versa.'
+    CollaborationAllowlistEntry:
+      description: An entry that describes an approved domain for which users can collaborate with files and folders in your enterprise or vice versa.
+      type: object
       properties:
         id:
+          description: The unique identifier for this entry.
           type: string
-          description: The unique identifier for this entry
           example: '11446498'
         type:
+          description: The value will always be `collaboration_whitelist_entry`.
           type: string
-          description: '`collaboration_whitelist_entry`'
           example: collaboration_whitelist_entry
           enum:
           - collaboration_whitelist_entry
         domain:
+          description: The whitelisted domain.
           type: string
           example: example.com
-          description: The whitelisted domain
         direction:
+          description: The direction of the collaborations to allow.
           type: string
           example: both
-          description: The direction of the collaborations to allow.
           enum:
           - inbound
           - outbound
@@ -314,31 +362,35 @@ components:
           allOf:
           - title: Enterprise
             type: object
-            description: A representation of a Box enterprise
+            description: A representation of a Box enterprise.
             properties:
               id:
-                type: string
                 description: The unique identifier for this enterprise.
+                type: string
                 example: '11446498'
               type:
+                description: The value will always be `enterprise`.
                 type: string
-                description: '`enterprise`'
                 example: enterprise
                 enum:
                 - enterprise
               name:
-                description: The name of the enterprise
-                example: Acme Inc.
+                description: The name of the enterprise.
                 type: string
-          - description: The enterprise this list is applied to
+                example: Acme Inc.
+          - description: The enterprise this list is applied to.
         created_at:
+          description: The time the entry was created at.
           type: string
           format: date-time
-          description: The time the entry was created at
           example: '2012-12-12T10:53:43-08:00'
+      title: Allowed collaboration domain
+      x-box-resource-id: collaboration_allowlist_entry
+      x-box-tag: collaboration_allowlist_entries
   securitySchemes:
     OAuth2Security:
       type: oauth2
+      description: The access token received from the authorization server in the OAuth 2.0 flow.
       flows:
         authorizationCode:
           authorizationUrl: https://account.box.com/api/oauth2/authorize
@@ -354,5 +406,8 @@ components:
             manage_data_retention: Manage data retention polices
             manage_legal_hold: Manage Legal Holds
 externalDocs:
-  description: Box Developer Documentation
+  description: Box Developer Documentation.
   url: https://developer.box.com
+x-mint:
+  mcp:
+    enabled: true

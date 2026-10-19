@@ -5,66 +5,45 @@ info:
   termsOfService: https://cloud.app.box.com/s/rmwxu64h1ipr41u49w3bbuvbsa29wku9
   contact:
     name: Box, Inc
-    url: https://box.dev
+    url: https://developer.box.com
     email: devrel@box.com
   license:
     name: Apache-2.0
-    url: http://www.apache.org/licenses/LICENSE-2.0
-  version: 2.0.0
-  x-box-commit-hash: '5819125043'
+    url: https://www.apache.org/licenses/LICENSE-2.0
+  version: '2024.0'
+  x-box-commit-hash: 53bdced3cd
 servers:
 - url: https://api.box.com/2.0
-  description: Box Platform API server
+  description: Box Platform API server.
 security:
 - OAuth2Security: []
 tags:
 - name: Watermarks (Folders)
-  description: 'A watermark is a semi-transparent overlay on an embedded folder
-
-    preview that displays a viewer''s email address or user ID
-
-    and the time of access over
-
-    the folder content.'
+  description: A watermark is a semi-transparent overlay on an embedded folder preview that displays a viewer's email address or user ID and the time of access over the folder content.
   x-box-tag: folder_watermarks
 paths:
   /folders/{folder_id}/watermark:
     get:
       operationId: get_folders_id_watermark
-      summary: Box Get watermark for folder
-      tags:
-      - Watermarks (Folders)
-      x-box-tag: folder_watermarks
+      summary: Get watermark for folder
       description: Retrieve the watermark for a folder.
       parameters:
       - name: folder_id
+        in: path
         description: 'The unique identifier that represent a folder.
 
 
-          The ID for any folder can be determined
-
-          by visiting this folder in the web application
-
-          and copying the ID from the URL. For example,
-
-          for the URL `https://*.app.box.com/folder/123`
-
-          the `folder_id` is `123`.
+          The ID for any folder can be determined by visiting this folder in the web application and copying the ID from the URL. For example, for the URL `https://*.app.box.com/folder/123` the `folder_id` is `123`.
 
 
-          The root folder of a Box account is
-
-          always represented by the ID `0`.'
-        example: '12345'
-        in: path
+          The root folder of a Box account is always represented by the ID `0`.'
         required: true
         schema:
           type: string
+        example: '12345'
       responses:
         '200':
-          description: 'Returns an object containing information about the
-
-            watermark associated for to this folder.'
+          description: Returns an object containing information about the watermark associated for to this folder.
           content:
             application/json:
               schema:
@@ -81,73 +60,78 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ClientError'
-    put:
-      operationId: put_folders_id_watermark
-      summary: Box Apply watermark to folder
+      x-box-tag: folder_watermarks
       tags:
       - Watermarks (Folders)
-      x-box-tag: folder_watermarks
+      x-codeSamples:
+      - lang: curl
+        label: Get watermark for folder
+        source: "curl -i -X GET \"https://api.box.com/2.0/folders/4353455/watermark\" \\\n     -H \"authorization: Bearer <ACCESS_TOKEN>\""
+      - lang: dotnet
+        label: Get watermark for folder
+        source: 'await client.FolderWatermarks.GetFolderWatermarkAsync(folderId: folder.Id);'
+      - lang: swift
+        label: Get watermark for folder
+        source: 'try await client.folderWatermarks.getFolderWatermark(folderId: folder.id)'
+      - lang: java
+        label: Get watermark for folder
+        source: client.getFolderWatermarks().getFolderWatermark(folder.getId())
+      - lang: node
+        label: Get watermark for folder
+        source: await client.folderWatermarks.getFolderWatermark(folder.id);
+      - lang: python
+        label: Get watermark for folder
+        source: client.folder_watermarks.get_folder_watermark(folder.id)
+    put:
+      operationId: put_folders_id_watermark
+      summary: Apply watermark to folder
       description: Applies or update a watermark on a folder.
       parameters:
       - name: folder_id
+        in: path
         description: 'The unique identifier that represent a folder.
 
 
-          The ID for any folder can be determined
-
-          by visiting this folder in the web application
-
-          and copying the ID from the URL. For example,
-
-          for the URL `https://*.app.box.com/folder/123`
-
-          the `folder_id` is `123`.
+          The ID for any folder can be determined by visiting this folder in the web application and copying the ID from the URL. For example, for the URL `https://*.app.box.com/folder/123` the `folder_id` is `123`.
 
 
-          The root folder of a Box account is
-
-          always represented by the ID `0`.'
-        example: '12345'
-        in: path
+          The root folder of a Box account is always represented by the ID `0`.'
         required: true
         schema:
           type: string
+        example: '12345'
       requestBody:
         content:
           application/json:
             schema:
               type: object
-              required:
-              - watermark
               properties:
                 watermark:
+                  description: The watermark to imprint on the folder.
                   type: object
-                  description: The watermark to imprint on the folder
-                  required:
-                  - imprint
                   properties:
                     imprint:
-                      type: string
-                      example: default
                       description: 'The type of watermark to apply.
 
 
                         Currently only supports one option.'
+                      type: string
+                      example: default
                       enum:
                       - default
+                  required:
+                  - imprint
+              required:
+              - watermark
       responses:
         '200':
-          description: 'Returns an updated watermark if a watermark already
-
-            existed on this folder.'
+          description: Returns an updated watermark if a watermark already existed on this folder.
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/Watermark'
         '201':
-          description: 'Returns a new watermark if no watermark existed on
-
-            this folder yet.'
+          description: Returns a new watermark if no watermark existed on this folder yet.
           content:
             application/json:
               schema:
@@ -158,46 +142,51 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ClientError'
-    delete:
-      operationId: delete_folders_id_watermark
-      summary: Box Remove watermark from folder
+      x-box-tag: folder_watermarks
       tags:
       - Watermarks (Folders)
-      x-box-tag: folder_watermarks
+      x-codeSamples:
+      - lang: curl
+        label: Apply watermark to folder
+        source: "curl -i -X PUT \"https://api.box.com/2.0/folders/4353455/watermark\" \\\n     -H \"authorization: Bearer <ACCESS_TOKEN>\" \\\n     -H \"content-type: application/json\" \\\n     -d '{\n       \"watermark\": {\n         \"imprint\": \"default\"\n       }\n     }'"
+      - lang: dotnet
+        label: Apply watermark to folder
+        source: 'await client.FolderWatermarks.UpdateFolderWatermarkAsync(folderId: folder.Id, requestBody: new UpdateFolderWatermarkRequestBody(watermark: new UpdateFolderWatermarkRequestBodyWatermarkField(imprint: UpdateFolderWatermarkRequestBodyWatermarkImprintField.Default)));'
+      - lang: swift
+        label: Apply watermark to folder
+        source: 'try await client.folderWatermarks.updateFolderWatermark(folderId: folder.id, requestBody: UpdateFolderWatermarkRequestBody(watermark: UpdateFolderWatermarkRequestBodyWatermarkField(imprint: UpdateFolderWatermarkRequestBodyWatermarkImprintField.default_)))'
+      - lang: java
+        label: Apply watermark to folder
+        source: client.getFolderWatermarks().updateFolderWatermark(folder.getId(), new UpdateFolderWatermarkRequestBody(new UpdateFolderWatermarkRequestBodyWatermarkField.Builder().imprint(UpdateFolderWatermarkRequestBodyWatermarkImprintField.DEFAULT).build()))
+      - lang: node
+        label: Apply watermark to folder
+        source: "await client.folderWatermarks.updateFolderWatermark(folder.id, {\n  watermark: new UpdateFolderWatermarkRequestBodyWatermarkField({\n    imprint: 'default' as UpdateFolderWatermarkRequestBodyWatermarkImprintField,\n  }),\n} satisfies UpdateFolderWatermarkRequestBody);"
+      - lang: python
+        label: Apply watermark to folder
+        source: "client.folder_watermarks.update_folder_watermark(\n    folder.id,\n    UpdateFolderWatermarkWatermark(\n        imprint=UpdateFolderWatermarkWatermarkImprintField.DEFAULT\n    ),\n)"
+    delete:
+      operationId: delete_folders_id_watermark
+      summary: Remove watermark from folder
       description: Removes the watermark from a folder.
       parameters:
       - name: folder_id
+        in: path
         description: 'The unique identifier that represent a folder.
 
 
-          The ID for any folder can be determined
-
-          by visiting this folder in the web application
-
-          and copying the ID from the URL. For example,
-
-          for the URL `https://*.app.box.com/folder/123`
-
-          the `folder_id` is `123`.
+          The ID for any folder can be determined by visiting this folder in the web application and copying the ID from the URL. For example, for the URL `https://*.app.box.com/folder/123` the `folder_id` is `123`.
 
 
-          The root folder of a Box account is
-
-          always represented by the ID `0`.'
-        example: '12345'
-        in: path
+          The root folder of a Box account is always represented by the ID `0`.'
         required: true
         schema:
           type: string
+        example: '12345'
       responses:
         '204':
-          description: 'An empty response will be returned when the watermark
-
-            was successfully deleted.'
+          description: An empty response will be returned when the watermark was successfully deleted.
         '404':
-          description: 'Returns an error if the folder did not have
-
-            a watermark applied to it'
+          description: Returns an error if the folder did not have a watermark applied to it.
           content:
             application/json:
               schema:
@@ -208,53 +197,69 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ClientError'
+      x-box-tag: folder_watermarks
+      tags:
+      - Watermarks (Folders)
+      x-codeSamples:
+      - lang: curl
+        label: Remove watermark from folder
+        source: "curl -i -X DELETE \"https://api.box.com/2.0/folders/4353455/watermark\" \\\n     -H \"authorization: Bearer <ACCESS_TOKEN>\""
+      - lang: dotnet
+        label: Remove watermark from folder
+        source: 'await client.FolderWatermarks.DeleteFolderWatermarkAsync(folderId: folder.Id);'
+      - lang: swift
+        label: Remove watermark from folder
+        source: 'try await client.folderWatermarks.deleteFolderWatermark(folderId: folder.id)'
+      - lang: java
+        label: Remove watermark from folder
+        source: client.getFolderWatermarks().deleteFolderWatermark(folder.getId())
+      - lang: node
+        label: Remove watermark from folder
+        source: await client.folderWatermarks.deleteFolderWatermark(folder.id);
+      - lang: python
+        label: Remove watermark from folder
+        source: client.folder_watermarks.delete_folder_watermark(folder.id)
 components:
   schemas:
     Watermark:
-      title: Watermark
+      description: A watermark is a semi-transparent overlay on an embedded file preview that displays a viewer's email address or user ID and the time of access over a file's content.
       type: object
-      x-box-resource-id: watermark
-      x-box-tag: file_watermarks
-      description: 'A watermark is a semi-transparent overlay on an embedded file
-
-        preview that displays a viewer''s email address or user ID
-
-        and the time of access over a file''s content'
       properties:
         watermark:
           type: object
           properties:
             created_at:
+              description: When this watermark was created.
               type: string
               format: date-time
-              description: When this watermark was created
               example: '2012-12-12T10:53:43-08:00'
             modified_at:
+              description: When this task was modified.
               type: string
               format: date-time
-              description: When this task was modified
               example: '2012-12-12T10:53:43-08:00'
+      title: Watermark
+      x-box-resource-id: watermark
+      x-box-tag: file_watermarks
     ClientError:
-      title: Client error
+      description: A generic error.
       type: object
-      x-box-resource-id: client_error
-      description: A generic error
       properties:
         type:
-          description: error
-          example: error
+          description: The value will always be `error`.
           type: string
+          example: error
           enum:
           - error
         status:
           description: The HTTP status of the response.
-          example: 400
           type: integer
           format: int32
+          example: 400
         code:
-          description: A Box-specific error code
-          example: item_name_invalid
+          description: A Box-specific error code.
           type: string
+          example: item_name_invalid
           enum:
           - created
           - accepted
@@ -268,6 +273,7 @@ components:
           - method_not_allowed
           - conflict
           - precondition_failed
+          - unprocessable_entity
           - too_many_requests
           - internal_server_error
           - unavailable
@@ -275,35 +281,30 @@ components:
           - insufficient_scope
         message:
           description: A short message describing the error.
-          example: Method Not Allowed
           type: string
+          example: Method Not Allowed
         context_info:
-          description: 'A free-form object that contains additional context
-
-            about the error. The possible fields are defined on
-
-            a per-endpoint basis. `message` is only one example.'
+          description: A free-form object that contains additional context about the error. The possible fields are defined on a per-endpoint basis. `message` is only one example.
           type:
           - object
           - 'null'
-          properties:
-            message:
-              type: string
-              description: More details on the error.
-              example: Something went wrong.
+          example:
+            message: Something went wrong
+          additionalProperties: {}
         help_url:
           description: A URL that links to more information about why this error occurred.
-          example: https://developer.box.com/guides/api-calls/permissions-and-errors/common-errors/
           type: string
+          example: https://developer.box.com/guides/api-calls/permissions-and-errors/common-errors/
         request_id:
-          description: 'A unique identifier for this response, which can be used
-
-            when contacting Box support.'
+          description: A unique identifier for this response, which can be used when contacting Box support.
           type: string
           example: abcdef123456
+      title: Client error
+      x-box-resource-id: client_error
   securitySchemes:
     OAuth2Security:
       type: oauth2
+      description: The access token received from the authorization server in the OAuth 2.0 flow.
       flows:
         authorizationCode:
           authorizationUrl: https://account.box.com/api/oauth2/authorize
@@ -319,5 +320,8 @@ components:
             manage_data_retention: Manage data retention polices
             manage_legal_hold: Manage Legal Holds
 externalDocs:
-  description: Box Developer Documentation
+  description: Box Developer Documentation.
   url: https://developer.box.com
+x-mint:
+  mcp:
+    enabled: true

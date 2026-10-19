@@ -5,65 +5,51 @@ info:
   termsOfService: https://cloud.app.box.com/s/rmwxu64h1ipr41u49w3bbuvbsa29wku9
   contact:
     name: Box, Inc
-    url: https://box.dev
+    url: https://developer.box.com
     email: devrel@box.com
   license:
     name: Apache-2.0
-    url: http://www.apache.org/licenses/LICENSE-2.0
-  version: 2.0.0
-  x-box-commit-hash: '5819125043'
+    url: https://www.apache.org/licenses/LICENSE-2.0
+  version: '2024.0'
+  x-box-commit-hash: 53bdced3cd
 servers:
 - url: https://api.box.com/2.0
-  description: Box Platform API server
+  description: Box Platform API server.
 security:
 - OAuth2Security: []
 tags:
 - name: Uploads (Chunked)
-  description: 'The chunked upload endpoints support files from
-
-    20MB in size and allow an application
-
-    to upload the file in parts,
-
-    allowing for more control to catch any errors
-
-    and retry parts individually.'
+  description: The chunked upload endpoints support files from 20MB in size and allow an application to upload the file in parts, allowing for more control to catch any errors and retry parts individually.
   x-box-tag: chunked_uploads
 paths:
   /files/upload_sessions:
     post:
       operationId: post_files_upload_sessions
-      summary: Box Create upload session
-      tags:
-      - Uploads (Chunked)
-      x-box-tag: chunked_uploads
+      summary: Create upload session
       description: Creates an upload session for a new file.
-      servers:
-      - url: https://upload.box.com/api/2.0
-        description: Server for file uploads
       requestBody:
         content:
           application/json:
             schema:
               type: object
-              required:
-              - folder_id
-              - file_size
-              - file_name
               properties:
                 folder_id:
                   description: The ID of the folder to upload the new file to.
                   type: string
                   example: '0'
                 file_size:
-                  description: The total number of bytes of the file to be uploaded
-                  example: 104857600
+                  description: The total number of bytes of the file to be uploaded.
                   type: integer
                   format: int64
+                  example: 104857600
                 file_name:
-                  description: The name of new file
-                  example: Project.mov
+                  description: The name of new file.
                   type: string
+                  example: Project.mov
+              required:
+              - folder_id
+              - file_size
+              - file_name
       responses:
         '201':
           description: Returns a new upload session.
@@ -72,7 +58,22 @@ paths:
               schema:
                 $ref: '#/components/schemas/UploadSession'
         '400':
-          description: "Returns an error if some of the parameters are missing or\nnot valid.\n\n* `missing_destination`: No `folder_id` was provided\n* `invalid_folder_id`: `folder_id` is not valid\n* `item_name_invalid`: `file_name` is not valid\n* `missing_file_size`: `file_size` was not provided\n* `invalid_file_size`: `file_size` was not a valid number\n* `file_size_too_small`: `file_size` is below minimum file size for\n  uploads via this API\n* `missing_file_name`: `file_name` was not provided"
+          description: 'Returns an error if some of the parameters are missing or not valid.
+
+
+            - `missing_destination`: No `folder_id` was provided.
+
+            - `invalid_folder_id`: `folder_id` is not valid.
+
+            - `item_name_invalid`: `file_name` is not valid.
+
+            - `missing_file_size`: `file_size` was not provided.
+
+            - `invalid_file_size`: `file_size` was not a valid number.
+
+            - `file_size_too_small`: `file_size` is below minimum file size for uploads via this API.
+
+            - `missing_file_name`: `file_name` was not provided.'
           content:
             application/json:
               schema:
@@ -81,21 +82,22 @@ paths:
           description: 'Returns an error if the operation is not allowed for some reason.
 
 
-            * `storage_limit_exceeded`: Account storage limit reached'
+            - `storage_limit_exceeded`: Account storage limit reached.'
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ClientError'
         '404':
-          description: "Returns an error if the parent folder could not be found, or\nthe authenticated user does not have access to it.\n\n* `invalid_parameter`: The `folder_id` value represents a\n  folder that the user does not have access to, or does not\n  exist."
+          description: 'Returns an error if the parent folder could not be found, or the authenticated user does not have access to it.
+
+
+            - `invalid_parameter`: The `folder_id` value represents a folder that the user does not have access to, or does not exist.'
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ClientError'
         '409':
-          description: 'Returns an error if the file already exists,
-
-            or the account has run out of disk space.'
+          description: Returns an error if the file already exists, or the account has run out of disk space.
           content:
             application/json:
               schema:
@@ -106,53 +108,64 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ClientError'
+      x-box-tag: chunked_uploads
+      servers:
+      - url: https://upload.box.com/api/2.0
+        description: Server for file uploads.
+      tags:
+      - Uploads (Chunked)
+      x-codeSamples:
+      - lang: curl
+        label: Create upload session
+        source: "curl -i -X POST \"https://upload.box.com/api/2.0/files/upload_sessions\" \\\n     -H \"authorization: Bearer <ACCESS_TOKEN>\" \\\n     -H \"content-type: application/json\" \\\n     -d '{\n       \"folder_id\": \"0\",\n       \"file_size\": 104857600,\n       \"file_name\": \"Contract.pdf\"\n     }'"
+      - lang: dotnet
+        label: Create upload session
+        source: 'await client.ChunkedUploads.CreateFileUploadSessionAsync(requestBody: new CreateFileUploadSessionRequestBody(fileName: fileName, fileSize: (long)(fileSize), folderId: parentFolderId));'
+      - lang: swift
+        label: Create upload session
+        source: 'try await client.chunkedUploads.createFileUploadSession(requestBody: CreateFileUploadSessionRequestBody(fileName: fileName, fileSize: Int64(fileSize), folderId: parentFolderId))'
+      - lang: java
+        label: Create upload session
+        source: client.getChunkedUploads().createFileUploadSession(new CreateFileUploadSessionRequestBody(parentFolderId, fileSize, fileName))
+      - lang: node
+        label: Create upload session
+        source: "await client.chunkedUploads.createFileUploadSession({\n  fileName: fileName,\n  fileSize: fileSize,\n  folderId: parentFolderId,\n} satisfies CreateFileUploadSessionRequestBody);"
+      - lang: python
+        label: Create upload session
+        source: "client.chunked_uploads.create_file_upload_session(\n    parent_folder_id, file_size, file_name\n)"
   /files/{file_id}/upload_sessions:
     post:
       operationId: post_files_id_upload_sessions
-      summary: Box Create upload session for existing file
-      tags:
-      - Uploads (Chunked)
-      x-box-tag: chunked_uploads
+      summary: Create upload session for existing file
       description: Creates an upload session for an existing file.
-      servers:
-      - url: https://upload.box.com/api/2.0
-        description: Server for file uploads
       parameters:
       - name: file_id
+        in: path
         description: 'The unique identifier that represents a file.
 
 
-          The ID for any file can be determined
-
-          by visiting a file in the web application
-
-          and copying the ID from the URL. For example,
-
-          for the URL `https://*.app.box.com/files/123`
-
-          the `file_id` is `123`.'
-        example: '12345'
-        in: path
+          The ID for any file can be determined by visiting a file in the web application and copying the ID from the URL. For example, for the URL `https://*.app.box.com/files/123` the `file_id` is `123`.'
         required: true
         schema:
           type: string
+        example: '12345'
       requestBody:
         content:
           application/json:
             schema:
               type: object
-              required:
-              - file_size
               properties:
                 file_size:
-                  description: The total number of bytes of the file to be uploaded
-                  example: 104857600
+                  description: The total number of bytes of the file to be uploaded.
                   type: integer
                   format: int64
+                  example: 104857600
                 file_name:
-                  description: The optional new name of new file
-                  example: Project.mov
+                  description: The optional new name of new file.
                   type: string
+                  example: Project.mov
+              required:
+              - file_size
       responses:
         '201':
           description: Returns a new upload session.
@@ -161,9 +174,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/UploadSession'
         '409':
-          description: 'Returns an error if the file already exists,
-
-            or if the account has run out of disk space.'
+          description: Returns an error if the file already exists, or if the account has run out of disk space.
           content:
             application/json:
               schema:
@@ -174,25 +185,47 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ClientError'
-  /files/upload_sessions/{upload_session_id}:
-    get:
-      operationId: get_files_upload_sessions_id
-      summary: Box Get upload session
-      tags:
-      - Uploads (Chunked)
-      description: Return information about an upload session.
       x-box-tag: chunked_uploads
       servers:
       - url: https://upload.box.com/api/2.0
-        description: Server for file uploads
+        description: Server for file uploads.
+      tags:
+      - Uploads (Chunked)
+      x-codeSamples:
+      - lang: curl
+        label: Create upload session for existing file
+        source: "curl -i -X POST \"https://upload.box.com/api/2.0/files/12345/upload_sessions\" \\\n     -H \"authorization: Bearer <ACCESS_TOKEN>\" \\\n     -H \"content-type: application/json\" \\\n     -d '{\n       \"file_size\": 104857600\n     }'"
+      - lang: dotnet
+        label: Create upload session for existing file
+        source: 'await client.ChunkedUploads.CreateFileUploadSessionForExistingFileAsync(fileId: uploadedFile.Id, requestBody: new CreateFileUploadSessionForExistingFileRequestBody(fileSize: (long)(fileSize)));'
+      - lang: swift
+        label: Create upload session for existing file
+        source: 'try await client.chunkedUploads.createFileUploadSessionForExistingFile(fileId: uploadedFile.id, requestBody: CreateFileUploadSessionForExistingFileRequestBody(fileSize: Int64(fileSize)))'
+      - lang: java
+        label: Create upload session for existing file
+        source: client.getChunkedUploads().createFileUploadSessionForExistingFile(uploadedFile.getId(), new CreateFileUploadSessionForExistingFileRequestBody(fileSize))
+      - lang: node
+        label: Create upload session for existing file
+        source: "await client.chunkedUploads.createFileUploadSessionForExistingFile(\n  uploadedFile.id,\n  {\n    fileSize: fileSize,\n  } satisfies CreateFileUploadSessionForExistingFileRequestBody,\n);"
+      - lang: python
+        label: Create upload session for existing file
+        source: "client.chunked_uploads.create_file_upload_session_for_existing_file(\n    uploaded_file.id, file_size\n)"
+  /files/upload_sessions/{upload_session_id}:
+    get:
+      operationId: get_files_upload_sessions_id
+      summary: Get upload session
+      description: 'Return information about an upload session.
+
+
+        The actual endpoint URL is returned by the `Create upload session` endpoint.'
       parameters:
       - name: upload_session_id
-        description: The ID of the upload session.
-        example: D5E3F7A
         in: path
+        description: The ID of the upload session.
         required: true
         schema:
           type: string
+        example: D5E3F7A
       responses:
         '200':
           description: Returns an upload session object.
@@ -206,73 +239,106 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ClientError'
-    put:
-      operationId: put_files_upload_sessions_id
-      summary: Box Upload part of file
+      x-box-tag: chunked_uploads
+      servers:
+      - url: https://{box-upload-server}/api/2.0
+        description: Server for file uploads.
+        variables:
+          box-upload-server:
+            description: The server for the upload session.
+            default: upload.box.com
       tags:
       - Uploads (Chunked)
-      x-box-tag: chunked_uploads
-      description: Updates a chunk of an upload session for a file.
-      servers:
-      - url: https://upload.box.com/api/2.0
-        description: Server for file uploads
+      x-box-enable-explorer: false
+      x-codeSamples:
+      - lang: curl
+        label: Get upload session
+        source: "curl -i -X GET \"https://upload.box.com/api/2.0/files/upload_sessions/F971964745A5CD0C001BBE4E58196BFD\" \\\n     -H \"authorization: Bearer <ACCESS_TOKEN>\""
+      - lang: dotnet
+        label: Get upload session
+        source: 'await client.ChunkedUploads.GetFileUploadSessionByIdAsync(uploadSessionId: uploadSessionId);'
+      - lang: swift
+        label: Get upload session
+        source: 'try await client.chunkedUploads.getFileUploadSessionById(uploadSessionId: uploadSessionId)'
+      - lang: java
+        label: Get upload session
+        source: client.getChunkedUploads().getFileUploadSessionById(uploadSessionId)
+      - lang: node
+        label: Get upload session
+        source: await client.chunkedUploads.getFileUploadSessionById(uploadSessionId);
+      - lang: python
+        label: Get upload session
+        source: client.chunked_uploads.get_file_upload_session_by_id(upload_session_id)
+    put:
+      operationId: put_files_upload_sessions_id
+      summary: Upload part of file
+      description: 'Uploads a chunk of a file for an upload session.
+
+
+        The actual endpoint URL is returned by the `Create upload session` and `Get upload session` endpoints.'
       parameters:
       - name: upload_session_id
-        description: The ID of the upload session.
-        example: D5E3F7A
         in: path
+        description: The ID of the upload session.
         required: true
         schema:
           type: string
+        example: D5E3F7A
       - name: digest
+        in: header
         description: 'The [RFC3230][1] message digest of the chunk uploaded.
 
 
-          Only SHA1 is supported. The SHA1 digest must be base64
-
-          encoded. The format of this header is as
-
-          `sha=BASE64_ENCODED_DIGEST`.
+          `SHA-1` and `SHA-512` ([RFC5843][2]) are supported. The digest must be base64 encoded. The format of this header is as `sha=BASE64_ENCODED_DIGEST` for `SHA-1`, or `sha-512=BASE64_ENCODED_DIGEST` for `SHA-512`.
 
 
-          To get the value for the `SHA` digest, use the
-
-          openSSL command to encode the file part:
-
-          `openssl sha1 -binary <FILE_PART_NAME> | base64`
+          To get the value for the digest, use the openSSL command to encode the file part: `openssl sha1 -binary <FILE_PART_NAME> | base64` for `SHA-1`, or `openssl sha512 -binary <FILE_PART_NAME> | base64` for `SHA-512`.
 
 
-          [1]: https://tools.ietf.org/html/rfc3230'
+          [1]: https://tools.ietf.org/html/rfc3230
+
+          [2]: https://tools.ietf.org/html/rfc5843'
+        required: true
+        schema:
+          type: string
         example: sha=fpRyg5eVQletdZqEKaFlqwBXJzM=
-        in: header
-        required: true
-        schema:
-          type: string
       - name: content-range
-        description: "The byte range of the chunk.\n\nMust not overlap with the range of a part already\nuploaded this session. Each part’s size must be\nexactly equal in size to the part size specified\nin the upload session that you created.\nOne exception is the last part of the file, as this can be smaller.\n\nWhen providing the value for `content-range`, remember that:\n\n* The lower bound of each part's byte range\n  must be a multiple of the part size.\n* The higher bound must be a multiple of the part size - 1."
-        example: bytes 8388608-16777215/445856194
         in: header
+        description: 'The byte range of the chunk.
+
+
+          Must not overlap with the range of a part already uploaded this session. Each part’s size must be exactly equal in size to the part size specified in the upload session that you created. One exception is the last part of the file, as this can be smaller.
+
+
+          When providing the value for `content-range`, remember that:
+
+
+          - The lower bound of each part''s byte range must be a multiple of the part size.
+
+          - The higher bound must be a multiple of the part size - 1.'
         required: true
         schema:
           type: string
+        example: bytes 8388608-16777215/445856194
       requestBody:
         content:
           application/octet-stream:
             schema:
+              description: The binary content of the file.
               type: string
               format: binary
-              description: The binary content of the file
       responses:
         '200':
-          description: Chunk has been uploaded successfully.
+          description: 'Chunk has been uploaded successfully.
+
+
+            The response always includes `sha512`. It also includes `sha1` if the `Digest` header used `SHA-1`.'
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/UploadedPart'
         '409':
-          description: 'Returns an error if the chunk conflicts with another
-
-            chunk previously uploaded.'
+          description: Returns an error if the chunk conflicts with another chunk previously uploaded.
           content:
             application/json:
               schema:
@@ -284,9 +350,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/ClientError'
         '416':
-          description: 'Returns an error if the content range does not match a specified range
-
-            for the session.'
+          description: Returns an error if the content range does not match a specified range for the session.
           content:
             application/json:
               schema:
@@ -297,87 +361,136 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ClientError'
-    delete:
-      operationId: delete_files_upload_sessions_id
-      summary: Box Remove upload session
+      x-box-tag: chunked_uploads
+      servers:
+      - url: https://{box-upload-server}/api/2.0
+        description: Server for file uploads.
+        variables:
+          box-upload-server:
+            description: The server for the upload session.
+            default: upload.box.com
       tags:
       - Uploads (Chunked)
+      x-box-enable-explorer: false
+      x-codeSamples:
+      - lang: curl
+        label: Upload part of file
+        source: "curl -i -X PUT \"https://upload.box.com/api/2.0/files/upload_sessions/F971964745A5CD0C001BBE4E58196BFD\" \\\n     -H \"authorization: Bearer <ACCESS_TOKEN>\" \\\n     -H \"digest: sha=fpRyg5eVQletdZqEKaFlqwBXJzM=\" \\\n     -H \"content-range: bytes 8388608-16777215/445856194\" \\\n     -H \"content-type: application/octet-stream\" \\\n     --data-binary @<FILE_NAME>"
+      - lang: dotnet
+        label: Upload part of file
+        source: 'await client.ChunkedUploads.UploadFilePartAsync(uploadSessionId: acc.UploadSessionId, requestBody: Utils.GenerateByteStreamFromBuffer(buffer: chunkBuffer), headers: new UploadFilePartHeaders(digest: digest, contentRange: contentRange));'
+      - lang: swift
+        label: Upload part of file
+        source: 'try await client.chunkedUploads.uploadFilePart(uploadSessionId: acc.uploadSessionId, requestBody: Utils.generateByteStreamFromBuffer(buffer: chunkBuffer), headers: UploadFilePartHeaders(digest: digest, contentRange: contentRange))'
+      - lang: java
+        label: Upload part of file
+        source: client.getChunkedUploads().uploadFilePart(acc.getUploadSessionId(), generateByteStreamFromBuffer(chunkBuffer), new UploadFilePartHeaders(digest, contentRange))
+      - lang: node
+        label: Upload part of file
+        source: "await client.chunkedUploads.uploadFilePart(\n  acc.uploadSessionId,\n  generateByteStreamFromBuffer(chunkBuffer),\n  {\n    digest: digest,\n    contentRange: contentRange,\n  } satisfies UploadFilePartHeadersInput,\n);"
+      - lang: python
+        label: Upload part of file
+        source: "client.chunked_uploads.upload_file_part(\n    acc.upload_session_id,\n    generate_byte_stream_from_buffer(chunk_buffer),\n    digest,\n    content_range,\n)"
+    delete:
+      operationId: delete_files_upload_sessions_id
+      summary: Remove upload session
       description: 'Abort an upload session and discard all data uploaded.
 
 
-        This cannot be reversed.'
-      servers:
-      - url: https://upload.box.com/api/2.0
-        description: Server for file uploads
-      x-box-tag: chunked_uploads
+        This cannot be reversed.
+
+
+        The actual endpoint URL is returned by the `Create upload session` and `Get upload session` endpoints.'
       parameters:
       - name: upload_session_id
-        description: The ID of the upload session.
-        example: D5E3F7A
         in: path
+        description: The ID of the upload session.
         required: true
         schema:
           type: string
+        example: D5E3F7A
       responses:
         '204':
-          description: 'A blank response is returned if the session was
-
-            successfully aborted.'
+          description: A blank response is returned if the session was successfully aborted.
         default:
           description: An unexpected client error.
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ClientError'
+      x-box-tag: chunked_uploads
+      servers:
+      - url: https://{box-upload-server}/api/2.0
+        description: Server for file uploads.
+        variables:
+          box-upload-server:
+            description: The server for the upload session.
+            default: upload.box.com
+      tags:
+      - Uploads (Chunked)
+      x-box-enable-explorer: false
+      x-codeSamples:
+      - lang: curl
+        label: Remove upload session
+        source: "curl -i -X DELETE \"https://upload.box.com/api/2.0/files/upload_sessions/F971964745A5CD0C001BBE4E58196BFD\" \\\n     -H \"authorization: Bearer <ACCESS_TOKEN>\""
+      - lang: dotnet
+        label: Remove upload session
+        source: 'await client.ChunkedUploads.DeleteFileUploadSessionByIdAsync(uploadSessionId: uploadSessionId);'
+      - lang: swift
+        label: Remove upload session
+        source: 'try await client.chunkedUploads.deleteFileUploadSessionById(uploadSessionId: uploadSessionId)'
+      - lang: java
+        label: Remove upload session
+        source: client.getChunkedUploads().deleteFileUploadSessionById(uploadSessionId)
+      - lang: node
+        label: Remove upload session
+        source: await client.chunkedUploads.deleteFileUploadSessionById(uploadSessionId);
+      - lang: python
+        label: Remove upload session
+        source: client.chunked_uploads.delete_file_upload_session_by_id(upload_session_id)
   /files/upload_sessions/{upload_session_id}/parts:
     get:
       operationId: get_files_upload_sessions_id_parts
-      summary: Box List parts
-      tags:
-      - Uploads (Chunked)
-      x-box-tag: chunked_uploads
-      servers:
-      - url: https://upload.box.com/api/2.0
-        description: Server for file uploads
-      description: 'Return a list of the chunks uploaded to the upload
+      summary: List parts
+      description: 'Return a list of the chunks uploaded to the upload session so far.
 
-        session so far.'
+
+        The actual endpoint URL is returned by the `Create upload session` and `Get upload session` endpoints.'
       parameters:
       - name: upload_session_id
-        description: The ID of the upload session.
-        example: D5E3F7A
         in: path
+        description: The ID of the upload session.
         required: true
         schema:
           type: string
+        example: D5E3F7A
       - name: offset
+        in: query
         description: 'The offset of the item at which to begin the response.
 
 
-          Queries with offset parameter value
-
-          exceeding 10000 will be rejected
-
-          with a 400 response.'
-        in: query
+          Queries with offset parameter value exceeding 10000 will be rejected with a 400 response.'
         required: false
-        example: 1000
         schema:
           type: integer
           format: int64
           default: 0
-      - name: limit
-        description: The maximum number of items to return per page.
-        in: query
-        required: false
         example: 1000
+      - name: limit
+        in: query
+        description: The maximum number of items to return per page.
+        required: false
         schema:
           type: integer
           format: int64
           maximum: 1000
+        example: 1000
       responses:
         '200':
-          description: Returns a list of parts that have been uploaded.
+          description: 'Returns a list of parts that have been uploaded.
+
+
+            Each part includes the hash type used to upload it. Parts uploaded with a `SHA-512` `Digest` header don''t include `sha1`.'
           content:
             application/json:
               schema:
@@ -388,91 +501,174 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ClientError'
+      x-box-tag: chunked_uploads
+      servers:
+      - url: https://{box-upload-server}/api/2.0
+        description: Server for file uploads.
+        variables:
+          box-upload-server:
+            description: The server for the upload session.
+            default: upload.box.com
+      tags:
+      - Uploads (Chunked)
+      x-box-enable-explorer: false
+      x-codeSamples:
+      - lang: curl
+        label: List parts
+        source: "curl -i -X GET \"https://upload.box.com/api/2.0/files/upload_sessions/F971964745A5CD0C001BBE4E58196BFD/parts\" \\\n     -H \"authorization: Bearer <ACCESS_TOKEN>\""
+      - lang: dotnet
+        label: List parts
+        source: 'await client.ChunkedUploads.GetFileUploadSessionPartsAsync(uploadSessionId: uploadSessionId);'
+      - lang: swift
+        label: List parts
+        source: 'try await client.chunkedUploads.getFileUploadSessionParts(uploadSessionId: uploadSessionId)'
+      - lang: java
+        label: List parts
+        source: client.getChunkedUploads().getFileUploadSessionParts(uploadSessionId)
+      - lang: node
+        label: List parts
+        source: await client.chunkedUploads.getFileUploadSessionParts(uploadSessionId);
+      - lang: python
+        label: List parts
+        source: client.chunked_uploads.get_file_upload_session_parts(upload_session_id)
+  /files/upload_sessions/{upload_session_id}/plan:
+    post:
+      operationId: post_files_upload_sessions_id_plan
+      summary: Plan upload session
+      description: 'Plan an upload session by checking which parts already exist on the server. This endpoint allows clients to optimize uploads by skipping parts that have already been uploaded (cache hits) and only uploading missing parts.
+
+
+        The actual endpoint URL is returned by the `Create upload session` and `Get upload session` endpoints.'
+      parameters:
+      - name: upload_session_id
+        in: path
+        description: The ID of the upload session.
+        required: true
+        schema:
+          type: string
+        example: D5E3F7A
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UploadSessionPlanRequest'
+      responses:
+        '200':
+          description: Returns information about which parts already exist (hits) and which parts need to be uploaded (misses).
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UploadSessionPlanResponse'
+        '404':
+          description: Returns an error if the upload session cannot be found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ClientError'
+        default:
+          description: An unexpected client error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ClientError'
+      x-box-tag: chunked_uploads
+      servers:
+      - url: https://{box-upload-server}/api/2.0
+        description: Server for file uploads.
+        variables:
+          box-upload-server:
+            description: The server for the upload session.
+            default: upload.box.com
+      tags:
+      - Uploads (Chunked)
+      x-box-enable-explorer: false
+      x-codeSamples:
+      - lang: dotnet
+        label: Plan upload session
+        source: 'await client.ChunkedUploads.CreateFileUploadSessionPlanByUrlAsync(url: planUrl, requestBody: new UploadSessionPlanRequest(parts: parts));'
+      - lang: swift
+        label: Plan upload session
+        source: 'try await client.chunkedUploads.createFileUploadSessionPlanByUrl(url: planUrl, requestBody: UploadSessionPlanRequest(parts: parts))'
+      - lang: java
+        label: Plan upload session
+        source: client.getChunkedUploads().createFileUploadSessionPlanByUrl(planUrl, new UploadSessionPlanRequest(parts))
+      - lang: node
+        label: Plan upload session
+        source: "await client.chunkedUploads.createFileUploadSessionPlanByUrl(planUrl, {\n  parts: parts,\n} satisfies UploadSessionPlanRequest);"
+      - lang: python
+        label: Plan upload session
+        source: client.chunked_uploads.create_file_upload_session_plan_by_url(plan_url, parts)
   /files/upload_sessions/{upload_session_id}/commit:
     post:
       operationId: post_files_upload_sessions_id_commit
-      summary: Box Commit upload session
-      tags:
-      - Uploads (Chunked)
-      x-box-tag: chunked_uploads
-      servers:
-      - url: https://upload.box.com/api/2.0
-        description: Server for file uploads
-      description: 'Close an upload session and create a file from the
+      summary: Commit upload session
+      description: 'Close an upload session and create a file from the uploaded chunks.
 
-        uploaded chunks.'
+
+        The actual endpoint URL is returned by the `Create upload session` and `Get upload session` endpoints.'
       parameters:
       - name: upload_session_id
-        description: The ID of the upload session.
-        example: D5E3F7A
         in: path
+        description: The ID of the upload session.
         required: true
         schema:
           type: string
+        example: D5E3F7A
       - name: digest
+        in: header
         description: 'The [RFC3230][1] message digest of the whole file.
 
 
-          Only SHA1 is supported. The SHA1 digest must be Base64
+          Only SHA1 is supported. The SHA1 digest must be Base64 encoded. The format of this header is as `sha=BASE64_ENCODED_DIGEST`.
 
-          encoded. The format of this header is as
 
-          `sha=BASE64_ENCODED_DIGEST`.
+          `SHA-512` is not supported for the whole-file digest, even if the parts were uploaded with `SHA-512` digests.
 
 
           [1]: https://tools.ietf.org/html/rfc3230'
-        in: header
-        example: sha=fpRyg5eVQletdZqEKaFlqwBXJzM=
         required: true
         schema:
           type: string
+        example: sha=fpRyg5eVQletdZqEKaFlqwBXJzM=
       - name: if-match
-        description: 'Ensures this item hasn''t recently changed before
-
-          making changes.
-
-
-          Pass in the item''s last observed `etag` value
-
-          into this header and the endpoint will fail
-
-          with a `412 Precondition Failed` if it
-
-          has changed since.'
         in: header
+        description: 'Ensures this item hasn''t recently changed before making changes.
+
+
+          Pass in the item''s last observed `etag` value into this header and the endpoint will fail with a `412 Precondition Failed` if it has changed since.'
         required: false
-        example: '1'
         schema:
           type: string
+        example: '1'
       - name: if-none-match
+        in: header
         description: 'Ensures an item is only returned if it has changed.
 
 
-          Pass in the item''s last observed `etag` value
-
-          into this header and the endpoint will fail
-
-          with a `304 Not Modified` if the item has not
-
-          changed since.'
-        in: header
+          Pass in the item''s last observed `etag` value into this header and the endpoint will fail with a `304 Not Modified` if the item has not changed since.'
         required: false
-        example: '1'
         schema:
           type: string
+        example: '1'
       requestBody:
         content:
           application/json:
             schema:
               type: object
-              required:
-              - parts
               properties:
                 parts:
+                  description: 'The list details for the uploaded parts.
+
+
+                    Each entry can include `sha1` or `sha512`. Include `sha512` on every entry or on none of them. A request where only some entries include `sha512` is rejected.
+
+
+                    Include parts that the server already has, returned as `hits` by the [`Plan upload session`](/reference/post-files-upload-sessions-id-plan) endpoint. Use the `part_id`, `offset`, and `size` from the plan response. If the other entries include `sha512`, include the `sha512` value from the plan response. Otherwise, leave the hash out of these entries.'
                   type: array
-                  description: The list details for the uploaded parts
                   items:
                     $ref: '#/components/schemas/UploadPart'
+              required:
+              - parts
       responses:
         '201':
           description: Returns the file object in a list.
@@ -484,22 +680,23 @@ paths:
           description: 'Returns when all chunks have been uploaded but not yet processed.
 
 
-            Inspect the upload session to get more information about the
-
-            progress of processing the chunks, then retry committing the file
-
-            when all chunks have processed.'
+            Inspect the upload session to get more information about the progress of processing the chunks, then retry committing the file when all chunks have processed.'
           headers:
             Retry-After:
-              description: 'Indicates the number of seconds the client should wait before
-
-                attempting their commit request again.'
+              description: Indicates the number of seconds the client should wait before attempting their commit request again.
               schema:
                 type: integer
-        '409':
-          description: 'Returns an error if there is already a file with the same name
+        '400':
+          description: 'Returns an error if the request body is not valid.
 
-            in the target folder.'
+
+            - `invalid_parts_field` - Only some entries in `parts` include `sha512`. Include `sha512` on every entry or on none of them.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ClientError'
+        '409':
+          description: Returns an error if there is already a file with the same name in the target folder.
           content:
             application/json:
               schema:
@@ -516,18 +713,73 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ClientError'
+      x-box-tag: chunked_uploads
+      servers:
+      - url: https://{box-upload-server}/api/2.0
+        description: Server for file uploads.
+        variables:
+          box-upload-server:
+            description: The server for the upload session.
+            default: upload.box.com
+      tags:
+      - Uploads (Chunked)
+      x-box-enable-explorer: false
+      x-codeSamples:
+      - lang: curl
+        label: Commit upload session
+        source: "curl -i -X POST \"https://upload.box.com/api/2.0/files/upload_sessions/F971964745A5CD0C001BBE4E58196BFD/commit\" \\\n     -H \"authorization: Bearer <ACCESS_TOKEN>\" \\\n     -H \"digest: sha=fpRyg5eVQletdZqEKaFlqwBXJzM=\" \\\n     -H \"content-type: application/json\" \\\n     -d '{\n       \"parts\": [\n         {\n           \"part_id\": \"BFDF5379\",\n           \"offset\": 0,\n           \"size\": 8388608,\n\t     \"sha1\": \"134b65991ed521fcfe4724b7d814ab8ded5185dc\"\n         },\n\t\t     {\n           \"part_id\": \"E8A3ED8E\",\n           \"offset\": 8388608,\n           \"size\": 1611392,\n\t     \"sha1\": \"234b65934ed521fcfe3424b7d814ab8ded5185dc\"\n         }\n       ],\n       \"attributes\": {\n         \"content_modified_at\": \"2017-04-08T00:58:08Z\"\n       }\n     }'"
+      - lang: dotnet
+        label: Commit upload session
+        source: 'await client.ChunkedUploads.CreateFileUploadSessionCommitAsync(uploadSessionId: uploadSessionId, requestBody: new CreateFileUploadSessionCommitRequestBody(parts: parts), headers: new CreateFileUploadSessionCommitHeaders(digest: digest));'
+      - lang: swift
+        label: Commit upload session
+        source: 'try await client.chunkedUploads.createFileUploadSessionCommit(uploadSessionId: uploadSessionId, requestBody: CreateFileUploadSessionCommitRequestBody(parts: parts), headers: CreateFileUploadSessionCommitHeaders(digest: digest))'
+      - lang: java
+        label: Commit upload session
+        source: client.getChunkedUploads().createFileUploadSessionCommit(uploadSessionId, new CreateFileUploadSessionCommitRequestBody(parts), new CreateFileUploadSessionCommitHeaders(digest))
+      - lang: node
+        label: Commit upload session
+        source: "await client.chunkedUploads.createFileUploadSessionCommit(\n  uploadSessionId,\n  { parts: parts } satisfies CreateFileUploadSessionCommitRequestBody,\n  { digest: digest } satisfies CreateFileUploadSessionCommitHeadersInput,\n);"
+      - lang: python
+        label: Commit upload session
+        source: "client.chunked_uploads.create_file_upload_session_commit(\n    upload_session_id, parts, digest\n)"
 components:
   schemas:
+    UploadPartPlanHit:
+      description: Represents a planned upload part that already exists on the server (cache hit).
+      type: object
+      properties:
+        offset:
+          description: The offset of the chunk within the file in bytes. The lower bound of the position of the chunk within the file.
+          type: integer
+          format: int64
+          example: 0
+        size:
+          description: The size of the chunk in bytes.
+          type: integer
+          format: int64
+          example: 8388608
+        sha512:
+          description: The `SHA-512` hash of the chunk, as a hex string of 128 lower case characters.
+          type: string
+          example: ae78a0ca28abffe70ac9aba830556cd6eb3fcf1501dbd9b2d7a5f45992c00812cb07b51bbd0a9174e2295671c0e86f30354afa91d281d4fbee6a323a483d6383
+        part_id:
+          description: The unique ID of the chunk.
+          type: string
+          example: BFDF5379
+      required:
+      - offset
+      - size
+      - sha512
+      - part_id
+      title: Upload part plan hit
+      x-box-resource-id: upload_part_plan_hit
+      x-box-tag: chunked_uploads
     File--Mini:
-      title: File (Mini)
+      description: A mini representation of a file, used when nested under another resource.
       type:
       - object
       - 'null'
-      x-box-resource-id: file--mini
-      x-box-variant: mini
-      description: 'A mini representation of a file, used when
-
-        nested under another resource.'
       allOf:
       - $ref: '#/components/schemas/File--Base'
       - properties:
@@ -537,135 +789,219 @@ components:
               - string
               - 'null'
               example: '3'
-              description: 'A numeric identifier that represents the most recent user event
-
-                that has been applied to this item.
+              description: 'A numeric identifier that represents the most recent user event that has been applied to this item.
 
 
-                This can be used in combination with the `GET /events`-endpoint
-
-                to filter out user events that would have occurred before this
-
-                identifier was read.
+                This can be used in combination with the `GET /events`-endpoint to filter out user events that would have occurred before this identifier was read.
 
 
-                An example would be where a Box Drive-like application
-
-                would fetch an item via the API, and then listen to incoming
-
-                user events for changes to the item. The application would
-
-                ignore any user events where the `sequence_id` in the event
-
-                is smaller than or equal to the `sequence_id` in the originally
-
-                fetched resource.'
+                An example would be where a Box Drive-like application would fetch an item via the API, and then listen to incoming user events for changes to the item. The application would ignore any user events where the `sequence_id` in the event is smaller than or equal to the `sequence_id` in the originally fetched resource.'
             - {}
           name:
+            description: The name of the file.
             type: string
-            description: The name of the file
             example: Contract.pdf
           sha1:
+            description: The SHA1 hash of the file. This can be used to compare the contents of a file on Box with a local file.
             type: string
             format: digest
             example: 85136C79CBF9FE36BB9D05D0639C70C265C18D37
-            description: 'The SHA1 hash of the file. This can be used to compare the contents
-
-              of a file on Box with a local file.'
           file_version:
             allOf:
             - $ref: '#/components/schemas/FileVersion--Mini'
             - description: The information about the current version of the file.
-    UploadSession:
-      title: Upload session
+      title: File (Mini)
+      x-box-resource-id: file--mini
+      x-box-tag: files
+      x-box-variant: mini
+    UploadParts:
+      description: A list of uploaded chunks for an upload session.
       type: object
-      x-box-resource-id: upload_session
-      description: An upload session for chunk uploading a file.
+      allOf:
+      - type: object
+        description: The part of an API response that describes pagination.
+        properties:
+          total_count:
+            description: 'One greater than the offset of the last entry in the entire collection. The total number of entries in the collection may be less than `total_count`.
+
+
+              This field is only returned for calls that use offset-based pagination. For marker-based paginated APIs, this field will be omitted.'
+            type: integer
+            format: int64
+            example: 5000
+          limit:
+            description: The limit that was used for these entries. This will be the same as the `limit` query parameter unless that value exceeded the maximum value allowed. The maximum value varies by API.
+            type: integer
+            format: int64
+            example: 1000
+          offset:
+            description: 'The 0-based offset of the first entry in this set. This will be the same as the `offset` query parameter.
+
+
+              This field is only returned for calls that use offset-based pagination. For marker-based paginated APIs, this field will be omitted.'
+            type: integer
+            format: int64
+            example: 2000
+          order:
+            description: 'The order by which items are returned.
+
+
+              This field is only returned for calls that use offset-based pagination. For marker-based paginated APIs, this field will be omitted.'
+            type: array
+            items:
+              type: object
+              description: The order in which a pagination is ordered.
+              properties:
+                by:
+                  description: The field to order by.
+                  type: string
+                  example: type
+                direction:
+                  description: The direction to order by, either ascending or descending.
+                  type: string
+                  example: ASC
+                  enum:
+                  - ASC
+                  - DESC
+      - properties:
+          entries:
+            description: A list of uploaded chunks for an upload session.
+            type: array
+            items:
+              $ref: '#/components/schemas/UploadPart'
+      title: Upload parts
+      x-box-resource-id: upload_parts
       x-box-tag: chunked_uploads
+    ClientError:
+      description: A generic error.
+      type: object
       properties:
-        id:
-          type: string
-          description: The unique identifier for this session
-          example: F971964745A5CD0C001BBE4E58196BFD
         type:
+          description: The value will always be `error`.
           type: string
-          description: '`upload_session`'
-          example: upload_session
+          example: error
           enum:
-          - upload_session
-        session_expires_at:
-          description: The date and time when this session expires.
+          - error
+        status:
+          description: The HTTP status of the response.
+          type: integer
+          format: int32
+          example: 400
+        code:
+          description: A Box-specific error code.
           type: string
-          format: date-time
-          example: '2012-12-12T10:53:43-08:00'
-        part_size:
+          example: item_name_invalid
+          enum:
+          - created
+          - accepted
+          - no_content
+          - redirect
+          - not_modified
+          - bad_request
+          - unauthorized
+          - forbidden
+          - not_found
+          - method_not_allowed
+          - conflict
+          - precondition_failed
+          - unprocessable_entity
+          - too_many_requests
+          - internal_server_error
+          - unavailable
+          - item_name_invalid
+          - insufficient_scope
+        message:
+          description: A short message describing the error.
+          type: string
+          example: Method Not Allowed
+        context_info:
+          description: A free-form object that contains additional context about the error. The possible fields are defined on a per-endpoint basis. `message` is only one example.
+          type:
+          - object
+          - 'null'
+          example:
+            message: Something went wrong
+          additionalProperties: {}
+        help_url:
+          description: A URL that links to more information about why this error occurred.
+          type: string
+          example: https://developer.box.com/guides/api-calls/permissions-and-errors/common-errors/
+        request_id:
+          description: A unique identifier for this response, which can be used when contacting Box support.
+          type: string
+          example: abcdef123456
+      title: Client error
+      x-box-resource-id: client_error
+    Files:
+      description: A list of files.
+      type: object
+      properties:
+        total_count:
+          description: The number of files.
           type: integer
           format: int64
-          example: 1024
-          description: 'The  size in bytes that must be used for all parts of of the
-
-            upload.
-
-
-            Only the last part is allowed to be of a smaller size.'
-        total_parts:
-          type: integer
-          format: int32
-          example: 1000
-          description: 'The total number of parts expected in this upload session,
-
-            as determined by the file size and part size.'
-        num_parts_processed:
-          type: integer
-          format: int32
-          example: 455
-          description: 'The number of parts that have been uploaded and processed
-
-            by the server. This starts at `0`.
-
-
-            When committing a file files, inspecting this property can
-
-            provide insight if all parts have been uploaded correctly.'
-        session_endpoints:
-          allOf:
-          - title: Session endpoints
-            description: A list of endpoints for a chunked upload session.
-            type: object
-            properties:
-              upload_part:
-                type: string
-                description: The URL to upload parts to
-                example: https://upload.box.com/api/2.0/files/upload_sessions/F971964745A5CD0C001BBE4E58196BFD
-              commit:
-                type: string
-                description: The URL used to commit the file
-                example: https://upload.box.com/api/2.0/files/upload_sessions/F971964745A5CD0C001BBE4E58196BFD/commit
-              abort:
-                type: string
-                description: The URL for used to abort the session.
-                example: https://upload.box.com/api/2.0/files/upload_sessions/F971964745A5CD0C001BBE4E58196BFD
-              list_parts:
-                type: string
-                description: The URL users to list all parts.
-                example: https://upload.box.com/api/2.0/files/upload_sessions/F971964745A5CD0C001BBE4E58196BFD/parts
-              status:
-                type: string
-                description: The URL used to get the status of the upload.
-                example: https://upload.box.com/api/2.0/files/upload_sessions/F971964745A5CD0C001BBE4E58196BFD
-              log_event:
-                type: string
-                description: The URL used to get the upload log from.
-                example: https://upload.box.com/api/2.0/files/upload_sessions/F971964745A5CD0C001BBE4E58196BFD/log
-          - description: A list of endpoints for this session.
-    FileOrFolderScope:
-      title: File or folder scope
+          example: 1
+        entries:
+          description: A list of files.
+          type: array
+          items:
+            $ref: '#/components/schemas/File--Full'
+      title: Files
+      x-box-resource-id: files
+      x-box-tag: files
+    FileVersion--Mini:
+      description: A mini representation of a file version, used when nested within another resource.
       type: object
-      description: A relation between a resource (file or folder) and the scopes for which the resource can be accessed
+      allOf:
+      - $ref: '#/components/schemas/FileVersion--Base'
+      - properties:
+          sha1:
+            description: The SHA1 hash of this version of the file.
+            type: string
+            example: 134b65991ed521fcfe4724b7d814ab8ded5185dc
+      title: File version (Mini)
+      x-box-resource-id: file_version--mini
+      x-box-variant: mini
+    Resource:
+      description: The file or folder resource.
+      type: object
+      oneOf:
+      - $ref: '#/components/schemas/Folder--Mini'
+      - $ref: '#/components/schemas/File--Mini'
+      title: Resource
+    User--Base:
+      description: A mini representation of a user, used when nested within another resource.
+      type: object
+      properties:
+        id:
+          description: The unique identifier for this user.
+          type: string
+          example: '11446498'
+        type:
+          description: The value will always be `user`.
+          type: string
+          example: user
+          enum:
+          - user
+      required:
+      - type
+      - id
+      title: User (Base)
+      x-box-resource-id: user--base
+      x-box-tag: users
+      x-box-variant: base
+      x-box-variants:
+      - base
+      - mini
+      - standard
+      - full
+    ResourceScope:
+      description: A relation between a resource (file or folder) and the scopes for which the resource can be accessed.
+      type: object
       properties:
         scope:
+          description: The scopes for the resource access.
           type: string
-          description: The scopes for the resource access
           example: item_download
           enum:
           - annotation_edit
@@ -680,111 +1016,339 @@ components:
           - item_preview
           - item_rename
           - item_share
+          - item_upload
+          - item_read
         object:
-          allOf:
-          - oneOf:
-            - $ref: '#/components/schemas/Folder--Mini'
-            - $ref: '#/components/schemas/File--Mini'
-          - description: The file or folder resource
-    Folder--Base:
-      title: Folder (Base)
+          $ref: '#/components/schemas/Resource'
+      title: Resource scope
+    UploadSessionPlanRequest:
+      description: Request body for planning an upload session. This allows checking which parts already exist on the server before uploading.
       type: object
-      x-box-resource-id: folder--base
-      x-box-sanitized: true
-      x-box-tag: folders
+      properties:
+        parts:
+          description: The list of parts to check for existence.
+          type: array
+          items:
+            $ref: '#/components/schemas/UploadPartPlan'
+          example:
+          - offset: 0
+            size: 8388608
+            sha512: ae78a0ca28abffe70ac9aba830556cd6eb3fcf1501dbd9b2d7a5f45992c00812cb07b51bbd0a9174e2295671c0e86f30354afa91d281d4fbee6a323a483d6383
+          - offset: 8388608
+            size: 8388608
+            sha512: 588fde2156e1d8b23c9ca88ed3bed7bd1270e6ba0bb5b97b294ea1498952d7fd505e406097638514df92e9c5fecd0e73bd872499fcd7ea18eeb18567d0e09020
+          minItems: 1
+      required:
+      - parts
+      title: Upload session plan request
+      x-box-resource-id: upload_session_plan_request
+      x-box-tag: chunked_uploads
+    Metadata--Base:
+      description: The base representation of a metadata instance.
+      type: object
+      properties:
+        $parent:
+          description: The identifier of the item that this metadata instance has been attached to. This combines the `type` and the `id` of the parent in the form `{type}_{id}`.
+          type: string
+          example: folder_59449484661,
+        $template:
+          description: The name of the template.
+          type: string
+          example: marketingCollateral
+        $scope:
+          description: An ID for the scope in which this template has been applied. This will be `enterprise_{enterprise_id}` for templates defined for use in this enterprise, and `global` for general templates that are available to all enterprises using Box.
+          type: string
+          example: enterprise_27335
+        $version:
+          description: The version of the metadata instance. This version starts at 0 and increases every time a user-defined property is modified.
+          type: integer
+          example: 1
+      title: Metadata instance (Base)
+      x-box-resource-id: metadata--base
+      x-box-tag: file_metadata
+      x-box-variant: base
+      x-box-variants:
+      - base
+      - standard
+      - full
+    UploadSessionPlanResponse:
+      description: Response from planning an upload session. Contains information about which parts already exist (hits) and which need to be uploaded (misses).
+      type: object
+      properties:
+        upload_session_id:
+          description: The unique identifier for this upload session.
+          type: string
+          example: F971964745A5CD0C001BBE4E58196BFD
+        hits:
+          description: Parts that already exist on the server and do not need to be uploaded again.
+          type: array
+          items:
+            $ref: '#/components/schemas/UploadPartPlanHit'
+          example:
+          - offset: 0
+            size: 8388608
+            sha512: ae78a0ca28abffe70ac9aba830556cd6eb3fcf1501dbd9b2d7a5f45992c00812cb07b51bbd0a9174e2295671c0e86f30354afa91d281d4fbee6a323a483d6383
+            part_id: BFDF5379
+        misses:
+          description: Parts that do not exist on the server and need to be uploaded.
+          type: array
+          items:
+            $ref: '#/components/schemas/UploadPartPlan'
+          example:
+          - offset: 8388608
+            size: 8388608
+            sha512: 588fde2156e1d8b23c9ca88ed3bed7bd1270e6ba0bb5b97b294ea1498952d7fd505e406097638514df92e9c5fecd0e73bd872499fcd7ea18eeb18567d0e09020
+      required:
+      - upload_session_id
+      - hits
+      - misses
+      title: Upload session plan response
+      x-box-resource-id: upload_session_plan_response
+      x-box-tag: chunked_uploads
+    SharedLinkOtpAllowlistEntry:
+      description: An entry on the OTP allowlist for a shared link. The entry can match either a specific email address or every email address that belongs to a domain.
+      type: object
+      properties:
+        type:
+          description: 'The kind of allowlist entry.
+
+
+            - `email` - The entry matches a single email address.
+
+            - `domain` - The entry matches every email address under the given domain.'
+          type: string
+          example: email
+          enum:
+          - email
+          - domain
+        value:
+          description: 'The value of the allowlist entry.
+
+
+            - For `email` entries, the full email address (must contain `@`).
+
+            - For `domain` entries, the bare domain (e.g. `example.com`).'
+          type: string
+          example: alice@example.com
+        created_at:
+          description: The date and time when the allowlist entry was added.
+          type: string
+          format: date-time
+          example: '2026-05-19T12:00:00Z'
+        created_by:
+          allOf:
+          - $ref: '#/components/schemas/User--Base'
+          - description: User who added this entry.
+      required:
+      - type
+      - value
+      - created_at
+      - created_by
+      title: Shared link OTP allowlist entry
+    FileVersion--Base:
+      description: The bare basic representation of a file version, the minimal amount of fields returned when using the `fields` query parameter.
+      type: object
+      properties:
+        id:
+          description: The unique identifier that represent a file version.
+          type: string
+          example: '12345'
+        type:
+          description: The value will always be `file_version`.
+          type: string
+          example: file_version
+          enum:
+          - file_version
+      required:
+      - id
+      - type
+      title: File version (Base)
+      x-box-resource-id: file_version--base
+      x-box-variant: base
       x-box-variants:
       - base
       - mini
       - standard
       - full
-      x-box-variant: base
-      description: 'The bare basic representation of a folder, the minimal
-
-        amount of fields returned when using the `fields` query
-
-        parameter.'
-      required:
-      - id
-      - type
+    Metadata--Full:
+      description: An instance of a metadata template, which has been applied to a file or folder.
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/Metadata'
+      - properties:
+          $canEdit:
+            description: Whether the user can edit this metadata instance.
+            type: boolean
+            example: true
+          $id:
+            description: A UUID to identify the metadata instance.
+            type: string
+            format: uuid
+            example: 01234500-12f1-1234-aa12-b1d234cb567e
+            maxLength: 36
+          $type:
+            description: A unique identifier for the "type" of this instance. This is an internal system property and should not be used by a client application.
+            type: string
+            example: properties-6bcba49f-ca6d-4d2a-a758-57fe6edf44d0
+          $typeVersion:
+            description: The last-known version of the template of the object. This is an internal system property and should not be used by a client application.
+            type: integer
+            example: 2
+      - additionalProperties:
+          allOf:
+          - {}
+          - example: Aaron Levie
+          - description: A value for each of the fields that are present on the metadata template. For the `global.properties` template this can be a list of zero or more fields, as this template allows for any generic key-value pairs to be stored stored in the template.
+          x-box-example-key: name
+      title: Metadata instance (Full)
+      x-box-resource-id: metadata--full
+      x-box-tag: file_metadata
+      x-box-variant: full
+    Folder--Base:
+      description: The bare basic representation of a folder, the minimal amount of fields returned when using the `fields` query parameter.
+      type: object
       properties:
         id:
-          type: string
           description: 'The unique identifier that represent a folder.
 
 
-            The ID for any folder can be determined
-
-            by visiting a folder in the web application
-
-            and copying the ID from the URL. For example,
-
-            for the URL `https://*.app.box.com/folders/123`
-
-            the `folder_id` is `123`.'
+            The ID for any folder can be determined by visiting a folder in the web application and copying the ID from the URL. For example, for the URL `https://*.app.box.com/folders/123` the `folder_id` is `123`.'
+          type: string
           example: '12345'
         etag:
+          description: The HTTP `etag` of this folder. This can be used within some API endpoints in the `If-Match` and `If-None-Match` headers to only perform changes on the folder if (no) changes have happened.
           type:
           - string
           - 'null'
           example: '1'
-          description: 'The HTTP `etag` of this folder. This can be used within some API
-
-            endpoints in the `If-Match` and `If-None-Match` headers to only
-
-            perform changes on the folder if (no) changes have happened.'
         type:
+          description: The value will always be `folder`.
           type: string
-          description: '`folder`'
           example: folder
           enum:
           - folder
-    User--Base:
-      title: User (Base)
-      type: object
-      x-box-resource-id: user--base
-      x-box-tag: users
+      required:
+      - id
+      - type
+      title: Folder (Base)
+      x-box-resource-id: folder--base
+      x-box-tag: folders
+      x-box-variant: base
       x-box-variants:
       - base
       - mini
       - standard
       - full
-      x-box-variant: base
-      description: 'A mini representation of a user, used when
-
-        nested within another resource.'
-      required:
-      - type
-      - id
+    Metadata:
+      description: An instance of a metadata template, which has been applied to a file or folder.
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/Metadata--Base'
+      title: Metadata instance
+      x-box-resource-id: metadata
+      x-box-tag: file_metadata
+      x-box-variant: standard
+    UploadSession:
+      description: An upload session for chunk uploading a file.
+      type: object
       properties:
         id:
+          description: The unique identifier for this session.
           type: string
-          description: The unique identifier for this user
-          example: '11446498'
+          example: F971964745A5CD0C001BBE4E58196BFD
         type:
+          description: The value will always be `upload_session`.
           type: string
-          description: '`user`'
-          example: user
+          example: upload_session
           enum:
-          - user
-    File--Full:
-      title: File (Full)
-      type: object
-      x-box-resource-id: file--full
-      x-box-variant: full
-      description: 'A full representation of a file, as can be returned from any
+          - upload_session
+        session_expires_at:
+          description: The date and time when this session expires.
+          type: string
+          format: date-time
+          example: '2012-12-12T10:53:43-08:00'
+        part_size:
+          description: 'The size in bytes that must be used for all parts of the upload.
 
-        file API endpoints by default'
+
+            Only the last part is allowed to be of a smaller size.'
+          type: integer
+          format: int64
+          example: 1024
+        total_parts:
+          description: The total number of parts expected in this upload session, as determined by the file size and part size.
+          type: integer
+          format: int32
+          example: 1000
+        num_parts_processed:
+          description: 'The number of parts that have been uploaded and processed by the server. This starts at `0`.
+
+
+            When committing a file, inspecting this property can provide insight if all parts have been uploaded correctly.'
+          type: integer
+          format: int32
+          example: 455
+        session_endpoints:
+          allOf:
+          - title: Session endpoints
+            description: A list of endpoints for a chunked upload session.
+            type: object
+            properties:
+              plan:
+                description: The URL used to plan the upload session by checking which parts already exist on the server.
+                type: string
+                example: https://{box-upload-server}/api/2.0/files/upload_sessions/F971964745A5CD0C001BBE4E58196BFD/plan
+              upload_part:
+                description: The URL to upload parts to.
+                type: string
+                example: https://{box-upload-server}/api/2.0/files/upload_sessions/F971964745A5CD0C001BBE4E58196BFD
+              commit:
+                description: The URL used to commit the file.
+                type: string
+                example: https://{box-upload-server}/api/2.0/files/upload_sessions/F971964745A5CD0C001BBE4E58196BFD/commit
+              abort:
+                description: The URL for used to abort the session.
+                type: string
+                example: https://{box-upload-server}/api/2.0/files/upload_sessions/F971964745A5CD0C001BBE4E58196BFD
+              list_parts:
+                description: The URL users to list all parts.
+                type: string
+                example: https://{box-upload-server}/api/2.0/files/upload_sessions/F971964745A5CD0C001BBE4E58196BFD/parts
+              status:
+                description: The URL used to get the status of the upload.
+                type: string
+                example: https://{box-upload-server}/api/2.0/files/upload_sessions/F971964745A5CD0C001BBE4E58196BFD
+              log_event:
+                description: The URL used to get the upload log from.
+                type: string
+                example: https://{box-upload-server}/api/2.0/files/upload_sessions/F971964745A5CD0C001BBE4E58196BFD/log
+          - description: A list of endpoints for this session.
+      title: Upload session
+      x-box-resource-id: upload_session
+      x-box-tag: chunked_uploads
+    UploadedPart:
+      description: A chunk of a file uploaded as part of an upload session, as returned by some endpoints.
+      type: object
+      properties:
+        part:
+          $ref: '#/components/schemas/UploadPart'
+      title: Uploaded part
+      x-box-resource-id: uploaded_part
+      x-box-tag: chunked_uploads
+    File--Full:
+      description: A full representation of a file, as can be returned from any file API endpoints by default.
+      type: object
       allOf:
       - $ref: '#/components/schemas/File'
       - properties:
           version_number:
+            description: The version number of this file.
             type: string
             example: '1'
-            description: The version number of this file
           comment_count:
+            description: The number of comments on this file.
             type: integer
             example: 10
-            description: The number of comments on this file
           permissions:
             allOf:
             - type: object
@@ -808,67 +1372,59 @@ components:
                 - can_share
                 properties:
                   can_delete:
-                    type: boolean
                     description: Specifies if the current user can delete this item.
+                    type: boolean
                     example: true
                   can_download:
-                    type: boolean
                     description: Specifies if the current user can download this item.
+                    type: boolean
                     example: true
                   can_invite_collaborator:
+                    description: Specifies if the current user can invite new users to collaborate on this item, and if the user can update the role of a user already collaborated on this item.
                     type: boolean
-                    description: 'Specifies if the current user can invite new
-
-                      users to collaborate on this item, and if the user can
-
-                      update the role of a user already collaborated on this
-
-                      item.'
                     example: true
                   can_rename:
-                    type: boolean
                     description: Specifies if the user can rename this item.
+                    type: boolean
                     example: true
                   can_set_share_access:
+                    description: Specifies if the user can change the access level of an existing shared link on this item.
                     type: boolean
-                    description: 'Specifies if the user can change the access level of an
-
-                      existing shared link on this item.'
                     example: true
                   can_share:
-                    type: boolean
                     description: Specifies if the user can create a shared link for this item.
+                    type: boolean
                     example: true
               - properties:
                   can_annotate:
-                    type: boolean
                     description: Specifies if the user can place annotations on this file.
+                    type: boolean
                     example: true
                   can_comment:
-                    type: boolean
                     description: Specifies if the user can place comments on this file.
+                    type: boolean
                     example: true
                   can_preview:
-                    type: boolean
                     description: Specifies if the user can preview this file.
+                    type: boolean
                     example: true
                   can_upload:
-                    type: boolean
                     description: Specifies if the user can upload a new version of this file.
+                    type: boolean
                     example: true
                   can_view_annotations_all:
+                    description: Specifies if the user view all annotations placed on this file.
                     type: boolean
-                    description: Specifies if the user view all annotations placed on this file
                     example: true
                   can_view_annotations_self:
+                    description: Specifies if the user view annotations placed by themselves on this file.
                     type: boolean
-                    description: 'Specifies if the user view annotations placed by themselves
-
-                      on this file'
                     example: true
-            - description: 'Describes the permissions that the current user has
-
-                for this file.'
+                  can_apply_watermark:
+                    description: Specifies if the user can apply a watermark to this file.
+                    type: boolean
+                    example: true
+            - description: Describes the permissions that the current user has for this file.
             - {}
           tags:
             allOf:
@@ -879,37 +1435,27 @@ components:
                 type: string
               minItems: 1
               maxItems: 100
-              description: 'The tags for this item. These tags are shown in
-
-                the Box web app and mobile apps next to an item.
+              description: 'The tags for this item. These tags are shown in the Box web app and mobile apps next to an item.
 
 
-                To add or remove a tag, retrieve the item''s current tags,
-
-                modify them, and then update this field.
+                To add or remove a tag, retrieve the item''s current tags, modify them, and then update this field.
 
 
-                There is a limit of 100 tags per item, and 10,000
-
-                unique tags per enterprise.'
+                There is a limit of 100 tags per item, and 10,000 unique tags per enterprise.'
             - {}
           lock:
             allOf:
             - title: Lock
               type: object
-              description: 'The lock held on a file. A lock prevents a file from being moved,
-
-                renamed, or otherwise changed by anyone else than the user who created the
-
-                lock.'
+              description: The lock held on a file. A lock prevents a file from being moved, renamed, or otherwise changed by anyone else than the user who created the lock.
               properties:
                 id:
+                  description: The unique identifier for this lock.
                   type: string
-                  description: The unique identifier for this lock
                   example: '11446498'
                 type:
+                  description: The value will always be `lock`.
                   type: string
-                  description: '`lock`'
                   example: lock
                   enum:
                   - lock
@@ -918,51 +1464,39 @@ components:
                   - $ref: '#/components/schemas/User--Mini'
                   - description: The user who created the lock.
                 created_at:
-                  type: string
-                  format: date-time
-                  example: '2012-12-12T10:53:43-08:00'
                   description: The time this lock was created at.
-                expired_at:
                   type: string
                   format: date-time
                   example: '2012-12-12T10:53:43-08:00'
+                expired_at:
                   description: The time this lock is to expire at, which might be in the past.
+                  type: string
+                  format: date-time
+                  example: '2012-12-12T10:53:43-08:00'
                 is_download_prevented:
+                  description: Whether or not the file can be downloaded while locked.
                   type: boolean
                   example: true
-                  description: Whether or not the file can be downloaded while locked.
                 app_type:
+                  description: If the lock is managed by an application rather than a user, this field identifies the type of the application that holds the lock. This is an open enum and may be extended with additional values in the future.
                   type:
                   - string
                   - 'null'
-                  description: 'If the lock is managed by an application rather than a user, this
-
-                    field identifies the type of the application that holds the lock.
-
-                    This is an open enum and may be extended with additional values in
-
-                    the future.'
+                  example: office_wopiplus
                   enum:
                   - gsuite
                   - office_wopi
                   - office_wopiplus
                   - other
-                  example: office_wopiplus
-            - description: 'The lock held on this file. If there is no lock, this can either
-
-                be `null` or have a timestamp in the past.'
+            - description: The lock held on this file. If there is no lock, this can either be `null` or have a timestamp in the past.
           extension:
+            description: Indicates the (optional) file extension for this file. By default, this is set to an empty string.
             type: string
             example: pdf
-            description: 'Indicates the (optional) file extension for this file. By default,
-
-              this is set to an empty string.'
           is_package:
+            description: Indicates if the file is a package. Packages are commonly used by Mac Applications and can include iWork files.
             type: boolean
             example: true
-            description: 'Indicates if the file is a package. Packages are commonly used
-
-              by Mac Applications and can include iWork files.'
           expiring_embed_link:
             allOf:
             - title: Expiring embed link
@@ -970,88 +1504,67 @@ components:
               description: An expiring Box Embed Link.
               allOf:
               - type: object
-                description: The basics of an access token
+                description: The basics of an access token.
                 properties:
                   access_token:
+                    description: The requested access token.
                     type: string
                     format: token
                     example: c3FIOG9vSGV4VHo4QzAyg5T1JvNnJoZ3ExaVNyQWw6WjRsanRKZG5lQk9qUE1BVQ
-                    description: The requested access token.
                   expires_in:
+                    description: The time in seconds by which this token will expire.
                     type: integer
                     format: int64
                     example: 3600
-                    description: The time in seconds by which this token will expire.
                   token_type:
+                    description: The type of access token returned.
                     type: string
+                    example: bearer
                     enum:
                     - bearer
-                    example: bearer
-                    description: The type of access token returned.
                   restricted_to:
+                    description: The permissions that this access token permits, providing a list of resources (files, folders, etc) and the scopes permitted for each of those resources.
                     type: array
-                    description: 'The permissions that this access token permits,
-
-                      providing a list of resources (files, folders, etc)
-
-                      and the scopes permitted for each of those resources.'
                     items:
-                      $ref: '#/components/schemas/FileOrFolderScope'
+                      $ref: '#/components/schemas/ResourceScope'
               - properties:
                   url:
+                    description: The actual expiring embed URL for this file, constructed from the file ID and access tokens specified in this object.
                     type: string
                     format: url
                     example: https://cloud.app.box.com/preview/expiring_embed/...
-                    description: 'The actual expiring embed URL for this file, constructed
-
-                      from the file ID and access tokens specified in this object.'
-            - description: 'Requesting this field creates an expiring Box Embed URL for an
-
-                embedded preview session in an `iframe`.
+            - description: 'Requesting this field creates an expiring Box Embed URL for an embedded preview session in an `iframe`.
 
 
-                This URL will expire after 60 seconds and the session will
-
-                expire after 60 minutes.
+                This URL will expire after 60 seconds and the session will expire after 60 minutes.
 
 
-                Not all file types are supported for these embed URLs. Box Embed
-
-                is not optimized for mobile browsers and should not be used in web
-
-                experiences designed for mobile devices. Many UI elements, like
-
-                the **download** and **print** options might not show in mobile
-
-                browsers.'
+                Not all file types are supported for these embed URLs. Box Embed is not optimized for mobile browsers and should not be used in web experiences designed for mobile devices. Many UI elements, like the **download** and **print** options might not show in mobile browsers.'
           watermark_info:
             allOf:
             - type: object
-              description: Details about the watermark applied to this item
+              description: Details about the watermark applied to this item.
               properties:
                 is_watermarked:
-                  type: boolean
                   description: Specifies if this item has a watermark applied.
+                  type: boolean
                   example: true
-            - description: Details about the watermark applied to this file
+                is_watermark_inherited:
+                  description: Specifies if the watermark is inherited from any parent folder in the hierarchy.
+                  type: boolean
+                  example: false
+                is_watermarked_by_access_policy:
+                  description: Specifies if the watermark is enforced by an access policy.
+                  type: boolean
+                  example: false
+            - description: Details about the watermark applied to this file.
           is_accessible_via_shared_link:
+            description: Specifies if the file can be accessed via the direct shared link or a shared link to a parent folder.
             type: boolean
-            description: 'Specifies if the file can be accessed
-
-              via the direct shared link or a shared link
-
-              to a parent folder.'
             example: true
-            enum:
-            - true
-            - false
           allowed_invitee_roles:
+            description: A list of the types of roles that user can be invited at when sharing this file.
             type: array
-            example:
-            - editor
-            description: 'A list of the types of roles that user can be invited at
-
-              when sharing this file.'
             items:
               type: string
               enum:
@@ -1062,44 +1575,30 @@ components:
               - previewer uploader
               - viewer uploader
               - co-owner
+            example:
+            - editor
           is_externally_owned:
+            description: Specifies if this file is owned by a user outside of the authenticated enterprise.
             type: boolean
             example: true
-            description: 'Specifies if this file is owned by a user outside of the
-
-              authenticated enterprise.'
           has_collaborations:
+            description: Specifies if this file has any other collaborators.
             type: boolean
             example: true
-            description: Specifies if this file has any other collaborators.
           metadata:
             allOf:
             - title: Item metadata instances
               type: object
-              description: 'A list of metadata instances, nested within key-value pairs of their `scope`
-
-                and `templateKey`.
+              description: 'A list of metadata instances, nested within key-value pairs of their `scope` and `templateKey`.
 
 
-                To access the metadata for a file or folder, first use the
-
-                metadata endpoints to determine the metadata templates available to your
-
-                enterprise.
+                To access the metadata for a file or folder, first use the metadata endpoints to determine the metadata templates available to your enterprise.
 
 
-                Then use the `GET /files/:id` or `GET /folder/:id`
-
-                endpoint with the `fields` query parameter to get
-
-                the metadata by ID.
+                Then use the `GET /files/:id` or `GET /folder/:id` endpoint with the `fields` query parameter to get the metadata by ID.
 
 
-                To request a metadata instance for a particular `scope` and `templateKey`
-
-                use the following format for the `fields` parameter:
-
-                `metadata.<scope>.<templateKey>`
+                To request a metadata instance for a particular `scope` and `templateKey` use the following format for the `fields` parameter: `metadata.<scope>.<templateKey>`
 
 
                 For example, `?fields=metadata.enterprise_27335.marketingCollateral`.'
@@ -1116,9 +1615,7 @@ components:
                     $version: 1
               additionalProperties:
                 type: object
-                description: 'A list of metadata instances, nested within key-value pairs of their `scope`
-
-                  and `templateKey`.'
+                description: A list of metadata instances, nested within key-value pairs of their `scope` and `templateKey`.
                 example:
                   marketingCollateral:
                     $canEdit: true
@@ -1130,68 +1627,65 @@ components:
                     $typeVersion: 2
                     $version: 1
                 additionalProperties:
-                  $ref: '#/components/schemas/Metadata'
-            - description: 'An object containing the metadata instances that have been
-
-                attached to this file.
+                  $ref: '#/components/schemas/Metadata--Full'
+            - description: 'An object containing the metadata instances that have been attached to this file.
 
 
-                Each metadata instance is uniquely identified by its `scope` and
-
-                `templateKey`. There can only be one instance of any metadata
-
-                template attached to each file. Each metadata instance is nested
-
-                within an object with the `templateKey` as the key, which again
-
-                itself is nested in an object with the `scope` as the key.'
+                Each metadata instance is uniquely identified by its `scope` and `templateKey`. There can only be one instance of any metadata template attached to each file. Each metadata instance is nested within an object with the `templateKey` as the key, which again itself is nested in an object with the `scope` as the key.'
           expires_at:
+            description: When the file will automatically be deleted.
             type:
             - string
             - 'null'
             format: date-time
-            description: When the file will automatically be deleted
             example: '2012-12-12T10:53:43-08:00'
           representations:
             allOf:
             - title: Representations
-              description: A list of file representations
+              description: A list of file representations.
               type: object
               properties:
                 entries:
+                  description: A list of files.
                   type: array
-                  description: A list of files
                   items:
                     type: object
-                    description: A file representation
+                    description: A file representation.
                     properties:
                       content:
-                        type: object
-                        description: 'An object containing the URL that can be used to actually fetch
-
-                          the representation.'
+                        description: An object containing the URL that can be used to actually fetch the representation.
                         properties:
                           url_template:
+                            description: 'The download URL that can be used to fetch the representation. Make sure to make an authenticated API call to this endpoint.
+
+
+                              This URL is a template and will require the `{+asset_path}` to be replaced by a path. In general, for unpaged representations it can be replaced by an empty string.
+
+
+                              For paged representations, replace the `{+asset_path}` with the page to request plus the extension for the file, for example `1.pdf`.
+
+
+                              When requesting the download URL the following additional query params can be passed along.
+
+
+                              - `set_content_disposition_type` - Sets the `Content-Disposition` header in the API response with the specified disposition type of either `inline` or `attachment`. If not supplied, the `Content-Disposition` header is not included in the response.
+
+
+                              - `set_content_disposition_filename` - Allows the application to define the representation''s file name used in the `Content-Disposition` header. If not defined, the filename is derived from the source file name in Box combined with the extension of the representation.'
                             type: string
                             example: https://dl.boxcloud.com/api/2.0/internal_files/123/versions/345/representations/png_paged_2048x2048/content/{+asset_path}?watermark_content=4567
-                            description: "The download URL that can be used to fetch the representation.\nMake sure to make an authenticated API call to this endpoint.\n\nThis URL is a template and will require the `{+asset_path}` to\nbe replaced by a path. In general, for unpaged representations\nit can be replaced by an empty string.\n\nFor paged representations, replace the `{+asset_path}` with the\npage to request plus the extension for the file, for example\n`1.pdf`.\n\nWhen requesting the download URL the following additional\nquery params can be passed along.\n\n* `set_content_disposition_type` - Sets the\n`Content-Disposition` header in the API response with the\nspecified disposition type of either `inline` or `attachment`.\nIf not supplied, the `Content-Disposition` header is not\nincluded in the response.\n\n* `set_content_disposition_filename` - Allows the application to\n  define the representation's file name used in the\n  `Content-Disposition` header.  If not defined, the filename\n  is derived from the source file name in Box combined with the\n  extension of the representation."
-                      info:
                         type: object
-                        description: 'An object containing the URL that can be used to fetch more info
-
-                          on this representation.'
+                      info:
+                        description: An object containing the URL that can be used to fetch more info on this representation.
+                        type: object
                         properties:
                           url:
+                            description: The API URL that can be used to get more info on this file representation. Make sure to make an authenticated API call to this endpoint.
                             type: string
                             example: https://api.box.com/2.0/internal_files/123/versions/345/representations/png_paged_2048x2048
-                            description: 'The API URL that can be used to get more info on this file
-
-                              representation. Make sure to make an authenticated API call
-
-                              to this endpoint.'
                       properties:
-                        type: object
                         description: An object containing the size and type of this presentation.
+                        type: object
                         properties:
                           dimensions:
                             type: string
@@ -1199,26 +1693,32 @@ components:
                             example: 2048x2048
                             description: The width by height size of this representation in pixels.
                           paged:
-                            type: boolean
-                            example: true
-                            description: 'Indicates if the representation is build up out of multiple
-
-                              pages.'
+                            type: string
+                            example: 'true'
+                            description: Indicates if the representation is build up out of multiple pages.
                           thumb:
-                            type: boolean
-                            example: true
-                            description: 'Indicates if the representation can be used as a thumbnail of
-
-                              the file.'
+                            type: string
+                            example: 'true'
+                            description: Indicates if the representation can be used as a thumbnail of the file.
                       representation:
+                        description: Indicates the file type of the returned representation.
                         type: string
                         example: png
-                        description: Indicates the file type of the returned representation.
                       status:
-                        type: object
                         description: An object containing the status of this representation.
+                        type: object
                         properties:
                           state:
+                            description: 'The status of the representation.
+
+
+                              - `success` defines the representation as ready to be viewed.
+
+                              - `viewable` defines a video to be ready for viewing.
+
+                              - `pending` defines the representation as to be generated. Retry this endpoint to re-check the status.
+
+                              - `none` defines that the representation will be created when requested. Request the URL defined in the `info` object to trigger this generation.'
                             type: string
                             example: success
                             enum:
@@ -1226,214 +1726,153 @@ components:
                             - viewable
                             - pending
                             - none
-                            description: "The status of the representation.\n\n* `success` defines the representation as ready to be viewed.\n* `viewable` defines a video to be ready for viewing.\n* `pending` defines the representation as to be generated. Retry\n  this endpoint to re-check the status.\n* `none` defines that the representation will be created when\n  requested. Request the URL defined in the `info` object to\n  trigger this generation."
-            - description: 'A list of representations for a file that can be used to
-
-                display a placeholder of the file in your application. By default
-
-                this returns all representations and we recommend using the
-
-                `x-rep-hints` header to further customize the desired
-
-                representations.'
+            - description: A list of representations for a file that can be used to display a placeholder of the file in your application. By default this returns all representations and we recommend using the `x-rep-hints` header to further customize the desired representations.
           classification:
             allOf:
             - type: object
-              description: The classification applied to an item
+              description: The classification applied to an item.
               properties:
                 name:
+                  description: The name of the classification.
                   type: string
                   example: Top Secret
-                  description: The name of the classification
                 definition:
+                  description: An explanation of the meaning of this classification.
                   type: string
                   example: Content that should not be shared outside the company.
-                  description: An explanation of the meaning of this classification.
                 color:
+                  description: The color that is used to display the classification label in a user-interface. Colors are defined by the admin or co-admin who created the classification in the Box web app.
                   type: string
                   example: '#FF0000'
-                  description: 'The color that is used to display the
-
-                    classification label in a user-interface. Colors are defined by the admin
-
-                    or co-admin who created the classification in the Box web app.'
             - description: Details about the classification applied to this file.
-            - {}
           uploader_display_name:
             allOf:
             - title: Uploader display name
               type: string
               example: Ellis Wiggins
-              description: 'The display name of the user that uploaded the file. In most cases this is the
-
-                name of the user logged in at the time of the upload.
+              description: 'The display name of the user that uploaded the file. In most cases this is the name of the user logged in at the time of the upload.
 
 
-                If the file was uploaded using a File Request form that requires the user to
-
-                provide an email address, this field is populated with that email address. If
-
-                an email address was not required in the File Request form, this field is set
-
-                to return a value of `File Request`.
+                If the file was uploaded using a File Request form that requires the user to provide an email address, this field is populated with that email address. If an email address was not required in the File Request form, this field is set to return a value of `File Request`.
 
 
-                In all other anonymous cases where no email was provided this field
-
-                will default to a value of `Someone`.'
+                In all other anonymous cases where no email was provided this field will default to a value of `Someone`.'
           disposition_at:
+            description: The retention expiration timestamp for the given file.
             type:
             - string
             - 'null'
             format: date-time
-            description: The retention expiration timestamp for the given file
             example: '2012-12-12T10:53:43-08:00'
           shared_link_permission_options:
+            description: A list of the types of roles that user can be invited at when sharing this file.
             type:
             - array
             - 'null'
-            example:
-            - can_preview
-            description: 'A list of the types of roles that user can be invited at
-
-              when sharing this file.'
             items:
               type: string
               enum:
               - can_preview
               - can_download
               - can_edit
-    UploadPart:
-      title: Upload part
-      type: object
-      x-box-resource-id: upload_part
-      x-box-variant: standard
-      description: 'The representation of an upload
+            example:
+            - can_preview
+          is_associated_with_app_item:
+            description: This field will return true if the file or any ancestor of the file is associated with at least one app item. Note that this will return true even if the context user does not have access to the app item(s) associated with the file.
+            type: boolean
+            example: true
+          collections:
+            description: 'The collections that this file belongs to.
 
-        session chunk.'
-      allOf:
-      - $ref: '#/components/schemas/UploadPart--Mini'
-      - properties:
-          sha1:
-            description: The SHA1 hash of the chunk.
+
+              For more information, see the [collections guide](/guides/collections).'
+            type: array
+            items:
+              $ref: '#/components/schemas/Collection'
+          is_download_available:
+            description: 'Whether the file''s binary content is eligible to be downloaded.
+
+
+              This is a content-level flag and does not reflect whether the current user is authorized to download the file. Use `permissions.can_download`, when available, for that.'
+            type: boolean
+            example: true
+          download_url:
+            description: 'A pre-authorized, expiring URL for directly downloading the file''s content. Requires authentication and is valid only for the current session.
+
+
+              This field is only returned for files, not folders or web links.'
             type: string
-            example: 134b65991ed521fcfe4724b7d814ab8ded5185dc
-    UploadedPart:
-      title: Uploaded part
-      type: object
-      x-box-resource-id: uploaded_part
-      description: 'A chunk of a file uploaded as part of
+            format: url
+            example: https://dl.boxcloud.com/d/1/example_token/download
+          authenticated_download_url:
+            description: 'A stable API URL for the file content endpoint, `/2.0/files/{id}/content`. Unlike `download_url`, authorization is evaluated when the URL is requested with a valid access token.
 
-        an upload session, as returned by some endpoints.'
-      x-box-tag: chunked_uploads
+
+              This field is only returned for files, not folders or web links.'
+            type: string
+            format: url
+            example: https://api.box.com/2.0/files/12345/content
+          allowed_shared_link_access_levels:
+            description: 'The shared link access levels the authenticated user is allowed to use when creating or updating a shared link for this file.
+
+
+              The list depends on item policy and user authorization, so it may be narrower than the levels available to the owner. An empty array means no access level is available to this user.'
+            type: array
+            items:
+              title: Shared link access level
+              type: string
+              description: The access level for a shared link.
+              example: open
+              enum:
+              - open
+              - company
+              - collaborators
+            example:
+            - open
+      title: File (Full)
+      x-box-resource-id: file--full
+      x-box-tag: files
+      x-box-variant: full
+    File--Base:
+      description: The bare basic representation of a file, the minimal amount of fields returned when using the `fields` query parameter.
+      type:
+      - object
+      - 'null'
       properties:
-        part:
-          $ref: '#/components/schemas/UploadPart'
-    FileVersion--Base:
-      title: File version (Base)
-      type: object
-      x-box-resource-id: file_version--base
-      x-box-sanitized: true
+        id:
+          description: 'The unique identifier that represent a file.
+
+
+            The ID for any file can be determined by visiting a file in the web application and copying the ID from the URL. For example, for the URL `https://*.app.box.com/files/123` the `file_id` is `123`.'
+          type: string
+          example: '12345'
+        etag:
+          description: The HTTP `etag` of this file. This can be used within some API endpoints in the `If-Match` and `If-None-Match` headers to only perform changes on the file if (no) changes have happened.
+          type:
+          - string
+          - 'null'
+          example: '1'
+        type:
+          description: The value will always be `file`.
+          type: string
+          example: file
+          enum:
+          - file
+      required:
+      - id
+      - type
+      title: File (Base)
+      x-box-resource-id: file--base
+      x-box-tag: files
+      x-box-variant: base
       x-box-variants:
       - base
       - mini
       - standard
       - full
-      x-box-variant: base
-      description: 'The bare basic representation of a file version, the minimal
-
-        amount of fields returned when using the `fields` query
-
-        parameter.'
-      required:
-      - id
-      - type
-      properties:
-        id:
-          type: string
-          description: The unique identifier that represent a file version.
-          example: '12345'
-        type:
-          type: string
-          description: '`file_version`'
-          example: file_version
-          enum:
-          - file_version
-    ClientError:
-      title: Client error
-      type: object
-      x-box-resource-id: client_error
-      description: A generic error
-      properties:
-        type:
-          description: error
-          example: error
-          type: string
-          enum:
-          - error
-        status:
-          description: The HTTP status of the response.
-          example: 400
-          type: integer
-          format: int32
-        code:
-          description: A Box-specific error code
-          example: item_name_invalid
-          type: string
-          enum:
-          - created
-          - accepted
-          - no_content
-          - redirect
-          - not_modified
-          - bad_request
-          - unauthorized
-          - forbidden
-          - not_found
-          - method_not_allowed
-          - conflict
-          - precondition_failed
-          - too_many_requests
-          - internal_server_error
-          - unavailable
-          - item_name_invalid
-          - insufficient_scope
-        message:
-          description: A short message describing the error.
-          example: Method Not Allowed
-          type: string
-        context_info:
-          description: 'A free-form object that contains additional context
-
-            about the error. The possible fields are defined on
-
-            a per-endpoint basis. `message` is only one example.'
-          type:
-          - object
-          - 'null'
-          properties:
-            message:
-              type: string
-              description: More details on the error.
-              example: Something went wrong.
-        help_url:
-          description: A URL that links to more information about why this error occurred.
-          example: https://developer.box.com/guides/api-calls/permissions-and-errors/common-errors/
-          type: string
-        request_id:
-          description: 'A unique identifier for this response, which can be used
-
-            when contacting Box support.'
-          type: string
-          example: abcdef123456
     Folder--Mini:
-      title: Folder (Mini)
+      description: A mini representation of a file version, used when nested under another resource.
       type: object
-      x-box-resource-id: folder--mini
-      x-box-variant: mini
-      description: 'A mini representation of a file version, used when
-
-        nested under another resource.'
       allOf:
       - $ref: '#/components/schemas/Folder--Base'
       - properties:
@@ -1443,57 +1882,32 @@ components:
               - string
               - 'null'
               example: '3'
-              description: 'A numeric identifier that represents the most recent user event
-
-                that has been applied to this item.
+              description: 'A numeric identifier that represents the most recent user event that has been applied to this item.
 
 
-                This can be used in combination with the `GET /events`-endpoint
-
-                to filter out user events that would have occurred before this
-
-                identifier was read.
+                This can be used in combination with the `GET /events`-endpoint to filter out user events that would have occurred before this identifier was read.
 
 
-                An example would be where a Box Drive-like application
-
-                would fetch an item via the API, and then listen to incoming
-
-                user events for changes to the item. The application would
-
-                ignore any user events where the `sequence_id` in the event
-
-                is smaller than or equal to the `sequence_id` in the originally
-
-                fetched resource.'
+                An example would be where a Box Drive-like application would fetch an item via the API, and then listen to incoming user events for changes to the item. The application would ignore any user events where the `sequence_id` in the event is smaller than or equal to the `sequence_id` in the originally fetched resource.'
             - {}
           name:
-            type: string
             description: The name of the folder.
+            type: string
             example: Contracts
-    UploadPart--Mini:
-      title: Upload part (Mini)
-      type: object
-      x-box-resource-id: upload_part--mini
-      x-box-tag: chunked_uploads
-      x-box-variants:
-      - mini
-      - standard
+      title: Folder (Mini)
+      x-box-resource-id: folder--mini
+      x-box-tag: folders
       x-box-variant: mini
-      description: 'The basic representation of an upload
-
-        session chunk.'
+    UploadPart--Mini:
+      description: The basic representation of an upload session chunk.
+      type: object
       properties:
         part_id:
           description: The unique ID of the chunk.
           type: string
           example: 6F2D3486
         offset:
-          description: 'The offset of the chunk within the file
-
-            in bytes. The lower bound of the position
-
-            of the chunk within the file.'
+          description: The offset of the chunk within the file in bytes. The lower bound of the position of the chunk within the file.
           type: integer
           format: int64
           example: 16777216
@@ -1502,83 +1916,82 @@ components:
           type: integer
           format: int64
           example: 3222784
-    FileVersion--Mini:
-      title: File version (Mini)
-      type: object
-      x-box-resource-id: file_version--mini
+      title: Upload part (Mini)
+      x-box-resource-id: upload_part--mini
+      x-box-tag: chunked_uploads
       x-box-variant: mini
-      description: 'A mini representation of a file version, used when
-
-        nested within another resource.'
-      allOf:
-      - $ref: '#/components/schemas/FileVersion--Base'
-      - properties:
-          sha1:
-            type: string
-            description: The SHA1 hash of this version of the file.
-            example: 134b65991ed521fcfe4724b7d814ab8ded5185dc
-    Metadata--Base:
-      title: Metadata instance (Base)
-      type: object
-      x-box-resource-id: metadata--base
-      x-box-sanitized: true
-      x-box-tag: file_metadata
       x-box-variants:
-      - base
+      - mini
       - standard
-      - full
-      x-box-variant: base
-      description: The base representation of a metadata instance.
-      properties:
-        $parent:
-          type: string
-          example: folder_59449484661,
-          description: 'The identifier of the item that this metadata instance
-
-            has been attached to. This combines the `type` and the `id`
-
-            of the parent in the form `{type}_{id}`.'
-        $template:
-          type: string
-          example: marketingCollateral
-          description: The name of the template
-        $scope:
-          type: string
-          example: enterprise_27335
-          description: 'An ID for the scope in which this template
-
-            has been applied. This will be `enterprise_{enterprise_id}` for templates
-
-            defined for use in this enterprise, and `global` for general templates
-
-            that are available to all enterprises using Box.'
-        $version:
-          type: integer
-          example: 1
-          description: 'The version of the metadata instance. This version starts at 0 and
-
-            increases every time a user-defined property is modified.'
-    File:
-      title: File
+    User--Mini:
+      description: A mini representation of a user, as can be returned when nested within other resources.
       type: object
-      x-box-resource-id: file
-      x-box-variant: standard
-      description: 'A standard representation of a file, as returned from any
+      allOf:
+      - $ref: '#/components/schemas/User--Base'
+      - properties:
+          name:
+            description: The display name of this user.
+            type: string
+            example: Aaron Levie
+            maxLength: 50
+          login:
+            description: The primary email address of this user.
+            type: string
+            format: email
+            example: ceo@example.com
+      title: User (Mini)
+      x-box-resource-id: user--mini
+      x-box-tag: users
+      x-box-variant: mini
+    Collection:
+      description: 'A collection of items, including files and folders.
 
-        file API endpoints by default'
+
+        Currently, the only collection available is the `favorites` collection.
+
+
+        The contents of a collection can be explored in a similar way to which the contents of a folder is explored.'
+      type: object
+      properties:
+        id:
+          description: The unique identifier for this collection.
+          type: string
+          example: '11446498'
+        type:
+          description: The value will always be `collection`.
+          type: string
+          example: collection
+          enum:
+          - collection
+        name:
+          description: The name of the collection.
+          type: string
+          example: Favorites
+          enum:
+          - Favorites
+        collection_type:
+          description: The type of the collection. This is used to determine the proper visual treatment for collections.
+          type: string
+          example: favorites
+          enum:
+          - favorites
+      title: Collection
+      x-box-resource-id: collection
+      x-box-tag: collections
+    File:
+      description: A standard representation of a file, as returned from any file API endpoints by default.
+      type: object
       allOf:
       - $ref: '#/components/schemas/File--Mini'
       - properties:
           description:
+            description: The optional description of this file. If the description exceeds 255 characters, the first 255 characters are set as a file description and the rest of it is ignored.
             type: string
-            description: The optional description of this file
-            maxLength: 256
             example: Contract for Q1 renewal
+            maxLength: 255
           size:
+            description: The file size in bytes. Be careful parsing this integer as it can get very large and cause an integer overflow.
             type: integer
-            description: 'The file size in bytes. Be careful parsing this integer as it can
-
-              get very large and cause an integer overflow.'
             example: 629644
           path_collection:
             allOf:
@@ -1591,75 +2004,67 @@ components:
               properties:
                 total_count:
                   description: The number of folders in this list.
-                  example: 1
                   type: integer
                   format: int64
+                  example: 1
                 entries:
+                  description: The parent folders for this item.
                   type: array
-                  description: The parent folders for this item
                   items:
                     $ref: '#/components/schemas/Folder--Mini'
-            - description: 'The tree of folders that this file is contained in,
-
-                starting at the root.'
+            - description: The tree of folders that this file is contained in, starting at the root.
             - {}
           created_at:
+            description: The date and time when the file was created on Box.
             type: string
             format: date-time
-            description: The date and time when the file was created on Box.
             example: '2012-12-12T10:53:43-08:00'
           modified_at:
+            description: The date and time when the file was last updated on Box.
             type: string
             format: date-time
-            description: The date and time when the file was last updated on Box.
             example: '2012-12-12T10:53:43-08:00'
           trashed_at:
+            description: The time at which this file was put in the trash.
             type:
             - string
             - 'null'
             format: date-time
-            description: The time at which this file was put in the trash.
             example: '2012-12-12T10:53:43-08:00'
           purged_at:
+            description: The time at which this file is expected to be purged from the trash.
             type:
             - string
             - 'null'
             format: date-time
-            description: 'The time at which this file is expected to be purged
-
-              from the trash.'
             example: '2012-12-12T10:53:43-08:00'
           content_created_at:
+            description: The date and time at which this file was originally created, which might be before it was uploaded to Box.
             type:
             - string
             - 'null'
             format: date-time
-            description: 'The date and time at which this file was originally
-
-              created, which might be before it was uploaded to Box.'
             example: '2012-12-12T10:53:43-08:00'
           content_modified_at:
+            description: The date and time at which this file was last updated, which might be before it was uploaded to Box.
             type:
             - string
             - 'null'
             format: date-time
-            description: 'The date and time at which this file was last updated,
-
-              which might be before it was uploaded to Box.'
             example: '2012-12-12T10:53:43-08:00'
           created_by:
             allOf:
             - $ref: '#/components/schemas/User--Mini'
-            - description: The user who created this file
+            - description: The user who created this file.
           modified_by:
             allOf:
             - $ref: '#/components/schemas/User--Mini'
-            - description: The user who last modified this file
+            - description: The user who last modified this file.
             - {}
           owned_by:
             allOf:
             - $ref: '#/components/schemas/User--Mini'
-            - description: The user who owns this file
+            - description: The user who owns this file.
             - {}
           shared_link:
             allOf:
@@ -1667,11 +2072,7 @@ components:
               description: 'Shared links provide direct, read-only access to files or folder on Box.
 
 
-                Shared links with open access level allow anyone with the URL
-
-                to access the item, while shared links with company or collaborators access
-
-                levels can only be accessed by appropriately authenticated Box users.'
+                Shared links with open access level allow anyone with the URL to access the item, while shared links with company or collaborators access levels can only be accessed by appropriately authenticated Box users.'
               type: object
               required:
               - url
@@ -1681,360 +2082,248 @@ components:
               - is_password_enabled
               - download_count
               - preview_count
+              - one_time_passcode
               properties:
                 url:
-                  type: string
-                  format: url
                   description: 'The URL that can be used to access the item on Box.
 
 
-                    This URL will display the item in Box''s preview UI where the file
-
-                    can be downloaded if allowed.
+                    This URL will display the item in Box''s preview UI where the file can be downloaded if allowed.
 
 
-                    This URL will continue to work even when a custom `vanity_url`
-
-                    has been set for this shared link.'
+                    This URL will continue to work even when a custom `vanity_url` has been set for this shared link.'
+                  type: string
+                  format: url
                   example: https://www.box.com/s/vspke7y05sb214wjokpk
                 download_url:
-                  type:
-                  - string
-                  - 'null'
-                  format: url
-                  x-box-premium-feature: true
-                  description: 'A URL that can be used to download the file. This URL can be used in
-
-                    a browser to download the file. This URL includes the file
-
-                    extension so that the file will be saved with the right file type.
+                  description: 'A URL that can be used to download the file. This URL can be used in a browser to download the file. This URL includes the file extension so that the file will be saved with the right file type.
 
 
                     This property will be `null` for folders.'
-                  example: https://www.box.com/shared/static/rh935iit6ewrmw0unyul.jpeg
-                vanity_url:
                   type:
                   - string
                   - 'null'
                   format: url
-                  description: 'The "Custom URL" that can also be used to preview the item on Box.  Custom
-
-                    URLs can only be created or modified in the Box Web application.'
-                  example: https://acme.app.box.com/v/my_url/
-                vanity_name:
+                  example: https://www.box.com/shared/static/rh935iit6ewrmw0unyul.jpeg
+                  x-box-premium-feature: true
+                vanity_url:
+                  description: The "Custom URL" that can also be used to preview the item on Box. Custom URLs can only be created or modified in the Box Web application.
                   type:
                   - string
                   - 'null'
+                  format: url
+                  example: https://acme.app.box.com/v/my_url/
+                vanity_name:
                   description: The custom name of a shared link, as used in the `vanity_url` field.
+                  type:
+                  - string
+                  - 'null'
                   example: my_url
                 access:
+                  description: 'The access level for this shared link.
+
+
+                    - `open` - provides access to this item to anyone with this link
+
+                    - `company` - only provides access to this item to people the same company
+
+                    - `collaborators` - only provides access to this item to people who are collaborators on this item
+
+
+                    If this field is omitted when creating the shared link, the access level will be set to the default access level specified by the enterprise admin.'
                   type: string
-                  description: "The access level for this shared link.\n\n* `open` - provides access to this item to anyone with this link\n* `company` - only provides access to this item to people the same company\n* `collaborators` - only provides access to this item to people who are\n   collaborators on this item\n\nIf this field is omitted when creating the shared link, the access level\nwill be set to the default access level specified by the enterprise admin."
-                  enum:
-                  - open
-                  - company
-                  - collaborators
                   example: open
-                effective_access:
-                  type: string
-                  description: 'The effective access level for the shared link. This can be a more
-
-                    restrictive access level than the value in the `access` field when the
-
-                    enterprise settings restrict the allowed access levels.'
                   enum:
                   - open
                   - company
                   - collaborators
-                  example: company
-                effective_permission:
+                effective_access:
+                  description: The effective access level for the shared link. This can be a more restrictive access level than the value in the `access` field when the enterprise settings restrict the allowed access levels.
                   type: string
-                  description: 'The effective permissions for this shared link.
-
-                    These result in the more restrictive combination of
-
-                    the share link permissions and the item permissions set
-
-                    by the administrator, the owner, and any ancestor item
-
-                    such as a folder.'
+                  example: company
+                  enum:
+                  - open
+                  - company
+                  - collaborators
+                effective_permission:
+                  description: The effective permissions for this shared link. These result in the more restrictive combination of the share link permissions and the item permissions set by the administrator, the owner, and any ancestor item such as a folder.
+                  type: string
+                  example: can_download
                   enum:
                   - can_edit
                   - can_download
                   - can_preview
                   - no_access
-                  example: can_download
                 unshared_at:
+                  description: The date and time when this link will be unshared. This field can only be set by users with paid accounts.
                   type:
                   - string
                   - 'null'
                   format: date-time
-                  description: 'The date and time when this link will be unshared. This field can only be
-
-                    set by users with paid accounts.'
                   example: '2018-04-13T13:53:23-07:00'
                 is_password_enabled:
-                  type: boolean
                   description: Defines if the shared link requires a password to access the item.
+                  type: boolean
                   example: true
                 permissions:
+                  description: Defines if this link allows a user to preview, edit, and download an item. These permissions refer to the shared link only and do not supersede permissions applied to the item itself.
                   type: object
-                  description: 'Defines if this link allows a user to preview, edit, and download an item.
+                  properties:
+                    can_download:
+                      description: 'Defines if the shared link allows for the item to be downloaded. For shared links on folders, this also applies to any items in the folder.
 
-                    These permissions refer to the shared link only and
 
-                    do not supersede permissions applied to the item itself.'
+                        This value can be set to `true` when the effective access level is set to `open` or `company`, not `collaborators`.'
+                      type: boolean
+                      example: true
+                    can_preview:
+                      description: 'Defines if the shared link allows for the item to be previewed.
+
+
+                        This value is always `true`. For shared links on folders this also applies to any items in the folder.'
+                      type: boolean
+                      example: true
+                    can_edit:
+                      description: 'Defines if the shared link allows for the item to be edited.
+
+
+                        This value can only be `true` if `can_download` is also `true` and if the item has a type of `file`.'
+                      type: boolean
+                      example: false
                   required:
                   - can_download
                   - can_preview
                   - can_edit
-                  properties:
-                    can_download:
-                      type: boolean
-                      example: true
-                      description: 'Defines if the shared link allows for the item to be downloaded. For
-
-                        shared links on folders, this also applies to any items in the folder.
-
-
-                        This value can be set to `true` when the effective access level is
-
-                        set to `open` or `company`, not `collaborators`.'
-                    can_preview:
-                      type: boolean
-                      example: true
-                      description: 'Defines if the shared link allows for the item to be previewed.
-
-
-                        This value is always `true`. For shared links on folders this also
-
-                        applies to any items in the folder.'
-                    can_edit:
-                      type: boolean
-                      example: false
-                      description: 'Defines if the shared link allows for the item to be edited.
-
-
-                        This value can only be `true` if `can_download` is also `true` and if
-
-                        the item has a type of `file`.'
                 download_count:
-                  type: integer
-                  example: 3
                   description: The number of times this item has been downloaded.
-                preview_count:
                   type: integer
                   example: 3
+                preview_count:
                   description: The number of times this item has been previewed.
-            - description: 'The shared link for this file. This will be
+                  type: integer
+                  example: 3
+                one_time_passcode:
+                  allOf:
+                  - title: Shared link OTP settings
+                    description: 'One-time-passcode (OTP) settings for a shared link. When OTP enforcement is enabled, anonymous users must verify their identity via a one-time-passcode emailed to them before the shared link will grant access.
 
-                `null` if no shared link has been created for this
 
-                file.'
-            - {}
+                      OTP can only be used with shared links that have an `access` level of `open`. Password protection and OTP cannot be enabled at the same time.'
+                    type: object
+                    required:
+                    - mode
+                    properties:
+                      mode:
+                        description: 'The current OTP enforcement mode for the shared link.
+
+
+                          - `none` - OTP enforcement is turned off. The shared link is accessible without any one-time-passcode verification.
+
+                          - `open` - Any anonymous recipient can request a one-time-passcode to any email address and access the shared link after verifying it. Collaborators and registered Box users access the link without being prompted.
+
+                          - `allowlist` - Anonymous recipients can request a one-time-passcode only when they enter an email that matches an entry on the `allowlist`.'
+                        type: string
+                        example: allowlist
+                      allowlist:
+                        description: 'The list of email and domain entries that are permitted to access the shared link when `mode` is `allowlist`. Anonymous users whose email matches an entry can request and verify a one-time-passcode.
+
+
+                          Because the entries carry recipient email addresses and the identity of the user who added them, this field is only returned to users with owner, co-owner, or editor access on the item. For viewer collaborators and below the field is omitted.
+
+
+                          An allowlist contains at most 1000 entries, matching the limit enforced when setting the allowlist on a shared link.'
+                        type: array
+                        items:
+                          $ref: '#/components/schemas/SharedLinkOtpAllowlistEntry'
+                        example:
+                        - type: email
+                          value: alice@example.com
+                          created_at: '2026-05-19T12:00:00Z'
+                          created_by:
+                            id: '11446498'
+                            type: user
+                        - type: domain
+                          value: example.com
+                          created_at: '2026-05-19T12:00:00Z'
+                          created_by:
+                            id: '11446498'
+                            type: user
+                        maxItems: 1000
+                  - description: 'The one-time-passcode (OTP) settings for this shared link.
+
+
+                      This field is always present. For links where OTP does not apply (for example, shared links whose `access` is not `open`), the object is returned with `mode` set to `none`.'
+            - description: The shared link for this file. This value will be `null` if no shared link has been created for this file.
           parent:
             allOf:
             - $ref: '#/components/schemas/Folder--Mini'
-            - description: The folder that this file is located within.
+            - description: The folder that this file is located within. This value may be `null` for some folders such as the root folder or the trash folder.
           item_status:
-            type: string
             description: 'Defines if this item has been deleted or not.
 
 
-              * `active` when the item has is not in the trash
+              - `active` when the item has is not in the trash
 
-              * `trashed` when the item has been moved to the trash but not deleted
+              - `trashed` when the item has been moved to the trash but not deleted
 
-              * `deleted` when the item has been permanently deleted.'
+              - `deleted` when the item has been permanently deleted.'
+            type: string
+            example: active
             enum:
             - active
             - trashed
             - deleted
-            example: active
-    File--Base:
-      title: File (Base)
-      type:
-      - object
-      - 'null'
-      x-box-resource-id: file--base
-      x-box-sanitized: true
+      title: File
+      x-box-resource-id: file
       x-box-tag: files
-      x-box-variants:
-      - base
-      - mini
-      - standard
-      - full
-      x-box-variant: base
-      description: 'The bare basic representation of a file, the minimal
-
-        amount of fields returned when using the `fields` query
-
-        parameter.'
-      required:
-      - id
-      - type
+      x-box-variant: standard
+    UploadPartPlan:
+      description: Represents a planned upload part with `SHA-512` hash for upload session planning.
+      type: object
       properties:
-        id:
-          type: string
-          description: 'The unique identifier that represent a file.
-
-
-            The ID for any file can be determined
-
-            by visiting a file in the web application
-
-            and copying the ID from the URL. For example,
-
-            for the URL `https://*.app.box.com/files/123`
-
-            the `file_id` is `123`.'
-          example: '12345'
-        etag:
-          type:
-          - string
-          - 'null'
-          example: '1'
-          description: 'The HTTP `etag` of this file. This can be used within some API
-
-            endpoints in the `If-Match` and `If-None-Match` headers to only
-
-            perform changes on the file if (no) changes have happened.'
-        type:
-          type: string
-          description: '`file`'
-          example: file
-          enum:
-          - file
-    UploadParts:
-      title: Upload parts
-      type: object
-      x-box-resource-id: upload_parts
-      x-box-tag: chunked_uploads
-      description: 'A list of uploaded chunks for an upload
-
-        session.'
-      allOf:
-      - type: object
-        description: The part of an API response that describes pagination
-        properties:
-          total_count:
-            description: 'One greater than the offset of the last entry in the entire collection.
-
-              The total number of entries in the collection may be less than
-
-              `total_count`.
-
-
-              This field is only returned for calls that use offset-based pagination.
-
-              For marker-based paginated APIs, this field will be omitted.'
-            example: 5000
-            type: integer
-            format: int64
-          limit:
-            description: 'The limit that was used for these entries. This will be the same as the
-
-              `limit` query parameter unless that value exceeded the maximum value
-
-              allowed. The maximum value varies by API.'
-            example: 1000
-            type: integer
-            format: int64
-          offset:
-            description: 'The 0-based offset of the first entry in this set. This will be the same
-
-              as the `offset` query parameter.
-
-
-              This field is only returned for calls that use offset-based pagination.
-
-              For marker-based paginated APIs, this field will be omitted.'
-            example: 2000
-            type: integer
-            format: int64
-          order:
-            description: 'The order by which items are returned.
-
-
-              This field is only returned for calls that use offset-based pagination.
-
-              For marker-based paginated APIs, this field will be omitted.'
-            type: array
-            items:
-              type: object
-              description: The order in which a pagination is ordered
-              properties:
-                by:
-                  description: The field to order by
-                  example: type
-                  type: string
-                direction:
-                  type: string
-                  description: The direction to order by, either ascending or descending
-                  example: ASC
-                  enum:
-                  - ASC
-                  - DESC
-      - properties:
-          entries:
-            type: array
-            description: 'A list of uploaded chunks for an upload
-
-              session'
-            items:
-              $ref: '#/components/schemas/UploadPart'
-    User--Mini:
-      title: User (Mini)
-      type: object
-      x-box-resource-id: user--mini
-      x-box-variant: mini
-      description: 'A mini representation of a user, as can be returned when nested within other
-
-        resources.'
-      allOf:
-      - $ref: '#/components/schemas/User--Base'
-      - properties:
-          name:
-            type: string
-            description: The display name of this user
-            example: Aaron Levie
-            maxLength: 50
-          login:
-            type: string
-            format: email
-            description: The primary email address of this user
-            example: ceo@example.com
-    Files:
-      title: Files
-      type: object
-      x-box-resource-id: files
-      x-box-tag: files
-      description: A list of files
-      properties:
-        total_count:
-          description: The number of files.
-          example: 1
+        offset:
+          description: The offset of the chunk within the file in bytes. The lower bound of the position of the chunk within the file.
           type: integer
           format: int64
-        entries:
-          type: array
-          description: A list of files
-          items:
-            $ref: '#/components/schemas/File--Full'
-    Metadata:
-      title: Metadata instance
+          example: 0
+        size:
+          description: The size of the chunk in bytes.
+          type: integer
+          format: int64
+          example: 8388608
+        sha512:
+          description: The `SHA-512` hash of the chunk, as a hex string of 128 lower case characters.
+          type: string
+          example: ae78a0ca28abffe70ac9aba830556cd6eb3fcf1501dbd9b2d7a5f45992c00812cb07b51bbd0a9174e2295671c0e86f30354afa91d281d4fbee6a323a483d6383
+      required:
+      - offset
+      - size
+      - sha512
+      title: Upload part plan
+      x-box-resource-id: upload_part_plan
+      x-box-tag: chunked_uploads
+    UploadPart:
+      description: The representation of an upload session chunk.
       type: object
-      x-box-resource-id: metadata
-      x-box-tag: file_metadata
-      x-box-variant: standard
-      description: 'An instance of a metadata template, which has been applied to a file or
-
-        folder.'
       allOf:
-      - $ref: '#/components/schemas/Metadata--Base'
+      - $ref: '#/components/schemas/UploadPart--Mini'
+      - properties:
+          sha1:
+            description: The SHA1 hash of the chunk.
+            type: string
+            example: 134b65991ed521fcfe4724b7d814ab8ded5185dc
+          sha512:
+            description: The `SHA-512` hash of the chunk, as a hex string of 128 lower case characters.
+            type: string
+            example: ae78a0ca28abffe70ac9aba830556cd6eb3fcf1501dbd9b2d7a5f45992c00812cb07b51bbd0a9174e2295671c0e86f30354afa91d281d4fbee6a323a483d6383
+      title: Upload part
+      x-box-resource-id: upload_part
+      x-box-tag: chunked_uploads
+      x-box-variant: standard
   securitySchemes:
     OAuth2Security:
       type: oauth2
+      description: The access token received from the authorization server in the OAuth 2.0 flow.
       flows:
         authorizationCode:
           authorizationUrl: https://account.box.com/api/oauth2/authorize
@@ -2050,5 +2339,8 @@ components:
             manage_data_retention: Manage data retention polices
             manage_legal_hold: Manage Legal Holds
 externalDocs:
-  description: Box Developer Documentation
+  description: Box Developer Documentation.
   url: https://developer.box.com
+x-mint:
+  mcp:
+    enabled: true

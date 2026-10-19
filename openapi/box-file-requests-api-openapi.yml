@@ -1,67 +1,43 @@
 openapi: 3.2.0
 info:
-  title: Box Platform File Requests API
+  title: Box Platform File requests API
   description: Box Platform provides functionality to provide access to content stored within Box. It provides endpoints for basic manipulation of files and folders, management of users within an enterprise, as well as more complex topics such as legal holds and retention policies.
   termsOfService: https://cloud.app.box.com/s/rmwxu64h1ipr41u49w3bbuvbsa29wku9
   contact:
     name: Box, Inc
-    url: https://box.dev
+    url: https://developer.box.com
     email: devrel@box.com
   license:
     name: Apache-2.0
-    url: http://www.apache.org/licenses/LICENSE-2.0
-  version: 2.0.0
-  x-box-commit-hash: '5819125043'
+    url: https://www.apache.org/licenses/LICENSE-2.0
+  version: '2024.0'
+  x-box-commit-hash: 53bdced3cd
 servers:
 - url: https://api.box.com/2.0
-  description: Box Platform API server
+  description: Box Platform API server.
 security:
 - OAuth2Security: []
 tags:
-- name: File Requests
-  description: 'File Requests provide a fast and
-
-    secure way to request files and associated metadata
-
-    from anyone.
-
-    Users can create new file requests
-
-    based on an existing file request,
-
-    update file request settings, activate, deactivate, and delete
-
-    file requests programmatically.'
+- name: File requests
+  description: File Requests provide a fast and secure way to request files and associated metadata from anyone. Users can create new file requests based on an existing file request, update file request settings, activate, deactivate, and delete file requests programmatically.
   x-box-tag: file_requests
 paths:
   /file_requests/{file_request_id}:
     get:
       operationId: get_file_requests_id
-      summary: Box Get file request
-      tags:
-      - File Requests
-      x-box-tag: file_requests
-      x-box-enable-explorer: true
+      summary: Get file request
       description: Retrieves the information about a file request.
       parameters:
       - name: file_request_id
+        in: path
         description: 'The unique identifier that represent a file request.
 
 
-          The ID for any file request can be determined
-
-          by visiting a file request builder in the web application
-
-          and copying the ID from the URL. For example,
-
-          for the URL `https://*.app.box.com/filerequest/123`
-
-          the `file_request_id` is `123`.'
-        example: '123'
-        in: path
+          The ID for any file request can be determined by visiting a file request builder in the web application and copying the ID from the URL. For example, for the URL `https://*.app.box.com/filerequest/123` the `file_request_id` is `123`.'
         required: true
         schema:
           type: string
+        example: '123'
       responses:
         '200':
           description: Returns a file request object.
@@ -70,17 +46,13 @@ paths:
               schema:
                 $ref: '#/components/schemas/FileRequest'
         '401':
-          description: 'Returned when the access token provided in the `Authorization` header
-
-            is not recognized or not provided.'
+          description: Returned when the access token provided in the `Authorization` header is not recognized or not provided.
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ClientError'
         '404':
-          description: 'Returned if the file request is not found, or the user does not
-
-            have access to the associated folder.'
+          description: Returned if the file request is not found, or the user does not have access to the associated folder.
           content:
             application/json:
               schema:
@@ -97,54 +69,54 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ClientError'
+      x-box-tag: file_requests
+      tags:
+      - File requests
+      x-box-unsupported-on-free-developer: true
+      x-codeSamples:
+      - lang: curl
+        label: Get file request
+        source: "curl -i -X GET \"https://api.box.com/2.0/file_requests/42037322\" \\\n     -H \"authorization: Bearer <ACCESS_TOKEN>\""
+      - lang: dotnet
+        label: Get file request
+        source: 'await client.FileRequests.GetFileRequestByIdAsync(fileRequestId: fileRequestId);'
+      - lang: swift
+        label: Get file request
+        source: 'try await client.fileRequests.getFileRequestById(fileRequestId: fileRequestId)'
+      - lang: java
+        label: Get file request
+        source: client.getFileRequests().getFileRequestById(fileRequestId)
+      - lang: node
+        label: Get file request
+        source: await client.fileRequests.getFileRequestById(fileRequestId);
+      - lang: python
+        label: Get file request
+        source: client.file_requests.get_file_request_by_id(file_request_id)
     put:
       operationId: put_file_requests_id
-      summary: Box Update file request
-      tags:
-      - File Requests
-      x-box-tag: file_requests
-      x-box-enable-explorer: true
-      x-box-sanitized: true
-      description: 'Updates a file request. This can be used to activate or
-
-        deactivate a file request.'
+      summary: Update file request
+      description: Updates a file request. This can be used to activate or deactivate a file request.
       parameters:
       - name: file_request_id
+        in: path
         description: 'The unique identifier that represent a file request.
 
 
-          The ID for any file request can be determined
-
-          by visiting a file request builder in the web application
-
-          and copying the ID from the URL. For example,
-
-          for the URL `https://*.app.box.com/filerequest/123`
-
-          the `file_request_id` is `123`.'
-        example: '123'
-        in: path
+          The ID for any file request can be determined by visiting a file request builder in the web application and copying the ID from the URL. For example, for the URL `https://*.app.box.com/filerequest/123` the `file_request_id` is `123`.'
         required: true
         schema:
           type: string
+        example: '123'
       - name: if-match
-        description: 'Ensures this item hasn''t recently changed before
-
-          making changes.
-
-
-          Pass in the item''s last observed `etag` value
-
-          into this header and the endpoint will fail
-
-          with a `412 Precondition Failed` if it
-
-          has changed since.'
         in: header
+        description: 'Ensures this item hasn''t recently changed before making changes.
+
+
+          Pass in the item''s last observed `etag` value into this header and the endpoint will fail with a `412 Precondition Failed` if it has changed since.'
         required: false
-        example: '1'
         schema:
           type: string
+        example: '1'
       requestBody:
         content:
           application/json:
@@ -158,30 +130,22 @@ paths:
               schema:
                 $ref: '#/components/schemas/FileRequest'
         '401':
-          description: 'Returned when the access token provided in the `Authorization` header
-
-            is not recognized or not provided.'
+          description: Returned when the access token provided in the `Authorization` header is not recognized or not provided.
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ClientError'
         '403':
-          description: 'Returned if the user does not have all the permissions to complete the
-
-            update.
+          description: 'Returned if the user does not have all the permissions to complete the update.
 
 
-            * `access_denied_insufficient_permissions` when the authenticated user
-
-            does not have access to update the file request.'
+            - `access_denied_insufficient_permissions` when the authenticated user does not have access to update the file request.'
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ClientError'
         '404':
-          description: 'Returned if the file request is not found, or the user does not
-
-            have access to the associated folder.'
+          description: Returned if the file request is not found, or the user does not have access to the associated folder.
           content:
             application/json:
               schema:
@@ -193,11 +157,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/ClientError'
         '412':
-          description: 'Returns an error when the `If-Match` header does not match
-
-            the current `etag` value of the file request. This indicates that the
-
-            file request has changed since it was last requested.'
+          description: Returns an error when the `If-Match` header does not match the current `etag` value of the file request. This indicates that the file request has changed since it was last requested.
           content:
             application/json:
               schema:
@@ -208,50 +168,55 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ClientError'
+      x-box-tag: file_requests
+      tags:
+      - File requests
+      x-box-unsupported-on-free-developer: true
+      x-codeSamples:
+      - lang: curl
+        label: Update file request
+        source: "curl -i -X PUT \"https://api.box.com/2.0/file_requests/42037322\" \\\n     -H \"authorization: Bearer <ACCESS_TOKEN>\" \\\n     -d '{\n       \"title\": \"Please upload required documents\",\n       \"description\": \"Please upload required documents\",\n       \"status\": \"active\",\n       \"is_email_required\": true,\n       \"is_description_required\": false\n     }'"
+      - lang: dotnet
+        label: Update file request
+        source: 'await client.FileRequests.UpdateFileRequestByIdAsync(fileRequestId: copiedFileRequest.Id, requestBody: new FileRequestUpdateRequest() { Title = "updated title", Description = "updated description" });'
+      - lang: swift
+        label: Update file request
+        source: 'try await client.fileRequests.updateFileRequestById(fileRequestId: copiedFileRequest.id, requestBody: FileRequestUpdateRequest(title: "updated title", description: "updated description"))'
+      - lang: java
+        label: Update file request
+        source: client.getFileRequests().updateFileRequestById(copiedFileRequest.getId(), new FileRequestUpdateRequest.Builder().title("updated title").description("updated description").build())
+      - lang: node
+        label: Update file request
+        source: "await client.fileRequests.updateFileRequestById(copiedFileRequest.id, {\n  title: 'updated title',\n  description: 'updated description',\n} satisfies FileRequestUpdateRequest);"
+      - lang: python
+        label: Update file request
+        source: "client.file_requests.update_file_request_by_id(\n    copied_file_request.id, title=\"updated title\", description=\"updated description\"\n)"
     delete:
       operationId: delete_file_requests_id
-      summary: Box Delete file request
-      tags:
-      - File Requests
-      x-box-tag: file_requests
-      x-box-sanitized: true
+      summary: Delete file request
       description: Deletes a file request permanently.
       parameters:
       - name: file_request_id
+        in: path
         description: 'The unique identifier that represent a file request.
 
 
-          The ID for any file request can be determined
-
-          by visiting a file request builder in the web application
-
-          and copying the ID from the URL. For example,
-
-          for the URL `https://*.app.box.com/filerequest/123`
-
-          the `file_request_id` is `123`.'
-        example: '123'
-        in: path
+          The ID for any file request can be determined by visiting a file request builder in the web application and copying the ID from the URL. For example, for the URL `https://*.app.box.com/filerequest/123` the `file_request_id` is `123`.'
         required: true
         schema:
           type: string
+        example: '123'
       responses:
         '204':
-          description: 'Returns an empty response when the file request has been successfully
-
-            deleted.'
+          description: Returns an empty response when the file request has been successfully deleted.
         '401':
-          description: 'Returned when the access token provided in the `Authorization` header
-
-            is not recognized or not provided.'
+          description: Returned when the access token provided in the `Authorization` header is not recognized or not provided.
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ClientError'
         '404':
-          description: 'Returned if the file request is not found or has already been deleted,
-
-            or the user does not have access to the associated folder.'
+          description: Returned if the file request is not found or has already been deleted, or the user does not have access to the associated folder.
           content:
             application/json:
               schema:
@@ -268,37 +233,45 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ClientError'
+      x-box-tag: file_requests
+      tags:
+      - File requests
+      x-box-unsupported-on-free-developer: true
+      x-codeSamples:
+      - lang: curl
+        label: Delete file request
+        source: "curl -i -X DELETE \"https://api.box.com/2.0/file_requests/42037322\" \\\n     -H \"authorization: Bearer <ACCESS_TOKEN>\""
+      - lang: dotnet
+        label: Delete file request
+        source: 'await client.FileRequests.DeleteFileRequestByIdAsync(fileRequestId: updatedFileRequest.Id);'
+      - lang: swift
+        label: Delete file request
+        source: 'try await client.fileRequests.deleteFileRequestById(fileRequestId: updatedFileRequest.id)'
+      - lang: java
+        label: Delete file request
+        source: client.getFileRequests().deleteFileRequestById(updatedFileRequest.getId())
+      - lang: node
+        label: Delete file request
+        source: await client.fileRequests.deleteFileRequestById(updatedFileRequest.id);
+      - lang: python
+        label: Delete file request
+        source: client.file_requests.delete_file_request_by_id(updated_file_request.id)
   /file_requests/{file_request_id}/copy:
     post:
       operationId: post_file_requests_id_copy
-      summary: Box Copy file request
-      tags:
-      - File Requests
-      x-box-tag: file_requests
-      x-box-enable-explorer: true
-      x-box-sanitized: true
-      description: 'Copies an existing file request that is already present on one folder,
-
-        and applies it to another folder.'
+      summary: Copy file request
+      description: Copies an existing file request that is already present on one folder, and applies it to another folder.
       parameters:
       - name: file_request_id
+        in: path
         description: 'The unique identifier that represent a file request.
 
 
-          The ID for any file request can be determined
-
-          by visiting a file request builder in the web application
-
-          and copying the ID from the URL. For example,
-
-          for the URL `https://*.app.box.com/filerequest/123`
-
-          the `file_request_id` is `123`.'
-        example: '123'
-        in: path
+          The ID for any file request can be determined by visiting a file request builder in the web application and copying the ID from the URL. For example, for the URL `https://*.app.box.com/filerequest/123` the `file_request_id` is `123`.'
         required: true
         schema:
           type: string
+        example: '123'
       requestBody:
         content:
           application/json:
@@ -312,30 +285,22 @@ paths:
               schema:
                 $ref: '#/components/schemas/FileRequest'
         '401':
-          description: 'Returned when the access token provided in the `Authorization` header
-
-            is not recognized or not provided.'
+          description: Returned when the access token provided in the `Authorization` header is not recognized or not provided.
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ClientError'
         '403':
-          description: 'Returned if the user does not have all the permissions to complete the
-
-            update.
+          description: 'Returned if the user does not have all the permissions to complete the update.
 
 
-            * `access_denied_insufficient_permissions` when the authenticated user
-
-            does not have access to update the file request.'
+            - `access_denied_insufficient_permissions` when the authenticated user does not have access to update the file request.'
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ClientError'
         '404':
-          description: 'Returned if the file request is not found, or the user does not
-
-            have access to the associated folder.'
+          description: Returned if the file request is not found, or the user does not have access to the associated folder.
           content:
             application/json:
               schema:
@@ -352,81 +317,166 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ClientError'
+      x-box-tag: file_requests
+      tags:
+      - File requests
+      x-box-unsupported-on-free-developer: true
+      x-codeSamples:
+      - lang: curl
+        label: Copy file request
+        source: "curl -i -X POST \"https://api.box.com/2.0/file_requests/42037322/copy\" \\\n     -H \"authorization: Bearer <ACCESS_TOKEN>\" \\\n     -d '{\n       \"title\": \"Please upload required documents\",\n       \"description\": \"Please upload required documents\",\n       \"status\": \"active\",\n       \"is_email_required\": true,\n       \"is_description_required\": false,\n       \"folder\": {\n         \"id\": \"2233212\",\n         \"type\": \"folder\"\n       }\n     }'"
+      - lang: dotnet
+        label: Copy file request
+        source: 'await client.FileRequests.CreateFileRequestCopyAsync(fileRequestId: fileRequestId, requestBody: new FileRequestCopyRequest(folder: new FileRequestCopyRequestFolderField(id: fileRequest.Folder.Id) { Type = FileRequestCopyRequestFolderTypeField.Folder }));'
+      - lang: swift
+        label: Copy file request
+        source: 'try await client.fileRequests.createFileRequestCopy(fileRequestId: fileRequestId, requestBody: FileRequestCopyRequest(folder: FileRequestCopyRequestFolderField(id: fileRequest.folder.id, type: FileRequestCopyRequestFolderTypeField.folder)))'
+      - lang: java
+        label: Copy file request
+        source: client.getFileRequests().createFileRequestCopy(fileRequestId, new FileRequestCopyRequest(new FileRequestCopyRequestFolderField.Builder(fileRequest.getFolder().getId()).type(FileRequestCopyRequestFolderTypeField.FOLDER).build()))
+      - lang: node
+        label: Copy file request
+        source: "await client.fileRequests.createFileRequestCopy(fileRequestId, {\n  folder: {\n    id: fileRequest.folder.id,\n    type: 'folder' as FileRequestCopyRequestFolderTypeField,\n  } satisfies FileRequestCopyRequestFolderField,\n} satisfies FileRequestCopyRequest);"
+      - lang: python
+        label: Copy file request
+        source: "client.file_requests.create_file_request_copy(\n    file_request_id,\n    CreateFileRequestCopyFolder(\n        id=file_request.folder.id, type=CreateFileRequestCopyFolderTypeField.FOLDER\n    ),\n)"
 components:
   schemas:
-    Folder--Base:
-      title: Folder (Base)
+    FileRequestUpdateRequest:
+      description: The request body to update a file request.
       type: object
-      x-box-resource-id: folder--base
-      x-box-sanitized: true
-      x-box-tag: folders
-      x-box-variants:
-      - base
-      - mini
-      - standard
-      - full
-      x-box-variant: base
-      description: 'The bare basic representation of a folder, the minimal
-
-        amount of fields returned when using the `fields` query
-
-        parameter.'
-      required:
-      - id
-      - type
       properties:
-        id:
+        title:
+          description: 'An optional new title for the file request. This can be used to change the title of the file request.
+
+
+            This will default to the value on the existing file request.'
           type: string
-          description: 'The unique identifier that represent a folder.
+          example: Please upload required documents
+        description:
+          description: 'An optional new description for the file request. This can be used to change the description of the file request.
 
 
-            The ID for any folder can be determined
-
-            by visiting a folder in the web application
-
-            and copying the ID from the URL. For example,
-
-            for the URL `https://*.app.box.com/folders/123`
-
-            the `folder_id` is `123`.'
-          example: '12345'
-        etag:
-          type:
-          - string
-          - 'null'
-          example: '1'
-          description: 'The HTTP `etag` of this folder. This can be used within some API
-
-            endpoints in the `If-Match` and `If-None-Match` headers to only
-
-            perform changes on the folder if (no) changes have happened.'
-        type:
+            This will default to the value on the existing file request.'
           type: string
-          description: '`folder`'
-          example: folder
+          example: Please upload required documents
+        status:
+          description: 'An optional new status of the file request.
+
+
+            When the status is set to `inactive`, the file request will no longer accept new submissions, and any visitor to the file request URL will receive a `HTTP 404` status code.
+
+
+            This will default to the value on the existing file request.'
+          type: string
+          example: active
           enum:
-          - folder
-    ClientError:
-      title: Client error
+          - active
+          - inactive
+        is_email_required:
+          description: 'Whether a file request submitter is required to provide their email address.
+
+
+            When this setting is set to true, the Box UI will show an email field on the file request form.
+
+
+            This will default to the value on the existing file request.'
+          type: boolean
+          example: true
+        is_description_required:
+          description: 'Whether a file request submitter is required to provide a description of the files they are submitting.
+
+
+            When this setting is set to true, the Box UI will show a description field on the file request form.
+
+
+            This will default to the value on the existing file request.'
+          type: boolean
+          example: true
+        expires_at:
+          description: 'The date after which a file request will no longer accept new submissions.
+
+
+            After this date, the `status` will automatically be set to `inactive`.
+
+
+            This will default to the value on the existing file request.'
+          type: string
+          format: date-time
+          example: '2020-09-28T10:53:43-08:00'
+      title: File Request (Update)
+    Folder--Mini:
+      description: A mini representation of a file version, used when nested under another resource.
       type: object
-      x-box-resource-id: client_error
-      description: A generic error
+      allOf:
+      - $ref: '#/components/schemas/Folder--Base'
+      - properties:
+          sequence_id:
+            allOf:
+            - type:
+              - string
+              - 'null'
+              example: '3'
+              description: 'A numeric identifier that represents the most recent user event that has been applied to this item.
+
+
+                This can be used in combination with the `GET /events`-endpoint to filter out user events that would have occurred before this identifier was read.
+
+
+                An example would be where a Box Drive-like application would fetch an item via the API, and then listen to incoming user events for changes to the item. The application would ignore any user events where the `sequence_id` in the event is smaller than or equal to the `sequence_id` in the originally fetched resource.'
+            - {}
+          name:
+            description: The name of the folder.
+            type: string
+            example: Contracts
+      title: Folder (Mini)
+      x-box-resource-id: folder--mini
+      x-box-tag: folders
+      x-box-variant: mini
+    FileRequestCopyRequest:
+      description: The request body to copy a file request.
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/FileRequestUpdateRequest'
+      - properties:
+          folder:
+            description: The folder to associate the new file request to.
+            type: object
+            properties:
+              type:
+                description: The value will always be `folder`.
+                type: string
+                example: folder
+                enum:
+                - folder
+              id:
+                description: The ID of the folder to associate the new file request to.
+                type: string
+                example: '42037322'
+            required:
+            - id
+      required:
+      - folder
+      title: File Request (Copy)
+    ClientError:
+      description: A generic error.
+      type: object
       properties:
         type:
-          description: error
-          example: error
+          description: The value will always be `error`.
           type: string
+          example: error
           enum:
           - error
         status:
           description: The HTTP status of the response.
-          example: 400
           type: integer
           format: int32
+          example: 400
         code:
-          description: A Box-specific error code
-          example: item_name_invalid
+          description: A Box-specific error code.
           type: string
+          example: item_name_invalid
           enum:
           - created
           - accepted
@@ -440,6 +490,7 @@ components:
           - method_not_allowed
           - conflict
           - precondition_failed
+          - unprocessable_entity
           - too_many_requests
           - internal_server_error
           - unavailable
@@ -447,334 +498,153 @@ components:
           - insufficient_scope
         message:
           description: A short message describing the error.
-          example: Method Not Allowed
           type: string
+          example: Method Not Allowed
         context_info:
-          description: 'A free-form object that contains additional context
-
-            about the error. The possible fields are defined on
-
-            a per-endpoint basis. `message` is only one example.'
+          description: A free-form object that contains additional context about the error. The possible fields are defined on a per-endpoint basis. `message` is only one example.
           type:
           - object
           - 'null'
-          properties:
-            message:
-              type: string
-              description: More details on the error.
-              example: Something went wrong.
+          example:
+            message: Something went wrong
+          additionalProperties: {}
         help_url:
           description: A URL that links to more information about why this error occurred.
-          example: https://developer.box.com/guides/api-calls/permissions-and-errors/common-errors/
           type: string
+          example: https://developer.box.com/guides/api-calls/permissions-and-errors/common-errors/
         request_id:
-          description: 'A unique identifier for this response, which can be used
-
-            when contacting Box support.'
+          description: A unique identifier for this response, which can be used when contacting Box support.
           type: string
           example: abcdef123456
-    User--Base:
-      title: User (Base)
+      title: Client error
+      x-box-resource-id: client_error
+    User--Mini:
+      description: A mini representation of a user, as can be returned when nested within other resources.
       type: object
-      x-box-resource-id: user--base
+      allOf:
+      - $ref: '#/components/schemas/User--Base'
+      - properties:
+          name:
+            description: The display name of this user.
+            type: string
+            example: Aaron Levie
+            maxLength: 50
+          login:
+            description: The primary email address of this user.
+            type: string
+            format: email
+            example: ceo@example.com
+      title: User (Mini)
+      x-box-resource-id: user--mini
       x-box-tag: users
+      x-box-variant: mini
+    Folder--Base:
+      description: The bare basic representation of a folder, the minimal amount of fields returned when using the `fields` query parameter.
+      type: object
+      properties:
+        id:
+          description: 'The unique identifier that represent a folder.
+
+
+            The ID for any folder can be determined by visiting a folder in the web application and copying the ID from the URL. For example, for the URL `https://*.app.box.com/folders/123` the `folder_id` is `123`.'
+          type: string
+          example: '12345'
+        etag:
+          description: The HTTP `etag` of this folder. This can be used within some API endpoints in the `If-Match` and `If-None-Match` headers to only perform changes on the folder if (no) changes have happened.
+          type:
+          - string
+          - 'null'
+          example: '1'
+        type:
+          description: The value will always be `folder`.
+          type: string
+          example: folder
+          enum:
+          - folder
+      required:
+      - id
+      - type
+      title: Folder (Base)
+      x-box-resource-id: folder--base
+      x-box-tag: folders
+      x-box-variant: base
       x-box-variants:
       - base
       - mini
       - standard
       - full
-      x-box-variant: base
-      description: 'A mini representation of a user, used when
-
-        nested within another resource.'
-      required:
-      - type
-      - id
-      properties:
-        id:
-          type: string
-          description: The unique identifier for this user
-          example: '11446498'
-        type:
-          type: string
-          description: '`user`'
-          example: user
-          enum:
-          - user
-    Folder--Mini:
-      title: Folder (Mini)
-      type: object
-      x-box-resource-id: folder--mini
-      x-box-variant: mini
-      description: 'A mini representation of a file version, used when
-
-        nested under another resource.'
-      allOf:
-      - $ref: '#/components/schemas/Folder--Base'
-      - properties:
-          sequence_id:
-            allOf:
-            - type:
-              - string
-              - 'null'
-              example: '3'
-              description: 'A numeric identifier that represents the most recent user event
-
-                that has been applied to this item.
-
-
-                This can be used in combination with the `GET /events`-endpoint
-
-                to filter out user events that would have occurred before this
-
-                identifier was read.
-
-
-                An example would be where a Box Drive-like application
-
-                would fetch an item via the API, and then listen to incoming
-
-                user events for changes to the item. The application would
-
-                ignore any user events where the `sequence_id` in the event
-
-                is smaller than or equal to the `sequence_id` in the originally
-
-                fetched resource.'
-            - {}
-          name:
-            type: string
-            description: The name of the folder.
-            example: Contracts
-    FileRequestUpdateRequest:
-      title: File Request (Update)
-      type: object
-      description: The request body to update a file request.
-      properties:
-        title:
-          type: string
-          description: 'An optional new title for the file request. This can be
-
-            used to change the title of the file request.
-
-
-            This will default to the value on the existing file request.'
-          example: Please upload required documents
-        description:
-          type: string
-          description: 'An optional new description for the file request. This can be
-
-            used to change the description of the file request.
-
-
-            This will default to the value on the existing file request.'
-          example: Please upload required documents
-        status:
-          type: string
-          description: 'An optional new status of the file request.
-
-
-            When the status is set to `inactive`, the file request
-
-            will no longer accept new submissions, and any visitor
-
-            to the file request URL will receive a `HTTP 404` status
-
-            code.
-
-
-            This will default to the value on the existing file request.'
-          example: active
-          enum:
-          - active
-          - inactive
-        is_email_required:
-          type: boolean
-          example: true
-          description: 'Whether a file request submitter is required to provide
-
-            their email address.
-
-
-            When this setting is set to true, the Box UI will show
-
-            an email field on the file request form.
-
-
-            This will default to the value on the existing file request.'
-        is_description_required:
-          type: boolean
-          example: true
-          description: 'Whether a file request submitter is required to provide
-
-            a description of the files they are submitting.
-
-
-            When this setting is set to true, the Box UI will show
-
-            a description field on the file request form.
-
-
-            This will default to the value on the existing file request.'
-        expires_at:
-          type: string
-          format: date-time
-          description: 'The date after which a file request will no longer accept new
-
-            submissions.
-
-
-            After this date, the `status` will automatically be set to
-
-            `inactive`.
-
-
-            This will default to the value on the existing file request.'
-          example: '2020-09-28T10:53:43-08:00'
-    FileRequestCopyRequest:
-      title: File Request (Copy)
-      type: object
-      description: The request body to copy a file request.
-      required:
-      - folder
-      allOf:
-      - $ref: '#/components/schemas/FileRequestUpdateRequest'
-      - properties:
-          folder:
-            type: object
-            description: The folder to associate the new file request to.
-            required:
-            - id
-            properties:
-              type:
-                type: string
-                example: folder
-                description: '`folder`'
-                enum:
-                - folder
-              id:
-                type: string
-                example: '42037322'
-                description: 'The ID of the folder to associate the new
-
-                  file request to.'
     FileRequest:
-      title: File Request
+      description: A standard representation of a file request, as returned from any file request API endpoints by default.
       type: object
-      x-box-resource-id: file_request
-      x-box-tag: file_requests
-      description: 'A standard representation of a file request, as returned
-
-        from any file request API endpoints by default.'
-      required:
-      - id
-      - type
-      - folder
-      - created_at
-      - updated_at
       properties:
         id:
-          type: string
           description: The unique identifier for this file request.
-          readOnly: true
-          example: '42037322'
-        type:
           type: string
-          description: '`file_request`'
+          example: '42037322'
+          readOnly: true
+        type:
+          description: The value will always be `file_request`.
+          type: string
           example: file_request
           enum:
           - file_request
           readOnly: true
         title:
+          description: 'The title of file request. This is shown in the Box UI to users uploading files.
+
+
+            This defaults to title of the file request that was copied to create this file request.'
           type: string
-          description: 'The title of file request. This is shown
-
-            in the Box UI to users uploading files.
-
-
-            This defaults to title of the file request that was
-
-            copied to create this file request.'
           example: Please upload documents
         description:
+          description: 'The optional description of this file request. This is shown in the Box UI to users uploading files.
+
+
+            This defaults to description of the file request that was copied to create this file request.'
           type:
           - string
           - 'null'
-          description: 'The optional description of this file request. This is
-
-            shown in the Box UI to users uploading files.
-
-
-            This defaults to description of the file request that was
-
-            copied to create this file request.'
           example: Following documents are requested for your process
         status:
+          description: 'The status of the file request. This defaults to `active`.
+
+
+            When the status is set to `inactive`, the file request will no longer accept new submissions, and any visitor to the file request URL will receive a `HTTP 404` status code.
+
+
+            This defaults to status of file request that was copied to create this file request.'
           type: string
           example: active
-          description: 'The status of the file request. This defaults
-
-            to `active`.
-
-
-            When the status is set to `inactive`, the file request
-
-            will no longer accept new submissions, and any visitor
-
-            to the file request URL will receive a `HTTP 404` status
-
-            code.
-
-
-            This defaults to status of file request that was
-
-            copied to create this file request.'
           enum:
           - active
           - inactive
         is_email_required:
+          description: 'Whether a file request submitter is required to provide their email address.
+
+
+            When this setting is set to true, the Box UI will show an email field on the file request form.
+
+
+            This defaults to setting of file request that was copied to create this file request.'
           type: boolean
           example: true
-          description: 'Whether a file request submitter is required to provide
-
-            their email address.
-
-
-            When this setting is set to true, the Box UI will show
-
-            an email field on the file request form.
-
-
-            This defaults to setting of file request that was
-
-            copied to create this file request.'
         is_description_required:
+          description: 'Whether a file request submitter is required to provide a description of the files they are submitting.
+
+
+            When this setting is set to true, the Box UI will show a description field on the file request form.
+
+
+            This defaults to setting of file request that was copied to create this file request.'
           type: boolean
           example: true
-          description: 'Whether a file request submitter is required to provide
-
-            a description of the files they are submitting.
-
-
-            When this setting is set to true, the Box UI will show
-
-            a description field on the file request form.
-
-
-            This defaults to setting of file request that was
-
-            copied to create this file request.'
         expires_at:
+          description: 'The date after which a file request will no longer accept new submissions.
+
+
+            After this date, the `status` will automatically be set to `inactive`.'
           type: string
           format: date-time
-          description: 'The date after which a file request will no longer accept new
-
-            submissions.
-
-
-            After this date, the `status` will automatically be set to
-
-            `inactive`.'
           example: '2020-09-28T10:53:43-08:00'
         folder:
           allOf:
@@ -782,38 +652,26 @@ components:
           - description: 'The folder that this file request is associated with.
 
 
-              Files submitted through the file request form will be
-
-              uploaded to this folder.'
+              Files submitted through the file request form will be uploaded to this folder.'
         url:
+          description: The generated URL for this file request. This URL can be shared with users to let them upload files to the associated folder.
           type: string
-          description: 'The generated URL for this file request. This URL can be shared
-
-            with users to let them upload files to the associated folder.'
           example: /f/19e57f40ace247278a8e3d336678c64a
           readOnly: true
         etag:
+          description: The HTTP `etag` of this file. This can be used in combination with the `If-Match` header when updating a file request. By providing that header, a change will only be performed on the file request if the `etag` on the file request still matches the `etag` provided in the `If-Match` header.
           type:
           - string
           - 'null'
           example: '1'
-          description: 'The HTTP `etag` of this file. This can be used in combination with
-
-            the `If-Match` header when updating a file request. By providing that
-
-            header, a change will only be performed on the  file request if the `etag`
-
-            on the file request still matches the `etag` provided in the `If-Match`
-
-            header.'
         created_by:
           allOf:
           - $ref: '#/components/schemas/User--Mini'
           - description: The user who created this file request.
         created_at:
+          description: The date and time when the file request was created.
           type: string
           format: date-time
-          description: The date and time when the file request was created.
           example: '2020-09-28T10:53:43-08:00'
         updated_by:
           allOf:
@@ -821,34 +679,49 @@ components:
           - description: The user who last modified this file request.
           - {}
         updated_at:
+          description: The date and time when the file request was last updated.
           type: string
           format: date-time
-          description: The date and time when the file request was last updated.
           example: '2020-09-28T10:53:43-08:00'
-    User--Mini:
-      title: User (Mini)
+      required:
+      - id
+      - type
+      - folder
+      - created_at
+      - updated_at
+      title: File Request
+      x-box-resource-id: file_request
+      x-box-tag: file_requests
+    User--Base:
+      description: A mini representation of a user, used when nested within another resource.
       type: object
-      x-box-resource-id: user--mini
-      x-box-variant: mini
-      description: 'A mini representation of a user, as can be returned when nested within other
-
-        resources.'
-      allOf:
-      - $ref: '#/components/schemas/User--Base'
-      - properties:
-          name:
-            type: string
-            description: The display name of this user
-            example: Aaron Levie
-            maxLength: 50
-          login:
-            type: string
-            format: email
-            description: The primary email address of this user
-            example: ceo@example.com
+      properties:
+        id:
+          description: The unique identifier for this user.
+          type: string
+          example: '11446498'
+        type:
+          description: The value will always be `user`.
+          type: string
+          example: user
+          enum:
+          - user
+      required:
+      - type
+      - id
+      title: User (Base)
+      x-box-resource-id: user--base
+      x-box-tag: users
+      x-box-variant: base
+      x-box-variants:
+      - base
+      - mini
+      - standard
+      - full
   securitySchemes:
     OAuth2Security:
       type: oauth2
+      description: The access token received from the authorization server in the OAuth 2.0 flow.
       flows:
         authorizationCode:
           authorizationUrl: https://account.box.com/api/oauth2/authorize
@@ -864,5 +737,8 @@ components:
             manage_data_retention: Manage data retention polices
             manage_legal_hold: Manage Legal Holds
 externalDocs:
-  description: Box Developer Documentation
+  description: Box Developer Documentation.
   url: https://developer.box.com
+x-mint:
+  mcp:
+    enabled: true

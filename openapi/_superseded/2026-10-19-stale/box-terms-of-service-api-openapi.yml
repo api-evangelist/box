@@ -1,0 +1,390 @@
+openapi: 3.2.0
+info:
+  title: Box Platform Terms of Service API
+  description: Box Platform provides functionality to provide access to content stored within Box. It provides endpoints for basic manipulation of files and folders, management of users within an enterprise, as well as more complex topics such as legal holds and retention policies.
+  termsOfService: https://cloud.app.box.com/s/rmwxu64h1ipr41u49w3bbuvbsa29wku9
+  contact:
+    name: Box, Inc
+    url: https://box.dev
+    email: devrel@box.com
+  license:
+    name: Apache-2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0
+  version: 2.0.0
+  x-box-commit-hash: '5819125043'
+servers:
+- url: https://api.box.com/2.0
+  description: Box Platform API server
+security:
+- OAuth2Security: []
+tags:
+- name: Terms of Service
+  description: 'A set of endpoints used to
+
+    manage terms of service agreements.'
+  x-box-tag: terms_of_services
+paths:
+  /terms_of_services:
+    get:
+      operationId: get_terms_of_services
+      x-box-tag: terms_of_services
+      summary: Box List terms of services
+      tags:
+      - Terms of Service
+      description: 'Returns the current terms of service text and settings
+
+        for the enterprise.'
+      parameters:
+      - name: tos_type
+        description: Limits the results to the terms of service of the given type.
+        in: query
+        required: false
+        example: managed
+        schema:
+          type: string
+          enum:
+          - external
+          - managed
+      responses:
+        '200':
+          description: 'Returns a collection of terms of service text and settings for the
+
+            enterprise.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TermsOfServices'
+        default:
+          description: An unexpected client error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ClientError'
+    post:
+      operationId: post_terms_of_services
+      tags:
+      - Terms of Service
+      summary: Box Create terms of service
+      x-box-tag: terms_of_services
+      description: 'Creates a terms of service for a given enterprise
+
+        and type of user.'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - status
+              - text
+              properties:
+                status:
+                  description: Whether this terms of service is active.
+                  example: enabled
+                  type: string
+                  enum:
+                  - enabled
+                  - disabled
+                tos_type:
+                  description: 'The type of user to set the terms of
+
+                    service for.'
+                  example: managed
+                  type: string
+                  enum:
+                  - external
+                  - managed
+                text:
+                  description: 'The terms of service text to display to users.
+
+
+                    The text can be set to empty if the `status` is set to `disabled`.'
+                  example: By collaborating on this file you are accepting...
+                  type: string
+      responses:
+        '200':
+          description: Returns a new task object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TermsOfService'
+        default:
+          description: An unexpected client error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ClientError'
+  /terms_of_services/{terms_of_service_id}:
+    get:
+      operationId: get_terms_of_services_id
+      summary: Box Get terms of service
+      tags:
+      - Terms of Service
+      x-box-tag: terms_of_services
+      description: Fetches a specific terms of service.
+      parameters:
+      - name: terms_of_service_id
+        description: The ID of the terms of service.
+        example: '324234'
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Returns a terms of service object.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TermsOfService'
+        default:
+          description: An unexpected client error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ClientError'
+    put:
+      operationId: put_terms_of_services_id
+      summary: Box Update terms of service
+      tags:
+      - Terms of Service
+      x-box-tag: terms_of_services
+      description: Updates a specific terms of service.
+      parameters:
+      - name: terms_of_service_id
+        description: The ID of the terms of service.
+        example: '324234'
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - status
+              - text
+              properties:
+                status:
+                  description: Whether this terms of service is active.
+                  example: enabled
+                  type: string
+                  enum:
+                  - enabled
+                  - disabled
+                text:
+                  description: 'The terms of service text to display to users.
+
+
+                    The text can be set to empty if the `status` is set to `disabled`.'
+                  example: By collaborating on this file you are accepting...
+                  type: string
+      responses:
+        '200':
+          description: Returns an updated terms of service object.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TermsOfService'
+        default:
+          description: An unexpected client error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ClientError'
+components:
+  schemas:
+    TermsOfService:
+      title: Terms of service
+      type: object
+      x-box-resource-id: terms_of_service
+      x-box-variant: standard
+      description: 'The root-level record that is supposed to represent a
+
+        single Terms of Service.'
+      allOf:
+      - $ref: '#/components/schemas/TermsOfService--Base'
+      - properties:
+          status:
+            description: Whether these terms are enabled or not
+            type: string
+            example: enabled
+            enum:
+            - enabled
+            - disabled
+          enterprise:
+            allOf:
+            - title: Enterprise
+              type: object
+              description: A representation of a Box enterprise
+              properties:
+                id:
+                  type: string
+                  description: The unique identifier for this enterprise.
+                  example: '11446498'
+                type:
+                  type: string
+                  description: '`enterprise`'
+                  example: enterprise
+                  enum:
+                  - enterprise
+                name:
+                  description: The name of the enterprise
+                  example: Acme Inc.
+                  type: string
+            - description: The enterprise these terms apply to
+          tos_type:
+            description: Whether to apply these terms to managed users or external users
+            type: string
+            example: managed
+            enum:
+            - managed
+            - external
+          text:
+            description: 'The text for your terms and conditions. This text could be
+
+              empty if the `status` is set to `disabled`.'
+            type: string
+            example: By using this service, you agree to ...
+          created_at:
+            type: string
+            format: date-time
+            description: When the legal item was created
+            example: '2012-12-12T10:53:43-08:00'
+          modified_at:
+            type: string
+            format: date-time
+            description: When the legal item was modified.
+            example: '2012-12-12T10:53:43-08:00'
+    TermsOfServices:
+      title: Terms of services
+      type: object
+      x-box-resource-id: terms_of_services
+      x-box-tag: terms_of_services
+      description: A list of terms of services
+      properties:
+        total_count:
+          description: The total number of objects.
+          example: 2
+          type: integer
+          format: int64
+        entries:
+          type: array
+          description: A list of terms of service objects
+          items:
+            $ref: '#/components/schemas/TermsOfService'
+    TermsOfService--Base:
+      title: Terms of service (Base)
+      type: object
+      x-box-resource-id: terms_of_service--base
+      x-box-tag: terms_of_services
+      x-box-variants:
+      - base
+      - standard
+      x-box-variant: base
+      description: 'The root-level record that is supposed to represent a
+
+        single Terms of Service.'
+      required:
+      - id
+      - type
+      properties:
+        id:
+          type: string
+          description: The unique identifier for this terms of service.
+          example: '11446498'
+        type:
+          type: string
+          description: '`terms_of_service`'
+          example: terms_of_service
+          enum:
+          - terms_of_service
+    ClientError:
+      title: Client error
+      type: object
+      x-box-resource-id: client_error
+      description: A generic error
+      properties:
+        type:
+          description: error
+          example: error
+          type: string
+          enum:
+          - error
+        status:
+          description: The HTTP status of the response.
+          example: 400
+          type: integer
+          format: int32
+        code:
+          description: A Box-specific error code
+          example: item_name_invalid
+          type: string
+          enum:
+          - created
+          - accepted
+          - no_content
+          - redirect
+          - not_modified
+          - bad_request
+          - unauthorized
+          - forbidden
+          - not_found
+          - method_not_allowed
+          - conflict
+          - precondition_failed
+          - too_many_requests
+          - internal_server_error
+          - unavailable
+          - item_name_invalid
+          - insufficient_scope
+        message:
+          description: A short message describing the error.
+          example: Method Not Allowed
+          type: string
+        context_info:
+          description: 'A free-form object that contains additional context
+
+            about the error. The possible fields are defined on
+
+            a per-endpoint basis. `message` is only one example.'
+          type:
+          - object
+          - 'null'
+          properties:
+            message:
+              type: string
+              description: More details on the error.
+              example: Something went wrong.
+        help_url:
+          description: A URL that links to more information about why this error occurred.
+          example: https://developer.box.com/guides/api-calls/permissions-and-errors/common-errors/
+          type: string
+        request_id:
+          description: 'A unique identifier for this response, which can be used
+
+            when contacting Box support.'
+          type: string
+          example: abcdef123456
+  securitySchemes:
+    OAuth2Security:
+      type: oauth2
+      flows:
+        authorizationCode:
+          authorizationUrl: https://account.box.com/api/oauth2/authorize
+          tokenUrl: https://api.box.com/oauth2/token
+          scopes:
+            root_readonly: Read all files and folders stored in Box
+            root_readwrite: Read and write all files and folders stored in Box
+            manage_app_users: Provision and manage app users
+            manage_managed_users: Provision and manage managed users
+            manage_groups: Manage an enterprise's groups
+            manage_webhook: Create webhooks programmatically through the API
+            manage_enterprise_properties: Manage enterprise properties
+            manage_data_retention: Manage data retention polices
+            manage_legal_hold: Manage Legal Holds
+externalDocs:
+  description: Box Developer Documentation
+  url: https://developer.box.com

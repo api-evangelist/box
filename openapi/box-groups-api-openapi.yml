@@ -5,16 +5,16 @@ info:
   termsOfService: https://cloud.app.box.com/s/rmwxu64h1ipr41u49w3bbuvbsa29wku9
   contact:
     name: Box, Inc
-    url: https://box.dev
+    url: https://developer.box.com
     email: devrel@box.com
   license:
     name: Apache-2.0
-    url: http://www.apache.org/licenses/LICENSE-2.0
-  version: 2.0.0
-  x-box-commit-hash: '5819125043'
+    url: https://www.apache.org/licenses/LICENSE-2.0
+  version: '2024.0'
+  x-box-commit-hash: 53bdced3cd
 servers:
 - url: https://api.box.com/2.0
-  description: Box Platform API server
+  description: Box Platform API server.
 security:
 - OAuth2Security: []
 tags:
@@ -25,81 +25,56 @@ paths:
   /groups:
     get:
       operationId: get_groups
-      summary: Box List groups for enterprise
-      x-box-tag: groups
-      tags:
-      - Groups
-      description: 'Retrieves all of the groups for a given enterprise. The user
-
-        must have admin permissions to inspect enterprise''s groups.'
+      summary: List groups for enterprise
+      description: Retrieves all of the groups for a given enterprise. The user must have admin permissions to inspect enterprise's groups.
       parameters:
       - name: filter_term
-        description: 'Limits the results to only groups whose `name` starts
-
-          with the search term.'
         in: query
+        description: Limits the results to only groups whose `name` starts with the search term.
         required: false
-        example: Engineering
         schema:
           type: string
+        example: Engineering
       - name: fields
-        description: 'A comma-separated list of attributes to include in the
-
-          response. This can be used to request fields that are
-
-          not normally returned in a standard response.
-
-
-          Be aware that specifying this parameter will have the
-
-          effect that none of the standard fields are returned in
-
-          the response unless explicitly specified, instead only
-
-          fields for the mini representation are returned, additional
-
-          to the fields requested.'
         in: query
-        example:
-        - id
-        - type
-        - name
+        description: 'A comma-separated list of attributes to include in the response. This can be used to request fields that are not normally returned in a standard response.
+
+
+          Be aware that specifying this parameter will have the effect that none of the standard fields are returned in the response unless explicitly specified, instead only fields for the mini representation are returned, additional to the fields requested.'
         required: false
-        explode: false
         schema:
           type: array
           items:
             type: string
+        example:
+        - id
+        - type
+        - name
+        explode: false
       - name: limit
-        description: The maximum number of items to return per page.
         in: query
+        description: The maximum number of items to return per page.
         required: false
-        example: 1000
         schema:
           type: integer
           format: int64
           maximum: 1000
+        example: 1000
       - name: offset
+        in: query
         description: 'The offset of the item at which to begin the response.
 
 
-          Queries with offset parameter value
-
-          exceeding 10000 will be rejected
-
-          with a 400 response.'
-        in: query
+          Queries with offset parameter value exceeding 10000 will be rejected with a 400 response.'
         required: false
-        example: 1000
         schema:
           type: integer
           format: int64
           default: 0
+        example: 1000
       responses:
         '200':
-          description: 'Returns a collection of group objects. If there are no groups, an
-
-            empty collection will be returned.'
+          description: Returns a collection of group objects. If there are no groups, an empty collection will be returned.
           content:
             application/json:
               schema:
@@ -110,135 +85,119 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ClientError'
-    post:
-      operationId: post_groups
-      summary: Box Create group
+      x-box-tag: groups
       tags:
       - Groups
-      x-box-tag: groups
-      description: 'Creates a new group of users in an enterprise. Only users with admin
-
-        permissions can create new groups.'
+      x-codeSamples:
+      - lang: curl
+        label: List groups for enterprise
+        source: "curl -i -X GET \"https://api.box.com/2.0/groups\" \\\n     -H \"authorization: Bearer <ACCESS_TOKEN>\""
+      - lang: dotnet
+        label: List groups for enterprise
+        source: await client.Groups.GetGroupsAsync();
+      - lang: swift
+        label: List groups for enterprise
+        source: try await client.groups.getGroups()
+      - lang: java
+        label: List groups for enterprise
+        source: client.getGroups().getGroups()
+      - lang: node
+        label: List groups for enterprise
+        source: await client.groups.getGroups();
+      - lang: python
+        label: List groups for enterprise
+        source: client.groups.get_groups()
+    post:
+      operationId: post_groups
+      summary: Create group
+      description: Creates a new group of users in an enterprise. Only users with admin permissions can create new groups.
       parameters:
       - name: fields
-        description: 'A comma-separated list of attributes to include in the
-
-          response. This can be used to request fields that are
-
-          not normally returned in a standard response.
-
-
-          Be aware that specifying this parameter will have the
-
-          effect that none of the standard fields are returned in
-
-          the response unless explicitly specified, instead only
-
-          fields for the mini representation are returned, additional
-
-          to the fields requested.'
         in: query
-        example:
-        - id
-        - type
-        - name
+        description: 'A comma-separated list of attributes to include in the response. This can be used to request fields that are not normally returned in a standard response.
+
+
+          Be aware that specifying this parameter will have the effect that none of the standard fields are returned in the response unless explicitly specified, instead only fields for the mini representation are returned, additional to the fields requested.'
         required: false
-        explode: false
         schema:
           type: array
           items:
             type: string
+        example:
+        - id
+        - type
+        - name
+        explode: false
       requestBody:
         content:
           application/json:
             schema:
               type: object
-              required:
-              - name
               properties:
                 name:
+                  description: The name of the new group to be created. This name must be unique within the enterprise.
                   type: string
                   example: Customer Support
-                  description: 'The name of the new group to be created. This name must be unique
-
-                    within the enterprise.'
                 provenance:
-                  type: string
-                  description: 'Keeps track of which external source this group is
-
-                    coming, for example `Active Directory`, or `Okta`.
+                  description: 'Keeps track of which external source this group is coming, for example `Active Directory`, or `Okta`.
 
 
-                    Setting this will also prevent Box admins from editing
-
-                    the group name and its members directly via the Box
-
-                    web application.
+                    Setting this will also prevent Box admins from editing the group name and its members directly via the Box web application.
 
 
                     This is desirable for one-way syncing of groups.'
-                  maxLength: 255
-                  example: Active Directory
-                external_sync_identifier:
                   type: string
-                  description: 'An arbitrary identifier that can be used by
-
-                    external group sync tools to link this Box Group to
-
-                    an external group.
-
-
-                    Example values of this field
-
-                    could be an **Active Directory Object ID** or a **Google
-
-                    Group ID**.
+                  example: Active Directory
+                  maxLength: 255
+                external_sync_identifier:
+                  description: 'An arbitrary identifier that can be used by external group sync tools to link this Box Group to an external group.
 
 
-                    We recommend you use of this field in
+                    Example values of this field could be an **Active Directory Object ID** or a **Google Group ID**.
 
-                    order to avoid issues when group names are updated in
 
-                    either Box or external systems.'
+                    We recommend you use of this field in order to avoid issues when group names are updated in either Box or external systems.'
+                  type: string
                   example: AD:123456
                 description:
-                  type: string
                   description: A human readable description of the group.
-                  maxLength: 255
+                  type: string
                   example: '"Customer Support Group - as imported from Active Directory"'
+                  maxLength: 255
                 invitability_level:
+                  description: 'Specifies who can invite the group to collaborate on folders.
+
+
+                    When set to `admins_only` the enterprise admin, co-admins, and the group''s admin can invite the group.
+
+
+                    When set to `admins_and_members` all the admins listed above and group members can invite the group.
+
+
+                    When set to `all_managed_users` all managed users in the enterprise can invite the group.'
                   type: string
                   example: admins_only
-                  description: 'Specifies who can invite the group to collaborate
-
-                    on folders.
-
-
-                    When set to `admins_only` the enterprise admin, co-admins,
-
-                    and the group''s admin can invite the group.
-
-
-                    When set to `admins_and_members` all the admins listed
-
-                    above and group members can invite the group.
-
-
-                    When set to `all_managed_users` all managed users in the
-
-                    enterprise can invite the group.'
                   enum:
                   - admins_only
                   - admins_and_members
                   - all_managed_users
                 member_viewability_level:
+                  description: 'Specifies who can see the members of the group.
+
+
+                    - `admins_only` - the enterprise admin, co-admins, group''s group admin.
+
+                    - `admins_and_members` - all admins and group members.
+
+                    - `all_managed_users` - all managed users in the enterprise.'
                   type: string
                   example: admins_only
-                  description: "Specifies who can see the members of the group.\n\n* `admins_only` - the enterprise admin, co-admins, group's\n  group admin\n* `admins_and_members` - all admins and group members\n* `all_managed_users` - all managed users in the\n  enterprise"
                   enum:
                   - admins_only
                   - admins_and_members
                   - all_managed_users
+              required:
+              - name
       responses:
         '201':
           description: Returns the new group object.
@@ -250,9 +209,7 @@ paths:
           description: 'Returns an error a conflict is stopping the group from being created.
 
 
-            * `invalid_parameter`: Often returned if the group name is not unique in
-
-            the enterprise.'
+            - `invalid_parameter`: Often returned if the group name is not unique in the enterprise.'
           content:
             application/json:
               schema:
@@ -263,57 +220,60 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ClientError'
+      x-box-tag: groups
+      tags:
+      - Groups
+      x-codeSamples:
+      - lang: curl
+        label: Create group
+        source: "curl -i -X POST \"https://api.box.com/2.0/groups\" \\\n     -H \"authorization: Bearer <ACCESS_TOKEN>\" \\\n     -H \"content-type: application/json\" \\\n     -d '{\n       \"name\": \"Customer Support\"\n     }'"
+      - lang: dotnet
+        label: Create group
+        source: 'await client.Groups.CreateGroupAsync(requestBody: new CreateGroupRequestBody(name: groupName) { Description = groupDescription });'
+      - lang: swift
+        label: Create group
+        source: 'try await client.groups.createGroup(requestBody: CreateGroupRequestBody(name: groupName, description: groupDescription))'
+      - lang: java
+        label: Create group
+        source: client.getGroups().createGroup(new CreateGroupRequestBody.Builder(groupName).description(groupDescription).build())
+      - lang: node
+        label: Create group
+        source: "await client.groups.createGroup({\n  name: groupName,\n  description: groupDescription,\n} satisfies CreateGroupRequestBody);"
+      - lang: python
+        label: Create group
+        source: client.groups.create_group(group_name, description=group_description)
   /groups/{group_id}:
     get:
       operationId: get_groups_id
-      summary: Box Get group
-      tags:
-      - Groups
-      x-box-tag: groups
-      description: 'Retrieves information about a group. Only members of this
-
-        group or users with admin-level permissions will be able to
-
-        use this API.'
+      summary: Get group
+      description: Retrieves information about a group. Only members of this group or users with admin-level permissions will be able to use this API.
       parameters:
       - name: group_id
-        description: The ID of the group.
-        example: '57645'
         in: path
+        description: The ID of the group.
         required: true
         schema:
           type: string
+        example: '57645'
       - name: fields
-        description: 'A comma-separated list of attributes to include in the
-
-          response. This can be used to request fields that are
-
-          not normally returned in a standard response.
-
-
-          Be aware that specifying this parameter will have the
-
-          effect that none of the standard fields are returned in
-
-          the response unless explicitly specified, instead only
-
-          fields for the mini representation are returned, additional
-
-          to the fields requested.'
         in: query
-        example:
-        - id
-        - type
-        - name
+        description: 'A comma-separated list of attributes to include in the response. This can be used to request fields that are not normally returned in a standard response.
+
+
+          Be aware that specifying this parameter will have the effect that none of the standard fields are returned in the response unless explicitly specified, instead only fields for the mini representation are returned, additional to the fields requested.'
         required: false
-        explode: false
         schema:
           type: array
           items:
             type: string
+        example:
+        - id
+        - type
+        - name
+        explode: false
       responses:
         '200':
-          description: Returns the group object
+          description: Returns the group object.
           content:
             application/json:
               schema:
@@ -324,53 +284,56 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ClientError'
-    put:
-      operationId: put_groups_id
-      summary: Box Update group
+      x-box-tag: groups
       tags:
       - Groups
-      x-box-tag: groups
-      description: 'Updates a specific group. Only admins of this
-
-        group or users with admin-level permissions will be able to
-
-        use this API.'
+      x-codeSamples:
+      - lang: curl
+        label: Get group
+        source: "curl -i -X GET \"https://api.box.com/2.0/groups/57645\" \\\n     -H \"authorization: Bearer <ACCESS_TOKEN>\""
+      - lang: dotnet
+        label: Get group
+        source: 'await client.Groups.GetGroupByIdAsync(groupId: group.Id, queryParams: new GetGroupByIdQueryParams() { Fields = Array.AsReadOnly(new [] {"id","name","description","group_type"}) });'
+      - lang: swift
+        label: Get group
+        source: 'try await client.groups.getGroupById(groupId: group.id, queryParams: GetGroupByIdQueryParams(fields: ["id", "name", "description", "group_type"]))'
+      - lang: java
+        label: Get group
+        source: client.getGroups().getGroupById(group.getId(), new GetGroupByIdQueryParams.Builder().fields(Arrays.asList("id", "name", "description", "group_type")).build())
+      - lang: node
+        label: Get group
+        source: "await client.groups.getGroupById(group.id, {\n  queryParams: {\n    fields: ['id', 'name', 'description', 'group_type'],\n  } satisfies GetGroupByIdQueryParams,\n} satisfies GetGroupByIdOptionalsInput);"
+      - lang: python
+        label: Get group
+        source: "client.groups.get_group_by_id(\n    group.id, fields=[\"id\", \"name\", \"description\", \"group_type\"]\n)"
+    put:
+      operationId: put_groups_id
+      summary: Update group
+      description: Updates a specific group. Only admins of this group or users with admin-level permissions will be able to use this API.
       parameters:
       - name: group_id
-        description: The ID of the group.
-        example: '57645'
         in: path
+        description: The ID of the group.
         required: true
         schema:
           type: string
+        example: '57645'
       - name: fields
-        description: 'A comma-separated list of attributes to include in the
-
-          response. This can be used to request fields that are
-
-          not normally returned in a standard response.
-
-
-          Be aware that specifying this parameter will have the
-
-          effect that none of the standard fields are returned in
-
-          the response unless explicitly specified, instead only
-
-          fields for the mini representation are returned, additional
-
-          to the fields requested.'
         in: query
-        example:
-        - id
-        - type
-        - name
+        description: 'A comma-separated list of attributes to include in the response. This can be used to request fields that are not normally returned in a standard response.
+
+
+          Be aware that specifying this parameter will have the effect that none of the standard fields are returned in the response unless explicitly specified, instead only fields for the mini representation are returned, additional to the fields requested.'
         required: false
-        explode: false
         schema:
           type: array
           items:
             type: string
+        example:
+        - id
+        - type
+        - name
+        explode: false
       requestBody:
         content:
           application/json:
@@ -378,84 +341,63 @@ paths:
               type: object
               properties:
                 name:
+                  description: The name of the new group to be created. Must be unique within the enterprise.
                   type: string
                   example: Customer Support
-                  description: 'The name of the new group to be created. Must be unique within the
-
-                    enterprise.'
                 provenance:
-                  type: string
-                  description: 'Keeps track of which external source this group is
-
-                    coming, for example `Active Directory`, or `Okta`.
+                  description: 'Keeps track of which external source this group is coming, for example `Active Directory`, or `Okta`.
 
 
-                    Setting this will also prevent Box admins from editing
-
-                    the group name and its members directly via the Box
-
-                    web application.
+                    Setting this will also prevent Box admins from editing the group name and its members directly via the Box web application.
 
 
                     This is desirable for one-way syncing of groups.'
-                  maxLength: 255
-                  example: Active Directory
-                external_sync_identifier:
                   type: string
-                  description: 'An arbitrary identifier that can be used by
-
-                    external group sync tools to link this Box Group to
-
-                    an external group.
-
-
-                    Example values of this field
-
-                    could be an **Active Directory Object ID** or a **Google
-
-                    Group ID**.
+                  example: Active Directory
+                  maxLength: 255
+                external_sync_identifier:
+                  description: 'An arbitrary identifier that can be used by external group sync tools to link this Box Group to an external group.
 
 
-                    We recommend you use of this field in
+                    Example values of this field could be an **Active Directory Object ID** or a **Google Group ID**.
 
-                    order to avoid issues when group names are updated in
 
-                    either Box or external systems.'
+                    We recommend you use of this field in order to avoid issues when group names are updated in either Box or external systems.'
+                  type: string
                   example: AD:123456
                 description:
-                  type: string
                   description: A human readable description of the group.
-                  maxLength: 255
+                  type: string
                   example: '"Customer Support Group - as imported from Active Directory"'
+                  maxLength: 255
                 invitability_level:
+                  description: 'Specifies who can invite the group to collaborate on folders.
+
+
+                    When set to `admins_only` the enterprise admin, co-admins, and the group''s admin can invite the group.
+
+
+                    When set to `admins_and_members` all the admins listed above and group members can invite the group.
+
+
+                    When set to `all_managed_users` all managed users in the enterprise can invite the group.'
                   type: string
                   example: admins_only
-                  description: 'Specifies who can invite the group to collaborate
-
-                    on folders.
-
-
-                    When set to `admins_only` the enterprise admin, co-admins,
-
-                    and the group''s admin can invite the group.
-
-
-                    When set to `admins_and_members` all the admins listed
-
-                    above and group members can invite the group.
-
-
-                    When set to `all_managed_users` all managed users in the
-
-                    enterprise can invite the group.'
                   enum:
                   - admins_only
                   - admins_and_members
                   - all_managed_users
                 member_viewability_level:
+                  description: 'Specifies who can see the members of the group.
+
+
+                    - `admins_only` - the enterprise admin, co-admins, group''s group admin.
+
+                    - `admins_and_members` - all admins and group members.
+
+                    - `all_managed_users` - all managed users in the enterprise.'
                   type: string
                   example: admins_only
-                  description: "Specifies who can see the members of the group.\n\n* `admins_only` - the enterprise admin, co-admins, group's\n  group admin\n* `admins_and_members` - all admins and group members\n* `all_managed_users` - all managed users in the\n  enterprise"
                   enum:
                   - admins_only
                   - admins_and_members
@@ -471,9 +413,7 @@ paths:
           description: 'Returns an error a conflict is stopping the group from being created.
 
 
-            * `invalid_parameter`: Often returned if the group name is not unique in
-
-            the enterprise.'
+            - `invalid_parameter`: Often returned if the group name is not unique in the enterprise.'
           content:
             application/json:
               schema:
@@ -484,149 +424,197 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ClientError'
-    delete:
-      operationId: delete_groups_id
-      summary: Box Remove group
+      x-box-tag: groups
       tags:
       - Groups
-      x-box-tag: groups
-      description: 'Permanently deletes a group. Only users with
-
-        admin-level permissions will be able to use this API.'
+      x-codeSamples:
+      - lang: curl
+        label: Update group
+        source: "curl -i -X PUT \"https://api.box.com/2.0/groups/57645\" \\\n     -H \"authorization: Bearer <ACCESS_TOKEN>\" \\\n     -H \"content-type: application/json\" \\\n     -d '{\n       \"name\": \"Customer Support\"\n     }'"
+      - lang: dotnet
+        label: Update group
+        source: 'await client.Groups.UpdateGroupByIdAsync(groupId: group.Id, requestBody: new UpdateGroupByIdRequestBody() { Name = updatedGroupName });'
+      - lang: swift
+        label: Update group
+        source: 'try await client.groups.updateGroupById(groupId: group.id, requestBody: UpdateGroupByIdRequestBody(name: updatedGroupName))'
+      - lang: java
+        label: Update group
+        source: client.getGroups().updateGroupById(group.getId(), new UpdateGroupByIdRequestBody.Builder().name(updatedGroupName).build())
+      - lang: node
+        label: Update group
+        source: "await client.groups.updateGroupById(group.id, {\n  requestBody: { name: updatedGroupName } satisfies UpdateGroupByIdRequestBody,\n} satisfies UpdateGroupByIdOptionalsInput);"
+      - lang: python
+        label: Update group
+        source: client.groups.update_group_by_id(group.id, name=updated_group_name)
+    delete:
+      operationId: delete_groups_id
+      summary: Remove group
+      description: Permanently deletes a group. Only users with admin-level permissions will be able to use this API.
       parameters:
       - name: group_id
-        description: The ID of the group.
-        example: '57645'
         in: path
+        description: The ID of the group.
         required: true
         schema:
           type: string
+        example: '57645'
       responses:
         '204':
-          description: 'A blank response is returned if the group was
-
-            successfully deleted.'
+          description: A blank response is returned if the group was successfully deleted.
         default:
           description: An unexpected client error.
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ClientError'
+      x-box-tag: groups
+      tags:
+      - Groups
+      x-codeSamples:
+      - lang: curl
+        label: Remove group
+        source: "curl -i -X DELETE \"https://api.box.com/2.0/groups/57645\" \\\n     -H \"authorization: Bearer <ACCESS_TOKEN>\""
+      - lang: dotnet
+        label: Remove group
+        source: 'await client.Groups.DeleteGroupByIdAsync(groupId: group.Id);'
+      - lang: swift
+        label: Remove group
+        source: 'try await client.groups.deleteGroupById(groupId: group.id)'
+      - lang: java
+        label: Remove group
+        source: client.getGroups().deleteGroupById(group.getId())
+      - lang: node
+        label: Remove group
+        source: await client.groups.deleteGroupById(group.id);
+      - lang: python
+        label: Remove group
+        source: client.groups.delete_group_by_id(group.id)
 components:
   schemas:
-    Group--Full:
-      title: Group (Full)
+    Groups:
+      description: A list of groups.
       type: object
-      x-box-resource-id: group--full
-      x-box-variant: full
-      description: 'Groups contain a set of users, and can be used in place of
-
-        users in some operations, such as collaborations.'
       allOf:
-      - $ref: '#/components/schemas/Group'
-      - properties:
-          provenance:
-            type: string
-            description: 'Keeps track of which external source this group is
-
-              coming from (e.g. "Active Directory", "Google Groups",
-
-              "Facebook Groups").  Setting this will
-
-              also prevent Box users from editing the group name
-
-              and its members directly via the Box web application.
-
-              This is desirable for one-way syncing of groups.'
-            maxLength: 255
-            example: Active Directory
-          external_sync_identifier:
-            type: string
-            description: 'An arbitrary identifier that can be used by
-
-              external group sync tools to link this Box Group to
-
-              an external group. Example values of this field
-
-              could be an Active Directory Object ID or a Google
-
-              Group ID.  We recommend you use of this field in
-
-              order to avoid issues when group names are updated in
-
-              either Box or external systems.'
-            example: AD:123456
-          description:
-            type: string
-            description: Human readable description of the group.
-            maxLength: 255
-            example: Support Group - as imported from Active Directory
-          invitability_level:
-            type: string
-            example: admins_only
-            description: 'Specifies who can invite the group to collaborate
-
-              on items.
+      - type: object
+        description: The part of an API response that describes pagination.
+        properties:
+          total_count:
+            description: 'One greater than the offset of the last entry in the entire collection. The total number of entries in the collection may be less than `total_count`.
 
 
-              When set to `admins_only` the enterprise admin, co-admins,
+              This field is only returned for calls that use offset-based pagination. For marker-based paginated APIs, this field will be omitted.'
+            type: integer
+            format: int64
+            example: 5000
+          limit:
+            description: The limit that was used for these entries. This will be the same as the `limit` query parameter unless that value exceeded the maximum value allowed. The maximum value varies by API.
+            type: integer
+            format: int64
+            example: 1000
+          offset:
+            description: 'The 0-based offset of the first entry in this set. This will be the same as the `offset` query parameter.
 
-              and the group''s admin can invite the group.
+
+              This field is only returned for calls that use offset-based pagination. For marker-based paginated APIs, this field will be omitted.'
+            type: integer
+            format: int64
+            example: 2000
+          order:
+            description: 'The order by which items are returned.
 
 
-              When set to `admins_and_members` all the admins listed
-
-              above and group members can invite the group.
-
-
-              When set to `all_managed_users` all managed users in the
-
-              enterprise can invite the group.'
-            enum:
-            - admins_only
-            - admins_and_members
-            - all_managed_users
-          member_viewability_level:
-            type: string
-            example: admins_only
-            description: "Specifies who can view the members of the group\n(Get Memberships for Group).\n\n* `admins_only` - the enterprise admin, co-admins, group's\n  group admin\n* `admins_and_members` - all admins and group members\n* `all_managed_users` - all managed users in the\n  enterprise"
-            enum:
-            - admins_only
-            - admins_and_members
-            - all_managed_users
-          permissions:
-            allOf:
-            - type: object
-              description: The permissions that the authenticated user has for a group.
+              This field is only returned for calls that use offset-based pagination. For marker-based paginated APIs, this field will be omitted.'
+            type: array
+            items:
+              type: object
+              description: The order in which a pagination is ordered.
               properties:
-                can_invite_as_collaborator:
-                  type: boolean
-                  description: Specifies if the user can invite the group to collaborate on any items.
-                  example: true
-            - description: 'Describes the permissions that the current user has
-
-                for this group.'
-    ClientError:
-      title: Client error
+                by:
+                  description: The field to order by.
+                  type: string
+                  example: type
+                direction:
+                  description: The direction to order by, either ascending or descending.
+                  type: string
+                  example: ASC
+                  enum:
+                  - ASC
+                  - DESC
+      - properties:
+          entries:
+            description: A list of groups.
+            type: array
+            items:
+              $ref: '#/components/schemas/Group--Full'
+      title: Groups
+      x-box-resource-id: groups
+      x-box-tag: groups
+    Group--Base:
+      description: A base representation of a group.
       type: object
-      x-box-resource-id: client_error
-      description: A generic error
+      properties:
+        id:
+          description: The unique identifier for this object.
+          type: string
+          example: '11446498'
+        type:
+          description: The value will always be `group`.
+          type: string
+          example: group
+          enum:
+          - group
+      required:
+      - id
+      - type
+      title: Group (Base)
+      x-box-resource-id: group--base
+      x-box-tag: groups
+      x-box-variant: base
+      x-box-variants:
+      - base
+      - mini
+      - standard
+      - full
+    Group--Mini:
+      description: Mini representation of a group, including id and name of group.
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/Group--Base'
+      - properties:
+          name:
+            description: The name of the group.
+            type: string
+            example: Support
+          group_type:
+            description: The type of the group.
+            type: string
+            example: managed_group
+            enum:
+            - managed_group
+            - all_users_group
+      title: Group (Mini)
+      x-box-resource-id: group--mini
+      x-box-tag: groups
+      x-box-variant: mini
+    ClientError:
+      description: A generic error.
+      type: object
       properties:
         type:
-          description: error
-          example: error
+          description: The value will always be `error`.
           type: string
+          example: error
           enum:
           - error
         status:
           description: The HTTP status of the response.
-          example: 400
           type: integer
           format: int32
+          example: 400
         code:
-          description: A Box-specific error code
-          example: item_name_invalid
+          description: A Box-specific error code.
           type: string
+          example: item_name_invalid
           enum:
           - created
           - accepted
@@ -640,6 +628,7 @@ components:
           - method_not_allowed
           - conflict
           - precondition_failed
+          - unprocessable_entity
           - too_many_requests
           - internal_server_error
           - unavailable
@@ -647,179 +636,116 @@ components:
           - insufficient_scope
         message:
           description: A short message describing the error.
-          example: Method Not Allowed
           type: string
+          example: Method Not Allowed
         context_info:
-          description: 'A free-form object that contains additional context
-
-            about the error. The possible fields are defined on
-
-            a per-endpoint basis. `message` is only one example.'
+          description: A free-form object that contains additional context about the error. The possible fields are defined on a per-endpoint basis. `message` is only one example.
           type:
           - object
           - 'null'
-          properties:
-            message:
-              type: string
-              description: More details on the error.
-              example: Something went wrong.
+          example:
+            message: Something went wrong
+          additionalProperties: {}
         help_url:
           description: A URL that links to more information about why this error occurred.
-          example: https://developer.box.com/guides/api-calls/permissions-and-errors/common-errors/
           type: string
+          example: https://developer.box.com/guides/api-calls/permissions-and-errors/common-errors/
         request_id:
-          description: 'A unique identifier for this response, which can be used
-
-            when contacting Box support.'
+          description: A unique identifier for this response, which can be used when contacting Box support.
           type: string
           example: abcdef123456
-    Group--Base:
-      title: Group (Base)
-      type: object
-      x-box-resource-id: group--base
-      x-box-sanitized: true
-      x-box-tag: groups
-      x-box-variants:
-      - base
-      - mini
-      - standard
-      - full
-      x-box-variant: base
-      description: A base representation of a group.
-      required:
-      - id
-      - type
-      properties:
-        id:
-          type: string
-          description: The unique identifier for this object
-          example: '11446498'
-        type:
-          type: string
-          description: '`group`'
-          example: group
-          enum:
-          - group
-    Groups:
-      title: Groups
-      type: object
-      x-box-resource-id: groups
-      x-box-tag: groups
-      description: A list of groups.
-      allOf:
-      - type: object
-        description: The part of an API response that describes pagination
-        properties:
-          total_count:
-            description: 'One greater than the offset of the last entry in the entire collection.
-
-              The total number of entries in the collection may be less than
-
-              `total_count`.
-
-
-              This field is only returned for calls that use offset-based pagination.
-
-              For marker-based paginated APIs, this field will be omitted.'
-            example: 5000
-            type: integer
-            format: int64
-          limit:
-            description: 'The limit that was used for these entries. This will be the same as the
-
-              `limit` query parameter unless that value exceeded the maximum value
-
-              allowed. The maximum value varies by API.'
-            example: 1000
-            type: integer
-            format: int64
-          offset:
-            description: 'The 0-based offset of the first entry in this set. This will be the same
-
-              as the `offset` query parameter.
-
-
-              This field is only returned for calls that use offset-based pagination.
-
-              For marker-based paginated APIs, this field will be omitted.'
-            example: 2000
-            type: integer
-            format: int64
-          order:
-            description: 'The order by which items are returned.
-
-
-              This field is only returned for calls that use offset-based pagination.
-
-              For marker-based paginated APIs, this field will be omitted.'
-            type: array
-            items:
-              type: object
-              description: The order in which a pagination is ordered
-              properties:
-                by:
-                  description: The field to order by
-                  example: type
-                  type: string
-                direction:
-                  type: string
-                  description: The direction to order by, either ascending or descending
-                  example: ASC
-                  enum:
-                  - ASC
-                  - DESC
-      - properties:
-          entries:
-            type: array
-            description: A list of groups
-            items:
-              $ref: '#/components/schemas/Group--Full'
+      title: Client error
+      x-box-resource-id: client_error
     Group:
-      title: Group
+      description: A standard representation of a group, as returned from any group API endpoints by default.
       type: object
-      x-box-resource-id: group
-      x-box-variant: standard
-      description: 'A standard representation of a group, as returned from any
-
-        group API endpoints by default'
       allOf:
       - $ref: '#/components/schemas/Group--Mini'
       - properties:
           created_at:
+            description: When the group object was created.
             type: string
             format: date-time
-            description: When the group object was created
             example: '2012-12-12T10:53:43-08:00'
           modified_at:
+            description: When the group object was last modified.
             type: string
             format: date-time
-            description: When the group object was last modified
             example: '2012-12-12T10:53:43-08:00'
-    Group--Mini:
-      title: Group (Mini)
+      title: Group
+      x-box-resource-id: group
+      x-box-tag: groups
+      x-box-variant: standard
+    Group--Full:
+      description: Groups contain a set of users, and can be used in place of users in some operations, such as collaborations.
       type: object
-      x-box-resource-id: group--mini
-      x-box-variant: mini
-      description: 'Mini representation of a group, including id and name of
-
-        group.'
       allOf:
-      - $ref: '#/components/schemas/Group--Base'
+      - $ref: '#/components/schemas/Group'
       - properties:
-          name:
+          provenance:
+            description: Keeps track of which external source this group is coming from (e.g. "Active Directory", "Google Groups", "Facebook Groups"). Setting this will also prevent Box users from editing the group name and its members directly via the Box web application. This is desirable for one-way syncing of groups.
             type: string
-            description: The name of the group
-            example: Support
-          group_type:
+            example: Active Directory
+            maxLength: 255
+          external_sync_identifier:
+            description: An arbitrary identifier that can be used by external group sync tools to link this Box Group to an external group. Example values of this field could be an Active Directory Object ID or a Google Group ID. We recommend you use of this field in order to avoid issues when group names are updated in either Box or external systems.
             type: string
-            description: The type of the group.
-            example: managed_group
+            example: AD:123456
+          description:
+            description: Human readable description of the group.
+            type: string
+            example: Support Group - as imported from Active Directory
+            maxLength: 255
+          invitability_level:
+            description: 'Specifies who can invite the group to collaborate on items.
+
+
+              When set to `admins_only` the enterprise admin, co-admins, and the group''s admin can invite the group.
+
+
+              When set to `admins_and_members` all the admins listed above and group members can invite the group.
+
+
+              When set to `all_managed_users` all managed users in the enterprise can invite the group.'
+            type: string
+            example: admins_only
             enum:
-            - managed_group
-            - all_users_group
+            - admins_only
+            - admins_and_members
+            - all_managed_users
+          member_viewability_level:
+            description: 'Specifies who can view the members of the group (Get Memberships for Group).
+
+
+              - `admins_only` - the enterprise admin, co-admins, group''s group admin.
+
+              - `admins_and_members` - all admins and group members.
+
+              - `all_managed_users` - all managed users in the enterprise.'
+            type: string
+            example: admins_only
+            enum:
+            - admins_only
+            - admins_and_members
+            - all_managed_users
+          permissions:
+            allOf:
+            - type: object
+              description: The permissions that the authenticated user has for a group.
+              properties:
+                can_invite_as_collaborator:
+                  description: Specifies if the user can invite the group to collaborate on any items.
+                  type: boolean
+                  example: true
+            - description: Describes the permissions that the current user has for this group.
+      title: Group (Full)
+      x-box-resource-id: group--full
+      x-box-tag: groups
+      x-box-variant: full
   securitySchemes:
     OAuth2Security:
       type: oauth2
+      description: The access token received from the authorization server in the OAuth 2.0 flow.
       flows:
         authorizationCode:
           authorizationUrl: https://account.box.com/api/oauth2/authorize
@@ -835,5 +761,8 @@ components:
             manage_data_retention: Manage data retention polices
             manage_legal_hold: Manage Legal Holds
 externalDocs:
-  description: Box Developer Documentation
+  description: Box Developer Documentation.
   url: https://developer.box.com
+x-mint:
+  mcp:
+    enabled: true

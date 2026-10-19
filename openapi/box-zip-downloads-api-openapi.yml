@@ -5,62 +5,34 @@ info:
   termsOfService: https://cloud.app.box.com/s/rmwxu64h1ipr41u49w3bbuvbsa29wku9
   contact:
     name: Box, Inc
-    url: https://box.dev
+    url: https://developer.box.com
     email: devrel@box.com
   license:
     name: Apache-2.0
-    url: http://www.apache.org/licenses/LICENSE-2.0
-  version: 2.0.0
-  x-box-commit-hash: '5819125043'
+    url: https://www.apache.org/licenses/LICENSE-2.0
+  version: '2024.0'
+  x-box-commit-hash: 53bdced3cd
 servers:
 - url: https://api.box.com/2.0
-  description: Box Platform API server
+  description: Box Platform API server.
 security:
 - OAuth2Security: []
 tags:
 - name: Zip Downloads
-  description: 'Zip downloads represent a successful request
-
-    to create a ZIP archive with files and folders.'
+  description: Zip downloads represent a successful request to create a ZIP archive with files and folders.
   x-box-tag: zip_downloads
 paths:
   /zip_downloads:
     post:
       operationId: post_zip_downloads
-      summary: Box Create zip download
-      tags:
-      - Zip Downloads
-      x-box-tag: zip_downloads
-      x-box-reference-category: zip_downloads
-      description: 'Creates a request to download multiple files and folders as a single `zip`
-
-        archive file. This API does not return the archive but instead performs all
-
-        the checks to ensure that the user has access to all the items, and then
-
-        returns a `download_url` and a `status_url` that can be used to download the
-
-        archive.
+      summary: Create zip download
+      description: 'Creates a request to download multiple files and folders as a single `zip` archive file. This API does not return the archive but instead performs all the checks to ensure that the user has access to all the items, and then returns a `download_url` and a `status_url` that can be used to download the archive.
 
 
-        The limit for an archive is either the Account''s upload limit or
-
-        10,000 files, whichever is met first.
+        The limit for an archive is either the Account''s upload limit or 10,000 files, whichever is met first.
 
 
-        **Note**: Downloading a large file can be
-
-        affected by various
-
-        factors such as distance, network latency,
-
-        bandwidth, and congestion, as well as packet loss
-
-        ratio and current server load.
-
-        For these reasons we recommend that a maximum ZIP archive
-
-        total size does not exceed 25GB.'
+        **Note**: Downloading a large file can be affected by various factors such as distance, network latency, bandwidth, and congestion, as well as packet loss ratio and current server load. For these reasons we recommend that a maximum ZIP archive total size does not exceed 25GB.'
       requestBody:
         content:
           application/json:
@@ -68,11 +40,7 @@ paths:
               $ref: '#/components/schemas/ZipDownloadRequest'
       responses:
         '202':
-          description: 'If the `zip` archive is ready to be downloaded, the API will return a
-
-            response that will include a `download_url`, a `status_url`, as well as
-
-            any conflicts that might have occurred when creating the request.'
+          description: If the `zip` archive is ready to be downloaded, the API will return a response that will include a `download_url`, a `status_url`, as well as any conflicts that might have occurred when creating the request.
           content:
             application/json:
               schema:
@@ -93,60 +61,32 @@ paths:
                         original_name: Report.pdf
                         download_name: 5d53f2.pdf
         '400':
-          description: 'Returns an error if some of the parameters are missing or
-
-            not valid.
+          description: 'Returns an error if some of the parameters are missing or not valid.
 
 
-            In most cases, this error might happen because the JSON request body is
-
-            not valid JSON, any of the items has an incorrect or missing ID, any of
-
-            the items is not a file or folder, or the root folder with ID `0` has been
-
-            added to the list of folders to add to the archive.
+            In most cases, this error might happen because the JSON request body is not valid JSON, any of the items has an incorrect or missing ID, any of the items is not a file or folder, or the root folder with ID `0` has been added to the list of folders to add to the archive.
 
 
             The following is a list of common error codes for this response.
 
 
-            * `bad_request` - the request body is missing, invalid, or both the list
+            - `bad_request` - the request body is missing, invalid, or both the list of files and folders are empty. Additionally, it this error might be returned when attempting to add the root folder with ID `0` to an archive.
 
-            of files and folders are empty. Additionally, it this error might be
+            - `zip_download_file_count_exceeded_limit` - the requested files and folders would result in an archive with more than 10,000 files. The request will have to be split into multiple requests to reduce the number of files per archive.
 
-            returned when attempting to add the root folder with ID `0` to an archive.
-
-            * `zip_download_file_count_exceeded_limit` - the requested files and
-
-            folders would result in an archive with more than 10,000 files. The
-
-            request will have to be split into multiple requests to reduce the number
-
-            of files per archive.
-
-            * `zip_download_pre_compressed_bytes_exceeded_limit` - the requested files
-
-            and folders would result in an archive with more than the allowed download
-
-            limit. The request will have to be split into multiple requests to reduce
-
-            the size of the archive.'
+            - `zip_download_pre_compressed_bytes_exceeded_limit` - the requested files and folders would result in an archive with more than the allowed download limit. The request will have to be split into multiple requests to reduce the size of the archive.'
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ClientError'
         '401':
-          description: 'Returned when the access token provided in the `Authorization` header
-
-            is not recognized or not provided.'
+          description: Returned when the access token provided in the `Authorization` header is not recognized or not provided.
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ClientError'
         '403':
-          description: 'Returned when an authorization header is provided but the user does not
-
-            have access to the items.'
+          description: Returned when an authorization header is provided but the user does not have access to the items.
           content:
             application/json:
               schema:
@@ -157,93 +97,76 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ClientError'
+      x-box-tag: zip_downloads
+      tags:
+      - Zip Downloads
+      x-box-reference-category: zip_downloads
+      x-codeSamples:
+      - lang: curl
+        label: Create zip download
+        source: "curl -i -X POST \"https://api.box.com/2.0/zip_downloads\" \\\n     -H \"authorization: Bearer <ACCESS_TOKEN>\" \\\n     -d '{\n       \"download_file_name\": \"January Financials\",\n       \"items\": [\n         {\n           \"type\": \"file\",\n           \"id\": \"12345\"\n         },\n         {\n           \"type\": \"file\",\n           \"id\": \"34325\"\n         },\n         {\n           \"type\": \"folder\",\n           \"id\": \"45678\"\n         }\n       ]\n     }'"
+      - lang: dotnet
+        label: Create zip download
+        source: 'await client.ZipDownloads.CreateZipDownloadAsync(requestBody: new ZipDownloadRequest(items: Array.AsReadOnly(new [] {new ZipDownloadRequestItemsField(id: file1.Id, type: ZipDownloadRequestItemsTypeField.File),new ZipDownloadRequestItemsField(id: file2.Id, type: ZipDownloadRequestItemsTypeField.File),new ZipDownloadRequestItemsField(id: folder1.Id, type: ZipDownloadRequestItemsTypeField.Folder)})) { DownloadFileName = "zip" });'
+      - lang: swift
+        label: Create zip download
+        source: 'try await client.zipDownloads.createZipDownload(requestBody: ZipDownloadRequest(items: [ZipDownloadRequestItemsField(id: file1.id, type: ZipDownloadRequestItemsTypeField.file), ZipDownloadRequestItemsField(id: file2.id, type: ZipDownloadRequestItemsTypeField.file), ZipDownloadRequestItemsField(id: folder1.id, type: ZipDownloadRequestItemsTypeField.folder)], downloadFileName: "zip"))'
+      - lang: java
+        label: Create zip download
+        source: client.getZipDownloads().createZipDownload(new ZipDownloadRequest.Builder(Arrays.asList(new ZipDownloadRequestItemsField(ZipDownloadRequestItemsTypeField.FILE, file1.getId()), new ZipDownloadRequestItemsField(ZipDownloadRequestItemsTypeField.FILE, file2.getId()), new ZipDownloadRequestItemsField(ZipDownloadRequestItemsTypeField.FOLDER, folder1.getId()))).downloadFileName("zip").build())
+      - lang: node
+        label: Create zip download
+        source: "await client.zipDownloads.createZipDownload({\n  items: [\n    {\n      id: file1.id,\n      type: 'file' as ZipDownloadRequestItemsTypeField,\n    } satisfies ZipDownloadRequestItemsField,\n    {\n      id: file2.id,\n      type: 'file' as ZipDownloadRequestItemsTypeField,\n    } satisfies ZipDownloadRequestItemsField,\n    {\n      id: folder1.id,\n      type: 'folder' as ZipDownloadRequestItemsTypeField,\n    } satisfies ZipDownloadRequestItemsField,\n  ],\n  downloadFileName: 'zip',\n} satisfies ZipDownloadRequest);"
+      - lang: python
+        label: Create zip download
+        source: "client.zip_downloads.create_zip_download(\n    [\n        CreateZipDownloadItems(id=file_1.id, type=DownloadZipItemsTypeField.FILE),\n        CreateZipDownloadItems(id=file_2.id, type=DownloadZipItemsTypeField.FILE),\n        CreateZipDownloadItems(id=folder_1.id, type=DownloadZipItemsTypeField.FOLDER),\n    ],\n    download_file_name=\"zip\",\n)"
   /zip_downloads/{zip_download_id}/content:
     get:
       operationId: get_zip_downloads_id_content
-      summary: Box Download zip archive
-      tags:
-      - Zip Downloads
-      x-box-tag: zip_downloads
-      x-box-reference-category: zip_downloads
-      description: 'Returns the contents of a `zip` archive in binary format. This URL does not
-
-        require any form of authentication and could be used in a user''s browser to
-
-        download the archive to a user''s device.
+      summary: Download zip archive
+      description: 'Returns the contents of a `zip` archive in binary format. This URL does not require any form of authentication and could be used in a user''s browser to download the archive to a user''s device.
 
 
-        By default, this URL is only valid for a few seconds from the creation of
-
-        the request for this archive. Once a download has started it can not be
-
-        stopped and resumed, instead a new request for a zip archive would need to
-
-        be created.
+        By default, this URL is only valid for a few seconds from the creation of the request for this archive. Once a download has started it can not be stopped and resumed, instead a new request for a zip archive would need to be created.
 
 
-        The URL of this endpoint should not be considered as fixed. Instead, use
-
-        the Create zip download API to request to create a
-
-        `zip` archive, and then follow the `download_url` field in the response to
-
-        this endpoint.'
-      security: []
-      servers:
-      - url: https://dl.boxcloud.com/2.0
-        description: 'An opaque server URL for downloading zip downloads. The format
-
-          of this URL might change over time.'
+        The URL of this endpoint should not be considered as fixed. Instead, use the Create zip download API to request to create a `zip` archive, and then follow the `download_url` field in the response to this endpoint.'
       parameters:
       - name: zip_download_id
-        description: The unique identifier that represent this `zip` archive.
-        example: Lu6fA9Ob-jyysp3AAvMF4AkLEwZwAYbL=tgj2zIC=eK9RvJnJbjJl9rNh2qBgHDpyOCAOhpM=vajg2mKq8Mdd
         in: path
+        description: The unique identifier that represent this `zip` archive.
         required: true
         schema:
           type: string
+        example: Lu6fA9Ob-jyysp3AAvMF4AkLEwZwAYbL=tgj2zIC=eK9RvJnJbjJl9rNh2qBgHDpyOCAOhpM=vajg2mKq8Mdd
       responses:
         '200':
-          description: 'Returns the content of the items requested for this download, formatted as
-
-            a stream of files and folders in a `zip` archive.'
+          description: Returns the content of the items requested for this download, formatted as a stream of files and folders in a `zip` archive.
           headers:
             Content-Disposition:
-              description: The name of the archive to be downloaded
+              description: The name of the archive to be downloaded.
               schema:
                 type: string
                 example: attachment;filename="Avatars.zip";filename*=UTF-8''Avatars.zip
           content:
             application/octet-stream:
               schema:
+                description: The binary content of the archive, which will include the items requested for this download.
                 type: string
                 format: binary
-                description: 'The binary content of the archive, which will include the items
-
-                  requested for this download.'
         '404':
-          description: 'Returns an error if the ID of this download request is not valid. This
-
-            error can also be returned if this URL has been called before. To
-
-            re-download this archive, please create a new request for a zip download.'
+          description: Returns an error if the ID of this download request is not valid. This error can also be returned if this URL has been called before. To re-download this archive, please create a new request for a zip download.
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ClientError'
         '429':
-          description: 'Returns an error if the number of concurrent zip downloads has been
-
-            reached for either the user or the enterprise.
+          description: 'Returns an error if the number of concurrent zip downloads has been reached for either the user or the enterprise.
 
 
-            * `user_too_many_concurrent_downloads` - the maximum of 5 parallel
+            - `user_too_many_concurrent_downloads` - the maximum of 5 parallel downloads of zip archives per user has been met.
 
-            downloads of zip archives per user has been met.
-
-            * `enterprise_too_many_concurrent_downloads` - the maximum of 10 parallel
-
-            downloads of zip archives per enterprise has been met.'
+            - `enterprise_too_many_concurrent_downloads` - the maximum of 10 parallel downloads of zip archives per enterprise has been met.'
           content:
             application/json:
               schema:
@@ -254,43 +177,52 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ClientError'
+      x-box-tag: zip_downloads
+      security: []
+      servers:
+      - url: https://dl.boxcloud.com/2.0
+        description: An opaque server URL for downloading zip downloads. The format of this URL might change over time.
+      tags:
+      - Zip Downloads
+      x-box-reference-category: zip_downloads
+      x-codeSamples:
+      - lang: curl
+        label: Download zip archive
+        source: "curl -L -X GET \"https://dl.boxcloud.com/2.0/zip_downloads/29l00nfxDyHOt7RphI9zT_w==nDnZEDjY2S8iEWWCHEEiptFxwoWojjlibZjJ6geuE5xnXENDTPxzgbks_yY=/content\" \\\n     -H \"authorization: Bearer <ACCESS_TOKEN>\" \\\n     -o sample_curl.zip"
+      - lang: dotnet
+        label: Download zip archive
+        source: 'await client.ZipDownloads.GetZipDownloadContentAsync(downloadUrl: NullableUtils.Unwrap(zipDownload.DownloadUrl));'
+      - lang: swift
+        label: Download zip archive
+        source: 'try await client.zipDownloads.getZipDownloadContent(downloadUrl: zipDownload.downloadUrl!, downloadDestinationUrl: URL(path: destinationPathString))'
+      - lang: java
+        label: Download zip archive
+        source: client.getZipDownloads().getZipDownloadContent(zipDownload.getDownloadUrl())
+      - lang: node
+        label: Download zip archive
+        source: await client.zipDownloads.getZipDownloadContent(zipDownload.downloadUrl!);
+      - lang: python
+        label: Download zip archive
+        source: client.zip_downloads.get_zip_download_content(zip_download.download_url)
   /zip_downloads/{zip_download_id}/status:
     get:
       operationId: get_zip_downloads_id_status
-      summary: Box Get zip download status
-      tags:
-      - Zip Downloads
-      x-box-tag: zip_downloads
-      x-box-reference-category: zip_downloads
-      description: 'Returns the download status of a `zip` archive, allowing an application to
-
-        inspect the progress of the download as well as the number of items that
-
-        might have been skipped.
+      summary: Get zip download status
+      description: 'Returns the download status of a `zip` archive, allowing an application to inspect the progress of the download as well as the number of items that might have been skipped.
 
 
-        This endpoint can only be accessed once the download has started.
-
-        Subsequently this endpoint is valid for 12 hours from the start of the
-
-        download.
+        This endpoint can only be accessed once the download has started. Subsequently this endpoint is valid for 12 hours from the start of the download.
 
 
-        The URL of this endpoint should not be considered as fixed. Instead, use
-
-        the Create zip download API to request to create a
-
-        `zip` archive, and then follow the `status_url` field in the response to
-
-        this endpoint.'
+        The URL of this endpoint should not be considered as fixed. Instead, use the Create zip download API to request to create a `zip` archive, and then follow the `status_url` field in the response to this endpoint.'
       parameters:
       - name: zip_download_id
-        description: The unique identifier that represent this `zip` archive.
-        example: Lu6fA9Ob-jyysp3AAvMF4AkLEwZwAYbL=tgj2zIC=eK9RvJnJbjJl9rNh2qBgHDpyOCAOhpM=vajg2mKq8Mdd
         in: path
+        description: The unique identifier that represent this `zip` archive.
         required: true
         schema:
           type: string
+        example: Lu6fA9Ob-jyysp3AAvMF4AkLEwZwAYbL=tgj2zIC=eK9RvJnJbjJl9rNh2qBgHDpyOCAOhpM=vajg2mKq8Mdd
       responses:
         '200':
           description: Returns the status of the `zip` archive that is being downloaded.
@@ -299,27 +231,19 @@ paths:
               schema:
                 $ref: '#/components/schemas/ZipDownloadStatus'
         '401':
-          description: 'Returned when the access token provided in the `Authorization` header
-
-            is not recognized or not provided.'
+          description: Returned when the access token provided in the `Authorization` header is not recognized or not provided.
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ClientError'
         '403':
-          description: 'Returned when an authorization header is provided but the user does not
-
-            have access to the items.'
+          description: Returned when an authorization header is provided but the user does not have access to the items.
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ClientError'
         '404':
-          description: 'Returns an error if the ID of this download request is not valid, or if
-
-            the status of a download is requested before the download has been
-
-            started.'
+          description: Returns an error if the ID of this download request is not valid, or if the status of a download is requested before the download has been started.
           content:
             application/json:
               schema:
@@ -330,134 +254,124 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ClientError'
+      x-box-tag: zip_downloads
+      tags:
+      - Zip Downloads
+      x-box-reference-category: zip_downloads
+      x-codeSamples:
+      - lang: curl
+        label: Get zip download status
+        source: "curl -i -X GET \"https://api.box.com/2.0/zip_downloads/29l00nfxDyHOt7RphI9zT_w==nDnZEDjY2S8iEWWCHEEiptFxwoWojjlibZjJ6geuE5xnXENDTPxzgbks_yY=/status\" \\\n     -H \"authorization: Bearer <ACCESS_TOKEN>\""
+      - lang: dotnet
+        label: Get zip download status
+        source: 'await client.ZipDownloads.GetZipDownloadStatusAsync(statusUrl: NullableUtils.Unwrap(zipDownload.StatusUrl));'
+      - lang: swift
+        label: Get zip download status
+        source: 'try await client.zipDownloads.getZipDownloadStatus(statusUrl: zipDownload.statusUrl!)'
+      - lang: java
+        label: Get zip download status
+        source: client.getZipDownloads().getZipDownloadStatus(zipDownload.getStatusUrl())
+      - lang: node
+        label: Get zip download status
+        source: await client.zipDownloads.getZipDownloadStatus(zipDownload.statusUrl!);
+      - lang: python
+        label: Get zip download status
+        source: client.zip_downloads.get_zip_download_status(zip_download.status_url)
 components:
   schemas:
-    ZipDownloadStatus:
-      title: Zip download status
+    ZipDownloadRequest:
+      description: A request to create a `zip` archive to download.
       type: object
-      x-box-resource-id: zip_download_status
-      x-box-tag: zip_downloads
-      x-box-reference-category: zip_downloads
-      description: The status of a `zip` archive being downloaded.
       properties:
-        total_file_count:
-          type: integer
-          description: The total number of files in the archive.
-          example: 20
-          minimum: 0
-          maximum: 10000
-        downloaded_file_count:
-          type: integer
-          description: The number of files that have already been downloaded.
-          example: 10
-          minimum: 0
-        skipped_file_count:
-          type: integer
-          description: 'The number of files that have been skipped as they could not be
-
-            downloaded. In many cases this is due to permission issues that have
-
-            surfaced between the creation of the request for the archive and the
-
-            archive being downloaded.'
-          example: 5
-          minimum: 0
-        skipped_folder_count:
-          type: integer
-          description: 'The number of folders that have been skipped as they could not be
-
-            downloaded. In many cases this is due to permission issues that have
-
-            surfaced between the creation of the request for the archive and the
-
-            archive being downloaded.'
-          example: 5
-          minimum: 0
-        state:
+        items:
+          description: A list of items to add to the `zip` archive. These can be folders or files.
+          type: array
+          items:
+            type: object
+            description: An item to add to the `zip` archive. This can be a file or a folder.
+            required:
+            - type
+            - id
+            properties:
+              type:
+                description: The type of the item to add to the archive.
+                type: string
+                example: file
+                enum:
+                - file
+                - folder
+              id:
+                description: The identifier of the item to add to the archive. When this item is a folder then this can not be the root folder with ID `0`.
+                type: string
+                example: '12345'
+        download_file_name:
+          description: The optional name of the `zip` archive. This name will be appended by the `.zip` file extension, for example `January Financials.zip`.
           type: string
-          description: The state of the archive being downloaded.
-          default: in_progress
-          example: succeeded
-          enum:
-          - in_progress
-          - failed
-          - succeeded
-    ClientError:
-      title: Client error
-      type: object
-      x-box-resource-id: client_error
-      description: A generic error
-      properties:
-        type:
-          description: error
-          example: error
-          type: string
-          enum:
-          - error
-        status:
-          description: The HTTP status of the response.
-          example: 400
-          type: integer
-          format: int32
-        code:
-          description: A Box-specific error code
-          example: item_name_invalid
-          type: string
-          enum:
-          - created
-          - accepted
-          - no_content
-          - redirect
-          - not_modified
-          - bad_request
-          - unauthorized
-          - forbidden
-          - not_found
-          - method_not_allowed
-          - conflict
-          - precondition_failed
-          - too_many_requests
-          - internal_server_error
-          - unavailable
-          - item_name_invalid
-          - insufficient_scope
-        message:
-          description: A short message describing the error.
-          example: Method Not Allowed
-          type: string
-        context_info:
-          description: 'A free-form object that contains additional context
-
-            about the error. The possible fields are defined on
-
-            a per-endpoint basis. `message` is only one example.'
-          type:
-          - object
-          - 'null'
-          properties:
-            message:
-              type: string
-              description: More details on the error.
-              example: Something went wrong.
-        help_url:
-          description: A URL that links to more information about why this error occurred.
-          example: https://developer.box.com/guides/api-calls/permissions-and-errors/common-errors/
-          type: string
-        request_id:
-          description: 'A unique identifier for this response, which can be used
-
-            when contacting Box support.'
-          type: string
-          example: abcdef123456
+          example: January Financials
+      required:
+      - items
+      title: Create a `zip` archive
     ZipDownload:
-      title: Zip download
+      description: Represents a successful request to create a `zip` archive of a list of files and folders.
       type: object
-      x-box-resource-id: zip_download
-      x-box-tag: zip_downloads
-      x-box-reference-category: zip_downloads
-      description: 'Represents a successful request to create a `zip` archive of a list of files
+      properties:
+        download_url:
+          description: 'The URL that can be used to download the `zip` archive. A `Get` request to this URL will start streaming the items requested. By default, this URL is only valid for a few seconds, until the `expires_at` time, unless a download is started after which it is valid for the duration of the download.
 
-        and folders.'
+
+            It is important to note that the domain and path of this URL might change between API calls, and therefore it''s important to use this URL as-is.'
+          type: string
+          example: https://dl.boxcloud.com/2.0/zip_downloads/Lu6fA9Ob-jyysp3AAvMF4AkLEwZwAYbL=tgj2zIC=eK9RvJnJbjJl9rNh2qBgHDpyOCAOhpM=vajg2mKq8Mdd/content
+        status_url:
+          description: 'The URL that can be used to get the status of the `zip` archive being downloaded. A `Get` request to this URL will return the number of files in the archive as well as the number of items already downloaded or skipped. By default, this URL is only valid for a few seconds, until the `expires_at` time, unless a download is started after which the URL is valid for 12 hours from the start of the download.
+
+
+            It is important to note that the domain and path of this URL might change between API calls, and therefore it''s important to use this URL as-is.'
+          type: string
+          example: https://api.box.com/2.0/zip_downloads/Lu6fA9Ob-jyysp3AAvMF4AkLEwZwAYbL=tgj2zIC=eK9RvJnJbjJl9rNh2qBgHDpyOCAOhpM=vajg2mKq8Mdd/status
+        expires_at:
+          description: 'The time and date when this archive will expire. After this time the `status_url` and `download_url` will return an error.
+
+
+            By default, these URLs are only valid for a few seconds, unless a download is started after which the `download_url` is valid for the duration of the download, and the `status_url` is valid for 12 hours from the start of the download.'
+          type: string
+          format: date-time
+          example: '2019-08-29T23:59:00-07:00'
+        name_conflicts:
+          description: 'A list of conflicts that occurred when trying to create the archive. This would occur when multiple items have been requested with the same name.
+
+
+            To solve these conflicts, the API will automatically rename an item and return a mapping between the original item''s name and its new name.
+
+
+            For every conflict, both files will be renamed and therefore this list will always be a multiple of 2.'
+          type: array
+          items:
+            type: array
+            description: An individual conflict that occurred when trying to create the archive. This includes an array of 2 objects, each containing the original name and the renamed filename of a file or folder for which the names conflicted.
+            items:
+              type: object
+              description: A file or folder for which a conflict was encountered, This object provides the type and identifier of the original item, as well as a mapping between its original name and it's new name as it will appear in the archive.
+              properties:
+                id:
+                  description: The identifier of the item.
+                  type: string
+                  example: '12345'
+                type:
+                  description: The type of this item.
+                  type: string
+                  example: file
+                  enum:
+                  - file
+                  - folder
+                original_name:
+                  description: Box Developer Documentation.
+                  type: string
+                  example: Report.pdf
+                download_name:
+                  description: The new name of this item as it will appear in the downloaded `zip` archive.
+                  type: string
+                  example: 3aa6a7.pdf
       example:
         download_url: https://dl.boxcloud.com/2.0/zip_downloads/29l00nfxDyHOt7RphI9zT_w==nDnZEDjY2S8iEWWCHEEiptFxwoWojjlibZjJ6geuE5xnXENDTPxzgbks_yY=/content
         status_url: https://api.box.com/2.0/zip_downloads/29l00nfxDyHOt7RphI9zT_w==nDnZEDjY2S8iEWWCHEEiptFxwoWojjlibZjJ6geuE5xnXENDTPxzgbks_yY=/status
@@ -471,153 +385,112 @@ components:
             type: file
             original_name: Report.pdf
             download_name: 5d53f2.pdf
-      properties:
-        download_url:
-          type: string
-          description: 'The URL that can be used to download the `zip` archive. A `Get` request to
-
-            this URL will start streaming the items requested. By default, this URL
-
-            is only valid for a few seconds, until the `expires_at` time, unless a
-
-            download is started after which it is valid for the duration of the
-
-            download.
-
-
-            It is important to note that the domain and path of this URL might change
-
-            between API calls, and therefore it''s important to use this URL as-is.'
-          example: https://dl.boxcloud.com/2.0/zip_downloads/Lu6fA9Ob-jyysp3AAvMF4AkLEwZwAYbL=tgj2zIC=eK9RvJnJbjJl9rNh2qBgHDpyOCAOhpM=vajg2mKq8Mdd/content
-        status_url:
-          type: string
-          description: 'The URL that can be used to get the status of the `zip` archive being
-
-            downloaded. A `Get` request to this URL will return the number of files
-
-            in the archive as well as the number of items already downloaded or
-
-            skipped. By default, this URL is only valid for a few seconds, until the
-
-            `expires_at` time, unless a download is started after which the URL is
-
-            valid for 12 hours from the start of the download.
-
-
-            It is important to note that the domain and path of this URL might change
-
-            between API calls, and therefore it''s important to use this URL as-is.'
-          example: https://api.box.com/2.0/zip_downloads/Lu6fA9Ob-jyysp3AAvMF4AkLEwZwAYbL=tgj2zIC=eK9RvJnJbjJl9rNh2qBgHDpyOCAOhpM=vajg2mKq8Mdd/status
-        expires_at:
-          type: string
-          format: date-time
-          description: 'The time and date when this archive will expire. After this time the
-
-            `status_url` and `download_url` will return an error.
-
-
-            By default, these URLs are only valid for a few seconds, unless a download
-
-            is started after which the `download_url` is valid for the duration of the
-
-            download, and the `status_url` is valid for 12 hours from the start of the
-
-            download.'
-          example: '2019-08-29T23:59:00-07:00'
-        name_conflicts:
-          type: array
-          description: 'A list of conflicts that occurred when trying to create the archive. This
-
-            would occur when multiple items have been requested with the
-
-            same name.
-
-
-            To solve these conflicts, the API will automatically rename an item
-
-            and return a mapping between the original item''s name and its new
-
-            name.
-
-
-            For every conflict, both files will be renamed and therefore this list
-
-            will always be a multiple of 2.'
-          items:
-            type: array
-            description: 'An individual conflict that occurred when trying to create the archive.
-
-              This includes an array of 2 objects, each containing the original name
-
-              and the renamed filename of a file or folder for which the names
-
-              conflicted.'
-            items:
-              type: object
-              description: A file or folder for which a conflict was encountered, This object provides the type and identifier of the original item, as well as a mapping between its original name and it's new name as it will appear in the archive.
-              properties:
-                id:
-                  type: string
-                  description: The identifier of the item
-                  example: '12345'
-                type:
-                  type: string
-                  description: The type of this item
-                  example: file
-                  enum:
-                  - file
-                  - folder
-                original_name:
-                  type: string
-                  description: The original name of this item
-                  example: Report.pdf
-                download_name:
-                  type: string
-                  description: 'The new name of this item as it will appear in the
-
-                    downloaded `zip` archive.'
-                  example: 3aa6a7.pdf
-    ZipDownloadRequest:
-      title: Create a `zip` archive
+      title: Zip download
+      x-box-reference-category: zip_downloads
+      x-box-resource-id: zip_download
+      x-box-tag: zip_downloads
+    ClientError:
+      description: A generic error.
       type: object
-      description: A request to create a `zip` archive to download
-      required:
-      - items
       properties:
-        items:
-          type: array
-          description: 'A list of items to add to the `zip` archive. These can
-
-            be folders or files.'
-          items:
-            type: object
-            description: An item to add to the `zip` archive. This can be a file or a folder.
-            required:
-            - type
-            - id
-            properties:
-              type:
-                type: string
-                description: The type of the item to add to the archive.
-                example: file
-                enum:
-                - file
-                - folder
-              id:
-                type: string
-                description: 'The identifier of the item to add to the archive. When this item is
-
-                  a folder then this can not be the root folder with ID `0`.'
-                example: '12345'
-        download_file_name:
+        type:
+          description: The value will always be `error`.
           type: string
-          description: 'The optional name of the `zip` archive. This name will be appended by the
-
-            `.zip` file extension, for example `January Financials.zip`.'
-          example: January Financials
+          example: error
+          enum:
+          - error
+        status:
+          description: The HTTP status of the response.
+          type: integer
+          format: int32
+          example: 400
+        code:
+          description: A Box-specific error code.
+          type: string
+          example: item_name_invalid
+          enum:
+          - created
+          - accepted
+          - no_content
+          - redirect
+          - not_modified
+          - bad_request
+          - unauthorized
+          - forbidden
+          - not_found
+          - method_not_allowed
+          - conflict
+          - precondition_failed
+          - unprocessable_entity
+          - too_many_requests
+          - internal_server_error
+          - unavailable
+          - item_name_invalid
+          - insufficient_scope
+        message:
+          description: A short message describing the error.
+          type: string
+          example: Method Not Allowed
+        context_info:
+          description: A free-form object that contains additional context about the error. The possible fields are defined on a per-endpoint basis. `message` is only one example.
+          type:
+          - object
+          - 'null'
+          example:
+            message: Something went wrong
+          additionalProperties: {}
+        help_url:
+          description: A URL that links to more information about why this error occurred.
+          type: string
+          example: https://developer.box.com/guides/api-calls/permissions-and-errors/common-errors/
+        request_id:
+          description: A unique identifier for this response, which can be used when contacting Box support.
+          type: string
+          example: abcdef123456
+      title: Client error
+      x-box-resource-id: client_error
+    ZipDownloadStatus:
+      description: The status of a `zip` archive being downloaded.
+      type: object
+      properties:
+        total_file_count:
+          description: The total number of files in the archive.
+          type: integer
+          example: 20
+          maximum: 10000
+          minimum: 0
+        downloaded_file_count:
+          description: The number of files that have already been downloaded.
+          type: integer
+          example: 10
+          minimum: 0
+        skipped_file_count:
+          description: The number of files that have been skipped as they could not be downloaded. In many cases this is due to permission issues that have surfaced between the creation of the request for the archive and the archive being downloaded.
+          type: integer
+          example: 5
+          minimum: 0
+        skipped_folder_count:
+          description: The number of folders that have been skipped as they could not be downloaded. In many cases this is due to permission issues that have surfaced between the creation of the request for the archive and the archive being downloaded.
+          type: integer
+          example: 5
+          minimum: 0
+        state:
+          description: The state of the archive being downloaded.
+          type: string
+          example: succeeded
+          default: in_progress
+          enum:
+          - in_progress
+          - failed
+          - succeeded
+      title: Zip download status
+      x-box-reference-category: zip_downloads
+      x-box-resource-id: zip_download_status
+      x-box-tag: zip_downloads
   securitySchemes:
     OAuth2Security:
       type: oauth2
+      description: The access token received from the authorization server in the OAuth 2.0 flow.
       flows:
         authorizationCode:
           authorizationUrl: https://account.box.com/api/oauth2/authorize
@@ -633,5 +506,8 @@ components:
             manage_data_retention: Manage data retention polices
             manage_legal_hold: Manage Legal Holds
 externalDocs:
-  description: Box Developer Documentation
+  description: Box Developer Documentation.
   url: https://developer.box.com
+x-mint:
+  mcp:
+    enabled: true

@@ -1,102 +1,75 @@
 openapi: 3.2.0
 info:
-  title: Box Platform Legal Hold Policies API
+  title: Box Platform Legal hold policies API
   description: Box Platform provides functionality to provide access to content stored within Box. It provides endpoints for basic manipulation of files and folders, management of users within an enterprise, as well as more complex topics such as legal holds and retention policies.
   termsOfService: https://cloud.app.box.com/s/rmwxu64h1ipr41u49w3bbuvbsa29wku9
   contact:
     name: Box, Inc
-    url: https://box.dev
+    url: https://developer.box.com
     email: devrel@box.com
   license:
     name: Apache-2.0
-    url: http://www.apache.org/licenses/LICENSE-2.0
-  version: 2.0.0
-  x-box-commit-hash: '5819125043'
+    url: https://www.apache.org/licenses/LICENSE-2.0
+  version: '2024.0'
+  x-box-commit-hash: 53bdced3cd
 servers:
 - url: https://api.box.com/2.0
-  description: Box Platform API server
+  description: Box Platform API server.
 security:
 - OAuth2Security: []
 tags:
-- name: Legal Hold Policies
-  description: 'A legal hold is a process that an enterprise
-
-    can use to preserve all forms of potentially
-
-    relevant information when litigation is pending or
-
-    reasonably anticipated.'
+- name: Legal hold policies
+  description: A legal hold is a process that an enterprise can use to preserve all forms of potentially relevant information when litigation is pending or reasonably anticipated.
   x-box-tag: legal_hold_policies
 paths:
   /legal_hold_policies:
     get:
       operationId: get_legal_hold_policies
-      summary: Box List all legal hold policies
-      tags:
-      - Legal Hold Policies
-      x-box-tag: legal_hold_policies
-      description: 'Retrieves a list of legal hold policies that belong to
-
-        an enterprise.'
+      summary: List all legal hold policies
+      description: Retrieves a list of legal hold policies that belong to an enterprise.
       parameters:
       - name: policy_name
-        description: 'Limits results to policies for which the names start with
-
-          this search term. This is a case-insensitive prefix.'
         in: query
-        example: Sales Policy
+        description: Limits results to policies for which the names start with this search term. This is a case-insensitive prefix.
         required: false
         schema:
           type: string
+        example: Sales Policy
       - name: fields
-        description: 'A comma-separated list of attributes to include in the
-
-          response. This can be used to request fields that are
-
-          not normally returned in a standard response.
-
-
-          Be aware that specifying this parameter will have the
-
-          effect that none of the standard fields are returned in
-
-          the response unless explicitly specified, instead only
-
-          fields for the mini representation are returned, additional
-
-          to the fields requested.'
         in: query
-        example:
-        - id
-        - type
-        - name
+        description: 'A comma-separated list of attributes to include in the response. This can be used to request fields that are not normally returned in a standard response.
+
+
+          Be aware that specifying this parameter will have the effect that none of the standard fields are returned in the response unless explicitly specified, instead only fields for the mini representation are returned, additional to the fields requested.'
         required: false
-        explode: false
         schema:
           type: array
           items:
             type: string
+        example:
+        - id
+        - type
+        - name
+        explode: false
       - name: marker
-        description: 'Defines the position marker at which to begin returning results. This is
-
-          used when paginating using marker-based pagination.
+        in: query
+        description: 'Defines the position marker at which to begin returning results. This is used when paginating using marker-based pagination.
 
 
           This requires `usemarker` to be set to `true`.'
-        in: query
         required: false
-        example: JV9IRGZmieiBasejOG9yDCRNgd2ymoZIbjsxbJMjIs3kioVii
         schema:
           type: string
+        example: JV9IRGZmieiBasejOG9yDCRNgd2ymoZIbjsxbJMjIs3kioVii
       - name: limit
-        description: The maximum number of items to return per page.
         in: query
+        description: The maximum number of items to return per page.
         required: false
-        example: 1000
         schema:
           type: integer
           format: int64
           maximum: 1000
+        example: 1000
       responses:
         '200':
           description: Returns a list of legal hold policies.
@@ -110,94 +83,88 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ClientError'
+      x-box-tag: legal_hold_policies
+      tags:
+      - Legal hold policies
+      x-box-unsupported-on-free-developer: true
+      x-codeSamples:
+      - lang: curl
+        label: List all legal hold policies
+        source: "curl -i -X GET \"https://api.box.com/2.0/legal_hold_policies\" \\\n     -H \"authorization: Bearer <ACCESS_TOKEN>\""
+      - lang: dotnet
+        label: List all legal hold policies
+        source: await client.LegalHoldPolicies.GetLegalHoldPoliciesAsync();
+      - lang: swift
+        label: List all legal hold policies
+        source: try await client.legalHoldPolicies.getLegalHoldPolicies()
+      - lang: java
+        label: List all legal hold policies
+        source: client.getLegalHoldPolicies().getLegalHoldPolicies()
+      - lang: node
+        label: List all legal hold policies
+        source: await client.legalHoldPolicies.getLegalHoldPolicies();
+      - lang: python
+        label: List all legal hold policies
+        source: client.legal_hold_policies.get_legal_hold_policies()
     post:
       operationId: post_legal_hold_policies
-      summary: Box Create legal hold policy
-      tags:
-      - Legal Hold Policies
-      x-box-tag: legal_hold_policies
+      summary: Create legal hold policy
       description: Create a new legal hold policy.
       requestBody:
         content:
           application/json:
             schema:
               type: object
-              required:
-              - policy_name
               properties:
                 policy_name:
                   description: The name of the policy.
-                  example: Sales Policy
                   type: string
+                  example: Sales Policy
                   maxLength: 254
                 description:
                   description: A description for the policy.
-                  example: A custom policy for the sales team
                   type: string
+                  example: A custom policy for the sales team
                   maxLength: 500
                 filter_started_at:
                   description: 'The filter start date.
 
 
-                    When this policy is applied using a `custodian` legal
-
-                    hold assignments, it will only apply to file versions
-
-                    created or uploaded inside of the
-
-                    date range. Other assignment types, such as folders and
-
-                    files, will ignore the date filter.
+                    When this policy is applied using a `custodian` legal hold assignments, it will only apply to file versions created or uploaded inside of the date range. Other assignment types, such as folders and files, will ignore the date filter.
 
 
                     Required if `is_ongoing` is set to `false`.'
-                  example: '2012-12-12T10:53:43-08:00'
                   type: string
-                  maxLength: 500
                   format: date-time
+                  example: '2012-12-12T10:53:43-08:00'
+                  maxLength: 500
                 filter_ended_at:
                   description: 'The filter end date.
 
 
-                    When this policy is applied using a `custodian` legal
-
-                    hold assignments, it will only apply to file versions
-
-                    created or uploaded inside of the
-
-                    date range. Other assignment types, such as folders and
-
-                    files, will ignore the date filter.
+                    When this policy is applied using a `custodian` legal hold assignments, it will only apply to file versions created or uploaded inside of the date range. Other assignment types, such as folders and files, will ignore the date filter.
 
 
                     Required if `is_ongoing` is set to `false`.'
-                  example: '2012-12-18T10:53:43-08:00'
                   type: string
-                  maxLength: 500
                   format: date-time
+                  example: '2012-12-18T10:53:43-08:00'
+                  maxLength: 500
                 is_ongoing:
-                  description: 'Whether new assignments under this policy should
-
-                    continue applying to files even after initialization.
+                  description: 'Whether new assignments under this policy should continue applying to files even after initialization.
 
 
-                    When this policy is applied using a legal hold assignment,
-
-                    it will continue applying the policy to any new file versions
-
-                    even after it has been applied.
+                    When this policy is applied using a legal hold assignment, it will continue applying the policy to any new file versions even after it has been applied.
 
 
-                    For example, if a legal hold assignment is placed on a user
-
-                    today, and that user uploads a file tomorrow, that file will
-
-                    get held. This will continue until the policy is retired.
+                    For example, if a legal hold assignment is placed on a user today, and that user uploads a file tomorrow, that file will get held. This will continue until the policy is retired.
 
 
                     Required if no filter dates are set.'
-                  example: true
                   type: boolean
+                  example: true
+              required:
+              - policy_name
       responses:
         '201':
           description: Returns a new legal hold policy object.
@@ -206,9 +173,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/LegalHoldPolicy'
         '400':
-          description: 'Returns an error if required parameters are missing,
-
-            or neither `is_ongoing` or filter dates are specified.'
+          description: Returns an error if required parameters are missing, or neither `is_ongoing` or filter dates are specified.
           content:
             application/json:
               schema:
@@ -225,22 +190,42 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ClientError'
+      x-box-tag: legal_hold_policies
+      tags:
+      - Legal hold policies
+      x-box-unsupported-on-free-developer: true
+      x-codeSamples:
+      - lang: curl
+        label: Create legal hold policy
+        source: "curl -i -X POST \"https://api.box.com/2.0/legal_hold_policies\" \\\n     -H \"authorization: Bearer <ACCESS_TOKEN>\" \\\n     -H \"content-type: application/json\" \\\n     -d '{\n       \"policy_name\": \"Policy 3\",\n       \"description\": \"Automatic created policy\"\n     }'"
+      - lang: dotnet
+        label: Create legal hold policy
+        source: 'await client.LegalHoldPolicies.CreateLegalHoldPolicyAsync(requestBody: new CreateLegalHoldPolicyRequestBody(policyName: legalHoldPolicyName) { Description = legalHoldDescription, IsOngoing = false, FilterStartedAt = filterStartedAt, FilterEndedAt = filterEndedAt });'
+      - lang: swift
+        label: Create legal hold policy
+        source: 'try await client.legalHoldPolicies.createLegalHoldPolicy(requestBody: CreateLegalHoldPolicyRequestBody(policyName: legalHoldPolicyName, description: legalHoldDescription, isOngoing: false, filterStartedAt: filterStartedAt, filterEndedAt: filterEndedAt))'
+      - lang: java
+        label: Create legal hold policy
+        source: client.getLegalHoldPolicies().createLegalHoldPolicy(new CreateLegalHoldPolicyRequestBody.Builder(legalHoldPolicyName).description(legalHoldDescription).filterStartedAt(filterStartedAt).filterEndedAt(filterEndedAt).isOngoing(false).build())
+      - lang: node
+        label: Create legal hold policy
+        source: "await client.legalHoldPolicies.createLegalHoldPolicy({\n  policyName: legalHoldPolicyName,\n  description: legalHoldDescription,\n  isOngoing: false,\n  filterStartedAt: filterStartedAt,\n  filterEndedAt: filterEndedAt,\n} satisfies CreateLegalHoldPolicyRequestBody);"
+      - lang: python
+        label: Create legal hold policy
+        source: "client.legal_hold_policies.create_legal_hold_policy(\n    legal_hold_policy_name,\n    description=legal_hold_description,\n    filter_started_at=filter_started_at,\n    filter_ended_at=filter_ended_at,\n    is_ongoing=False,\n)"
   /legal_hold_policies/{legal_hold_policy_id}:
     get:
       operationId: get_legal_hold_policies_id
-      summary: Box Get legal hold policy
-      tags:
-      - Legal Hold Policies
-      x-box-tag: legal_hold_policies
+      summary: Get legal hold policy
       description: Retrieve a legal hold policy.
       parameters:
       - name: legal_hold_policy_id
-        description: The ID of the legal hold policy
-        example: '324432'
         in: path
+        description: The ID of the legal hold policy.
         required: true
         schema:
           type: string
+        example: '324432'
       responses:
         '200':
           description: Returns a legal hold policy object.
@@ -254,21 +239,41 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ClientError'
+      x-box-tag: legal_hold_policies
+      tags:
+      - Legal hold policies
+      x-box-unsupported-on-free-developer: true
+      x-codeSamples:
+      - lang: curl
+        label: Get legal hold policy
+        source: "curl -i -X GET \"https://api.box.com/2.0/legal_hold_policies/324432\" \\\n     -H \"authorization: Bearer <ACCESS_TOKEN>\""
+      - lang: dotnet
+        label: Get legal hold policy
+        source: 'await client.LegalHoldPolicies.GetLegalHoldPolicyByIdAsync(legalHoldPolicyId: legalHoldPolicyId);'
+      - lang: swift
+        label: Get legal hold policy
+        source: 'try await client.legalHoldPolicies.getLegalHoldPolicyById(legalHoldPolicyId: legalHoldPolicyId)'
+      - lang: java
+        label: Get legal hold policy
+        source: client.getLegalHoldPolicies().getLegalHoldPolicyById(legalHoldPolicyId)
+      - lang: node
+        label: Get legal hold policy
+        source: await client.legalHoldPolicies.getLegalHoldPolicyById(legalHoldPolicyId);
+      - lang: python
+        label: Get legal hold policy
+        source: client.legal_hold_policies.get_legal_hold_policy_by_id(legal_hold_policy_id)
     put:
       operationId: put_legal_hold_policies_id
-      summary: Box Update legal hold policy
-      tags:
-      - Legal Hold Policies
-      x-box-tag: legal_hold_policies
+      summary: Update legal hold policy
       description: Update legal hold policy.
       parameters:
       - name: legal_hold_policy_id
-        description: The ID of the legal hold policy
-        example: '324432'
         in: path
+        description: The ID of the legal hold policy.
         required: true
         schema:
           type: string
+        example: '324432'
       requestBody:
         content:
           application/json:
@@ -277,18 +282,18 @@ paths:
               properties:
                 policy_name:
                   description: The name of the policy.
-                  example: Sales Policy
                   type: string
+                  example: Sales Policy
                   maxLength: 254
                 description:
                   description: A description for the policy.
-                  example: A custom policy for the sales team
                   type: string
+                  example: A custom policy for the sales team
                   maxLength: 500
                 release_notes:
                   description: Notes around why the policy was released.
-                  example: Required for GDPR
                   type: string
+                  example: Required for GDPR
                   maxLength: 500
       responses:
         '200':
@@ -309,60 +314,97 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ClientError'
-    delete:
-      operationId: delete_legal_hold_policies_id
       x-box-tag: legal_hold_policies
       tags:
-      - Legal Hold Policies
-      summary: Box Remove legal hold policy
+      - Legal hold policies
+      x-box-unsupported-on-free-developer: true
+      x-codeSamples:
+      - lang: curl
+        label: Update legal hold policy
+        source: "curl -i -X PUT \"https://api.box.com/2.0/legal_hold_policies/324432\" \\\n     -H \"authorization: Bearer <ACCESS_TOKEN>\" \\\n     -H \"content-type: application/json\" \\\n     -d '{\n       \"policy_name\": \"Policy 4\"\n     }'"
+      - lang: dotnet
+        label: Update legal hold policy
+        source: 'await client.LegalHoldPolicies.UpdateLegalHoldPolicyByIdAsync(legalHoldPolicyId: legalHoldPolicyId, requestBody: new UpdateLegalHoldPolicyByIdRequestBody() { PolicyName = updatedLegalHoldPolicyName });'
+      - lang: swift
+        label: Update legal hold policy
+        source: 'try await client.legalHoldPolicies.updateLegalHoldPolicyById(legalHoldPolicyId: legalHoldPolicyId, requestBody: UpdateLegalHoldPolicyByIdRequestBody(policyName: updatedLegalHoldPolicyName))'
+      - lang: java
+        label: Update legal hold policy
+        source: client.getLegalHoldPolicies().updateLegalHoldPolicyById(legalHoldPolicyId, new UpdateLegalHoldPolicyByIdRequestBody.Builder().policyName(updatedLegalHoldPolicyName).build())
+      - lang: node
+        label: Update legal hold policy
+        source: "await client.legalHoldPolicies.updateLegalHoldPolicyById(legalHoldPolicyId, {\n  requestBody: {\n    policyName: updatedLegalHoldPolicyName,\n  } satisfies UpdateLegalHoldPolicyByIdRequestBody,\n} satisfies UpdateLegalHoldPolicyByIdOptionalsInput);"
+      - lang: python
+        label: Update legal hold policy
+        source: "client.legal_hold_policies.update_legal_hold_policy_by_id(\n    legal_hold_policy_id, policy_name=updated_legal_hold_policy_name\n)"
+    delete:
+      operationId: delete_legal_hold_policies_id
+      summary: Remove legal hold policy
       description: 'Delete an existing legal hold policy.
 
 
-        This is an asynchronous process. The policy will not be
-
-        fully deleted yet when the response returns.'
+        This is an asynchronous process. The policy will not be fully deleted yet when the response returns.'
       parameters:
       - name: legal_hold_policy_id
-        description: The ID of the legal hold policy
-        example: '324432'
         in: path
+        description: The ID of the legal hold policy.
         required: true
         schema:
           type: string
+        example: '324432'
       responses:
         '202':
-          description: 'A blank response is returned if the policy was
-
-            successfully deleted.'
+          description: A blank response is returned if the policy was successfully deleted.
         default:
           description: An unexpected client error.
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ClientError'
+      x-box-tag: legal_hold_policies
+      tags:
+      - Legal hold policies
+      x-box-unsupported-on-free-developer: true
+      x-codeSamples:
+      - lang: curl
+        label: Remove legal hold policy
+        source: "curl -i -X DELETE \"https://api.box.com/2.0/legal_hold_policies/324432\" \\\n     -H \"authorization: Bearer <ACCESS_TOKEN>\""
+      - lang: dotnet
+        label: Remove legal hold policy
+        source: 'await client.LegalHoldPolicies.DeleteLegalHoldPolicyByIdAsync(legalHoldPolicyId: legalHoldPolicy.Id);'
+      - lang: swift
+        label: Remove legal hold policy
+        source: 'try await client.legalHoldPolicies.deleteLegalHoldPolicyById(legalHoldPolicyId: legalHoldPolicy.id)'
+      - lang: java
+        label: Remove legal hold policy
+        source: client.getLegalHoldPolicies().deleteLegalHoldPolicyById(legalHoldPolicy.getId())
+      - lang: node
+        label: Remove legal hold policy
+        source: await client.legalHoldPolicies.deleteLegalHoldPolicyById(legalHoldPolicy.id);
+      - lang: python
+        label: Remove legal hold policy
+        source: client.legal_hold_policies.delete_legal_hold_policy_by_id(legal_hold_policy.id)
 components:
   schemas:
     ClientError:
-      title: Client error
+      description: A generic error.
       type: object
-      x-box-resource-id: client_error
-      description: A generic error
       properties:
         type:
-          description: error
-          example: error
+          description: The value will always be `error`.
           type: string
+          example: error
           enum:
           - error
         status:
           description: The HTTP status of the response.
-          example: 400
           type: integer
           format: int32
+          example: 400
         code:
-          description: A Box-specific error code
-          example: item_name_invalid
+          description: A Box-specific error code.
           type: string
+          example: item_name_invalid
           enum:
           - created
           - accepted
@@ -376,6 +418,7 @@ components:
           - method_not_allowed
           - conflict
           - precondition_failed
+          - unprocessable_entity
           - too_many_requests
           - internal_server_error
           - unavailable
@@ -383,86 +426,130 @@ components:
           - insufficient_scope
         message:
           description: A short message describing the error.
-          example: Method Not Allowed
           type: string
+          example: Method Not Allowed
         context_info:
-          description: 'A free-form object that contains additional context
-
-            about the error. The possible fields are defined on
-
-            a per-endpoint basis. `message` is only one example.'
+          description: A free-form object that contains additional context about the error. The possible fields are defined on a per-endpoint basis. `message` is only one example.
           type:
           - object
           - 'null'
-          properties:
-            message:
-              type: string
-              description: More details on the error.
-              example: Something went wrong.
+          example:
+            message: Something went wrong
+          additionalProperties: {}
         help_url:
           description: A URL that links to more information about why this error occurred.
-          example: https://developer.box.com/guides/api-calls/permissions-and-errors/common-errors/
           type: string
+          example: https://developer.box.com/guides/api-calls/permissions-and-errors/common-errors/
         request_id:
-          description: 'A unique identifier for this response, which can be used
-
-            when contacting Box support.'
+          description: A unique identifier for this response, which can be used when contacting Box support.
           type: string
           example: abcdef123456
-    User--Base:
-      title: User (Base)
+      title: Client error
+      x-box-resource-id: client_error
+    User--Mini:
+      description: A mini representation of a user, as can be returned when nested within other resources.
       type: object
-      x-box-resource-id: user--base
+      allOf:
+      - $ref: '#/components/schemas/User--Base'
+      - properties:
+          name:
+            description: The display name of this user.
+            type: string
+            example: Aaron Levie
+            maxLength: 50
+          login:
+            description: The primary email address of this user.
+            type: string
+            format: email
+            example: ceo@example.com
+      title: User (Mini)
+      x-box-resource-id: user--mini
       x-box-tag: users
-      x-box-variants:
-      - base
-      - mini
-      - standard
-      - full
-      x-box-variant: base
-      description: 'A mini representation of a user, used when
-
-        nested within another resource.'
-      required:
-      - type
-      - id
+      x-box-variant: mini
+    LegalHoldPolicies:
+      description: A list of legal hold policies.
+      type: object
+      allOf:
+      - type: object
+        description: The part of an API response that describes marker based pagination.
+        properties:
+          limit:
+            description: The limit that was used for these entries. This will be the same as the `limit` query parameter unless that value exceeded the maximum value allowed. The maximum value varies by API.
+            type: integer
+            format: int64
+            example: 1000
+          next_marker:
+            description: The marker for the start of the next page of results.
+            type:
+            - string
+            - 'null'
+            example: JV9IRGZmieiBasejOG9yDCRNgd2ymoZIbjsxbJMjIs3kioVii
+          prev_marker:
+            description: The marker for the start of the previous page of results.
+            type:
+            - string
+            - 'null'
+            example: JV9IRGZmieiBasejOG9yDCRNgd2ymoZIbjsxbJMjIs3kioVih
+      - properties:
+          entries:
+            description: A list of legal hold policies.
+            type: array
+            items:
+              $ref: '#/components/schemas/LegalHoldPolicy'
+      title: Legal hold policies
+      x-box-resource-id: legal_hold_policies
+      x-box-tag: legal_hold_policies
+    LegalHoldPolicy--Mini:
+      description: A mini legal hold policy.
+      type: object
       properties:
         id:
+          description: The unique identifier for this legal hold policy.
           type: string
-          description: The unique identifier for this user
           example: '11446498'
         type:
+          description: The value will always be `legal_hold_policy`.
           type: string
-          description: '`user`'
-          example: user
+          example: legal_hold_policy
           enum:
-          - user
+          - legal_hold_policy
+      required:
+      - id
+      - type
+      title: Legal hold policy (Mini)
+      x-box-resource-id: legal_hold_policy--mini
+      x-box-tag: legal_hold_policies
+      x-box-variant: mini
+      x-box-variants:
+      - mini
+      - standard
     LegalHoldPolicy:
-      title: Legal hold policy
+      description: Legal Hold Policy information describes the basic characteristics of the Policy, such as name, description, and filter dates.
       type: object
-      x-box-resource-id: legal_hold_policy
-      x-box-variant: standard
-      description: 'Legal Hold Policy information describes the basic
-
-        characteristics of the Policy, such as name, description,
-
-        and filter dates.'
       allOf:
       - $ref: '#/components/schemas/LegalHoldPolicy--Mini'
       - properties:
           policy_name:
+            description: Name of the legal hold policy.
             type: string
             example: Policy 4
-            description: Name of the legal hold policy.
             maxLength: 254
           description:
+            description: Description of the legal hold policy. Optional property with a 500 character limit.
             type: string
-            description: 'Description of the legal hold policy. Optional
-
-              property with a 500 character limit.'
-            maxLength: 500
             example: Postman created policy
+            maxLength: 500
           status:
+            description: 'Possible values:
+
+
+              - ''active'' - the policy is not in a transition state.
+
+              - ''applying'' - that the policy is in the process of being applied.
+
+              - ''releasing'' - that the process is in the process of being released.
+
+              - ''released'' - the policy is no longer active.'
             type: string
             example: active
             enum:
@@ -470,165 +557,111 @@ components:
             - applying
             - releasing
             - released
-            description: "* 'active' - the policy is not in a transition state\n* 'applying' - that the policy is in the process of\n  being applied\n* 'releasing' - that the process is in the process\n  of being released\n* 'released' - the policy is no longer active"
           assignment_counts:
+            description: Counts of assignments within a legal hold policy by item type.
             type: object
-            description: Counts of assignments within this a legal hold policy by item type
             properties:
               user:
+                description: The number of users this policy is applied to with the `access` type assignment.
                 type: integer
                 format: int64
-                description: The number of users this policy is applied to
                 example: 1
               folder:
+                description: The number of folders this policy is applied to.
                 type: integer
                 format: int64
-                description: The number of folders this policy is applied to
                 example: 2
               file:
+                description: The number of files this policy is applied to.
                 type: integer
                 format: int64
-                description: The number of files this policy is applied to
                 example: 3
               file_version:
+                description: The number of file versions this policy is applied to.
                 type: integer
                 format: int64
-                description: The number of file versions this policy is applied to
                 example: 4
+              ownership:
+                description: The number of users this policy is applied to with the `ownership` type assignment.
+                type: integer
+                format: int64
+                example: 5
+              interactions:
+                description: The number of users this policy is applied to with the `interactions` type assignment.
+                type: integer
+                format: int64
+                example: 6
           created_by:
             allOf:
             - $ref: '#/components/schemas/User--Mini'
-            - description: The user who created the legal hold policy object
+            - description: The user who created the legal hold policy object.
           created_at:
+            description: When the legal hold policy object was created.
             type: string
             format: date-time
-            description: When the legal hold policy object was created
             example: '2012-12-12T10:53:43-08:00'
           modified_at:
+            description: When the legal hold policy object was modified. Does not update when assignments are added or removed.
             type: string
             format: date-time
-            description: 'When the legal hold policy object was modified.
-
-              Does not update when assignments are added or removed.'
             example: '2012-12-12T10:53:43-08:00'
           deleted_at:
-            type: string
-            format: date-time
-            description: 'When the policy release request was sent. (Because
-
-              it can take time for a policy to fully delete, this
-
-              isn''t quite the same time that the policy is fully deleted).
+            description: 'When the policy release request was sent. (Because it can take time for a policy to fully delete, this isn''t quite the same time that the policy is fully deleted).
 
 
               If `null`, the policy was not deleted.'
+            type: string
+            format: date-time
             example: '2012-12-12T10:53:43-08:00'
           filter_started_at:
+            description: User-specified, optional date filter applies to Custodian assignments only.
             type: string
             format: date-time
-            description: 'User-specified, optional date filter applies to
-
-              Custodian assignments only'
             example: '2012-12-12T10:53:43-08:00'
           filter_ended_at:
+            description: User-specified, optional date filter applies to Custodian assignments only.
             type: string
             format: date-time
-            description: 'User-specified, optional date filter applies to
-
-              Custodian assignments only'
             example: '2012-12-12T10:53:43-08:00'
           release_notes:
+            description: Optional notes about why the policy was created.
             type: string
             example: Example
-            description: Optional notes about why the policy was created.
             maxLength: 500
-    LegalHoldPolicy--Mini:
-      title: Legal hold policy (Mini)
-      type: object
-      x-box-resource-id: legal_hold_policy--mini
+      title: Legal hold policy
+      x-box-resource-id: legal_hold_policy
       x-box-tag: legal_hold_policies
-      x-box-variants:
-      - mini
-      - standard
-      x-box-variant: mini
-      description: A mini legal hold policy
-      required:
-      - id
-      - type
+      x-box-variant: standard
+    User--Base:
+      description: A mini representation of a user, used when nested within another resource.
+      type: object
       properties:
         id:
+          description: The unique identifier for this user.
           type: string
-          description: The unique identifier for this legal hold policy
           example: '11446498'
         type:
+          description: The value will always be `user`.
           type: string
-          description: '`legal_hold_policy`'
-          example: legal_hold_policy
+          example: user
           enum:
-          - legal_hold_policy
-    User--Mini:
-      title: User (Mini)
-      type: object
-      x-box-resource-id: user--mini
-      x-box-variant: mini
-      description: 'A mini representation of a user, as can be returned when nested within other
-
-        resources.'
-      allOf:
-      - $ref: '#/components/schemas/User--Base'
-      - properties:
-          name:
-            type: string
-            description: The display name of this user
-            example: Aaron Levie
-            maxLength: 50
-          login:
-            type: string
-            format: email
-            description: The primary email address of this user
-            example: ceo@example.com
-    LegalHoldPolicies:
-      title: Legal hold policies
-      type: object
-      x-box-resource-id: legal_hold_policies
-      x-box-tag: legal_hold_policies
-      description: A list of legal hold policies.
-      allOf:
-      - type: object
-        description: 'The part of an API response that describes marker
-
-          based pagination'
-        properties:
-          limit:
-            description: 'The limit that was used for these entries. This will be the same as the
-
-              `limit` query parameter unless that value exceeded the maximum value
-
-              allowed. The maximum value varies by API.'
-            example: 1000
-            type: integer
-            format: int64
-          next_marker:
-            description: The marker for the start of the next page of results.
-            example: JV9IRGZmieiBasejOG9yDCRNgd2ymoZIbjsxbJMjIs3kioVii
-            type:
-            - string
-            - 'null'
-          prev_marker:
-            description: The marker for the start of the previous page of results.
-            example: JV9IRGZmieiBasejOG9yDCRNgd2ymoZIbjsxbJMjIs3kioVih
-            type:
-            - string
-            - 'null'
-      - properties:
-          entries:
-            type: array
-            description: A list of legal hold policies
-            items:
-              $ref: '#/components/schemas/LegalHoldPolicy'
+          - user
+      required:
+      - type
+      - id
+      title: User (Base)
+      x-box-resource-id: user--base
+      x-box-tag: users
+      x-box-variant: base
+      x-box-variants:
+      - base
+      - mini
+      - standard
+      - full
   securitySchemes:
     OAuth2Security:
       type: oauth2
+      description: The access token received from the authorization server in the OAuth 2.0 flow.
       flows:
         authorizationCode:
           authorizationUrl: https://account.box.com/api/oauth2/authorize
@@ -644,5 +677,8 @@ components:
             manage_data_retention: Manage data retention polices
             manage_legal_hold: Manage Legal Holds
 externalDocs:
-  description: Box Developer Documentation
+  description: Box Developer Documentation.
   url: https://developer.box.com
+x-mint:
+  mcp:
+    enabled: true

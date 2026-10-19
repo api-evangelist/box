@@ -1,114 +1,89 @@
 openapi: 3.2.0
 info:
-  title: Box Platform Retention Policies API
+  title: Box Platform Retention policies API
   description: Box Platform provides functionality to provide access to content stored within Box. It provides endpoints for basic manipulation of files and folders, management of users within an enterprise, as well as more complex topics such as legal holds and retention policies.
   termsOfService: https://cloud.app.box.com/s/rmwxu64h1ipr41u49w3bbuvbsa29wku9
   contact:
     name: Box, Inc
-    url: https://box.dev
+    url: https://developer.box.com
     email: devrel@box.com
   license:
     name: Apache-2.0
-    url: http://www.apache.org/licenses/LICENSE-2.0
-  version: 2.0.0
-  x-box-commit-hash: '5819125043'
+    url: https://www.apache.org/licenses/LICENSE-2.0
+  version: '2024.0'
+  x-box-commit-hash: 53bdced3cd
 servers:
 - url: https://api.box.com/2.0
-  description: Box Platform API server
+  description: Box Platform API server.
 security:
 - OAuth2Security: []
 tags:
-- name: Retention Policies
-  description: 'A retention policy blocks permanent deletion of content
-
-    for a specified amount of time. Admins can create
-
-    retention policies and then assign them to
-
-    specific folders or their entire enterprise.'
+- name: Retention policies
+  description: A retention policy blocks permanent deletion of content for a specified amount of time. Admins can create retention policies and then assign them to specific folders or their entire enterprise.
   x-box-tag: retention_policies
 paths:
   /retention_policies:
     get:
       operationId: get_retention_policies
-      summary: Box List retention policies
-      tags:
-      - Retention Policies
-      x-box-tag: retention_policies
+      summary: List retention policies
       description: Retrieves all of the retention policies for an enterprise.
       parameters:
       - name: policy_name
-        description: 'Filters results by a case sensitive prefix of the name of
-
-          retention policies.'
         in: query
+        description: Filters results by a case sensitive prefix of the name of retention policies.
         required: false
-        example: Sales Policy
         schema:
           type: string
+        example: Sales Policy
       - name: policy_type
-        description: Filters results by the type of retention policy.
         in: query
+        description: Filters results by the type of retention policy.
         required: false
-        example: finite
         schema:
           type: string
           enum:
           - finite
           - indefinite
+        example: finite
       - name: created_by_user_id
-        description: Filters results by the ID of the user who created policy.
-        example: '21312321'
         in: query
+        description: Filters results by the ID of the user who created policy.
         required: false
         schema:
           type: string
+        example: '21312321'
       - name: fields
-        description: 'A comma-separated list of attributes to include in the
-
-          response. This can be used to request fields that are
-
-          not normally returned in a standard response.
-
-
-          Be aware that specifying this parameter will have the
-
-          effect that none of the standard fields are returned in
-
-          the response unless explicitly specified, instead only
-
-          fields for the mini representation are returned, additional
-
-          to the fields requested.'
         in: query
-        example:
-        - id
-        - type
-        - name
+        description: 'A comma-separated list of attributes to include in the response. This can be used to request fields that are not normally returned in a standard response.
+
+
+          Be aware that specifying this parameter will have the effect that none of the standard fields are returned in the response unless explicitly specified, instead only fields for the mini representation are returned, additional to the fields requested.'
         required: false
-        explode: false
         schema:
           type: array
           items:
             type: string
+        example:
+        - id
+        - type
+        - name
+        explode: false
       - name: limit
-        description: The maximum number of items to return per page.
         in: query
+        description: The maximum number of items to return per page.
         required: false
-        example: 1000
         schema:
           type: integer
           format: int64
           maximum: 1000
+        example: 1000
       - name: marker
-        description: 'Defines the position marker at which to begin returning results. This is
-
-          used when paginating using marker-based pagination.'
         in: query
+        description: Defines the position marker at which to begin returning results. This is used when paginating using marker-based pagination.
         required: false
-        example: JV9IRGZmieiBasejOG9yDCRNgd2ymoZIbjsxbJMjIs3kioVii
         schema:
           type: string
+        example: JV9IRGZmieiBasejOG9yDCRNgd2ymoZIbjsxbJMjIs3kioVii
       responses:
         '200':
           description: Returns a list retention policies in the enterprise.
@@ -123,9 +98,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/ClientError'
         '404':
-          description: 'Returns a `not_found` error if the user specified in `created_by_user_id`
-
-            does not exist.'
+          description: Returns a `not_found` error if the user specified in `created_by_user_id` does not exist.
           content:
             application/json:
               schema:
@@ -136,64 +109,64 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ClientError'
+      x-box-tag: retention_policies
+      tags:
+      - Retention policies
+      x-box-unsupported-on-free-developer: true
+      x-codeSamples:
+      - lang: curl
+        label: List retention policies
+        source: "curl -i -X GET \"https://api.box.com/2.0/retention_policies\" \\\n     -H \"authorization: Bearer <ACCESS_TOKEN>\""
+      - lang: dotnet
+        label: List retention policies
+        source: await client.RetentionPolicies.GetRetentionPoliciesAsync();
+      - lang: swift
+        label: List retention policies
+        source: try await client.retentionPolicies.getRetentionPolicies()
+      - lang: java
+        label: List retention policies
+        source: client.getRetentionPolicies().getRetentionPolicies()
+      - lang: node
+        label: List retention policies
+        source: await client.retentionPolicies.getRetentionPolicies();
+      - lang: python
+        label: List retention policies
+        source: client.retention_policies.get_retention_policies()
     post:
       operationId: post_retention_policies
-      summary: Box Create retention policy
-      tags:
-      - Retention Policies
-      x-box-tag: retention_policies
+      summary: Create retention policy
       description: Creates a retention policy.
       requestBody:
         content:
           application/json:
             schema:
               type: object
-              required:
-              - policy_name
-              - policy_type
-              - disposition_action
               properties:
                 policy_name:
+                  description: The name for the retention policy.
                   type: string
-                  description: The name for the retention policy
                   example: Some Policy Name
                 description:
-                  type: string
                   description: The additional text description of the retention policy.
+                  type: string
                   example: Policy to retain all reports for at least one month
                 policy_type:
+                  description: The type of the retention policy. A retention policy type can either be `finite`, where a specific amount of time to retain the content is known upfront, or `indefinite`, where the amount of time to retain the content is still unknown.
                   type: string
                   example: finite
-                  description: 'The type of the retention policy. A retention
-
-                    policy type can either be `finite`, where a
-
-                    specific amount of time to retain the content is known
-
-                    upfront, or `indefinite`, where the amount of time
-
-                    to retain the content is still unknown.'
                   enum:
                   - finite
                   - indefinite
                 disposition_action:
+                  description: The disposition action of the retention policy. `permanently_delete` deletes the content retained by the policy permanently. `remove_retention` lifts retention policy from the content, allowing it to be deleted by users once the retention policy has expired.
                   type: string
                   example: permanently_delete
-                  description: 'The disposition action of the retention policy.
-
-                    `permanently_delete` deletes the content
-
-                    retained by the policy permanently.
-
-                    `remove_retention` lifts retention policy
-
-                    from the content, allowing it to be deleted
-
-                    by users once the retention policy has expired.'
                   enum:
                   - permanently_delete
                   - remove_retention
                 retention_length:
+                  description: The length of the retention policy. This value specifies the duration in days that the retention policy will be active for after being assigned to content. If the policy has a `policy_type` of `indefinite`, the `retention_length` will also be `indefinite`.
+                  example: '365'
                   oneOf:
                   - type:
                     - string
@@ -201,76 +174,38 @@ paths:
                     format: int32
                   - type: number
                     format: int32
-                  example: '365'
-                  description: 'The length of the retention policy. This value
-
-                    specifies the duration in days that the retention
-
-                    policy will be active for after being assigned to
-
-                    content.  If the policy has a `policy_type` of
-
-                    `indefinite`, the `retention_length` will also be
-
-                    `indefinite`.'
                 retention_type:
-                  type: string
-                  example: modifiable
                   description: 'Specifies the retention type:
 
 
-                    * `modifiable`: You can modify the retention policy. For example,
-
-                    you can add or remove folders, shorten or lengthen
-
-                    the policy duration, or delete the assignment.
-
-                    Use this type if your retention policy
-
-                    is not related to any regulatory purposes.
+                    - `modifiable`: You can modify the retention policy. For example, you can add or remove folders, shorten or lengthen the policy duration, or delete the assignment. Use this type if your retention policy is not related to any regulatory purposes.
 
 
-                    * `non_modifiable`: You can modify the retention policy
-
-                    only in a limited way: add a folder, lengthen the duration,
-
-                    retire the policy, change the disposition action
-
-                    or notification settings. You cannot perform other actions,
-
-                    such as deleting the assignment or shortening the
-
-                    policy duration. Use this type to ensure
-
-                    compliance with regulatory retention policies.'
+                    - `non_modifiable`: You can modify the retention policy only in a limited way: add a folder, lengthen the duration, retire the policy, change the disposition action or notification settings. You cannot perform other actions, such as deleting the assignment or shortening the policy duration. Use this type to ensure compliance with regulatory retention policies.'
+                  type: string
+                  example: modifiable
                   enum:
                   - modifiable
                   - non_modifiable
                 can_owner_extend_retention:
+                  description: Whether the owner of a file will be allowed to extend the retention.
                   type: boolean
-                  enum:
-                  - true
-                  - false
                   example: true
-                  description: 'Whether the owner of a file will be allowed to
-
-                    extend the retention.'
+                max_extension_length:
+                  $ref: '#/components/schemas/RetentionPolicyMaxExtensionLengthRequest'
                 are_owners_notified:
+                  description: Whether owner and co-owners of a file are notified when the policy nears expiration.
                   type: boolean
-                  enum:
-                  - true
-                  - false
                   example: true
-                  description: 'Whether owner and co-owners of a file are notified
-
-                    when the policy nears expiration.'
                 custom_notification_recipients:
+                  description: A list of users notified when the retention policy duration is about to end.
                   type: array
-                  description: 'A list of users notified when
-
-                    the retention policy duration is about to end.'
                   items:
                     $ref: '#/components/schemas/User--Mini'
+              required:
+              - policy_name
+              - policy_type
+              - disposition_action
       responses:
         '201':
           description: Returns a new retention policy object.
@@ -279,19 +214,19 @@ paths:
               schema:
                 $ref: '#/components/schemas/RetentionPolicy'
         '400':
-          description: 'Returns a `bad_request` error with the `retention_length` was
-
-            specified for a `infinite` retention policy, an incorrect
-
-            `disposition_action` was set, or description exceeds maximum length of
-
-            500 characters.'
+          description: Returns a `bad_request` error when the `retention_length` was specified for an `indefinite` retention policy, an incorrect `disposition_action` was set, `max_extension_length` is not allowed for the given policy type or disposition action, or description exceeds maximum length of 500 characters.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ClientError'
+        '403':
+          description: Returns an error if the user does not have the required permissions to create a retention policy.
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ClientError'
         '409':
-          description: Returns an error if a retention policy with the given name already exists
+          description: Returns an error if a retention policy with the given name already exists.
           content:
             application/json:
               schema:
@@ -302,50 +237,58 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ClientError'
+      x-box-tag: retention_policies
+      tags:
+      - Retention policies
+      x-box-unsupported-on-free-developer: true
+      x-codeSamples:
+      - lang: curl
+        label: Create retention policy
+        source: "curl -i -X POST \"https://api.box.com/2.0/retention_policies\" \\\n     -H \"authorization: Bearer <ACCESS_TOKEN>\" \\\n     -H \"content-type: application/json\" \\\n     -d '{\n       \"policy_name\": \"Some Policy Name\",\n       \"policy_type\": \"finite\",\n       \"retention_length\": 365,\n       \"disposition_action\": \"permanently_delete\"\n     }'"
+      - lang: dotnet
+        label: Create retention policy
+        source: 'await client.RetentionPolicies.CreateRetentionPolicyAsync(requestBody: new CreateRetentionPolicyRequestBody(policyName: retentionPolicyName, policyType: CreateRetentionPolicyRequestBodyPolicyTypeField.Finite, dispositionAction: CreateRetentionPolicyRequestBodyDispositionActionField.RemoveRetention) { AreOwnersNotified = true, CanOwnerExtendRetention = true, Description = retentionDescription, RetentionLength = "1", RetentionType = CreateRetentionPolicyRequestBodyRetentionTypeField.Modifiable });'
+      - lang: swift
+        label: Create retention policy
+        source: 'try await client.retentionPolicies.createRetentionPolicy(requestBody: CreateRetentionPolicyRequestBody(policyName: retentionPolicyName, policyType: CreateRetentionPolicyRequestBodyPolicyTypeField.finite, areOwnersNotified: true, canOwnerExtendRetention: true, description: retentionDescription, dispositionAction: CreateRetentionPolicyRequestBodyDispositionActionField.removeRetention, retentionLength: .string("1"), retentionType: CreateRetentionPolicyRequestBodyRetentionTypeField.modifiable))'
+      - lang: java
+        label: Create retention policy
+        source: client.getRetentionPolicies().createRetentionPolicy(new CreateRetentionPolicyRequestBody.Builder(retentionPolicyName, CreateRetentionPolicyRequestBodyPolicyTypeField.FINITE, CreateRetentionPolicyRequestBodyDispositionActionField.REMOVE_RETENTION).description(retentionDescription).retentionLength("1").retentionType(CreateRetentionPolicyRequestBodyRetentionTypeField.MODIFIABLE).canOwnerExtendRetention(true).areOwnersNotified(true).build())
+      - lang: node
+        label: Create retention policy
+        source: "await client.retentionPolicies.createRetentionPolicy({\n  policyName: retentionPolicyName,\n  policyType: 'finite' as CreateRetentionPolicyRequestBodyPolicyTypeField,\n  areOwnersNotified: true,\n  canOwnerExtendRetention: true,\n  description: retentionDescription,\n  dispositionAction:\n    'remove_retention' as CreateRetentionPolicyRequestBodyDispositionActionField,\n  retentionLength: '1',\n  retentionType:\n    'modifiable' as CreateRetentionPolicyRequestBodyRetentionTypeField,\n} satisfies CreateRetentionPolicyRequestBody);"
+      - lang: python
+        label: Create retention policy
+        source: "client.retention_policies.create_retention_policy(\n    retention_policy_name,\n    CreateRetentionPolicyPolicyType.FINITE,\n    CreateRetentionPolicyDispositionAction.REMOVE_RETENTION,\n    description=retention_description,\n    retention_length=\"1\",\n    retention_type=CreateRetentionPolicyRetentionType.MODIFIABLE,\n    can_owner_extend_retention=True,\n    are_owners_notified=True,\n)"
   /retention_policies/{retention_policy_id}:
     get:
       operationId: get_retention_policies_id
-      summary: Box Get retention policy
-      tags:
-      - Retention Policies
-      x-box-tag: retention_policies
+      summary: Get retention policy
       description: Retrieves a retention policy.
       parameters:
       - name: retention_policy_id
-        description: The ID of the retention policy.
-        example: '982312'
         in: path
+        description: The ID of the retention policy.
         required: true
         schema:
           type: string
+        example: '982312'
       - name: fields
-        description: 'A comma-separated list of attributes to include in the
-
-          response. This can be used to request fields that are
-
-          not normally returned in a standard response.
-
-
-          Be aware that specifying this parameter will have the
-
-          effect that none of the standard fields are returned in
-
-          the response unless explicitly specified, instead only
-
-          fields for the mini representation are returned, additional
-
-          to the fields requested.'
         in: query
-        example:
-        - id
-        - type
-        - name
+        description: 'A comma-separated list of attributes to include in the response. This can be used to request fields that are not normally returned in a standard response.
+
+
+          Be aware that specifying this parameter will have the effect that none of the standard fields are returned in the response unless explicitly specified, instead only fields for the mini representation are returned, additional to the fields requested.'
         required: false
-        explode: false
         schema:
           type: array
           items:
             type: string
+        example:
+        - id
+        - type
+        - name
+        explode: false
       responses:
         '200':
           description: Returns the retention policy object.
@@ -359,21 +302,41 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ClientError'
+      x-box-tag: retention_policies
+      tags:
+      - Retention policies
+      x-box-unsupported-on-free-developer: true
+      x-codeSamples:
+      - lang: curl
+        label: Get retention policy
+        source: "curl -i -X GET \"https://api.box.com/2.0/retention_policies/982312\" \\\n     -H \"authorization: Bearer <ACCESS_TOKEN>\""
+      - lang: dotnet
+        label: Get retention policy
+        source: 'await client.RetentionPolicies.GetRetentionPolicyByIdAsync(retentionPolicyId: retentionPolicy.Id);'
+      - lang: swift
+        label: Get retention policy
+        source: 'try await client.retentionPolicies.getRetentionPolicyById(retentionPolicyId: retentionPolicy.id)'
+      - lang: java
+        label: Get retention policy
+        source: client.getRetentionPolicies().getRetentionPolicyById(retentionPolicy.getId())
+      - lang: node
+        label: Get retention policy
+        source: await client.retentionPolicies.getRetentionPolicyById(retentionPolicy.id);
+      - lang: python
+        label: Get retention policy
+        source: client.retention_policies.get_retention_policy_by_id(retention_policy.id)
     put:
       operationId: put_retention_policies_id
-      summary: Box Update retention policy
-      tags:
-      - Retention Policies
-      x-box-tag: retention_policies
+      summary: Update retention policy
       description: Updates a retention policy.
       parameters:
       - name: retention_policy_id
-        description: The ID of the retention policy.
-        example: '982312'
         in: path
+        description: The ID of the retention policy.
         required: true
         schema:
           type: string
+        example: '982312'
       requestBody:
         content:
           application/json:
@@ -381,18 +344,20 @@ paths:
               type: object
               properties:
                 policy_name:
+                  description: The name for the retention policy.
                   type:
                   - string
                   - 'null'
-                  description: The name for the retention policy
                   example: Some Policy Name
                 description:
+                  description: The additional text description of the retention policy.
                   type:
                   - string
                   - 'null'
-                  description: The additional text description of the retention policy.
                   example: Policy to retain all reports for at least one month
                 disposition_action:
+                  description: The disposition action of the retention policy. This action can be `permanently_delete`, which will cause the content retained by the policy to be permanently deleted, or `remove_retention`, which will lift the retention policy from the content, allowing it to be deleted by users, once the retention policy has expired. You can use `null` if you don't want to change `disposition_action`.
+                  example: permanently_delete
                   anyOf:
                   - type: string
                     enum:
@@ -402,63 +367,23 @@ paths:
                     - string
                     - 'null'
                     pattern: .^
-                  description: 'The disposition action of the retention policy.
-
-                    This action can be `permanently_delete`, which
-
-                    will cause the content retained by the policy
-
-                    to be permanently deleted, or `remove_retention`,
-
-                    which will lift the retention policy from the content,
-
-                    allowing it to be deleted by users,
-
-                    once the retention policy has expired.
-
-                    You can use "null" if you don''t want to change `disposition_action`.'
-                  example: permanently_delete
                 retention_type:
+                  description: 'Specifies the retention type:
+
+
+                    - `modifiable`: You can modify the retention policy. For example, you can add or remove folders, shorten or lengthen the policy duration, or delete the assignment. Use this type if your retention policy is not related to any regulatory purposes.
+
+                    - `non-modifiable`: You can modify the retention policy only in a limited way: add a folder, lengthen the duration, retire the policy, change the disposition action or notification settings. You cannot perform other actions, such as deleting the assignment or shortening the policy duration. Use this type to ensure compliance with regulatory retention policies.
+
+
+                    When updating a retention policy, you can use `non-modifiable` type only. You can convert a `modifiable` policy to `non-modifiable`, but not the other way around.'
                   type:
                   - string
                   - 'null'
                   example: non-modifiable
-                  description: 'Specifies the retention type:
-
-
-                    * `modifiable`: You can modify the retention policy. For example,
-
-                    you can add or remove folders, shorten or lengthen
-
-                    the policy duration, or delete the assignment.
-
-                    Use this type if your retention policy
-
-                    is not related to any regulatory purposes.
-
-                    * `non-modifiable`: You can modify the retention policy
-
-                    only in a limited way: add a folder, lengthen the duration,
-
-                    retire the policy, change the disposition action
-
-                    or notification settings. You cannot perform other actions,
-
-                    such as deleting the assignment or shortening the
-
-                    policy duration. Use this type to ensure
-
-                    compliance with regulatory retention policies.
-
-
-                    When updating a retention policy, you can use
-
-                    `non-modifiable` type only. You can convert a
-
-                    `modifiable` policy to `non-modifiable`, but
-
-                    not the other way around.'
                 retention_length:
+                  description: The length of the retention policy. This value specifies the duration in days that the retention policy will be active for after being assigned to content. If the policy has a `policy_type` of `indefinite`, the `retention_length` will also be `indefinite`.
+                  example: '365'
                   oneOf:
                   - type:
                     - string
@@ -466,54 +391,34 @@ paths:
                     format: int32
                   - type: number
                     format: int32
-                  example: '365'
-                  description: 'The length of the retention policy. This value
-
-                    specifies the duration in days that the retention
-
-                    policy will be active for after being assigned to
-
-                    content.  If the policy has a `policy_type` of
-
-                    `indefinite`, the `retention_length` will also be
-
-                    `indefinite`.'
                 status:
+                  description: 'Used to retire a retention policy.
+
+
+                    If not retiring a policy, do not include this parameter or set it to `null`.'
                   type:
                   - string
                   - 'null'
                   example: retired
-                  description: 'Used to retire a retention policy.
-
-
-                    If not retiring a policy, do not include this parameter
-
-                    or set it to `null`.'
                 can_owner_extend_retention:
+                  description: Determines if the owner of items under the policy can extend the retention when the original retention duration is about to end.
                   type:
                   - boolean
                   - 'null'
-                  description: 'Determines if the owner of items under the policy
-
-                    can extend the retention when the original retention
-
-                    duration is about to end.'
                   example: false
+                max_extension_length:
+                  $ref: '#/components/schemas/RetentionPolicyMaxExtensionLengthRequest'
                 are_owners_notified:
+                  description: Determines if owners and co-owners of items under the policy are notified when the retention duration is about to end.
                   type:
                   - boolean
                   - 'null'
-                  description: 'Determines if owners and co-owners of items
-
-                    under the policy are notified when
-
-                    the retention duration is about to end.'
                   example: false
                 custom_notification_recipients:
+                  description: A list of users notified when the retention duration is about to end.
                   type:
                   - array
                   - 'null'
-                  description: A list of users notified when the retention duration is about to end.
                   items:
                     $ref: '#/components/schemas/User--Base'
       responses:
@@ -524,35 +429,19 @@ paths:
               schema:
                 $ref: '#/components/schemas/RetentionPolicy'
         '400':
-          description: 'Returns a `bad_request` if an incorrect
-
-            `disposition_action` was set or description exceeds maximum length of
-
-            500 characters.'
+          description: Returns a `bad_request` if an incorrect `disposition_action` was set, `max_extension_length` is not allowed for the given policy type or disposition action, or description exceeds maximum length of 500 characters.
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ClientError'
         '403':
-          description: 'Returns an error when a user wants to
-
-            shorten the duration of a
-
-            non-modifiable policy, or to convert
-
-            a non-modifiable policy to
-
-            a modifiable one.
-
-            Note: Lengthening policy duration
-
-            is allowed.'
+          description: 'Returns an error when a user wants to shorten the duration of a non-modifiable policy, or to convert a non-modifiable policy to a modifiable one. Note: Lengthening policy duration is allowed.'
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ClientError'
         '409':
-          description: Returns an error if a retention policy with the given name already exists
+          description: Returns an error if a retention policy with the given name already exists.
           content:
             application/json:
               schema:
@@ -563,28 +452,46 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ClientError'
+      x-box-tag: retention_policies
+      tags:
+      - Retention policies
+      x-box-unsupported-on-free-developer: true
+      x-codeSamples:
+      - lang: curl
+        label: Update retention policy
+        source: "curl -i -X PUT \"https://api.box.com/2.0/retention_policies/982312\" \\\n     -H \"authorization: Bearer <ACCESS_TOKEN>\" \\\n     -H \"content-type: application/json\" \\\n     -d '{\n       \"disposition_action\": \"permanently_delete\"\n     }'"
+      - lang: dotnet
+        label: Update retention policy
+        source: 'await client.RetentionPolicies.UpdateRetentionPolicyByIdAsync(retentionPolicyId: retentionPolicy.Id, requestBody: new UpdateRetentionPolicyByIdRequestBody() { PolicyName = updatedRetentionPolicyName });'
+      - lang: swift
+        label: Update retention policy
+        source: 'try await client.retentionPolicies.updateRetentionPolicyById(retentionPolicyId: retentionPolicy.id, requestBody: UpdateRetentionPolicyByIdRequestBody(policyName: updatedRetentionPolicyName))'
+      - lang: java
+        label: Update retention policy
+        source: client.getRetentionPolicies().updateRetentionPolicyById(retentionPolicy.getId(), new UpdateRetentionPolicyByIdRequestBody.Builder().policyName(updatedRetentionPolicyName).build())
+      - lang: node
+        label: Update retention policy
+        source: "await client.retentionPolicies.updateRetentionPolicyById(retentionPolicy.id, {\n  requestBody: {\n    policyName: updatedRetentionPolicyName,\n  } satisfies UpdateRetentionPolicyByIdRequestBody,\n} satisfies UpdateRetentionPolicyByIdOptionalsInput);"
+      - lang: python
+        label: Update retention policy
+        source: "client.retention_policies.update_retention_policy_by_id(\n    retention_policy.id, policy_name=updated_retention_policy_name\n)"
     delete:
       operationId: delete_retention_policies_id
-      summary: Box Delete retention policy
-      tags:
-      - Retention Policies
-      x-box-tag: retention_policies
+      summary: Delete retention policy
       description: Permanently deletes a retention policy.
       parameters:
       - name: retention_policy_id
-        description: The ID of the retention policy.
-        example: '982312'
         in: path
+        description: The ID of the retention policy.
         required: true
         schema:
           type: string
+        example: '982312'
       responses:
         '204':
           description: Returns an empty response when the policy has been deleted.
         '403':
-          description: 'Returns an error if the policy is non-modifiable or the user does
-
-            not have the required access to perform the action.'
+          description: Returns an error if the policy is non-modifiable or the user does not have the required access to perform the action.
           content:
             application/json:
               schema:
@@ -601,29 +508,230 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ClientError'
+      x-box-tag: retention_policies
+      tags:
+      - Retention policies
+      x-box-unsupported-on-free-developer: true
+      x-codeSamples:
+      - lang: curl
+        label: Delete retention policy
+        source: "curl -i -X DELETE \"https://api.box.com/2.0/retention_policies/982312\" \\\n     -H \"authorization: Bearer <ACCESS_TOKEN>\""
+      - lang: dotnet
+        label: Delete retention policy
+        source: 'await client.RetentionPolicies.DeleteRetentionPolicyByIdAsync(retentionPolicyId: retentionPolicy.Id);'
+      - lang: swift
+        label: Delete retention policy
+        source: 'try await client.retentionPolicies.deleteRetentionPolicyById(retentionPolicyId: retentionPolicy.id)'
+      - lang: java
+        label: Delete retention policy
+        source: client.getRetentionPolicies().deleteRetentionPolicyById(retentionPolicy.getId())
+      - lang: node
+        label: Delete retention policy
+        source: await client.retentionPolicies.deleteRetentionPolicyById(retentionPolicy.id);
+      - lang: python
+        label: Delete retention policy
+        source: client.retention_policies.delete_retention_policy_by_id(retention_policy.id)
 components:
   schemas:
-    ClientError:
-      title: Client error
+    RetentionPolicyMaxExtensionLengthResponse:
+      description: The maximum extension length of the retention date. This value specifies the duration in days for which the retention date of the file under policy can be extended. If the policy type is other than 'finite' or the disposition action is other than 'permanently delete', or the maximum extension length is undefined, this field will be set to 'none'.
+      example: '365'
+      oneOf:
+      - type: string
+        enum:
+        - none
+      - type: string
+        pattern: ^[1-9]\d*$
+        format: int32
+        minimum: 1
+      title: Retention policy max extension length (response)
+    RetentionPolicies:
+      description: A list of retention policies.
       type: object
-      x-box-resource-id: client_error
-      description: A generic error
+      allOf:
+      - properties:
+          entries:
+            description: A list in which each entry represents a retention policy object.
+            type: array
+            items:
+              $ref: '#/components/schemas/RetentionPolicy'
+      - type: object
+        description: The part of an API response that describes marker based pagination.
+        properties:
+          limit:
+            description: The limit that was used for these entries. This will be the same as the `limit` query parameter unless that value exceeded the maximum value allowed. The maximum value varies by API.
+            type: integer
+            format: int64
+            example: 1000
+          next_marker:
+            description: The marker for the start of the next page of results.
+            type:
+            - string
+            - 'null'
+            example: JV9IRGZmieiBasejOG9yDCRNgd2ymoZIbjsxbJMjIs3kioVii
+      title: Retention policies
+      x-box-resource-id: retention_policies
+      x-box-tag: retention_policies
+    RetentionPolicy:
+      description: A retention policy blocks permanent deletion of content for a specified amount of time. Admins can create retention policies and then later assign them to specific folders, metadata templates, or their entire enterprise. To use this feature, you must have the manage retention policies scope enabled for your API key via your application management console.
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/RetentionPolicy--Mini'
+      - properties:
+          description:
+            description: The additional text description of the retention policy.
+            type: string
+            example: Policy to retain all reports for at least one month
+          policy_type:
+            description: The type of the retention policy. A retention policy type can either be `finite`, where a specific amount of time to retain the content is known upfront, or `indefinite`, where the amount of time to retain the content is still unknown.
+            type: string
+            example: finite
+            enum:
+            - finite
+            - indefinite
+          retention_type:
+            description: 'Specifies the retention type:
+
+
+              - `modifiable`: You can modify the retention policy. For example, you can add or remove folders, shorten or lengthen the policy duration, or delete the assignment. Use this type if your retention policy is not related to any regulatory purposes.
+
+
+              - `non-modifiable`: You can modify the retention policy only in a limited way: add a folder, lengthen the duration, retire the policy, change the disposition action or notification settings. You cannot perform other actions, such as deleting the assignment or shortening the policy duration. Use this type to ensure compliance with regulatory retention policies.'
+            type: string
+            example: non_modifiable
+            enum:
+            - modifiable
+            - non_modifiable
+          status:
+            description: The status of the retention policy. The status of a policy will be `active`, unless explicitly retired by an administrator, in which case the status will be `retired`. Once a policy has been retired, it cannot become active again.
+            type: string
+            example: active
+            enum:
+            - active
+            - retired
+          created_by:
+            allOf:
+            - $ref: '#/components/schemas/User--Mini'
+            - description: A mini user object representing the user that created the retention policy.
+          created_at:
+            description: When the retention policy object was created.
+            type: string
+            format: date-time
+            example: '2012-12-12T10:53:43-08:00'
+          modified_at:
+            description: When the retention policy object was last modified.
+            type: string
+            format: date-time
+            example: '2012-12-12T10:53:43-08:00'
+          can_owner_extend_retention:
+            description: Determines if the owner of items under the policy can extend the retention when the original retention duration is about to end.
+            type: boolean
+            example: false
+          are_owners_notified:
+            description: Determines if owners and co-owners of items under the policy are notified when the retention duration is about to end.
+            type: boolean
+            example: false
+          custom_notification_recipients:
+            description: A list of users notified when the retention policy duration is about to end.
+            type: array
+            items:
+              $ref: '#/components/schemas/User--Mini'
+          assignment_counts:
+            description: Counts the retention policy assignments for each item type.
+            type: object
+            properties:
+              enterprise:
+                description: The number of enterprise assignments this policy has. The maximum value is 1.
+                type: integer
+                format: int64
+                example: 1
+              folder:
+                description: The number of folder assignments this policy has.
+                type: integer
+                format: int64
+                example: 1
+              metadata_template:
+                description: The number of metadata template assignments this policy has.
+                type: integer
+                format: int64
+                example: 1
+      title: Retention policy
+      x-box-resource-id: retention_policy
+      x-box-tag: retention_policies
+      x-box-variant: standard
+    RetentionPolicy--Mini:
+      description: A mini representation of a retention policy, used when nested within another resource.
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/RetentionPolicy--Base'
+      - properties:
+          policy_name:
+            description: The name given to the retention policy.
+            type: string
+            example: Some Policy Name
+          retention_length:
+            description: The length of the retention policy. This value specifies the duration in days that the retention policy will be active for after being assigned to content. If the policy has a `policy_type` of `indefinite`, the `retention_length` will also be `indefinite`.
+            type: string
+            format: int32
+            example: '365'
+            minimum: 1
+          disposition_action:
+            description: The disposition action of the retention policy. This action can be `permanently_delete`, which will cause the content retained by the policy to be permanently deleted, or `remove_retention`, which will lift the retention policy from the content, allowing it to be deleted by users, once the retention policy has expired.
+            type: string
+            example: permanently_delete
+            enum:
+            - permanently_delete
+            - remove_retention
+          max_extension_length:
+            $ref: '#/components/schemas/RetentionPolicyMaxExtensionLengthResponse'
+      title: Retention policy (Mini)
+      x-box-resource-id: retention_policy--mini
+      x-box-tag: retention_policies
+      x-box-variant: mini
+    RetentionPolicy--Base:
+      description: A base representation of a retention policy.
+      type: object
+      properties:
+        id:
+          description: The unique identifier that represents a retention policy.
+          type: string
+          example: '12345'
+        type:
+          description: The value will always be `retention_policy`.
+          type: string
+          example: retention_policy
+          enum:
+          - retention_policy
+      required:
+      - id
+      - type
+      title: Retention policy (Base)
+      x-box-resource-id: retention_policy--base
+      x-box-tag: retention_policies
+      x-box-variant: base
+      x-box-variants:
+      - base
+      - mini
+      - standard
+    ClientError:
+      description: A generic error.
+      type: object
       properties:
         type:
-          description: error
-          example: error
+          description: The value will always be `error`.
           type: string
+          example: error
           enum:
           - error
         status:
           description: The HTTP status of the response.
-          example: 400
           type: integer
           format: int32
+          example: 400
         code:
-          description: A Box-specific error code
-          example: item_name_invalid
+          description: A Box-specific error code.
           type: string
+          example: item_name_invalid
           enum:
           - created
           - accepted
@@ -637,6 +745,7 @@ components:
           - method_not_allowed
           - conflict
           - precondition_failed
+          - unprocessable_entity
           - too_many_requests
           - internal_server_error
           - unavailable
@@ -644,309 +753,91 @@ components:
           - insufficient_scope
         message:
           description: A short message describing the error.
-          example: Method Not Allowed
           type: string
+          example: Method Not Allowed
         context_info:
-          description: 'A free-form object that contains additional context
-
-            about the error. The possible fields are defined on
-
-            a per-endpoint basis. `message` is only one example.'
+          description: A free-form object that contains additional context about the error. The possible fields are defined on a per-endpoint basis. `message` is only one example.
           type:
           - object
           - 'null'
-          properties:
-            message:
-              type: string
-              description: More details on the error.
-              example: Something went wrong.
+          example:
+            message: Something went wrong
+          additionalProperties: {}
         help_url:
           description: A URL that links to more information about why this error occurred.
-          example: https://developer.box.com/guides/api-calls/permissions-and-errors/common-errors/
           type: string
+          example: https://developer.box.com/guides/api-calls/permissions-and-errors/common-errors/
         request_id:
-          description: 'A unique identifier for this response, which can be used
-
-            when contacting Box support.'
+          description: A unique identifier for this response, which can be used when contacting Box support.
           type: string
           example: abcdef123456
-    User--Base:
-      title: User (Base)
+      title: Client error
+      x-box-resource-id: client_error
+    User--Mini:
+      description: A mini representation of a user, as can be returned when nested within other resources.
       type: object
+      allOf:
+      - $ref: '#/components/schemas/User--Base'
+      - properties:
+          name:
+            description: The display name of this user.
+            type: string
+            example: Aaron Levie
+            maxLength: 50
+          login:
+            description: The primary email address of this user.
+            type: string
+            format: email
+            example: ceo@example.com
+      title: User (Mini)
+      x-box-resource-id: user--mini
+      x-box-tag: users
+      x-box-variant: mini
+    RetentionPolicyMaxExtensionLengthRequest:
+      description: The maximum extension length of the retention date. This value specifies the duration in days for which the retention date of the file under policy can be extended. It can be specified only for the 'finite' policy type where the disposition action is 'permanently delete', otherwise the server will return status 400. If this value is 'none', it won't be possible to extend the retention.
+      example: '365'
+      oneOf:
+      - type: string
+        enum:
+        - none
+      - type: string
+        pattern: ^[1-9]\d*$
+        format: int32
+      - type: integer
+        format: int32
+        minimum: 1
+        multipleOf: 1
+      title: Retention policy max extension length (request)
+    User--Base:
+      description: A mini representation of a user, used when nested within another resource.
+      type: object
+      properties:
+        id:
+          description: The unique identifier for this user.
+          type: string
+          example: '11446498'
+        type:
+          description: The value will always be `user`.
+          type: string
+          example: user
+          enum:
+          - user
+      required:
+      - type
+      - id
+      title: User (Base)
       x-box-resource-id: user--base
       x-box-tag: users
+      x-box-variant: base
       x-box-variants:
       - base
       - mini
       - standard
       - full
-      x-box-variant: base
-      description: 'A mini representation of a user, used when
-
-        nested within another resource.'
-      required:
-      - type
-      - id
-      properties:
-        id:
-          type: string
-          description: The unique identifier for this user
-          example: '11446498'
-        type:
-          type: string
-          description: '`user`'
-          example: user
-          enum:
-          - user
-    RetentionPolicy--Mini:
-      title: Retention policy (Mini)
-      type: object
-      x-box-resource-id: retention_policy--mini
-      x-box-variant: mini
-      description: 'A mini representation of a retention policy, used when
-
-        nested within another resource.'
-      allOf:
-      - $ref: '#/components/schemas/RetentionPolicy--Base'
-      - properties:
-          policy_name:
-            type: string
-            description: The name given to the retention policy.
-            example: Some Policy Name
-          retention_length:
-            type: string
-            format: int32
-            example: '365'
-            minimum: 1
-            description: 'The length of the retention policy. This value
-
-              specifies the duration in days that the retention
-
-              policy will be active for after being assigned to
-
-              content.  If the policy has a `policy_type` of
-
-              `indefinite`, the `retention_length` will also be
-
-              `indefinite`.'
-          disposition_action:
-            type: string
-            example: permanently_delete
-            description: 'The disposition action of the retention policy.
-
-              This action can be `permanently_delete`, which
-
-              will cause the content retained by the policy
-
-              to be permanently deleted, or `remove_retention`,
-
-              which will lift the retention policy from the content,
-
-              allowing it to be deleted by users,
-
-              once the retention policy has expired.'
-            enum:
-            - permanently_delete
-            - remove_retention
-    RetentionPolicy:
-      title: Retention policy
-      type: object
-      x-box-resource-id: retention_policy
-      x-box-tag: retention_policies
-      x-box-variant: standard
-      description: 'A retention policy blocks permanent deletion of content
-
-        for a specified amount of time. Admins can create retention
-
-        policies and then later assign them to specific folders, metadata
-
-        templates, or their entire enterprise.  To use this feature, you must
-
-        have the manage retention policies scope enabled
-
-        for your API key via your application management console.'
-      allOf:
-      - $ref: '#/components/schemas/RetentionPolicy--Mini'
-      - properties:
-          description:
-            type: string
-            example: Policy to retain all reports for at least one month
-            description: The additional text description of the retention policy.
-          policy_type:
-            type: string
-            example: finite
-            description: 'The type of the retention policy. A retention
-
-              policy type can either be `finite`, where a
-
-              specific amount of time to retain the content is known
-
-              upfront, or `indefinite`, where the amount of time
-
-              to retain the content is still unknown.'
-            enum:
-            - finite
-            - indefinite
-          retention_type:
-            type: string
-            example: non_modifiable
-            description: "Specifies the retention type:\n\n* `modifiable`: You can modify the retention policy. For example,\n you can add or remove folders, shorten or lengthen\n the policy duration, or delete the assignment.\n Use this type if your retention policy\n is not related to any regulatory purposes.\n\n* `non-modifiable`: You can modify the retention policy\n only in a limited way: add a folder, lengthen the duration,\n retire the policy, change the disposition action\n or notification settings. You cannot perform other actions,\n such as deleting the assignment or shortening the\n policy duration. Use this type to ensure\n compliance with regulatory retention policies."
-            enum:
-            - modifiable
-            - non_modifiable
-          status:
-            type: string
-            example: active
-            description: 'The status of the retention policy. The status of
-
-              a policy will be `active`, unless explicitly retired by an
-
-              administrator, in which case the status will be `retired`.
-
-              Once a policy has been retired, it cannot become
-
-              active again.'
-            enum:
-            - active
-            - retired
-          created_by:
-            allOf:
-            - $ref: '#/components/schemas/User--Mini'
-            - description: 'A mini user object representing the user that
-
-                created the retention policy.'
-          created_at:
-            type: string
-            format: date-time
-            description: When the retention policy object was created.
-            example: '2012-12-12T10:53:43-08:00'
-          modified_at:
-            type: string
-            format: date-time
-            description: When the retention policy object was last modified.
-            example: '2012-12-12T10:53:43-08:00'
-          can_owner_extend_retention:
-            type: boolean
-            description: 'Determines if the owner of items under the policy
-
-              can extend the retention when the original
-
-              retention duration is about to end.'
-            example: false
-          are_owners_notified:
-            type: boolean
-            description: 'Determines if owners and co-owners of items
-
-              under the policy are notified when
-
-              the retention duration is about to end.'
-            example: false
-          custom_notification_recipients:
-            type: array
-            description: A list of users notified when the retention policy duration is about to end.
-            items:
-              $ref: '#/components/schemas/User--Mini'
-          assignment_counts:
-            type: object
-            description: Counts the retention policy assignments for each item type.
-            properties:
-              enterprise:
-                description: The number of enterprise assignments this policy has. The maximum value is 1.
-                format: int64
-                type: integer
-                example: 1
-              folder:
-                description: The number of folder assignments this policy has.
-                format: int64
-                type: integer
-                example: 1
-              metadata_template:
-                description: The number of metadata template assignments this policy has.
-                format: int64
-                type: integer
-                example: 1
-    RetentionPolicies:
-      title: Retention policies
-      type: object
-      x-box-resource-id: retention_policies
-      x-box-tag: retention_policies
-      description: A list of retention policies.
-      allOf:
-      - properties:
-          entries:
-            description: A list in which each entry represents a retention policy object.
-            type: array
-            items:
-              $ref: '#/components/schemas/RetentionPolicy'
-      - type: object
-        description: 'The part of an API response that describes marker
-
-          based pagination'
-        properties:
-          limit:
-            description: 'The limit that was used for these entries. This will be the same as the
-
-              `limit` query parameter unless that value exceeded the maximum value
-
-              allowed. The maximum value varies by API.'
-            example: 1000
-            type: integer
-            format: int64
-          next_marker:
-            description: The marker for the start of the next page of results.
-            example: JV9IRGZmieiBasejOG9yDCRNgd2ymoZIbjsxbJMjIs3kioVii
-            type:
-            - string
-            - 'null'
-    RetentionPolicy--Base:
-      title: Retention policy (Base)
-      type: object
-      x-box-resource-id: retention_policy--base
-      x-box-tag: retention_policies
-      x-box-variants:
-      - base
-      - mini
-      - standard
-      x-box-variant: base
-      description: A base representation of a retention policy.
-      required:
-      - id
-      - type
-      properties:
-        id:
-          type: string
-          description: The unique identifier that represents a retention policy.
-          example: '12345'
-        type:
-          type: string
-          description: '`retention_policy`'
-          example: retention_policy
-          enum:
-          - retention_policy
-    User--Mini:
-      title: User (Mini)
-      type: object
-      x-box-resource-id: user--mini
-      x-box-variant: mini
-      description: 'A mini representation of a user, as can be returned when nested within other
-
-        resources.'
-      allOf:
-      - $ref: '#/components/schemas/User--Base'
-      - properties:
-          name:
-            type: string
-            description: The display name of this user
-            example: Aaron Levie
-            maxLength: 50
-          login:
-            type: string
-            format: email
-            description: The primary email address of this user
-            example: ceo@example.com
   securitySchemes:
     OAuth2Security:
       type: oauth2
+      description: The access token received from the authorization server in the OAuth 2.0 flow.
       flows:
         authorizationCode:
           authorizationUrl: https://account.box.com/api/oauth2/authorize
@@ -962,5 +853,8 @@ components:
             manage_data_retention: Manage data retention polices
             manage_legal_hold: Manage Legal Holds
 externalDocs:
-  description: Box Developer Documentation
+  description: Box Developer Documentation.
   url: https://developer.box.com
+x-mint:
+  mcp:
+    enabled: true

@@ -1,0 +1,186 @@
+openapi: 3.2.0
+info:
+  title: Box Platform Shared links (App Items) API
+  description: Box Platform provides functionality to provide access to content stored within Box. It provides endpoints for basic manipulation of files and folders, management of users within an enterprise, as well as more complex topics such as legal holds and retention policies.
+  termsOfService: https://cloud.app.box.com/s/rmwxu64h1ipr41u49w3bbuvbsa29wku9
+  contact:
+    name: Box, Inc
+    url: https://developer.box.com
+    email: devrel@box.com
+  license:
+    name: Apache-2.0
+    url: https://www.apache.org/licenses/LICENSE-2.0
+  version: '2024.0'
+  x-box-commit-hash: 53bdced3cd
+servers:
+- url: https://api.box.com/2.0
+  description: Box Platform API server.
+security:
+- OAuth2Security: []
+tags:
+- name: Shared links (App Items)
+  description: URLs generated for app items stored in Box, which provide direct, read-only access to the resource.
+  x-box-tag: shared_links_app_items
+paths:
+  /shared_items#app_items:
+    get:
+      operationId: get_shared_items#app_items
+      summary: Find app item for shared link
+      description: 'Returns the app item represented by a shared link.
+
+
+        The link can originate from the current enterprise or another.'
+      parameters:
+      - name: boxapi
+        in: header
+        description: 'A header containing the shared link and optional password for the shared link.
+
+
+          The format for this header is `shared_link=[link]&shared_link_password=[password]`.'
+        required: true
+        schema:
+          type: string
+        example: shared_link=[example.com]&shared_link_password=[xyz123]
+      responses:
+        '200':
+          description: Returns a full app item resource if the shared link is valid and the user has access to it.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AppItem'
+        default:
+          description: An unexpected client error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ClientError'
+      x-box-tag: shared_links_app_items
+      tags:
+      - Shared links (App Items)
+      x-codeSamples:
+      - lang: dotnet
+        label: Find app item for shared link
+        source: 'await client.SharedLinksAppItems.FindAppItemForSharedLinkAsync(headers: new FindAppItemForSharedLinkHeaders(boxapi: string.Concat("shared_link=", appItemSharedLink)));'
+      - lang: swift
+        label: Find app item for shared link
+        source: 'try await client.sharedLinksAppItems.findAppItemForSharedLink(headers: FindAppItemForSharedLinkHeaders(boxapi: "\("shared_link=")\(appItemSharedLink)"))'
+      - lang: java
+        label: Find app item for shared link
+        source: client.getSharedLinksAppItems().findAppItemForSharedLink(new FindAppItemForSharedLinkHeaders(String.join("", "shared_link=", appItemSharedLink)))
+      - lang: node
+        label: Find app item for shared link
+        source: "await client.sharedLinksAppItems.findAppItemForSharedLink({\n  boxapi: ''.concat('shared_link=', appItemSharedLink) as string,\n} satisfies FindAppItemForSharedLinkHeadersInput);"
+      - lang: python
+        label: Find app item for shared link
+        source: "client.shared_links_app_items.find_app_item_for_shared_link(\n    \"\".join([\"shared_link=\", app_item_shared_link])\n)"
+components:
+  schemas:
+    AppItem:
+      description: An app item represents an content object owned by an application. It can group files and folders together from different paths. That set can be shared via a collaboration.
+      type: object
+      properties:
+        id:
+          description: The unique identifier for this app item.
+          type: string
+          example: '12345678'
+        type:
+          description: The value will always be `app_item`.
+          type: string
+          example: app_item
+          enum:
+          - app_item
+        application_type:
+          description: The type of the app that owns this app item.
+          type: string
+          example: hubs
+      required:
+      - id
+      - type
+      - application_type
+      title: App item
+      x-box-resource-id: app_item
+      x-box-tag: app_item_associations
+    ClientError:
+      description: A generic error.
+      type: object
+      properties:
+        type:
+          description: The value will always be `error`.
+          type: string
+          example: error
+          enum:
+          - error
+        status:
+          description: The HTTP status of the response.
+          type: integer
+          format: int32
+          example: 400
+        code:
+          description: A Box-specific error code.
+          type: string
+          example: item_name_invalid
+          enum:
+          - created
+          - accepted
+          - no_content
+          - redirect
+          - not_modified
+          - bad_request
+          - unauthorized
+          - forbidden
+          - not_found
+          - method_not_allowed
+          - conflict
+          - precondition_failed
+          - unprocessable_entity
+          - too_many_requests
+          - internal_server_error
+          - unavailable
+          - item_name_invalid
+          - insufficient_scope
+        message:
+          description: A short message describing the error.
+          type: string
+          example: Method Not Allowed
+        context_info:
+          description: A free-form object that contains additional context about the error. The possible fields are defined on a per-endpoint basis. `message` is only one example.
+          type:
+          - object
+          - 'null'
+          example:
+            message: Something went wrong
+          additionalProperties: {}
+        help_url:
+          description: A URL that links to more information about why this error occurred.
+          type: string
+          example: https://developer.box.com/guides/api-calls/permissions-and-errors/common-errors/
+        request_id:
+          description: A unique identifier for this response, which can be used when contacting Box support.
+          type: string
+          example: abcdef123456
+      title: Client error
+      x-box-resource-id: client_error
+  securitySchemes:
+    OAuth2Security:
+      type: oauth2
+      description: The access token received from the authorization server in the OAuth 2.0 flow.
+      flows:
+        authorizationCode:
+          authorizationUrl: https://account.box.com/api/oauth2/authorize
+          tokenUrl: https://api.box.com/oauth2/token
+          scopes:
+            root_readonly: Read all files and folders stored in Box
+            root_readwrite: Read and write all files and folders stored in Box
+            manage_app_users: Provision and manage app users
+            manage_managed_users: Provision and manage managed users
+            manage_groups: Manage an enterprise's groups
+            manage_webhook: Create webhooks programmatically through the API
+            manage_enterprise_properties: Manage enterprise properties
+            manage_data_retention: Manage data retention polices
+            manage_legal_hold: Manage Legal Holds
+externalDocs:
+  description: Box Developer Documentation.
+  url: https://developer.box.com
+x-mint:
+  mcp:
+    enabled: true

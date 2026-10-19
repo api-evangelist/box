@@ -1,47 +1,40 @@
 openapi: 3.2.0
 info:
-  title: Box Platform Device Pinners API
+  title: Box Platform Device pinners API
   description: Box Platform provides functionality to provide access to content stored within Box. It provides endpoints for basic manipulation of files and folders, management of users within an enterprise, as well as more complex topics such as legal holds and retention policies.
   termsOfService: https://cloud.app.box.com/s/rmwxu64h1ipr41u49w3bbuvbsa29wku9
   contact:
     name: Box, Inc
-    url: https://box.dev
+    url: https://developer.box.com
     email: devrel@box.com
   license:
     name: Apache-2.0
-    url: http://www.apache.org/licenses/LICENSE-2.0
-  version: 2.0.0
-  x-box-commit-hash: '5819125043'
+    url: https://www.apache.org/licenses/LICENSE-2.0
+  version: '2024.0'
+  x-box-commit-hash: 53bdced3cd
 servers:
 - url: https://api.box.com/2.0
-  description: Box Platform API server
+  description: Box Platform API server.
 security:
 - OAuth2Security: []
 tags:
-- name: Device Pinners
-  description: 'Device pinners allow enterprises to
-
-    control what devices can use
-
-    native Box applications.'
+- name: Device pinners
+  description: Device pinners allow enterprises to control what devices can use native Box applications.
   x-box-tag: device_pinners
 paths:
   /device_pinners/{device_pinner_id}:
     get:
       operationId: get_device_pinners_id
-      summary: Box Get device pin
-      tags:
-      - Device Pinners
-      x-box-tag: device_pinners
+      summary: Get device pin
       description: Retrieves information about an individual device pin.
       parameters:
       - name: device_pinner_id
-        description: The ID of the device pin
         in: path
+        description: The ID of the device pin.
         required: true
-        example: '2324234'
         schema:
           type: string
+        example: '2324234'
       responses:
         '200':
           description: Returns information about a single device pin.
@@ -55,21 +48,41 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ClientError'
+      x-box-tag: device_pinners
+      tags:
+      - Device pinners
+      x-box-unsupported-on-free-developer: true
+      x-codeSamples:
+      - lang: curl
+        label: Get device pin
+        source: "curl -i -X GET \"https://api.box.com/2.0/device_pinners/2324234\" \\\n     -H \"authorization: Bearer <ACCESS_TOKEN>\""
+      - lang: dotnet
+        label: Get device pin
+        source: 'await client.DevicePinners.GetDevicePinnerByIdAsync(devicePinnerId: devicePinnerId);'
+      - lang: swift
+        label: Get device pin
+        source: 'try await client.devicePinners.getDevicePinnerById(devicePinnerId: devicePinnerId)'
+      - lang: java
+        label: Get device pin
+        source: client.getDevicePinners().getDevicePinnerById(devicePinnerId)
+      - lang: node
+        label: Get device pin
+        source: await client.devicePinners.getDevicePinnerById(devicePinnerId);
+      - lang: python
+        label: Get device pin
+        source: client.device_pinners.get_device_pinner_by_id(device_pinner_id)
     delete:
       operationId: delete_device_pinners_id
-      summary: Box Remove device pin
-      tags:
-      - Device Pinners
-      x-box-tag: device_pinners
+      summary: Remove device pin
       description: Deletes an individual device pin.
       parameters:
       - name: device_pinner_id
-        description: The ID of the device pin
         in: path
+        description: The ID of the device pin.
         required: true
-        example: '2324234'
         schema:
           type: string
+        example: '2324234'
       responses:
         '204':
           description: Returns an empty response when the pin has been deleted.
@@ -79,60 +92,74 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ClientError'
+      x-box-tag: device_pinners
+      tags:
+      - Device pinners
+      x-box-unsupported-on-free-developer: true
+      x-codeSamples:
+      - lang: curl
+        label: Remove device pin
+        source: "curl -i -X DELETE \"https://api.box.com/2.0/device_pinners/2324234\" \\\n     -H \"authorization: Bearer <ACCESS_TOKEN>\""
+      - lang: dotnet
+        label: Remove device pin
+        source: 'await client.DevicePinners.DeleteDevicePinnerByIdAsync(devicePinnerId: devicePinnerId);'
+      - lang: swift
+        label: Remove device pin
+        source: 'try await client.devicePinners.deleteDevicePinnerById(devicePinnerId: devicePinnerId)'
+      - lang: java
+        label: Remove device pin
+        source: client.getDevicePinners().deleteDevicePinnerById(devicePinnerId)
+      - lang: node
+        label: Remove device pin
+        source: await client.devicePinners.deleteDevicePinnerById(devicePinnerId);
+      - lang: python
+        label: Remove device pin
+        source: client.device_pinners.delete_device_pinner_by_id(device_pinner_id)
   /enterprises/{enterprise_id}/device_pinners:
     get:
       operationId: get_enterprises_id_device_pinners
-      summary: Box List enterprise device pins
-      tags:
-      - Device Pinners
-      x-box-tag: device_pinners
+      summary: List enterprise device pins
       description: 'Retrieves all the device pins within an enterprise.
 
 
-        The user must have admin privileges, and the application
-
-        needs the "manage enterprise" scope to make this call.'
+        The user must have admin privileges, and the application needs the "manage enterprise" scope to make this call.'
       parameters:
       - name: enterprise_id
-        description: The ID of the enterprise
         in: path
+        description: The ID of the enterprise.
         required: true
-        example: '3442311'
         schema:
           type: string
+        example: '3442311'
       - name: marker
-        description: 'Defines the position marker at which to begin returning results. This is
-
-          used when paginating using marker-based pagination.
+        in: query
+        description: 'Defines the position marker at which to begin returning results. This is used when paginating using marker-based pagination.
 
 
           This requires `usemarker` to be set to `true`.'
-        in: query
         required: false
-        example: JV9IRGZmieiBasejOG9yDCRNgd2ymoZIbjsxbJMjIs3kioVii
         schema:
           type: string
+        example: JV9IRGZmieiBasejOG9yDCRNgd2ymoZIbjsxbJMjIs3kioVii
       - name: limit
-        description: The maximum number of items to return per page.
         in: query
+        description: The maximum number of items to return per page.
         required: false
-        example: 1000
         schema:
           type: integer
           format: int64
           maximum: 1000
+        example: 1000
       - name: direction
-        description: 'The direction to sort results in. This can be either in alphabetical ascending
-
-          (`ASC`) or descending (`DESC`) order.'
         in: query
+        description: The direction to sort results in. This can be either in alphabetical ascending (`ASC`) or descending (`DESC`) order.
         required: false
-        example: ASC
         schema:
           type: string
           enum:
           - ASC
           - DESC
+        example: ASC
       responses:
         '200':
           description: Returns a list of device pins for a given enterprise.
@@ -146,29 +173,75 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ClientError'
+      x-box-tag: device_pinners
+      tags:
+      - Device pinners
+      x-box-unsupported-on-free-developer: true
+      x-codeSamples:
+      - lang: curl
+        label: List enterprise device pins
+        source: "curl -i -X GET \"https://api.box.com/2.0/enterprises/3442311/device_pinners\" \\\n     -H \"authorization: Bearer <ACCESS_TOKEN>\""
+      - lang: dotnet
+        label: List enterprise device pins
+        source: 'await client.DevicePinners.GetEnterpriseDevicePinnersAsync(enterpriseId: enterpriseId);'
+      - lang: swift
+        label: List enterprise device pins
+        source: 'try await client.devicePinners.getEnterpriseDevicePinners(enterpriseId: enterpriseId)'
+      - lang: java
+        label: List enterprise device pins
+        source: client.getDevicePinners().getEnterpriseDevicePinners(enterpriseId)
+      - lang: node
+        label: List enterprise device pins
+        source: await client.devicePinners.getEnterpriseDevicePinners(enterpriseId);
+      - lang: python
+        label: List enterprise device pins
+        source: client.device_pinners.get_enterprise_device_pinners(enterprise_id)
 components:
   schemas:
-    ClientError:
-      title: Client error
+    DevicePinner:
+      description: Device pins allow enterprises to control what devices can use native Box applications.
       type: object
-      x-box-resource-id: client_error
-      description: A generic error
+      properties:
+        id:
+          description: The unique identifier for this device pin.
+          type: string
+          example: '11446498'
+        type:
+          description: The value will always be `device_pinner`.
+          type: string
+          example: device_pinner
+          enum:
+          - device_pinner
+        owned_by:
+          allOf:
+          - $ref: '#/components/schemas/User--Mini'
+          - description: The user that the device pin belongs to.
+        product_name:
+          description: The type of device being pinned.
+          type: string
+          example: iPad
+      title: Device pinner
+      x-box-resource-id: device_pinner
+      x-box-tag: device_pinners
+    ClientError:
+      description: A generic error.
+      type: object
       properties:
         type:
-          description: error
-          example: error
+          description: The value will always be `error`.
           type: string
+          example: error
           enum:
           - error
         status:
           description: The HTTP status of the response.
-          example: 400
           type: integer
           format: int32
+          example: 400
         code:
-          description: A Box-specific error code
-          example: item_name_invalid
+          description: A Box-specific error code.
           type: string
+          example: item_name_invalid
           enum:
           - created
           - accepted
@@ -182,6 +255,7 @@ components:
           - method_not_allowed
           - conflict
           - precondition_failed
+          - unprocessable_entity
           - too_many_requests
           - internal_server_error
           - unavailable
@@ -189,158 +263,119 @@ components:
           - insufficient_scope
         message:
           description: A short message describing the error.
-          example: Method Not Allowed
           type: string
+          example: Method Not Allowed
         context_info:
-          description: 'A free-form object that contains additional context
-
-            about the error. The possible fields are defined on
-
-            a per-endpoint basis. `message` is only one example.'
+          description: A free-form object that contains additional context about the error. The possible fields are defined on a per-endpoint basis. `message` is only one example.
           type:
           - object
           - 'null'
-          properties:
-            message:
-              type: string
-              description: More details on the error.
-              example: Something went wrong.
+          example:
+            message: Something went wrong
+          additionalProperties: {}
         help_url:
           description: A URL that links to more information about why this error occurred.
-          example: https://developer.box.com/guides/api-calls/permissions-and-errors/common-errors/
           type: string
+          example: https://developer.box.com/guides/api-calls/permissions-and-errors/common-errors/
         request_id:
-          description: 'A unique identifier for this response, which can be used
-
-            when contacting Box support.'
+          description: A unique identifier for this response, which can be used when contacting Box support.
           type: string
           example: abcdef123456
-    User--Base:
-      title: User (Base)
+      title: Client error
+      x-box-resource-id: client_error
+    User--Mini:
+      description: A mini representation of a user, as can be returned when nested within other resources.
       type: object
-      x-box-resource-id: user--base
+      allOf:
+      - $ref: '#/components/schemas/User--Base'
+      - properties:
+          name:
+            description: The display name of this user.
+            type: string
+            example: Aaron Levie
+            maxLength: 50
+          login:
+            description: The primary email address of this user.
+            type: string
+            format: email
+            example: ceo@example.com
+      title: User (Mini)
+      x-box-resource-id: user--mini
       x-box-tag: users
-      x-box-variants:
-      - base
-      - mini
-      - standard
-      - full
-      x-box-variant: base
-      description: 'A mini representation of a user, used when
-
-        nested within another resource.'
-      required:
-      - type
-      - id
-      properties:
-        id:
-          type: string
-          description: The unique identifier for this user
-          example: '11446498'
-        type:
-          type: string
-          description: '`user`'
-          example: user
-          enum:
-          - user
-    DevicePinner:
-      title: Device pinner
-      type: object
-      x-box-resource-id: device_pinner
-      x-box-tag: device_pinners
-      description: 'Device pins allow enterprises to control what devices can
-
-        use native Box applications.'
-      properties:
-        id:
-          type: string
-          description: The unique identifier for this device pin.
-          example: '11446498'
-        type:
-          type: string
-          description: '`device_pinner`'
-          example: device_pinner
-          enum:
-          - device_pinner
-        owned_by:
-          allOf:
-          - $ref: '#/components/schemas/User--Mini'
-          - description: The user that the device pin belongs to
-        product_name:
-          type: string
-          description: The type of device being pinned
-          example: iPad
+      x-box-variant: mini
     DevicePinners:
-      title: Device pinners
+      description: A list of device pins.
       type: object
-      x-box-resource-id: device_pinners
-      x-box-tag: device_pinners
-      description: A list of device pins
       properties:
         entries:
+          description: A list of device pins.
           type: array
-          description: A list of device pins
           items:
             $ref: '#/components/schemas/DevicePinner'
         limit:
-          description: 'The limit that was used for these entries. This will be the same as the
-
-            `limit` query parameter unless that value exceeded the maximum value
-
-            allowed.'
-          default: 100
-          example: 200
+          description: The limit that was used for these entries. This will be the same as the `limit` query parameter unless that value exceeded the maximum value allowed.
           type: integer
           format: int64
+          example: 200
+          default: 100
         next_marker:
           description: The marker for the start of the next page of results.
-          example: 3000
           type: integer
           format: int64
+          example: 3000
         order:
           description: The order by which items are returned.
           type: array
           items:
             type: object
-            description: The order in which a pagination is ordered
+            description: The order in which a pagination is ordered.
             properties:
               by:
-                description: The field that is ordered by
+                description: The field that is ordered by.
+                type: string
                 example: id
                 enum:
                 - id
-                type: string
               direction:
+                description: The direction to order by, either ascending or descending.
                 type: string
-                description: The direction to order by, either ascending or descending
                 example: asc
                 enum:
                 - asc
                 - desc
-    User--Mini:
-      title: User (Mini)
+      title: Device pinners
+      x-box-resource-id: device_pinners
+      x-box-tag: device_pinners
+    User--Base:
+      description: A mini representation of a user, used when nested within another resource.
       type: object
-      x-box-resource-id: user--mini
-      x-box-variant: mini
-      description: 'A mini representation of a user, as can be returned when nested within other
-
-        resources.'
-      allOf:
-      - $ref: '#/components/schemas/User--Base'
-      - properties:
-          name:
-            type: string
-            description: The display name of this user
-            example: Aaron Levie
-            maxLength: 50
-          login:
-            type: string
-            format: email
-            description: The primary email address of this user
-            example: ceo@example.com
+      properties:
+        id:
+          description: The unique identifier for this user.
+          type: string
+          example: '11446498'
+        type:
+          description: The value will always be `user`.
+          type: string
+          example: user
+          enum:
+          - user
+      required:
+      - type
+      - id
+      title: User (Base)
+      x-box-resource-id: user--base
+      x-box-tag: users
+      x-box-variant: base
+      x-box-variants:
+      - base
+      - mini
+      - standard
+      - full
   securitySchemes:
     OAuth2Security:
       type: oauth2
+      description: The access token received from the authorization server in the OAuth 2.0 flow.
       flows:
         authorizationCode:
           authorizationUrl: https://account.box.com/api/oauth2/authorize
@@ -356,5 +391,8 @@ components:
             manage_data_retention: Manage data retention polices
             manage_legal_hold: Manage Legal Holds
 externalDocs:
-  description: Box Developer Documentation
+  description: Box Developer Documentation.
   url: https://developer.box.com
+x-mint:
+  mcp:
+    enabled: true

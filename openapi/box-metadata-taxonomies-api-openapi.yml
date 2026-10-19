@@ -1,0 +1,1602 @@
+openapi: 3.2.0
+info:
+  title: Box Platform Metadata taxonomies API
+  description: Box Platform provides functionality to provide access to content stored within Box. It provides endpoints for basic manipulation of files and folders, management of users within an enterprise, as well as more complex topics such as legal holds and retention policies.
+  termsOfService: https://cloud.app.box.com/s/rmwxu64h1ipr41u49w3bbuvbsa29wku9
+  contact:
+    name: Box, Inc
+    url: https://developer.box.com
+    email: devrel@box.com
+  license:
+    name: Apache-2.0
+    url: https://www.apache.org/licenses/LICENSE-2.0
+  version: '2024.0'
+  x-box-commit-hash: 53bdced3cd
+servers:
+- url: https://api.box.com/2.0
+  description: Box Platform API server.
+security:
+- OAuth2Security: []
+tags:
+- name: Metadata taxonomies
+  description: A metadata taxonomy is a hierarchical classification system that helps organize and manage metadata within an enterprise.
+  x-box-tag: metadata_taxonomies
+paths:
+  /metadata_taxonomies:
+    post:
+      operationId: post_metadata_taxonomies
+      summary: Create metadata taxonomy
+      description: Creates a new metadata taxonomy that can be used in metadata templates.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                key:
+                  description: The taxonomy key. If it is not provided in the request body, it will be generated from the `displayName`. The `displayName` would be converted to lower case, and all spaces and non-alphanumeric characters replaced with underscores.
+                  type: string
+                  example: geography
+                  maxLength: 256
+                displayName:
+                  description: The display name of the taxonomy.
+                  type: string
+                  example: Geography
+                  maxLength: 4096
+                namespace:
+                  description: The namespace of the metadata taxonomy to create.
+                  type: string
+                  example: enterprise_123456
+                  maxLength: 4096
+              required:
+              - displayName
+              - namespace
+      responses:
+        '201':
+          description: The schema representing the metadata taxonomy created.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MetadataTaxonomy'
+        '400':
+          description: 'Returned if the request parameters or body is not valid.
+
+
+            - `bad_request` when the body does not contain a valid request. In many cases this response will include extra details on what fields are missing.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ClientError'
+        '403':
+          description: Returned when the user does not have the permission to create the metadata taxonomy. This can happen for a few reasons, most commonly when the user does not have (co-)admin permissions, or the user doesn't have access to the provided namespace.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ClientError'
+        default:
+          description: An unexpected client error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ClientError'
+      x-box-tag: metadata_taxonomies
+      tags:
+      - Metadata taxonomies
+      x-box-requires-admin: true
+      x-codeSamples:
+      - lang: curl
+        label: Create metadata taxonomy
+        source: "curl -i -X POST \"https://api.box.com/2.0/metadata_taxonomies\" \\\n     -H \"authorization: Bearer <ACCESS_TOKEN>\" \\\n     -H \"content-type: application/json\" \\\n     -d '{\n       \"displayName\": \"Geography\",\n       \"key\": \"geography\",\n       \"namespace\": \"enterprise_123456\"\n     }'"
+      - lang: dotnet
+        label: Create metadata taxonomy
+        source: 'await client.MetadataTaxonomies.CreateMetadataTaxonomyAsync(requestBody: new CreateMetadataTaxonomyRequestBody(displayName: displayName, namespaceParam: namespaceParam) { Key = taxonomyKey });'
+      - lang: swift
+        label: Create metadata taxonomy
+        source: 'try await client.metadataTaxonomies.createMetadataTaxonomy(requestBody: CreateMetadataTaxonomyRequestBody(displayName: displayName, key: taxonomyKey, namespace: namespace))'
+      - lang: java
+        label: Create metadata taxonomy
+        source: client.getMetadataTaxonomies().createMetadataTaxonomy(new CreateMetadataTaxonomyRequestBody.Builder(displayName, namespace).key(taxonomyKey).build())
+      - lang: node
+        label: Create metadata taxonomy
+        source: "await client.metadataTaxonomies.createMetadataTaxonomy({\n  displayName: displayName,\n  key: taxonomyKey,\n  namespace: namespace,\n} satisfies CreateMetadataTaxonomyRequestBody);"
+      - lang: python
+        label: Create metadata taxonomy
+        source: "client.metadata_taxonomies.create_metadata_taxonomy(\n    display_name, namespace, key=taxonomy_key\n)"
+  /metadata_taxonomies/{namespace}:
+    get:
+      operationId: get_metadata_taxonomies_id
+      summary: Get metadata taxonomies for namespace
+      description: Used to retrieve all metadata taxonomies in a namespace.
+      parameters:
+      - name: namespace
+        in: path
+        description: The namespace of the metadata taxonomy.
+        required: true
+        schema:
+          type: string
+        example: enterprise_123456
+      - name: marker
+        in: query
+        description: 'Defines the position marker at which to begin returning results. This is used when paginating using marker-based pagination.
+
+
+          This requires `usemarker` to be set to `true`.'
+        required: false
+        schema:
+          type: string
+        example: JV9IRGZmieiBasejOG9yDCRNgd2ymoZIbjsxbJMjIs3kioVii
+      - name: limit
+        in: query
+        description: The maximum number of items to return per page.
+        required: false
+        schema:
+          type: integer
+          format: int64
+          maximum: 1000
+        example: 1000
+      responses:
+        '200':
+          description: Returns all of the metadata taxonomies within a namespace and their corresponding schema.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MetadataTaxonomies'
+        '400':
+          description: Returned when the request parameters are not valid.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ClientError'
+        default:
+          description: An unexpected client error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ClientError'
+      x-box-tag: metadata_taxonomies
+      tags:
+      - Metadata taxonomies
+      x-codeSamples:
+      - lang: curl
+        label: Get metadata taxonomies for namespace
+        source: "curl -i -X GET \"https://api.box.com/2.0/metadata_taxonomies/enterprise_123456\" \\\n     -H \"authorization: Bearer <ACCESS_TOKEN>\""
+      - lang: dotnet
+        label: Get metadata taxonomies for namespace
+        source: 'await client.MetadataTaxonomies.GetMetadataTaxonomiesAsync(namespaceParam: namespaceParam);'
+      - lang: swift
+        label: Get metadata taxonomies for namespace
+        source: 'try await client.metadataTaxonomies.getMetadataTaxonomies(namespace: namespace)'
+      - lang: java
+        label: Get metadata taxonomies for namespace
+        source: client.getMetadataTaxonomies().getMetadataTaxonomies(namespace)
+      - lang: node
+        label: Get metadata taxonomies for namespace
+        source: await client.metadataTaxonomies.getMetadataTaxonomies(namespace);
+      - lang: python
+        label: Get metadata taxonomies for namespace
+        source: client.metadata_taxonomies.get_metadata_taxonomies(namespace)
+  /metadata_taxonomies/{namespace}/{taxonomy_key}:
+    get:
+      operationId: get_metadata_taxonomies_id_id
+      summary: Get metadata taxonomy by taxonomy key
+      description: Used to retrieve a metadata taxonomy by taxonomy key.
+      parameters:
+      - name: namespace
+        in: path
+        description: The namespace of the metadata taxonomy.
+        required: true
+        schema:
+          type: string
+        example: enterprise_123456
+      - name: taxonomy_key
+        in: path
+        description: The key of the metadata taxonomy.
+        required: true
+        schema:
+          type: string
+        example: geography
+      responses:
+        '200':
+          description: Returns the metadata taxonomy identified by the taxonomy key.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MetadataTaxonomy'
+        '400':
+          description: Returned when the request parameters are not valid.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ClientError'
+        '404':
+          description: Returned when a taxonomy with the given `namespace` and `taxonomy_key` cannot be found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ClientError'
+        default:
+          description: An unexpected client error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ClientError'
+      x-box-tag: metadata_taxonomies
+      tags:
+      - Metadata taxonomies
+      x-codeSamples:
+      - lang: curl
+        label: Get metadata taxonomy by taxonomy key
+        source: "curl -i -X GET \"https://api.box.com/2.0/metadata_taxonomies/enterprise_123456/geography\" \\\n     -H \"authorization: Bearer <ACCESS_TOKEN>\""
+      - lang: dotnet
+        label: Get metadata taxonomy by taxonomy key
+        source: 'await client.MetadataTaxonomies.GetMetadataTaxonomyByKeyAsync(namespaceParam: namespaceParam, taxonomyKey: taxonomyKey);'
+      - lang: swift
+        label: Get metadata taxonomy by taxonomy key
+        source: 'try await client.metadataTaxonomies.getMetadataTaxonomyByKey(namespace: namespace, taxonomyKey: taxonomyKey)'
+      - lang: java
+        label: Get metadata taxonomy by taxonomy key
+        source: client.getMetadataTaxonomies().getMetadataTaxonomyByKey(namespace, taxonomyKey)
+      - lang: node
+        label: Get metadata taxonomy by taxonomy key
+        source: "await client.metadataTaxonomies.getMetadataTaxonomyByKey(\n  namespace,\n  taxonomyKey,\n);"
+      - lang: python
+        label: Get metadata taxonomy by taxonomy key
+        source: client.metadata_taxonomies.get_metadata_taxonomy_by_key(namespace, taxonomy_key)
+    patch:
+      operationId: patch_metadata_taxonomies_id_id
+      summary: Update metadata taxonomy
+      description: Updates an existing metadata taxonomy.
+      parameters:
+      - name: namespace
+        in: path
+        description: The namespace of the metadata taxonomy.
+        required: true
+        schema:
+          type: string
+        example: enterprise_123456
+      - name: taxonomy_key
+        in: path
+        description: The key of the metadata taxonomy.
+        required: true
+        schema:
+          type: string
+        example: geography
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                displayName:
+                  description: The display name of the taxonomy.
+                  type: string
+                  example: Geography
+                  maxLength: 4096
+              required:
+              - displayName
+      responses:
+        '200':
+          description: The schema representing the updated metadata taxonomy.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MetadataTaxonomy'
+        '400':
+          description: 'Returned if the request parameters or body is not valid.
+
+
+            - `bad_request` when the body does not contain a valid request. In many cases this response will include extra details on what fields are missing.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ClientError'
+        '403':
+          description: Returned when the user does not have the permission to modify the metadata taxonomy. This can happen for a few reasons, most commonly when the user does not have (co-)admin permissions, or the user doesn't have access to the provided namespace.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ClientError'
+        default:
+          description: An unexpected client error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ClientError'
+      x-box-tag: metadata_taxonomies
+      tags:
+      - Metadata taxonomies
+      x-box-requires-admin: true
+      x-codeSamples:
+      - lang: curl
+        label: Update metadata taxonomy
+        source: "curl -i -X PATCH \"https://api.box.com/2.0/metadata_taxonomies/enterprise_123456/geography\" \\\n     -H \"authorization: Bearer <ACCESS_TOKEN>\" \\\n     -H \"content-type: application/json\" \\\n     -d '{\n       \"displayName\": \"Geography\"\n     }'"
+      - lang: dotnet
+        label: Update metadata taxonomy
+        source: 'await client.MetadataTaxonomies.UpdateMetadataTaxonomyAsync(namespaceParam: namespaceParam, taxonomyKey: taxonomyKey, requestBody: new UpdateMetadataTaxonomyRequestBody(displayName: updatedDisplayName));'
+      - lang: swift
+        label: Update metadata taxonomy
+        source: 'try await client.metadataTaxonomies.updateMetadataTaxonomy(namespace: namespace, taxonomyKey: taxonomyKey, requestBody: UpdateMetadataTaxonomyRequestBody(displayName: updatedDisplayName))'
+      - lang: java
+        label: Update metadata taxonomy
+        source: client.getMetadataTaxonomies().updateMetadataTaxonomy(namespace, taxonomyKey, new UpdateMetadataTaxonomyRequestBody(updatedDisplayName))
+      - lang: node
+        label: Update metadata taxonomy
+        source: "await client.metadataTaxonomies.updateMetadataTaxonomy(namespace, taxonomyKey, {\n  displayName: updatedDisplayName,\n} satisfies UpdateMetadataTaxonomyRequestBody);"
+      - lang: python
+        label: Update metadata taxonomy
+        source: "client.metadata_taxonomies.update_metadata_taxonomy(\n    namespace, taxonomy_key, updated_display_name\n)"
+    delete:
+      operationId: delete_metadata_taxonomies_id_id
+      summary: Remove metadata taxonomy
+      description: Delete a metadata taxonomy. This deletion is permanent and cannot be reverted.
+      parameters:
+      - name: namespace
+        in: path
+        description: The namespace of the metadata taxonomy.
+        required: true
+        schema:
+          type: string
+        example: enterprise_123456
+      - name: taxonomy_key
+        in: path
+        description: The key of the metadata taxonomy.
+        required: true
+        schema:
+          type: string
+        example: geography
+      responses:
+        '204':
+          description: Returns an empty response when the metadata taxonomy is successfully deleted.
+        '400':
+          description: 'Returned if the request parameters or body is not valid.
+
+
+            - `bad_request` when the body does not contain a valid request. In many cases this response will include extra details on what fields are missing.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ClientError'
+        '403':
+          description: Returned when the user does not have the permission to delete the metadata taxonomy. This can happen for a few reasons, most commonly when the user does not have (co-)admin permissions, or the user doesn't have access to the provided namespace.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ClientError'
+        '404':
+          description: Returned if the metadata taxonomy does not exist.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ClientError'
+        default:
+          description: An unexpected client error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ClientError'
+      x-box-tag: metadata_taxonomies
+      tags:
+      - Metadata taxonomies
+      x-box-requires-admin: true
+      x-codeSamples:
+      - lang: curl
+        label: Remove metadata taxonomy
+        source: "curl -i -X DELETE \"https://api.box.com/2.0/metadata_taxonomies/enterprise_123456/geography\" \\\n     -H \"authorization: Bearer <ACCESS_TOKEN>\""
+      - lang: dotnet
+        label: Remove metadata taxonomy
+        source: 'await client.MetadataTaxonomies.DeleteMetadataTaxonomyAsync(namespaceParam: namespaceParam, taxonomyKey: taxonomyKey);'
+      - lang: swift
+        label: Remove metadata taxonomy
+        source: 'try await client.metadataTaxonomies.deleteMetadataTaxonomy(namespace: namespace, taxonomyKey: taxonomyKey)'
+      - lang: java
+        label: Remove metadata taxonomy
+        source: client.getMetadataTaxonomies().deleteMetadataTaxonomy(namespace, taxonomyKey)
+      - lang: node
+        label: Remove metadata taxonomy
+        source: await client.metadataTaxonomies.deleteMetadataTaxonomy(namespace, taxonomyKey);
+      - lang: python
+        label: Remove metadata taxonomy
+        source: client.metadata_taxonomies.delete_metadata_taxonomy(namespace, taxonomy_key)
+  /metadata_taxonomies/{namespace}/{taxonomy_key}/levels:
+    post:
+      operationId: post_metadata_taxonomies_id_id_levels
+      summary: Create metadata taxonomy levels
+      description: Creates new metadata taxonomy levels.
+      parameters:
+      - name: namespace
+        in: path
+        description: The namespace of the metadata taxonomy.
+        required: true
+        schema:
+          type: string
+        example: enterprise_123456
+      - name: taxonomy_key
+        in: path
+        description: The key of the metadata taxonomy.
+        required: true
+        schema:
+          type: string
+        example: geography
+      requestBody:
+        content:
+          application/json:
+            schema:
+              description: An array of metadata taxonomy levels to be created.
+              type: array
+              items:
+                $ref: '#/components/schemas/MetadataTaxonomyLevel'
+      responses:
+        '201':
+          description: Returns an array of all taxonomy levels.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MetadataTaxonomyLevels'
+        '400':
+          description: 'Returned if the request parameters or body is not valid.
+
+
+            - `bad_request` when the body does not contain a valid request. In many cases this response will include extra details on what fields are missing.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ClientError'
+        '403':
+          description: Returned when the user does not have the permission to modify the metadata taxonomy. This can happen for a few reasons, most commonly when the user does not have (co-)admin permissions, or the user doesn't have access to the provided namespace.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ClientError'
+        default:
+          description: An unexpected client error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ClientError'
+      x-box-tag: metadata_taxonomies
+      tags:
+      - Metadata taxonomies
+      x-box-requires-admin: true
+      x-codeSamples:
+      - lang: curl
+        label: Create metadata taxonomy levels
+        source: "curl -i -X POST \"https://api.box.com/2.0/metadata_taxonomies/enterprise_123456/geography/levels\" \\\n     -H \"authorization: Bearer <ACCESS_TOKEN>\" \\\n     -H \"content-type: application/json\" \\\n     -d '[\n       {\n         \"displayName\": \"Continent\",\n         \"description\": \"Continent Level\"\n       },\n       {\n         \"displayName\": \"Country\",\n         \"description\": \"Country Level\"\n       }\n     ]'"
+      - lang: dotnet
+        label: Create metadata taxonomy levels
+        source: 'await client.MetadataTaxonomies.CreateMetadataTaxonomyLevelAsync(namespaceParam: namespaceParam, taxonomyKey: taxonomyKey, requestBody: Array.AsReadOnly(new [] {new MetadataTaxonomyLevel() { DisplayName = "Continent", Description = "Continent Level" },new MetadataTaxonomyLevel() { DisplayName = "Country", Description = "Country Level" }}));'
+      - lang: swift
+        label: Create metadata taxonomy levels
+        source: 'try await client.metadataTaxonomies.createMetadataTaxonomyLevel(namespace: namespace, taxonomyKey: taxonomyKey, requestBody: [MetadataTaxonomyLevel(displayName: "Continent", description: "Continent Level"), MetadataTaxonomyLevel(displayName: "Country", description: "Country Level")])'
+      - lang: java
+        label: Create metadata taxonomy levels
+        source: client.getMetadataTaxonomies().createMetadataTaxonomyLevel(namespace, taxonomyKey, Arrays.asList(new MetadataTaxonomyLevel.Builder().displayName("Continent").description("Continent Level").build(), new MetadataTaxonomyLevel.Builder().displayName("Country").description("Country Level").build()))
+      - lang: node
+        label: Create metadata taxonomy levels
+        source: "await client.metadataTaxonomies.createMetadataTaxonomyLevel(\n  namespace,\n  taxonomyKey,\n  [\n    {\n      displayName: 'Continent',\n      description: 'Continent Level',\n    } satisfies MetadataTaxonomyLevel,\n    {\n      displayName: 'Country',\n      description: 'Country Level',\n    } satisfies MetadataTaxonomyLevel,\n  ],\n);"
+      - lang: python
+        label: Create metadata taxonomy levels
+        source: "client.metadata_taxonomies.create_metadata_taxonomy_level(\n    namespace,\n    taxonomy_key,\n    [\n        MetadataTaxonomyLevel(display_name=\"Continent\", description=\"Continent Level\"),\n        MetadataTaxonomyLevel(display_name=\"Country\", description=\"Country Level\"),\n    ],\n)"
+  /metadata_taxonomies/{namespace}/{taxonomy_key}/levels/{level_index}:
+    patch:
+      operationId: patch_metadata_taxonomies_id_id_levels_id
+      summary: Update metadata taxonomy level
+      description: Updates an existing metadata taxonomy level.
+      parameters:
+      - name: namespace
+        in: path
+        description: The namespace of the metadata taxonomy.
+        required: true
+        schema:
+          type: string
+        example: enterprise_123456
+      - name: taxonomy_key
+        in: path
+        description: The key of the metadata taxonomy.
+        required: true
+        schema:
+          type: string
+        example: geography
+      - name: level_index
+        in: path
+        description: The index of the metadata taxonomy level.
+        required: true
+        schema:
+          type: integer
+        example: 1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                displayName:
+                  description: The display name of the taxonomy level.
+                  type: string
+                  example: France
+                description:
+                  description: The description of the taxonomy level.
+                  type: string
+                  example: French Republic
+              required:
+              - displayName
+      responses:
+        '200':
+          description: The updated taxonomy level.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MetadataTaxonomyLevel'
+        '400':
+          description: 'Returned if the request parameters or body is not valid.
+
+
+            - `bad_request` when the body does not contain a valid request. In many cases this response will include extra details on what fields are missing.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ClientError'
+        '403':
+          description: Returned when the user does not have the permission to modify the metadata taxonomy. This can happen for a few reasons, most commonly when the user does not have (co-)admin permissions, or the user doesn't have access to the provided namespace.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ClientError'
+        default:
+          description: An unexpected client error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ClientError'
+      x-box-tag: metadata_taxonomies
+      tags:
+      - Metadata taxonomies
+      x-box-requires-admin: true
+      x-codeSamples:
+      - lang: curl
+        label: Update metadata taxonomy level
+        source: "curl -i -X PATCH \"https://api.box.com/2.0/metadata_taxonomies/enterprise_123456/geography/levels/1\" \\\n     -H \"authorization: Bearer <ACCESS_TOKEN>\" \\\n     -H \"content-type: application/json\" \\\n     -d '{\n       \"displayName\": \"France\",\n       \"description\": \"French Republic\"\n     }'"
+      - lang: dotnet
+        label: Update metadata taxonomy level
+        source: 'await client.MetadataTaxonomies.UpdateMetadataTaxonomyLevelByIdAsync(namespaceParam: namespaceParam, taxonomyKey: taxonomyKey, levelIndex: 1L, requestBody: new UpdateMetadataTaxonomyLevelByIdRequestBody(displayName: "Continent UPDATED") { Description = "Continent Level UPDATED" });'
+      - lang: swift
+        label: Update metadata taxonomy level
+        source: 'try await client.metadataTaxonomies.updateMetadataTaxonomyLevelById(namespace: namespace, taxonomyKey: taxonomyKey, levelIndex: Int64(1), requestBody: UpdateMetadataTaxonomyLevelByIdRequestBody(displayName: "Continent UPDATED", description: "Continent Level UPDATED"))'
+      - lang: java
+        label: Update metadata taxonomy level
+        source: client.getMetadataTaxonomies().updateMetadataTaxonomyLevelById(namespace, taxonomyKey, 1L, new UpdateMetadataTaxonomyLevelByIdRequestBody.Builder("Continent UPDATED").description("Continent Level UPDATED").build())
+      - lang: node
+        label: Update metadata taxonomy level
+        source: "await client.metadataTaxonomies.updateMetadataTaxonomyLevelById(\n  namespace,\n  taxonomyKey,\n  1,\n  {\n    displayName: 'Continent UPDATED',\n    description: 'Continent Level UPDATED',\n  } satisfies UpdateMetadataTaxonomyLevelByIdRequestBody,\n);"
+      - lang: python
+        label: Update metadata taxonomy level
+        source: "client.metadata_taxonomies.update_metadata_taxonomy_level_by_id(\n    namespace,\n    taxonomy_key,\n    1,\n    \"Continent UPDATED\",\n    description=\"Continent Level UPDATED\",\n)"
+  /metadata_taxonomies/{namespace}/{taxonomy_key}/levels:append:
+    post:
+      operationId: post_metadata_taxonomies_id_id_levels:append
+      summary: Add metadata taxonomy level
+      description: Creates a new metadata taxonomy level and appends it to the existing levels. If there are no levels defined yet, this will create the first level.
+      parameters:
+      - name: namespace
+        in: path
+        description: The namespace of the metadata taxonomy.
+        required: true
+        schema:
+          type: string
+        example: enterprise_123456
+      - name: taxonomy_key
+        in: path
+        description: The key of the metadata taxonomy.
+        required: true
+        schema:
+          type: string
+        example: geography
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                displayName:
+                  description: The display name of the taxonomy level.
+                  type: string
+                  example: France
+                description:
+                  description: The description of the taxonomy level.
+                  type: string
+                  example: French Republic
+              required:
+              - displayName
+      responses:
+        '201':
+          description: Returns an array of all taxonomy levels.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MetadataTaxonomyLevels'
+        '400':
+          description: 'Returned if the request parameters or body is not valid.
+
+
+            - `bad_request` when the body does not contain a valid request. In many cases this response will include extra details on what fields are missing.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ClientError'
+        '403':
+          description: Returned when the user does not have the permission to modify the metadata taxonomy. This can happen for a few reasons, most commonly when the user does not have (co-)admin permissions, or the user doesn't have access to the provided namespace.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ClientError'
+        default:
+          description: An unexpected client error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ClientError'
+      x-box-tag: metadata_taxonomies
+      tags:
+      - Metadata taxonomies
+      x-box-requires-admin: true
+      x-codeSamples:
+      - lang: curl
+        label: Add metadata taxonomy level
+        source: "curl -i -X POST \"https://api.box.com/2.0/metadata_taxonomies/enterprise_123456/geography/levels:append\" \\\n     -H \"authorization: Bearer <ACCESS_TOKEN>\" \\\n     -H \"content-type: application/json\" \\\n     -d '{\n       \"displayName\": \"City\",\n       \"description\": \"City Level\"\n     }'"
+      - lang: dotnet
+        label: Add metadata taxonomy level
+        source: 'await client.MetadataTaxonomies.AddMetadataTaxonomyLevelAsync(namespaceParam: namespaceParam, taxonomyKey: taxonomyKey, requestBody: new AddMetadataTaxonomyLevelRequestBody(displayName: "Region") { Description = "Region Description" });'
+      - lang: swift
+        label: Add metadata taxonomy level
+        source: 'try await client.metadataTaxonomies.addMetadataTaxonomyLevel(namespace: namespace, taxonomyKey: taxonomyKey, requestBody: AddMetadataTaxonomyLevelRequestBody(displayName: "Region", description: "Region Description"))'
+      - lang: java
+        label: Add metadata taxonomy level
+        source: client.getMetadataTaxonomies().addMetadataTaxonomyLevel(namespace, taxonomyKey, new AddMetadataTaxonomyLevelRequestBody.Builder("Region").description("Region Description").build())
+      - lang: node
+        label: Add metadata taxonomy level
+        source: "await client.metadataTaxonomies.addMetadataTaxonomyLevel(\n  namespace,\n  taxonomyKey,\n  {\n    displayName: 'Region',\n    description: 'Region Description',\n  } satisfies AddMetadataTaxonomyLevelRequestBody,\n);"
+      - lang: python
+        label: Add metadata taxonomy level
+        source: "client.metadata_taxonomies.add_metadata_taxonomy_level(\n    namespace, taxonomy_key, \"Region\", description=\"Region Description\"\n)"
+  /metadata_taxonomies/{namespace}/{taxonomy_key}/levels:trim:
+    post:
+      operationId: post_metadata_taxonomies_id_id_levels:trim
+      summary: Delete metadata taxonomy level
+      description: Deletes the last level of the metadata taxonomy.
+      parameters:
+      - name: namespace
+        in: path
+        description: The namespace of the metadata taxonomy.
+        required: true
+        schema:
+          type: string
+        example: enterprise_123456
+      - name: taxonomy_key
+        in: path
+        description: The key of the metadata taxonomy.
+        required: true
+        schema:
+          type: string
+        example: geography
+      responses:
+        '200':
+          description: Returns an array of all taxonomy levels.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MetadataTaxonomyLevels'
+        '400':
+          description: 'Returned if the request parameters or body is not valid.
+
+
+            - `bad_request` when the body does not contain a valid request. In many cases this response will include extra details on what fields are missing.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ClientError'
+        '403':
+          description: Returned when the user does not have the permission to modify the metadata taxonomy. This can happen for a few reasons, most commonly when the user does not have (co-)admin permissions, or the user doesn't have access to the provided namespace.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ClientError'
+        default:
+          description: An unexpected client error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ClientError'
+      x-box-tag: metadata_taxonomies
+      tags:
+      - Metadata taxonomies
+      x-box-requires-admin: true
+      x-codeSamples:
+      - lang: curl
+        label: Delete metadata taxonomy level
+        source: "curl -i -X POST \"https://api.box.com/2.0/metadata_taxonomies/enterprise_123456/geography/levels:trim\" \\\n     -H \"authorization: Bearer <ACCESS_TOKEN>\""
+      - lang: dotnet
+        label: Delete metadata taxonomy level
+        source: 'await client.MetadataTaxonomies.DeleteMetadataTaxonomyLevelAsync(namespaceParam: namespaceParam, taxonomyKey: taxonomyKey);'
+      - lang: swift
+        label: Delete metadata taxonomy level
+        source: 'try await client.metadataTaxonomies.deleteMetadataTaxonomyLevel(namespace: namespace, taxonomyKey: taxonomyKey)'
+      - lang: java
+        label: Delete metadata taxonomy level
+        source: client.getMetadataTaxonomies().deleteMetadataTaxonomyLevel(namespace, taxonomyKey)
+      - lang: node
+        label: Delete metadata taxonomy level
+        source: "await client.metadataTaxonomies.deleteMetadataTaxonomyLevel(\n  namespace,\n  taxonomyKey,\n);"
+      - lang: python
+        label: Delete metadata taxonomy level
+        source: client.metadata_taxonomies.delete_metadata_taxonomy_level(namespace, taxonomy_key)
+  /metadata_taxonomies/{namespace}/{taxonomy_key}/nodes:
+    get:
+      operationId: get_metadata_taxonomies_id_id_nodes
+      summary: List metadata taxonomy nodes
+      description: Used to retrieve metadata taxonomy nodes based on the parameters specified. Results are sorted in lexicographic order unless a `query` parameter is passed. With a `query` parameter specified, results are sorted in order of relevance.
+      parameters:
+      - name: namespace
+        in: path
+        description: The namespace of the metadata taxonomy.
+        required: true
+        schema:
+          type: string
+        example: enterprise_123456
+      - name: taxonomy_key
+        in: path
+        description: The key of the metadata taxonomy.
+        required: true
+        schema:
+          type: string
+        example: geography
+      - name: level
+        in: query
+        description: Filters results by taxonomy level. Multiple values can be provided. Results include nodes that match any of the specified values.
+        required: false
+        schema:
+          type: array
+          items:
+            type: integer
+        example:
+        - 1
+      - name: parent
+        in: query
+        description: Node identifier of a direct parent node. Multiple values can be provided. Results include nodes that match any of the specified values.
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+        example:
+        - c73a9bf3-f377-4210-9159-3df06a481905
+      - name: ancestor
+        in: query
+        description: Node identifier of any ancestor node. Multiple values can be provided. Results include nodes that match any of the specified values.
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+        example:
+        - c73a9bf3-f377-4210-9159-3df06a481905
+        - bf8b8213-be1f-4011-bd45-533c0713fa0a
+      - name: query
+        in: query
+        description: Query text to search for the taxonomy nodes.
+        required: false
+        schema:
+          type: string
+        example: France
+      - name: include-total-result-count
+        in: query
+        description: When set to `true` this provides the total number of nodes that matched the query. The response will compute counts of up to 10,000 elements. Defaults to `false`.
+        required: false
+        schema:
+          type: boolean
+        example: true
+      - name: marker
+        in: query
+        description: 'Defines the position marker at which to begin returning results. This is used when paginating using marker-based pagination.
+
+
+          This requires `usemarker` to be set to `true`.'
+        required: false
+        schema:
+          type: string
+        example: JV9IRGZmieiBasejOG9yDCRNgd2ymoZIbjsxbJMjIs3kioVii
+      - name: limit
+        in: query
+        description: The maximum number of items to return per page.
+        required: false
+        schema:
+          type: integer
+          format: int64
+          maximum: 1000
+        example: 1000
+      responses:
+        '200':
+          description: Returns a list of the taxonomy nodes that match the specified parameters.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MetadataTaxonomyNodes'
+        '400':
+          description: Returned when the request parameters are not valid.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ClientError'
+        default:
+          description: An unexpected client error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ClientError'
+      x-box-tag: metadata_taxonomies
+      tags:
+      - Metadata taxonomies
+      x-codeSamples:
+      - lang: curl
+        label: List metadata taxonomy nodes
+        source: "curl -i -X GET \"https://api.box.com/2.0/metadata_taxonomies/enterprise_123456/geography/nodes\" \\\n     -H \"authorization: Bearer <ACCESS_TOKEN>\""
+      - lang: dotnet
+        label: List metadata taxonomy nodes
+        source: 'await client.MetadataTaxonomies.GetMetadataTaxonomyNodesAsync(namespaceParam: namespaceParam, taxonomyKey: taxonomyKey);'
+      - lang: swift
+        label: List metadata taxonomy nodes
+        source: 'try await client.metadataTaxonomies.getMetadataTaxonomyNodes(namespace: namespace, taxonomyKey: taxonomyKey)'
+      - lang: java
+        label: List metadata taxonomy nodes
+        source: client.getMetadataTaxonomies().getMetadataTaxonomyNodes(namespace, taxonomyKey)
+      - lang: node
+        label: List metadata taxonomy nodes
+        source: "await client.metadataTaxonomies.getMetadataTaxonomyNodes(\n  namespace,\n  taxonomyKey,\n);"
+      - lang: python
+        label: List metadata taxonomy nodes
+        source: client.metadata_taxonomies.get_metadata_taxonomy_nodes(namespace, taxonomy_key)
+    post:
+      operationId: post_metadata_taxonomies_id_id_nodes
+      summary: Create metadata taxonomy node
+      description: Creates a new metadata taxonomy node.
+      parameters:
+      - name: namespace
+        in: path
+        description: The namespace of the metadata taxonomy.
+        required: true
+        schema:
+          type: string
+        example: enterprise_123456
+      - name: taxonomy_key
+        in: path
+        description: The key of the metadata taxonomy.
+        required: true
+        schema:
+          type: string
+        example: geography
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                displayName:
+                  description: The display name of the taxonomy node.
+                  type: string
+                  example: France
+                level:
+                  description: The level of the taxonomy node.
+                  type: integer
+                  example: 1
+                parentId:
+                  description: The identifier of the parent taxonomy node. Omit this field for root-level nodes.
+                  type: string
+                  example: 99df4513-7102-4896-8228-94635ee9d330
+              required:
+              - displayName
+              - level
+      responses:
+        '201':
+          description: The schema representing the taxonomy node created.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MetadataTaxonomyNode'
+        '400':
+          description: 'Returned if the request parameters or body is not valid.
+
+
+            - `bad_request` when the body does not contain a valid request. In many cases this response will include extra details on what fields are missing.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ClientError'
+        '403':
+          description: Returned when the user does not have the permission to modify the metadata taxonomy. This can happen for a few reasons, most commonly when the user does not have (co-)admin permissions, or the user doesn't have access to the provided namespace.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ClientError'
+        default:
+          description: An unexpected client error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ClientError'
+      x-box-tag: metadata_taxonomies
+      tags:
+      - Metadata taxonomies
+      x-box-requires-admin: true
+      x-codeSamples:
+      - lang: curl
+        label: Create metadata taxonomy node
+        source: "curl -i -X POST \"https://api.box.com/2.0/metadata_taxonomies/enterprise_123456/geography/nodes\" \\\n     -H \"authorization: Bearer <ACCESS_TOKEN>\" \\\n     -H \"content-type: application/json\" \\\n     -d '{\n       \"displayName\": \"Europe\",\n       \"level\": 1\n     }'"
+      - lang: dotnet
+        label: Create metadata taxonomy node
+        source: 'await client.MetadataTaxonomies.CreateMetadataTaxonomyNodeAsync(namespaceParam: namespaceParam, taxonomyKey: taxonomyKey, requestBody: new CreateMetadataTaxonomyNodeRequestBody(displayName: "Europe", level: 1));'
+      - lang: swift
+        label: Create metadata taxonomy node
+        source: 'try await client.metadataTaxonomies.createMetadataTaxonomyNode(namespace: namespace, taxonomyKey: taxonomyKey, requestBody: CreateMetadataTaxonomyNodeRequestBody(displayName: "Europe", level: 1))'
+      - lang: java
+        label: Create metadata taxonomy node
+        source: client.getMetadataTaxonomies().createMetadataTaxonomyNode(namespace, taxonomyKey, new CreateMetadataTaxonomyNodeRequestBody("Europe", 1))
+      - lang: node
+        label: Create metadata taxonomy node
+        source: "await client.metadataTaxonomies.createMetadataTaxonomyNode(\n  namespace,\n  taxonomyKey,\n  {\n    displayName: 'Europe',\n    level: 1,\n  } satisfies CreateMetadataTaxonomyNodeRequestBody,\n);"
+      - lang: python
+        label: Create metadata taxonomy node
+        source: "client.metadata_taxonomies.create_metadata_taxonomy_node(\n    namespace, taxonomy_key, \"Europe\", 1\n)"
+  /metadata_taxonomies/{namespace}/{taxonomy_key}/nodes/{node_id}:
+    get:
+      operationId: get_metadata_taxonomies_id_id_nodes_id
+      summary: Get metadata taxonomy node by ID
+      description: Retrieves a metadata taxonomy node by its identifier.
+      parameters:
+      - name: namespace
+        in: path
+        description: The namespace of the metadata taxonomy.
+        required: true
+        schema:
+          type: string
+        example: enterprise_123456
+      - name: taxonomy_key
+        in: path
+        description: The key of the metadata taxonomy.
+        required: true
+        schema:
+          type: string
+        example: geography
+      - name: node_id
+        in: path
+        description: The identifier of the metadata taxonomy node.
+        required: true
+        schema:
+          type: string
+        example: 14d3d433-c77f-49c5-b146-9dea370f6e32
+      responses:
+        '200':
+          description: Returns the metadata taxonomy node that matches the identifier.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MetadataTaxonomyNode'
+        '400':
+          description: Returned if any of the request parameters are not valid.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ClientError'
+        '404':
+          description: Returned if the taxonomy node with the given `node_id` cannot be found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ClientError'
+        default:
+          description: An unexpected client error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ClientError'
+      x-box-tag: metadata_taxonomies
+      tags:
+      - Metadata taxonomies
+      x-codeSamples:
+      - lang: curl
+        label: Get metadata taxonomy node by ID
+        source: "curl -i -X GET \"https://api.box.com/2.0/metadata_taxonomies/enterprise_123456/geography/nodes/14d3d433-c77f-49c5-b146-9dea370f6e32\" \\\n     -H \"authorization: Bearer <ACCESS_TOKEN>\""
+      - lang: dotnet
+        label: Get metadata taxonomy node by ID
+        source: 'await client.MetadataTaxonomies.GetMetadataTaxonomyNodeByIdAsync(namespaceParam: namespaceParam, taxonomyKey: taxonomyKey, nodeId: countryNode.Id);'
+      - lang: swift
+        label: Get metadata taxonomy node by ID
+        source: 'try await client.metadataTaxonomies.getMetadataTaxonomyNodeById(namespace: namespace, taxonomyKey: taxonomyKey, nodeId: countryNode.id)'
+      - lang: java
+        label: Get metadata taxonomy node by ID
+        source: client.getMetadataTaxonomies().getMetadataTaxonomyNodeById(namespace, taxonomyKey, countryNode.getId())
+      - lang: node
+        label: Get metadata taxonomy node by ID
+        source: "await client.metadataTaxonomies.getMetadataTaxonomyNodeById(\n  namespace,\n  taxonomyKey,\n  countryNode.id,\n);"
+      - lang: python
+        label: Get metadata taxonomy node by ID
+        source: "client.metadata_taxonomies.get_metadata_taxonomy_node_by_id(\n    namespace, taxonomy_key, country_node.id\n)"
+    patch:
+      operationId: patch_metadata_taxonomies_id_id_nodes_id
+      summary: Update metadata taxonomy node
+      description: Updates an existing metadata taxonomy node.
+      parameters:
+      - name: namespace
+        in: path
+        description: The namespace of the metadata taxonomy.
+        required: true
+        schema:
+          type: string
+        example: enterprise_123456
+      - name: taxonomy_key
+        in: path
+        description: The key of the metadata taxonomy.
+        required: true
+        schema:
+          type: string
+        example: geography
+      - name: node_id
+        in: path
+        description: The identifier of the metadata taxonomy node.
+        required: true
+        schema:
+          type: string
+        example: 14d3d433-c77f-49c5-b146-9dea370f6e32
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                displayName:
+                  description: The display name of the taxonomy node.
+                  type: string
+                  example: France
+      responses:
+        '200':
+          description: The schema representing the updated taxonomy node.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MetadataTaxonomyNode'
+        '400':
+          description: 'Returned if the request parameters or body is not valid.
+
+
+            - `bad_request` when the body does not contain a valid request. In many cases this response will include extra details on what fields are missing.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ClientError'
+        '403':
+          description: Returned when the user does not have the permission to modify the metadata taxonomy. This can happen for a few reasons, most commonly when the user does not have (co-)admin permissions, or the user doesn't have access to the provided namespace.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ClientError'
+        default:
+          description: An unexpected client error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ClientError'
+      x-box-tag: metadata_taxonomies
+      tags:
+      - Metadata taxonomies
+      x-box-requires-admin: true
+      x-codeSamples:
+      - lang: curl
+        label: Update metadata taxonomy node
+        source: "curl -i -X PATCH \"https://api.box.com/2.0/metadata_taxonomies/enterprise_123456/geography/nodes/14d3d433-c77f-49c5-b146-9dea370f6e32\" \\\n     -H \"authorization: Bearer <ACCESS_TOKEN>\" \\\n     -H \"content-type: application/json\" \\\n     -d '{\n       \"displayName\": \"France\"\n     }'"
+      - lang: dotnet
+        label: Update metadata taxonomy node
+        source: 'await client.MetadataTaxonomies.UpdateMetadataTaxonomyNodeAsync(namespaceParam: namespaceParam, taxonomyKey: taxonomyKey, nodeId: countryNode.Id, requestBody: new UpdateMetadataTaxonomyNodeRequestBody() { DisplayName = "Poland UPDATED" });'
+      - lang: swift
+        label: Update metadata taxonomy node
+        source: 'try await client.metadataTaxonomies.updateMetadataTaxonomyNode(namespace: namespace, taxonomyKey: taxonomyKey, nodeId: countryNode.id, requestBody: UpdateMetadataTaxonomyNodeRequestBody(displayName: "Poland UPDATED"))'
+      - lang: java
+        label: Update metadata taxonomy node
+        source: client.getMetadataTaxonomies().updateMetadataTaxonomyNode(namespace, taxonomyKey, countryNode.getId(), new UpdateMetadataTaxonomyNodeRequestBody.Builder().displayName("Poland UPDATED").build())
+      - lang: node
+        label: Update metadata taxonomy node
+        source: "await client.metadataTaxonomies.updateMetadataTaxonomyNode(\n  namespace,\n  taxonomyKey,\n  countryNode.id,\n  {\n    requestBody: {\n      displayName: 'Poland UPDATED',\n    } satisfies UpdateMetadataTaxonomyNodeRequestBody,\n  } satisfies UpdateMetadataTaxonomyNodeOptionalsInput,\n);"
+      - lang: python
+        label: Update metadata taxonomy node
+        source: "client.metadata_taxonomies.update_metadata_taxonomy_node(\n    namespace, taxonomy_key, country_node.id, display_name=\"Poland UPDATED\"\n)"
+    delete:
+      operationId: delete_metadata_taxonomies_id_id_nodes_id
+      summary: Remove metadata taxonomy node
+      description: Delete a metadata taxonomy node. This deletion is permanent and cannot be reverted. Only metadata taxonomy nodes without any children can be deleted.
+      parameters:
+      - name: namespace
+        in: path
+        description: The namespace of the metadata taxonomy.
+        required: true
+        schema:
+          type: string
+        example: enterprise_123456
+      - name: taxonomy_key
+        in: path
+        description: The key of the metadata taxonomy.
+        required: true
+        schema:
+          type: string
+        example: geography
+      - name: node_id
+        in: path
+        description: The identifier of the metadata taxonomy node.
+        required: true
+        schema:
+          type: string
+        example: 14d3d433-c77f-49c5-b146-9dea370f6e32
+      responses:
+        '204':
+          description: Returns an empty response when the metadata taxonomy node is successfully deleted.
+        '400':
+          description: 'Returned if the request parameters or body is not valid.
+
+
+            - `bad_request` when the body does not contain a valid request. In many cases this response will include extra details on what fields are missing.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ClientError'
+        '403':
+          description: Returned when the user does not have the permission to delete the metadata taxonomy node. This can happen for a few reasons, most commonly when the user does not have (co-)admin permissions, or the user doesn't have access to the provided namespace.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ClientError'
+        '404':
+          description: Returned if the metadata taxonomy node does not exist.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ClientError'
+        default:
+          description: An unexpected client error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ClientError'
+      x-box-tag: metadata_taxonomies
+      tags:
+      - Metadata taxonomies
+      x-box-requires-admin: true
+      x-codeSamples:
+      - lang: curl
+        label: Remove metadata taxonomy node
+        source: "curl -i -X DELETE \"https://api.box.com/2.0/metadata_taxonomies/enterprise_123456/geography/nodes/14d3d433-c77f-49c5-b146-9dea370f6e32\" \\\n     -H \"authorization: Bearer <ACCESS_TOKEN>\""
+      - lang: dotnet
+        label: Remove metadata taxonomy node
+        source: 'await client.MetadataTaxonomies.DeleteMetadataTaxonomyNodeAsync(namespaceParam: namespaceParam, taxonomyKey: taxonomyKey, nodeId: countryNode.Id);'
+      - lang: swift
+        label: Remove metadata taxonomy node
+        source: 'try await client.metadataTaxonomies.deleteMetadataTaxonomyNode(namespace: namespace, taxonomyKey: taxonomyKey, nodeId: countryNode.id)'
+      - lang: java
+        label: Remove metadata taxonomy node
+        source: client.getMetadataTaxonomies().deleteMetadataTaxonomyNode(namespace, taxonomyKey, countryNode.getId())
+      - lang: node
+        label: Remove metadata taxonomy node
+        source: "await client.metadataTaxonomies.deleteMetadataTaxonomyNode(\n  namespace,\n  taxonomyKey,\n  countryNode.id,\n);"
+      - lang: python
+        label: Remove metadata taxonomy node
+        source: "client.metadata_taxonomies.delete_metadata_taxonomy_node(\n    namespace, taxonomy_key, country_node.id\n)"
+  /metadata_templates/{namespace}/{template_key}/fields/{field_key}/options:
+    get:
+      operationId: get_metadata_templates_id_id_fields_id_options
+      summary: List metadata template's options for taxonomy field
+      description: Used to retrieve metadata taxonomy nodes which are available for the taxonomy field based on its configuration and the parameters specified. Results are sorted in lexicographic order unless a `query` parameter is passed. With a `query` parameter specified, results are sorted in order of relevance.
+      parameters:
+      - name: namespace
+        in: path
+        description: The namespace of the metadata taxonomy.
+        required: true
+        schema:
+          type: string
+        example: enterprise_123456
+      - name: template_key
+        in: path
+        description: The name of the metadata template.
+        required: true
+        schema:
+          type: string
+        example: properties
+      - name: field_key
+        in: path
+        description: The key of the metadata taxonomy field in the template.
+        required: true
+        schema:
+          type: string
+        example: geography
+      - name: level
+        in: query
+        description: Filters results by taxonomy level. Multiple values can be provided. Results include nodes that match any of the specified values.
+        required: false
+        schema:
+          type: array
+          items:
+            type: integer
+        example:
+        - 1
+      - name: parent
+        in: query
+        description: Node identifier of a direct parent node. Multiple values can be provided. Results include nodes that match any of the specified values.
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+        example:
+        - c73a9bf3-f377-4210-9159-3df06a481905
+      - name: ancestor
+        in: query
+        description: Node identifier of any ancestor node. Multiple values can be provided. Results include nodes that match any of the specified values.
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+        example:
+        - c73a9bf3-f377-4210-9159-3df06a481905
+        - bf8b8213-be1f-4011-bd45-533c0713fa0a
+      - name: query
+        in: query
+        description: Query text to search for the taxonomy nodes.
+        required: false
+        schema:
+          type: string
+        example: France
+      - name: include-total-result-count
+        in: query
+        description: When set to `true` this provides the total number of nodes that matched the query. The response will compute counts of up to 10,000 elements. Defaults to `false`.
+        required: false
+        schema:
+          type: boolean
+        example: true
+      - name: only-selectable-options
+        in: query
+        description: When set to `true`, this only returns valid selectable options for this template taxonomy field. Otherwise, it returns all taxonomy nodes, whether or not they are selectable. Defaults to `true`.
+        required: false
+        schema:
+          type: boolean
+        example: true
+      - name: marker
+        in: query
+        description: 'Defines the position marker at which to begin returning results. This is used when paginating using marker-based pagination.
+
+
+          This requires `usemarker` to be set to `true`.'
+        required: false
+        schema:
+          type: string
+        example: JV9IRGZmieiBasejOG9yDCRNgd2ymoZIbjsxbJMjIs3kioVii
+      - name: limit
+        in: query
+        description: The maximum number of items to return per page.
+        required: false
+        schema:
+          type: integer
+          format: int64
+          maximum: 1000
+        example: 1000
+      responses:
+        '200':
+          description: Returns a list of the taxonomy nodes that match the specified parameters.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MetadataTaxonomyNodes'
+        '400':
+          description: Returned when the request parameters are not valid.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ClientError'
+        default:
+          description: An unexpected client error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ClientError'
+      x-box-tag: metadata_taxonomies
+      tags:
+      - Metadata taxonomies
+      x-codeSamples:
+      - lang: curl
+        label: List metadata template's options for taxonomy field
+        source: "curl -i -X GET \"https://api.box.com/2.0/metadata_templates/enterprise_123456/properties/fields/geography/options\" \\\n     -H \"authorization: Bearer <ACCESS_TOKEN>\""
+      - lang: dotnet
+        label: List metadata template's options for taxonomy field
+        source: 'await client.MetadataTaxonomies.GetMetadataTemplateFieldOptionsAsync(namespaceParam: namespaceParam, templateKey: metadataTemplateKey, fieldKey: fieldKey);'
+      - lang: swift
+        label: List metadata template's options for taxonomy field
+        source: 'try await client.metadataTaxonomies.getMetadataTemplateFieldOptions(namespace: namespace, templateKey: metadataTemplateKey, fieldKey: fieldKey)'
+      - lang: java
+        label: List metadata template's options for taxonomy field
+        source: client.getMetadataTaxonomies().getMetadataTemplateFieldOptions(namespace, metadataTemplateKey, fieldKey)
+      - lang: node
+        label: List metadata template's options for taxonomy field
+        source: "await client.metadataTaxonomies.getMetadataTemplateFieldOptions(\n  namespace,\n  metadataTemplateKey,\n  fieldKey,\n);"
+      - lang: python
+        label: List metadata template's options for taxonomy field
+        source: "client.metadata_taxonomies.get_metadata_template_field_options(\n    namespace, metadata_template_key, field_key\n)"
+components:
+  schemas:
+    MetadataTaxonomyNodes:
+      description: A list of metadata taxonomy nodes.
+      type: object
+      allOf:
+      - type: object
+        description: The part of an API response that describes marker based pagination.
+        properties:
+          limit:
+            description: The limit that was used for these entries. This will be the same as the `limit` query parameter unless that value exceeded the maximum value allowed. The maximum value varies by API.
+            type: integer
+            format: int64
+            example: 1000
+          next_marker:
+            description: The marker for the start of the next page of results.
+            type:
+            - string
+            - 'null'
+            example: JV9IRGZmieiBasejOG9yDCRNgd2ymoZIbjsxbJMjIs3kioVii
+          prev_marker:
+            description: The marker for the start of the previous page of results.
+            type:
+            - string
+            - 'null'
+            example: JV9IRGZmieiBasejOG9yDCRNgd2ymoZIbjsxbJMjIs3kioVih
+      - properties:
+          entries:
+            description: A list of metadata taxonomy nodes.
+            type: array
+            items:
+              $ref: '#/components/schemas/MetadataTaxonomyNode'
+      title: Metadata taxonomy nodes
+      x-box-resource-id: metadata_taxonomy_nodes
+      x-box-tag: metadata_taxonomies
+    MetadataTaxonomyLevels:
+      description: Levels in the metadata taxonomy represent hierarchical categories within the taxonomy structure.
+      type: object
+      allOf:
+      - properties:
+          entries:
+            description: An array of all taxonomy levels.
+            type: array
+            items:
+              $ref: '#/components/schemas/MetadataTaxonomyLevel'
+      title: Metadata taxonomy levels
+      x-box-resource-id: metadata_taxonomy_levels
+      x-box-tag: metadata_taxonomies
+    MetadataTaxonomyAncestor:
+      description: A node object in the metadata taxonomy that represents an ancestor.
+      type: object
+      properties:
+        id:
+          description: A unique identifier of the metadata taxonomy node.
+          type: string
+          example: 14d3d433-c77f-49c5-b146-9dea370f6e32
+        displayName:
+          description: The display name of the metadata taxonomy node.
+          type: string
+          example: France
+        level:
+          description: An index of the level to which the node belongs.
+          type: integer
+          example: 2
+      title: Metadata taxonomy ancestor
+    ClientError:
+      description: A generic error.
+      type: object
+      properties:
+        type:
+          description: The value will always be `error`.
+          type: string
+          example: error
+          enum:
+          - error
+        status:
+          description: The HTTP status of the response.
+          type: integer
+          format: int32
+          example: 400
+        code:
+          description: A Box-specific error code.
+          type: string
+          example: item_name_invalid
+          enum:
+          - created
+          - accepted
+          - no_content
+          - redirect
+          - not_modified
+          - bad_request
+          - unauthorized
+          - forbidden
+          - not_found
+          - method_not_allowed
+          - conflict
+          - precondition_failed
+          - unprocessable_entity
+          - too_many_requests
+          - internal_server_error
+          - unavailable
+          - item_name_invalid
+          - insufficient_scope
+        message:
+          description: A short message describing the error.
+          type: string
+          example: Method Not Allowed
+        context_info:
+          description: A free-form object that contains additional context about the error. The possible fields are defined on a per-endpoint basis. `message` is only one example.
+          type:
+          - object
+          - 'null'
+          example:
+            message: Something went wrong
+          additionalProperties: {}
+        help_url:
+          description: A URL that links to more information about why this error occurred.
+          type: string
+          example: https://developer.box.com/guides/api-calls/permissions-and-errors/common-errors/
+        request_id:
+          description: A unique identifier for this response, which can be used when contacting Box support.
+          type: string
+          example: abcdef123456
+      title: Client error
+      x-box-resource-id: client_error
+    MetadataTaxonomies:
+      description: A list of metadata taxonomies.
+      type: object
+      allOf:
+      - type: object
+        description: The part of an API response that describes marker based pagination.
+        properties:
+          limit:
+            description: The limit that was used for these entries. This will be the same as the `limit` query parameter unless that value exceeded the maximum value allowed. The maximum value varies by API.
+            type: integer
+            format: int64
+            example: 1000
+          next_marker:
+            description: The marker for the start of the next page of results.
+            type:
+            - string
+            - 'null'
+            example: JV9IRGZmieiBasejOG9yDCRNgd2ymoZIbjsxbJMjIs3kioVii
+          prev_marker:
+            description: The marker for the start of the previous page of results.
+            type:
+            - string
+            - 'null'
+            example: JV9IRGZmieiBasejOG9yDCRNgd2ymoZIbjsxbJMjIs3kioVih
+      - properties:
+          entries:
+            description: A list of metadata taxonomies.
+            type: array
+            items:
+              $ref: '#/components/schemas/MetadataTaxonomy'
+      title: Metadata taxonomies
+      x-box-resource-id: metadata_taxonomies
+      x-box-tag: metadata_taxonomies
+    MetadataTaxonomyLevel:
+      description: A level in the metadata taxonomy represents a hierarchical category within the taxonomy structure.
+      type: object
+      properties:
+        displayName:
+          description: The display name of the level as it is shown to the user.
+          type: string
+          example: Continent
+        description:
+          description: A description of the level.
+          type: string
+          example: Continent
+        level:
+          description: An index of the level within the taxonomy. Levels are indexed starting from 1.
+          type: integer
+          format: int32
+          example: 1
+      title: Metadata taxonomy level
+      x-box-resource-id: metadata_taxonomy_level
+      x-box-tag: metadata_taxonomies
+    MetadataTaxonomyNode:
+      description: A node object for metadata taxonomy that can be used in metadata templates.
+      type: object
+      properties:
+        id:
+          description: A unique identifier of the metadata taxonomy node.
+          type: string
+          example: 14d3d433-c77f-49c5-b146-9dea370f6e32
+        displayName:
+          description: The display name of the metadata taxonomy node.
+          type: string
+          example: France
+        level:
+          description: An index of the level to which the node belongs.
+          type: integer
+          example: 2
+        parentId:
+          description: The identifier of the parent node.
+          type: string
+          example: 99df4513-7102-4896-8228-94635ee9d330
+        nodePath:
+          description: "An array of identifiers for all ancestor nodes.  \nNot returned for root-level nodes."
+          type: array
+          items:
+            type: string
+          example:
+          - 99df4513-7102-4896-8228-94635ee9d330
+        ancestors:
+          description: "An array of objects for all ancestor nodes.  \nNot returned for root-level nodes."
+          type: array
+          items:
+            $ref: '#/components/schemas/MetadataTaxonomyAncestor'
+      required:
+      - id
+      - displayName
+      - level
+      title: Metadata taxonomy node
+      x-box-resource-id: metadata_taxonomy_node
+      x-box-tag: metadata_taxonomies
+    MetadataTaxonomy:
+      description: A taxonomy object for metadata that can be used in metadata templates.
+      type: object
+      properties:
+        id:
+          description: A unique identifier of the metadata taxonomy.
+          type: string
+          example: 822227e0-47a5-921b-88a8-494760b2e6d2
+        key:
+          description: A unique identifier of the metadata taxonomy. The identifier must be unique within the namespace to which it belongs.
+          type: string
+          example: geography
+          maxLength: 256
+          pattern: ^[a-zA-Z_][-a-zA-Z0-9_]*$
+        displayName:
+          description: The display name of the metadata taxonomy. This can be seen in the Box web app.
+          type: string
+          example: Geography
+          maxLength: 4096
+        namespace:
+          description: A namespace that the metadata taxonomy is associated with.
+          type: string
+          example: enterprise_123456
+          maxLength: 4096
+        levels:
+          description: Levels of the metadata taxonomy.
+          type: array
+          items:
+            $ref: '#/components/schemas/MetadataTaxonomyLevel'
+      required:
+      - id
+      - displayName
+      - namespace
+      title: Metadata taxonomy
+      x-box-resource-id: metadata_taxonomy
+      x-box-tag: metadata_taxonomies
+  securitySchemes:
+    OAuth2Security:
+      type: oauth2
+      description: The access token received from the authorization server in the OAuth 2.0 flow.
+      flows:
+        authorizationCode:
+          authorizationUrl: https://account.box.com/api/oauth2/authorize
+          tokenUrl: https://api.box.com/oauth2/token
+          scopes:
+            root_readonly: Read all files and folders stored in Box
+            root_readwrite: Read and write all files and folders stored in Box
+            manage_app_users: Provision and manage app users
+            manage_managed_users: Provision and manage managed users
+            manage_groups: Manage an enterprise's groups
+            manage_webhook: Create webhooks programmatically through the API
+            manage_enterprise_properties: Manage enterprise properties
+            manage_data_retention: Manage data retention polices
+            manage_legal_hold: Manage Legal Holds
+externalDocs:
+  description: Box Developer Documentation.
+  url: https://developer.box.com
+x-mint:
+  mcp:
+    enabled: true

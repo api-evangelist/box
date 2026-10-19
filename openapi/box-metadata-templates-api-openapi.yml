@@ -1,54 +1,63 @@
 openapi: 3.2.0
 info:
-  title: Box Platform Metadata Templates API
+  title: Box Platform Metadata templates API
   description: Box Platform provides functionality to provide access to content stored within Box. It provides endpoints for basic manipulation of files and folders, management of users within an enterprise, as well as more complex topics such as legal holds and retention policies.
   termsOfService: https://cloud.app.box.com/s/rmwxu64h1ipr41u49w3bbuvbsa29wku9
   contact:
     name: Box, Inc
-    url: https://box.dev
+    url: https://developer.box.com
     email: devrel@box.com
   license:
     name: Apache-2.0
-    url: http://www.apache.org/licenses/LICENSE-2.0
-  version: 2.0.0
-  x-box-commit-hash: '5819125043'
+    url: https://www.apache.org/licenses/LICENSE-2.0
+  version: '2024.0'
+  x-box-commit-hash: 53bdced3cd
 servers:
 - url: https://api.box.com/2.0
-  description: Box Platform API server
+  description: Box Platform API server.
 security:
 - OAuth2Security: []
 tags:
-- name: Metadata Templates
-  description: 'A metadata template describes a reusable set
-
-    of key/value pairs that can be assigned to a file.'
+- name: Metadata templates
+  description: A metadata template describes a reusable set of key/value pairs that can be assigned to a file.
   x-box-tag: metadata_templates
 paths:
   /metadata_templates:
     get:
       operationId: get_metadata_templates
-      summary: Box Find metadata template by instance ID
-      tags:
-      - Metadata Templates
-      x-box-tag: metadata_templates
-      x-box-sanitized: true
-      description: 'Finds a metadata template by searching for the ID of an instance of the
-
-        template.'
+      summary: Find metadata template by instance ID
+      description: Finds a metadata template by searching for the ID of an instance of the template.
       parameters:
       - name: metadata_instance_id
-        description: The ID of an instance of the metadata template to find.
-        example: 01234500-12f1-1234-aa12-b1d234cb567e
         in: query
+        description: The ID of an instance of the metadata template to find.
         required: true
         schema:
           type: string
           format: uuid
+        example: 01234500-12f1-1234-aa12-b1d234cb567e
+      - name: marker
+        in: query
+        description: 'Defines the position marker at which to begin returning results. This is used when paginating using marker-based pagination.
+
+
+          This requires `usemarker` to be set to `true`.'
+        required: false
+        schema:
+          type: string
+        example: JV9IRGZmieiBasejOG9yDCRNgd2ymoZIbjsxbJMjIs3kioVii
+      - name: limit
+        in: query
+        description: The maximum number of items to return per page.
+        required: false
+        schema:
+          type: integer
+          format: int64
+          maximum: 1000
+        example: 1000
       responses:
         '200':
-          description: 'Returns a list containing the 1 metadata template that matches the
-
-            instance ID.'
+          description: Returns a list containing the 1 metadata template that matches the instance ID.
           content:
             application/json:
               schema:
@@ -65,57 +74,72 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ClientError'
+      x-box-tag: metadata_templates
+      tags:
+      - Metadata templates
+      x-codeSamples:
+      - lang: curl
+        label: Find metadata template by instance ID
+        source: "curl -i -X GET \"https://api.box.com/2.0/metadata_templates?metadata_instance_id=01234500-12f1-1234-aa12-b1d234cb567e\" \\\n     -H \"authorization: Bearer <ACCESS_TOKEN>\""
+      - lang: dotnet
+        label: Find metadata template by instance ID
+        source: 'await client.MetadataTemplates.GetMetadataTemplatesByInstanceIdAsync(queryParams: new GetMetadataTemplatesByInstanceIdQueryParams(metadataInstanceId: NullableUtils.Unwrap(createdMetadataInstance.Id)));'
+      - lang: swift
+        label: Find metadata template by instance ID
+        source: 'try await client.metadataTemplates.getMetadataTemplatesByInstanceId(queryParams: GetMetadataTemplatesByInstanceIdQueryParams(metadataInstanceId: createdMetadataInstance.id!))'
+      - lang: java
+        label: Find metadata template by instance ID
+        source: client.getMetadataTemplates().getMetadataTemplatesByInstanceId(new GetMetadataTemplatesByInstanceIdQueryParams(createdMetadataInstance.getId()))
+      - lang: node
+        label: Find metadata template by instance ID
+        source: "await client.metadataTemplates.getMetadataTemplatesByInstanceId({\n  metadataInstanceId: createdMetadataInstance.id!,\n} satisfies GetMetadataTemplatesByInstanceIdQueryParams);"
+      - lang: python
+        label: Find metadata template by instance ID
+        source: "client.metadata_templates.get_metadata_templates_by_instance_id(\n    created_metadata_instance.id\n)"
   /metadata_templates/{scope}/{template_key}/schema:
     get:
       operationId: get_metadata_templates_id_id_schema
-      summary: Box Get metadata template by name
-      tags:
-      - Metadata Templates
-      x-box-tag: metadata_templates
-      x-box-sanitized: true
+      summary: Get metadata template by name
       description: 'Retrieves a metadata template by its `scope` and `templateKey` values.
 
 
-        To find the `scope` and `templateKey` for a template, list all templates for
-
-        an enterprise or globally, or list all templates applied to a file or folder.'
+        To find the `scope` and `templateKey` for a template, list all templates for an enterprise or globally, or list all templates applied to a file or folder.'
       parameters:
       - name: scope
-        description: The scope of the metadata template
-        example: global
         in: path
+        description: The scope of the metadata template.
         required: true
         schema:
           type: string
           enum:
           - global
           - enterprise
+        example: global
       - name: template_key
-        description: The name of the metadata template
-        example: properties
         in: path
+        description: The name of the metadata template.
         required: true
         schema:
           type: string
+        example: properties
       responses:
         '200':
-          description: 'Returns the metadata template matching the `scope`
-
-            and `template` name.'
+          description: Returns the metadata template matching the `scope` and `template` name.
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/MetadataTemplate'
         '400':
-          description: "Returned if any of the request parameters are not valid.\n\n* `bad_request`: Often returned when the scope of the template is not\n  recognised. Please make sure to use either `enterprise` or `global` as\n  the `scope` value."
+          description: 'Returned if any of the request parameters are not valid.
+
+
+            - `bad_request`: Often returned when the scope of the template is not recognised. Please make sure to use either `enterprise` or `global` as the `scope` value.'
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ClientError'
         '404':
-          description: 'Returned when a template with the given `scope` and `template_key` can not
-
-            be found.'
+          description: Returned when a template with the given `scope` and `template_key` can not be found.
           content:
             application/json:
               schema:
@@ -126,67 +150,74 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ClientError'
+      x-box-tag: metadata_templates
+      tags:
+      - Metadata templates
+      x-codeSamples:
+      - lang: curl
+        label: Get metadata template by name
+        source: "curl -i -X GET \"https://api.box.com/2.0/metadata_templates/enterprise/blueprintTemplate/schema\" \\\n     -H \"authorization: Bearer <ACCESS_TOKEN>\""
+      - lang: dotnet
+        label: Get metadata template by name
+        source: 'await client.MetadataTemplates.GetMetadataTemplateAsync(scope: GetMetadataTemplateScope.Enterprise, templateKey: NullableUtils.Unwrap(template.TemplateKey));'
+      - lang: swift
+        label: Get metadata template by name
+        source: 'try await client.metadataTemplates.getMetadataTemplate(scope: GetMetadataTemplateScope.enterprise, templateKey: template.templateKey!)'
+      - lang: java
+        label: Get metadata template by name
+        source: client.getMetadataTemplates().getMetadataTemplate(GetMetadataTemplateScope.ENTERPRISE, template.getTemplateKey())
+      - lang: node
+        label: Get metadata template by name
+        source: "await client.metadataTemplates.getMetadataTemplate(\n  'enterprise' as GetMetadataTemplateScope,\n  template.templateKey!,\n);"
+      - lang: python
+        label: Get metadata template by name
+        source: "client.metadata_templates.get_metadata_template(\n    GetMetadataTemplateScope.ENTERPRISE, template.template_key\n)"
     put:
       operationId: put_metadata_templates_id_id_schema
-      tags:
-      - Metadata Templates
-      x-box-tag: metadata_templates
-      x-box-sanitized: true
-      summary: Box Update metadata template
+      summary: Update metadata template
       description: 'Updates a metadata template.
 
 
-        The metadata template can only be updated if the template
-
-        already exists.
+        The metadata template can only be updated if the template already exists.
 
 
-        The update is applied atomically. If any errors occur during the
-
-        application of the operations, the metadata template will not be changed.'
+        The update is applied atomically. If any errors occur during the application of the operations, the metadata template will not be changed.'
       parameters:
       - name: scope
-        description: The scope of the metadata template
-        example: global
         in: path
+        description: The scope of the metadata template.
         required: true
         schema:
           type: string
           enum:
           - global
           - enterprise
+        example: global
       - name: template_key
-        description: The name of the metadata template
-        example: properties
         in: path
+        description: The name of the metadata template.
         required: true
         schema:
           type: string
+        example: properties
       requestBody:
         content:
           application/json-patch+json:
             schema:
-              description: 'A [JSON-Patch](https://tools.ietf.org/html/rfc6902)
-
-                specification for the changes to make to the metadata
-
-                template.
+              description: 'A [JSON-Patch](https://tools.ietf.org/html/rfc6902) specification for the changes to make to the metadata template.
 
 
-                The changes are represented as a JSON array of
-
-                operation objects.'
+                The changes are represented as a JSON array of operation objects.'
               type: array
               items:
                 title: A metadata template update operation
-                description: 'A [JSON-Patch](https://tools.ietf.org/html/rfc6902) operation for a
-
-                  change to make to the metadata instance.'
+                description: A [JSON-Patch](https://tools.ietf.org/html/rfc6902) operation for a change to make to the metadata instance.
                 type: object
                 required:
                 - op
                 properties:
                   op:
+                    description: The type of change to perform on the template. Some of these are hazardous as they will change existing templates.
                     type: string
                     example: addEnumOption
                     enum:
@@ -203,48 +234,35 @@ paths:
                     - removeEnumOption
                     - editMultiSelectOption
                     - removeMultiSelectOption
-                    description: 'The type of change to perform on the template. Some
-
-                      of these are hazardous as they will change existing templates.'
                   data:
+                    description: The data for the operation. This will vary depending on the operation being performed.
                     type: object
-                    description: 'The data for the operation. This will vary depending on the
-
-                      operation being performed.'
                     example:
                       name: Aaron Levie
                     additionalProperties:
                       allOf:
                       - {}
                       - example: Aaron Levie
-                      - description: "A value for each of the fields that are present\non the metadata template.\nFor the `global.properties` template this can be\na list of zero or more fields,\nas this template allows for any generic key-value pairs \nto be stored stored in the template."
+                      - description: A value for each of the fields that are present on the metadata template. For the `global.properties` template this can be a list of zero or more fields, as this template allows for any generic key-value pairs to be stored stored in the template.
                       x-box-example-key: name
                   fieldKey:
+                    description: For operations that affect a single field this defines the key of the field that is affected.
                     type: string
                     example: category
-                    description: 'For operations that affect a single field this defines the key of
-
-                      the field that is affected.'
                   fieldKeys:
+                    description: For operations that affect multiple fields this defines the keys of the fields that are affected.
                     type: array
                     items:
                       type: string
                     example:
                     - category
                     - name
-                    description: 'For operations that affect multiple fields this defines the keys
-
-                      of the fields that are affected.'
                   enumOptionKey:
-                    description: 'For operations that affect a single `enum` option this defines
-
-                      the key of the option that is affected.'
+                    description: For operations that affect a single `enum` option this defines the key of the option that is affected.
                     type: string
                     example: option1
                   enumOptionKeys:
-                    description: 'For operations that affect multiple `enum` options this defines
-
-                      the keys of the options that are affected.'
+                    description: For operations that affect multiple `enum` options this defines the keys of the options that are affected.
                     type: array
                     items:
                       type: string
@@ -253,15 +271,11 @@ paths:
                     - option2
                     - option3
                   multiSelectOptionKey:
-                    description: 'For operations that affect a single multi select option this
-
-                      defines the key of the option that is affected.'
+                    description: For operations that affect a single multi select option this defines the key of the option that is affected.
                     type: string
                     example: option1
                   multiSelectOptionKeys:
-                    description: 'For operations that affect multiple multi select options this
-
-                      defines the keys of the options that are affected.'
+                    description: For operations that affect multiple multi select options this defines the keys of the options that are affected.
                     type: array
                     items:
                       type: string
@@ -271,9 +285,7 @@ paths:
                     - option3
       responses:
         '200':
-          description: 'Returns the updated metadata template, with the
-
-            custom template data included.'
+          description: Returns the updated metadata template, with the custom template data included.
           content:
             application/json:
               schema:
@@ -285,15 +297,13 @@ paths:
               schema:
                 $ref: '#/components/schemas/ClientError'
         '403':
-          description: 'The request body contains a scope that the user is not
-
-            allowed to create templates for.'
+          description: The request body contains a scope that the user is not allowed to create templates for.
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ClientError'
         '404':
-          description: The requested template could not be found
+          description: The requested template could not be found.
           content:
             application/json:
               schema:
@@ -304,39 +314,53 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ClientError'
+      x-box-tag: metadata_templates
+      tags:
+      - Metadata templates
+      x-codeSamples:
+      - lang: curl
+        label: Update metadata template
+        source: "curl -i -X PUT \"https://api.box.com/2.0/metadata_templates/enterprise/blueprintTemplate/schema\" \\\n     -H \"authorization: Bearer <ACCESS_TOKEN>\" \\\n     -H \"content-type: application/json-patch+json\" \\\n     -d '[\n       {\n         \"op\": \"editField\",\n         \"fieldKey\": \"category\",\n         \"data\": {\n           \"displayName\": \"Customer Group\"\n         }\n       }\n     ]'"
+      - lang: dotnet
+        label: Update metadata template
+        source: 'await client.MetadataTemplates.UpdateMetadataTemplateAsync(scope: UpdateMetadataTemplateScope.Enterprise, templateKey: templateKey, requestBody: Array.AsReadOnly(new [] {new UpdateMetadataTemplateRequestBody(op: UpdateMetadataTemplateRequestBodyOpField.AddField) { FieldKey = "newfieldname", Data = new Dictionary<string, object>() { { "type", "string" }, { "displayName", "newFieldName" } } }}));'
+      - lang: swift
+        label: Update metadata template
+        source: 'try await client.metadataTemplates.updateMetadataTemplate(scope: UpdateMetadataTemplateScope.enterprise, templateKey: templateKey, requestBody: [UpdateMetadataTemplateRequestBody(op: UpdateMetadataTemplateRequestBodyOpField.addField, fieldKey: "newfieldname", data: ["type": "string", "displayName": "newFieldName"])])'
+      - lang: java
+        label: Update metadata template
+        source: client.getMetadataTemplates().updateMetadataTemplate(UpdateMetadataTemplateScope.ENTERPRISE, templateKey, Arrays.asList(new UpdateMetadataTemplateRequestBody.Builder(UpdateMetadataTemplateRequestBodyOpField.ADDFIELD).data(mapOf(entryOf("type", "string"), entryOf("displayName", "newFieldName"))).fieldKey("newfieldname").build()))
+      - lang: node
+        label: Update metadata template
+        source: "await client.metadataTemplates.updateMetadataTemplate(\n  'enterprise' as UpdateMetadataTemplateScope,\n  templateKey,\n  [\n    {\n      op: 'addField' as UpdateMetadataTemplateRequestBodyOpField,\n      fieldKey: 'newfieldname',\n      data: { ['type']: 'string', ['displayName']: 'newFieldName' },\n    } satisfies UpdateMetadataTemplateRequestBody,\n  ],\n);"
+      - lang: python
+        label: Update metadata template
+        source: "client.metadata_templates.update_metadata_template(\n    UpdateMetadataTemplateScope.ENTERPRISE,\n    template_key,\n    [\n        UpdateMetadataTemplateRequestBody(\n            op=UpdateMetadataTemplateRequestBodyOpField.ADDFIELD,\n            field_key=\"newfieldname\",\n            data={\"type\": \"string\", \"displayName\": \"newFieldName\"},\n        )\n    ],\n)"
     delete:
       operationId: delete_metadata_templates_id_id_schema
-      summary: Box Remove metadata template
-      tags:
-      - Metadata Templates
-      x-box-tag: metadata_templates
-      x-box-sanitized: true
-      description: 'Delete a metadata template and its instances.
-
-        This deletion is permanent and can not be reversed.'
+      summary: Remove metadata template
+      description: Delete a metadata template and its instances. This deletion is permanent and can not be reversed.
       parameters:
       - name: scope
-        description: The scope of the metadata template
-        example: global
         in: path
+        description: The scope of the metadata template.
         required: true
         schema:
           type: string
           enum:
           - global
           - enterprise
+        example: global
       - name: template_key
-        description: The name of the metadata template
-        example: properties
         in: path
+        description: The name of the metadata template.
         required: true
         schema:
           type: string
+        example: properties
       responses:
         '204':
-          description: 'Returns an empty response when the metadata
-
-            template is successfully deleted.'
+          description: Returns an empty response when the metadata template is successfully deleted.
         '400':
           description: Request body does not contain a valid metadata schema.
           content:
@@ -344,9 +368,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/ClientError'
         '403':
-          description: 'Request body contains a scope that the user is not allowed to
-
-            create a template for.'
+          description: Request body contains a scope that the user is not allowed to create a template for.
           content:
             application/json:
               schema:
@@ -357,23 +379,41 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ClientError'
+      x-box-tag: metadata_templates
+      tags:
+      - Metadata templates
+      x-codeSamples:
+      - lang: curl
+        label: Remove metadata template
+        source: "curl -i -X DELETE \"https://api.box.com/2.0/metadata_templates/enterprise/blueprintTemplate/schema\" \\\n     -H \"authorization: Bearer <ACCESS_TOKEN>\""
+      - lang: dotnet
+        label: Remove metadata template
+        source: 'await client.MetadataTemplates.DeleteMetadataTemplateAsync(scope: DeleteMetadataTemplateScope.Enterprise, templateKey: NullableUtils.Unwrap(template.TemplateKey));'
+      - lang: swift
+        label: Remove metadata template
+        source: 'try await client.metadataTemplates.deleteMetadataTemplate(scope: DeleteMetadataTemplateScope.enterprise, templateKey: template.templateKey!)'
+      - lang: java
+        label: Remove metadata template
+        source: client.getMetadataTemplates().deleteMetadataTemplate(DeleteMetadataTemplateScope.ENTERPRISE, template.getTemplateKey())
+      - lang: node
+        label: Remove metadata template
+        source: "await client.metadataTemplates.deleteMetadataTemplate(\n  'enterprise' as DeleteMetadataTemplateScope,\n  template.templateKey!,\n);"
+      - lang: python
+        label: Remove metadata template
+        source: "client.metadata_templates.delete_metadata_template(\n    DeleteMetadataTemplateScope.ENTERPRISE, template.template_key\n)"
   /metadata_templates/{template_id}:
     get:
       operationId: get_metadata_templates_id
-      summary: Box Get metadata template by ID
-      tags:
-      - Metadata Templates
-      x-box-tag: metadata_templates
-      x-box-sanitized: true
+      summary: Get metadata template by ID
       description: Retrieves a metadata template by its ID.
       parameters:
       - name: template_id
+        in: path
+        description: The ID of the template.
+        required: true
         schema:
           type: string
-        required: true
-        in: path
         example: f7a9891f
-        description: The ID of the template
       responses:
         '200':
           description: Returns the metadata template that matches the ID.
@@ -382,7 +422,10 @@ paths:
               schema:
                 $ref: '#/components/schemas/MetadataTemplate'
         '400':
-          description: "Returned if any of the request parameters are not valid.\n\n* `bad_request`: Often returned with a message when the ID of the template\n  is not recognised."
+          description: 'Returned if any of the request parameters are not valid.
+
+
+            - `bad_request`: Often returned with a message when the ID of the template is not recognised.'
           content:
             application/json:
               schema:
@@ -393,44 +436,56 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ClientError'
+      x-box-tag: metadata_templates
+      tags:
+      - Metadata templates
+      x-codeSamples:
+      - lang: curl
+        label: Get metadata template by ID
+        source: "curl -i -X GET \"https://api.box.com/2.0/metadata_templates/d9671692-3df6-11ea-b77f-2e728ce88125\" \\\n     -H \"authorization: Bearer <ACCESS_TOKEN>\""
+      - lang: dotnet
+        label: Get metadata template by ID
+        source: 'await client.MetadataTemplates.GetMetadataTemplateByIdAsync(templateId: template.Id);'
+      - lang: swift
+        label: Get metadata template by ID
+        source: 'try await client.metadataTemplates.getMetadataTemplateById(templateId: template.id)'
+      - lang: java
+        label: Get metadata template by ID
+        source: client.getMetadataTemplates().getMetadataTemplateById(template.getId())
+      - lang: node
+        label: Get metadata template by ID
+        source: await client.metadataTemplates.getMetadataTemplateById(template.id);
+      - lang: python
+        label: Get metadata template by ID
+        source: client.metadata_templates.get_metadata_template_by_id(template.id)
   /metadata_templates/global:
     get:
       operationId: get_metadata_templates_global
-      summary: Box List all global metadata templates
-      tags:
-      - Metadata Templates
-      x-box-tag: metadata_templates
-      x-box-sanitized: true
-      description: 'Used to retrieve all generic, global metadata templates available to all
-
-        enterprises using Box.'
+      summary: List all global metadata templates
+      description: Used to retrieve all generic, global metadata templates available to all enterprises using Box.
       parameters:
       - name: marker
-        description: 'Defines the position marker at which to begin returning results. This is
-
-          used when paginating using marker-based pagination.
+        in: query
+        description: 'Defines the position marker at which to begin returning results. This is used when paginating using marker-based pagination.
 
 
           This requires `usemarker` to be set to `true`.'
-        in: query
         required: false
-        example: JV9IRGZmieiBasejOG9yDCRNgd2ymoZIbjsxbJMjIs3kioVii
         schema:
           type: string
+        example: JV9IRGZmieiBasejOG9yDCRNgd2ymoZIbjsxbJMjIs3kioVii
       - name: limit
-        description: The maximum number of items to return per page.
         in: query
+        description: The maximum number of items to return per page.
         required: false
-        example: 1000
         schema:
           type: integer
           format: int64
           maximum: 1000
+        example: 1000
       responses:
         '200':
-          description: 'Returns all of the metadata templates available to all enterprises
-
-            and their corresponding schema.'
+          description: Returns all of the metadata templates available to all enterprises and their corresponding schema.
           content:
             application/json:
               schema:
@@ -447,44 +502,56 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ClientError'
+      x-box-tag: metadata_templates
+      tags:
+      - Metadata templates
+      x-codeSamples:
+      - lang: curl
+        label: List all global metadata templates
+        source: "curl -i -X GET \"https://api.box.com/2.0/metadata_templates/global\" \\\n     -H \"authorization: Bearer <ACCESS_TOKEN>\""
+      - lang: dotnet
+        label: List all global metadata templates
+        source: await client.MetadataTemplates.GetGlobalMetadataTemplatesAsync();
+      - lang: swift
+        label: List all global metadata templates
+        source: try await client.metadataTemplates.getGlobalMetadataTemplates()
+      - lang: java
+        label: List all global metadata templates
+        source: client.getMetadataTemplates().getGlobalMetadataTemplates()
+      - lang: node
+        label: List all global metadata templates
+        source: await client.metadataTemplates.getGlobalMetadataTemplates();
+      - lang: python
+        label: List all global metadata templates
+        source: client.metadata_templates.get_global_metadata_templates()
   /metadata_templates/enterprise:
     get:
       operationId: get_metadata_templates_enterprise
-      summary: Box List all metadata templates for enterprise
-      tags:
-      - Metadata Templates
-      x-box-tag: metadata_templates
-      x-box-sanitized: true
-      description: 'Used to retrieve all metadata templates created to be used specifically within
-
-        the user''s enterprise'
+      summary: List all metadata templates for enterprise
+      description: Used to retrieve all metadata templates created to be used specifically within the user's enterprise.
       parameters:
       - name: marker
-        description: 'Defines the position marker at which to begin returning results. This is
-
-          used when paginating using marker-based pagination.
+        in: query
+        description: 'Defines the position marker at which to begin returning results. This is used when paginating using marker-based pagination.
 
 
           This requires `usemarker` to be set to `true`.'
-        in: query
         required: false
-        example: JV9IRGZmieiBasejOG9yDCRNgd2ymoZIbjsxbJMjIs3kioVii
         schema:
           type: string
+        example: JV9IRGZmieiBasejOG9yDCRNgd2ymoZIbjsxbJMjIs3kioVii
       - name: limit
-        description: The maximum number of items to return per page.
         in: query
+        description: The maximum number of items to return per page.
         required: false
-        example: 1000
         schema:
           type: integer
           format: int64
           maximum: 1000
+        example: 1000
       responses:
         '200':
-          description: 'Returns all of the metadata templates within an enterprise
-
-            and their corresponding schema.'
+          description: Returns all of the metadata templates within an enterprise and their corresponding schema.
           content:
             application/json:
               schema:
@@ -501,79 +568,71 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ClientError'
+      x-box-tag: metadata_templates
+      tags:
+      - Metadata templates
+      x-codeSamples:
+      - lang: curl
+        label: List all metadata templates for enterprise
+        source: "curl -i -X GET \"https://api.box.com/2.0/metadata_templates/enterprise\" \\\n     -H \"authorization: Bearer <ACCESS_TOKEN>\""
+      - lang: dotnet
+        label: List all metadata templates for enterprise
+        source: await client.MetadataTemplates.GetEnterpriseMetadataTemplatesAsync();
+      - lang: swift
+        label: List all metadata templates for enterprise
+        source: try await client.metadataTemplates.getEnterpriseMetadataTemplates()
+      - lang: java
+        label: List all metadata templates for enterprise
+        source: client.getMetadataTemplates().getEnterpriseMetadataTemplates()
+      - lang: node
+        label: List all metadata templates for enterprise
+        source: await client.metadataTemplates.getEnterpriseMetadataTemplates();
+      - lang: python
+        label: List all metadata templates for enterprise
+        source: client.metadata_templates.get_enterprise_metadata_templates()
   /metadata_templates/schema:
     post:
       operationId: post_metadata_templates_schema
-      summary: Box Create metadata template
-      tags:
-      - Metadata Templates
-      description: 'Creates a new metadata template that can be applied to
-
-        files and folders.'
-      x-box-tag: metadata_templates
-      x-box-requires-admin: true
-      x-box-sanitized: true
+      summary: Create metadata template
+      description: Creates a new metadata template that can be applied to files and folders.
       requestBody:
         content:
           application/json:
             schema:
               type: object
-              required:
-              - scope
-              - displayName
               properties:
                 scope:
+                  description: 'The scope of the metadata template to create. Applications can only create templates for use within the authenticated user''s enterprise.
+
+
+                    This value needs to be set to `enterprise`, as `global` scopes can not be created by applications.'
                   type: string
-                  description: 'The scope of the metadata template to create. Applications can
-
-                    only create templates for use within the authenticated user''s
-
-                    enterprise.
-
-
-                    This value needs to be set to `enterprise`, as `global` scopes can
-
-                    not be created by applications.'
                   example: enterprise
                 templateKey:
+                  description: 'A unique identifier for the template. This identifier needs to be unique across the enterprise for which the metadata template is being created.
+
+
+                    When not provided, the API will create a unique `templateKey` based on the value of the `displayName`.'
                   type: string
                   example: productInfo
-                  description: 'A unique identifier for the template. This identifier needs to be
-
-                    unique across the enterprise for which the metadata template is
-
-                    being created.
-
-
-                    When not provided, the API will create a unique `templateKey`
-
-                    based on the value of the `displayName`.'
                   maxLength: 64
                   pattern: ^[a-zA-Z_][-a-zA-Z0-9_]*$
                 displayName:
-                  type: string
                   description: The display name of the template.
-                  maxLength: 4096
+                  type: string
                   example: Product Info
+                  maxLength: 4096
                 hidden:
+                  description: Defines if this template is visible in the Box web app UI, or if it is purely intended for usage through the API.
                   type: boolean
                   example: true
-                  description: 'Defines if this template is visible in the Box web app UI, or if
-
-                    it is purely intended for usage through the API.'
                   default: false
                 fields:
+                  description: An ordered list of template fields which are part of the template. Each field can be a regular text field, date field, number field, as well as a single or multi-select list.
                   type: array
-                  description: 'An ordered list of template fields which are part of the template.
-
-                    Each field can be a regular text field, date field, number field,
-
-                    as well as a single or multi-select list.'
                   items:
                     title: Metadata Field (Write)
-                    description: 'A field within a metadata template. Fields can be a basic text, date, or
-
-                      number field, or a list of options.'
+                    description: A field within a metadata template. Fields can be a basic text, date, or number field, a list of options, or a taxonomy.
                     required:
                     - type
                     - key
@@ -581,55 +640,43 @@ paths:
                     type: object
                     properties:
                       type:
+                        description: 'The type of field. The basic fields are a `string` field for text, a `float` field for numbers, and a `date` field to present the user with a date-time picker.
+
+
+                          Additionally, metadata templates support an `enum` field for a basic list of items, and `multiSelect` field for a similar list of items where the user can select more than one value.
+
+
+                          Metadata taxonomies are also supported as a `taxonomy` field type with a specific set of additional properties, which describe its structure.'
                         type: string
                         example: string
-                        description: 'The type of field. The basic fields are a `string` field for text, a
-
-                          `float` field for numbers, and a `date` fields to present the user with a
-
-                          date-time picker.
-
-
-                          Additionally, metadata templates support an `enum` field for a basic list
-
-                          of items, and ` multiSelect` field for a similar list of items where the
-
-                          user can select more than one value.'
                         enum:
                         - string
                         - float
                         - date
                         - enum
                         - multiSelect
+                        - taxonomy
                       key:
+                        description: A unique identifier for the field. The identifier must be unique within the template to which it belongs.
                         type: string
                         example: category
-                        description: 'A unique identifier for the field. The identifier must
-
-                          be unique within the template to which it belongs.'
                         maxLength: 256
                       displayName:
+                        description: The display name of the field as it is shown to the user in the web and mobile apps.
                         type: string
                         example: Category
-                        description: 'The display name of the field as it is shown to the user in the web and
-
-                          mobile apps.'
                         maxLength: 4096
                       description:
+                        description: A description of the field. This is not shown to the user.
                         type: string
                         example: The category
-                        description: A description of the field. This is not shown to the user.
                         maxLength: 4096
                       hidden:
+                        description: Whether this field is hidden in the UI for the user and can only be set through the API instead.
                         type: boolean
                         example: true
-                        description: 'Whether this field is hidden in the UI for the user and can only be set
-
-                          through the API instead.'
                       options:
-                        description: 'A list of options for this field. This is used in combination with the
-
-                          `enum` and `multiSelect` field types.'
+                        description: A list of options for this field. This is used in combination with the `enum` and `multiSelect` field types.
                         type: array
                         items:
                           title: Metadata Option (Write)
@@ -637,29 +684,50 @@ paths:
                           description: 'An option for a Metadata Template Field.
 
 
-                            Options only need to be provided for fields of type `enum` and `multiSelect`.
-
-                            Options represent the value(s) a user can select for the field either through
-
-                            the UI or through the API.'
+                            Options only need to be provided for fields of type `enum` and `multiSelect`. Options represent the value(s) a user can select for the field either through the UI or through the API.'
                           required:
                           - key
                           properties:
                             key:
-                              description: 'The text value of the option. This represents both the display name of the
-
-                                option and the internal key used when updating templates.'
-                              example: Category 1
+                              description: The text value of the option. This represents both the display name of the option and the internal key used when updating templates.
                               type: string
+                              example: Category 1
+                      taxonomyKey:
+                        description: The unique key of the metadata taxonomy to use for this taxonomy field. This property is required when the field `type` is set to `taxonomy`.
+                        type: string
+                        example: locationTaxonomy
+                      taxonomyId:
+                        description: The unique ID of the metadata taxonomy to use for this taxonomy field. This property is required when the field `type` is set to `taxonomy`.
+                        type: string
+                        example: 05ece6d7-fec4-4d3f-bfd2-36fd4dddea97
+                      namespace:
+                        description: The namespace of the metadata taxonomy to use for this taxonomy field. This property is required when the field `type` is set to `taxonomy`.
+                        type: string
+                        example: enterprise_123456
+                      optionsRules:
+                        description: An object defining additional rules for the options of the taxonomy field. This property is required when the field `type` is set to `taxonomy`.
+                        type: object
+                        properties:
+                          multiSelect:
+                            description: Whether to allow users to select multiple values.
+                            type: boolean
+                            example: true
+                          selectableLevels:
+                            description: An array of integers defining which levels of the taxonomy are selectable by users.
+                            type: array
+                            items:
+                              type: integer
+                            example:
+                            - 1
+                            - 2
                 copyInstanceOnItemCopy:
+                  description: Whether or not to copy any metadata attached to a file or folder when it is copied. By default, metadata is not copied along with a file or folder when it is copied.
                   type: boolean
-                  description: 'Whether or not to copy any metadata attached to a file or folder
-
-                    when it is copied. By default, metadata is not copied along with a
-
-                    file or folder when it is copied.'
-                  default: false
                   example: true
+                  default: false
+              required:
+              - scope
+              - displayName
       responses:
         '201':
           description: The schema representing the metadata template created.
@@ -671,21 +739,13 @@ paths:
           description: 'Returned if the request parameters or body is not valid.
 
 
-            * `bad_request` when the body does not contain a valid request. In many
-
-            cases this response will include extra details on what fields are missing.'
+            - `bad_request` when the body does not contain a valid request. In many cases this response will include extra details on what fields are missing.'
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ClientError'
         '403':
-          description: 'Returned when the user does not have the permission to create the metadata
-
-            template. This can happen for a few reasons, most commonly when the user
-
-            does not have (co-)admin permissions, or the application tries to create a
-
-            template with the `global` scope.'
+          description: Returned when the user does not have the permission to create the metadata template. This can happen for a few reasons, most commonly when the user does not have (co-)admin permissions, or the application tries to create a template with the `global` scope.
           content:
             application/json:
               schema:
@@ -696,29 +756,83 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ClientError'
+      x-box-tag: metadata_templates
+      tags:
+      - Metadata templates
+      x-box-requires-admin: true
+      x-codeSamples:
+      - lang: curl
+        label: Create metadata template
+        source: "curl -i -X POST \"https://api.box.com/2.0/metadata_templates/schema\" \\\n     -H \"authorization: Bearer <ACCESS_TOKEN>\" \\\n     -H \"content-type: application/json\" \\\n     -d '{\n      \"scope\": \"enterprise\",\n      \"displayName\": \"Customer\",\n      \"fields\": [\n        {\n          \"type\": \"string\",\n          \"key\": \"name\",\n          \"displayName\": \"Name\",\n          \"description\": \"The customer name\",\n          \"hidden\": false\n        },\n        {\n          \"type\": \"date\",\n          \"key\": \"last_contacted_at\",\n          \"displayName\": \"Last Contacted At\",\n          \"description\": \"When this customer was last contacted at\",\n          \"hidden\": false\n        },\n        {\n          \"type\": \"enum\",\n          \"key\": \"industry\",\n          \"displayName\": \"Industry\",\n          \"options\": [\n            {\"key\": \"Technology\"},\n            {\"key\": \"Healthcare\"},\n            {\"key\": \"Legal\"}\n          ]\n        },\n        {\n          \"type\": \"multiSelect\",\n          \"key\": \"role\",\n          \"displayName\": \"Contact Role\",\n          \"options\": [\n            {\"key\": \"Developer\"},\n            {\"key\": \"Business Owner\"},\n            {\"key\": \"Marketing\"},\n            {\"key\": \"Legal\"},\n            {\"key\": \"Sales\"}\n          ]\n        }\n      ]\n    }'"
+      - lang: dotnet
+        label: Create metadata template
+        source: 'await client.MetadataTemplates.CreateMetadataTemplateAsync(requestBody: new CreateMetadataTemplateRequestBody(scope: "enterprise", displayName: templateKey) { TemplateKey = templateKey, Fields = Array.AsReadOnly(new [] {new CreateMetadataTemplateRequestBodyFieldsField(type: CreateMetadataTemplateRequestBodyFieldsTypeField.String, key: "testName", displayName: "testName"),new CreateMetadataTemplateRequestBodyFieldsField(type: CreateMetadataTemplateRequestBodyFieldsTypeField.Float, key: "age", displayName: "age"),new CreateMetadataTemplateRequestBodyFieldsField(type: CreateMetadataTemplateRequestBodyFieldsTypeField.Date, key: "birthDate", displayName: "birthDate"),new CreateMetadataTemplateRequestBodyFieldsField(type: CreateMetadataTemplateRequestBodyFieldsTypeField.Enum, key: "countryCode", displayName: "countryCode") { Options = Array.AsReadOnly(new [] {new CreateMetadataTemplateRequestBodyFieldsOptionsField(key: "US"),new CreateMetadataTemplateRequestBodyFieldsOptionsField(key: "CA")}) },new CreateMetadataTemplateRequestBodyFieldsField(type: CreateMetadataTemplateRequestBodyFieldsTypeField.MultiSelect, key: "sports", displayName: "sports") { Options = Array.AsReadOnly(new [] {new CreateMetadataTemplateRequestBodyFieldsOptionsField(key: "basketball"),new CreateMetadataTemplateRequestBodyFieldsOptionsField(key: "football"),new CreateMetadataTemplateRequestBodyFieldsOptionsField(key: "tennis")}) }}) });'
+      - lang: swift
+        label: Create metadata template
+        source: 'try await client.metadataTemplates.createMetadataTemplate(requestBody: CreateMetadataTemplateRequestBody(scope: "enterprise", displayName: templateKey, templateKey: templateKey, fields: [CreateMetadataTemplateRequestBodyFieldsField(type: CreateMetadataTemplateRequestBodyFieldsTypeField.string, key: "testName", displayName: "testName"), CreateMetadataTemplateRequestBodyFieldsField(type: CreateMetadataTemplateRequestBodyFieldsTypeField.float, key: "age", displayName: "age"), CreateMetadataTemplateRequestBodyFieldsField(type: CreateMetadataTemplateRequestBodyFieldsTypeField.date, key: "birthDate", displayName: "birthDate"), CreateMetadataTemplateRequestBodyFieldsField(type: CreateMetadataTemplateRequestBodyFieldsTypeField.enum_, key: "countryCode", displayName: "countryCode", options: [CreateMetadataTemplateRequestBodyFieldsOptionsField(key: "US"), CreateMetadataTemplateRequestBodyFieldsOptionsField(key: "CA")]), CreateMetadataTemplateRequestBodyFieldsField(type: CreateMetadataTemplateRequestBodyFieldsTypeField.multiSelect, key: "sports", displayName: "sports", options: [CreateMetadataTemplateRequestBodyFieldsOptionsField(key: "basketball"), CreateMetadataTemplateRequestBodyFieldsOptionsField(key: "football"), CreateMetadataTemplateRequestBodyFieldsOptionsField(key: "tennis")])]))'
+      - lang: java
+        label: Create metadata template
+        source: client.getMetadataTemplates().createMetadataTemplate(new CreateMetadataTemplateRequestBody.Builder("enterprise", templateKey).templateKey(templateKey).fields(Arrays.asList(new CreateMetadataTemplateRequestBodyFieldsField(CreateMetadataTemplateRequestBodyFieldsTypeField.STRING, "testName", "testName"), new CreateMetadataTemplateRequestBodyFieldsField(CreateMetadataTemplateRequestBodyFieldsTypeField.FLOAT, "age", "age"), new CreateMetadataTemplateRequestBodyFieldsField(CreateMetadataTemplateRequestBodyFieldsTypeField.DATE, "birthDate", "birthDate"), new CreateMetadataTemplateRequestBodyFieldsField.Builder(CreateMetadataTemplateRequestBodyFieldsTypeField.ENUM, "countryCode", "countryCode").options(Arrays.asList(new CreateMetadataTemplateRequestBodyFieldsOptionsField("US"), new CreateMetadataTemplateRequestBodyFieldsOptionsField("CA"))).build(), new CreateMetadataTemplateRequestBodyFieldsField.Builder(CreateMetadataTemplateRequestBodyFieldsTypeField.MULTISELECT, "sports", "sports").options(Arrays.asList(new CreateMetadataTemplateRequestBodyFieldsOptionsField("basketball"), new CreateMetadataTemplateRequestBodyFieldsOptionsField("football"), new CreateMetadataTemplateRequestBodyFieldsOptionsField("tennis"))).build())).build())
+      - lang: node
+        label: Create metadata template
+        source: "await client.metadataTemplates.createMetadataTemplate({\n  scope: 'enterprise',\n  displayName: templateKey,\n  templateKey: templateKey,\n  fields: [\n    {\n      type: 'string' as CreateMetadataTemplateRequestBodyFieldsTypeField,\n      key: 'testName',\n      displayName: 'testName',\n    } satisfies CreateMetadataTemplateRequestBodyFieldsField,\n    {\n      type: 'float' as CreateMetadataTemplateRequestBodyFieldsTypeField,\n      key: 'age',\n      displayName: 'age',\n    } satisfies CreateMetadataTemplateRequestBodyFieldsField,\n    {\n      type: 'date' as CreateMetadataTemplateRequestBodyFieldsTypeField,\n      key: 'birthDate',\n      displayName: 'birthDate',\n    } satisfies CreateMetadataTemplateRequestBodyFieldsField,\n    {\n      type: 'enum' as CreateMetadataTemplateRequestBodyFieldsTypeField,\n      key: 'countryCode',\n      displayName: 'countryCode',\n      options: [\n        {\n          key: 'US',\n        } satisfies CreateMetadataTemplateRequestBodyFieldsOptionsField,\n        {\n          key: 'CA',\n        } satisfies CreateMetadataTemplateRequestBodyFieldsOptionsField,\n      ],\n    } satisfies CreateMetadataTemplateRequestBodyFieldsField,\n    {\n      type: 'multiSelect' as CreateMetadataTemplateRequestBodyFieldsTypeField,\n      key: 'sports',\n      displayName: 'sports',\n      options: [\n        {\n          key: 'basketball',\n        } satisfies CreateMetadataTemplateRequestBodyFieldsOptionsField,\n        {\n          key: 'football',\n        } satisfies CreateMetadataTemplateRequestBodyFieldsOptionsField,\n        {\n          key: 'tennis',\n        } satisfies CreateMetadataTemplateRequestBodyFieldsOptionsField,\n      ],\n    } satisfies CreateMetadataTemplateRequestBodyFieldsField,\n  ],\n} satisfies CreateMetadataTemplateRequestBody);"
+      - lang: python
+        label: Create metadata template
+        source: "client.metadata_templates.create_metadata_template(\n    \"enterprise\",\n    template_key,\n    template_key=template_key,\n    fields=[\n        CreateMetadataTemplateFields(\n            type=CreateMetadataTemplateFieldsTypeField.STRING,\n            key=\"testName\",\n            display_name=\"testName\",\n        ),\n        CreateMetadataTemplateFields(\n            type=CreateMetadataTemplateFieldsTypeField.FLOAT,\n            key=\"age\",\n            display_name=\"age\",\n        ),\n        CreateMetadataTemplateFields(\n            type=CreateMetadataTemplateFieldsTypeField.DATE,\n            key=\"birthDate\",\n            display_name=\"birthDate\",\n        ),\n        CreateMetadataTemplateFields(\n            type=CreateMetadataTemplateFieldsTypeField.ENUM,\n            key=\"countryCode\",\n            display_name=\"countryCode\",\n            options=[\n                CreateMetadataTemplateFieldsOptionsField(key=\"US\"),\n                CreateMetadataTemplateFieldsOptionsField(key=\"CA\"),\n            ],\n        ),\n        CreateMetadataTemplateFields(\n            type=CreateMetadataTemplateFieldsTypeField.MULTISELECT,\n            key=\"sports\",\n            display_name=\"sports\",\n            options=[\n                CreateMetadataTemplateFieldsOptionsField(key=\"basketball\"),\n                CreateMetadataTemplateFieldsOptionsField(key=\"football\"),\n                CreateMetadataTemplateFieldsOptionsField(key=\"tennis\"),\n            ],\n        ),\n    ],\n)"
 components:
   schemas:
-    ClientError:
-      title: Client error
+    MetadataTemplates:
+      description: A list of metadata templates.
       type: object
-      x-box-resource-id: client_error
-      description: A generic error
+      allOf:
+      - type: object
+        description: The part of an API response that describes marker based pagination.
+        properties:
+          limit:
+            description: The limit that was used for these entries. This will be the same as the `limit` query parameter unless that value exceeded the maximum value allowed. The maximum value varies by API.
+            type: integer
+            format: int64
+            example: 1000
+          next_marker:
+            description: The marker for the start of the next page of results.
+            type:
+            - string
+            - 'null'
+            example: JV9IRGZmieiBasejOG9yDCRNgd2ymoZIbjsxbJMjIs3kioVii
+          prev_marker:
+            description: The marker for the start of the previous page of results.
+            type:
+            - string
+            - 'null'
+            example: JV9IRGZmieiBasejOG9yDCRNgd2ymoZIbjsxbJMjIs3kioVih
+      - properties:
+          entries:
+            description: A list of metadata templates.
+            type: array
+            items:
+              $ref: '#/components/schemas/MetadataTemplate'
+      title: Metadata templates
+      x-box-resource-id: metadata_templates
+      x-box-tag: metadata_templates
+    ClientError:
+      description: A generic error.
+      type: object
       properties:
         type:
-          description: error
-          example: error
+          description: The value will always be `error`.
           type: string
+          example: error
           enum:
           - error
         status:
           description: The HTTP status of the response.
-          example: 400
           type: integer
           format: int32
+          example: 400
         code:
-          description: A Box-specific error code
-          example: item_name_invalid
+          description: A Box-specific error code.
           type: string
+          example: item_name_invalid
           enum:
           - created
           - accepted
@@ -732,6 +846,7 @@ components:
           - method_not_allowed
           - conflict
           - precondition_failed
+          - unprocessable_entity
           - too_many_requests
           - internal_server_error
           - unavailable
@@ -739,143 +854,68 @@ components:
           - insufficient_scope
         message:
           description: A short message describing the error.
-          example: Method Not Allowed
           type: string
+          example: Method Not Allowed
         context_info:
-          description: 'A free-form object that contains additional context
-
-            about the error. The possible fields are defined on
-
-            a per-endpoint basis. `message` is only one example.'
+          description: A free-form object that contains additional context about the error. The possible fields are defined on a per-endpoint basis. `message` is only one example.
           type:
           - object
           - 'null'
-          properties:
-            message:
-              type: string
-              description: More details on the error.
-              example: Something went wrong.
+          example:
+            message: Something went wrong
+          additionalProperties: {}
         help_url:
           description: A URL that links to more information about why this error occurred.
-          example: https://developer.box.com/guides/api-calls/permissions-and-errors/common-errors/
           type: string
+          example: https://developer.box.com/guides/api-calls/permissions-and-errors/common-errors/
         request_id:
-          description: 'A unique identifier for this response, which can be used
-
-            when contacting Box support.'
+          description: A unique identifier for this response, which can be used when contacting Box support.
           type: string
           example: abcdef123456
-    MetadataTemplates:
-      title: Metadata templates
-      type: object
-      x-box-resource-id: metadata_templates
-      x-box-tag: metadata_templates
-      description: A list of metadata templates
-      allOf:
-      - type: object
-        description: 'The part of an API response that describes marker
-
-          based pagination'
-        properties:
-          limit:
-            description: 'The limit that was used for these entries. This will be the same as the
-
-              `limit` query parameter unless that value exceeded the maximum value
-
-              allowed. The maximum value varies by API.'
-            example: 1000
-            type: integer
-            format: int64
-          next_marker:
-            description: The marker for the start of the next page of results.
-            example: JV9IRGZmieiBasejOG9yDCRNgd2ymoZIbjsxbJMjIs3kioVii
-            type:
-            - string
-            - 'null'
-          prev_marker:
-            description: The marker for the start of the previous page of results.
-            example: JV9IRGZmieiBasejOG9yDCRNgd2ymoZIbjsxbJMjIs3kioVih
-            type:
-            - string
-            - 'null'
-      - properties:
-          entries:
-            type: array
-            description: A list of metadata templates
-            items:
-              $ref: '#/components/schemas/MetadataTemplate'
+      title: Client error
+      x-box-resource-id: client_error
     MetadataTemplate:
-      title: Metadata template
+      description: A template for metadata that can be applied to files and folders.
       type: object
-      x-box-resource-id: metadata_template
-      x-box-tag: metadata_templates
-      description: A template for metadata that can be applied to files and folders
-      required:
-      - type
-      - id
       properties:
         id:
+          description: The ID of the metadata template.
           type: string
           example: 58063d82-4128-7b43-bba9-92f706befcdf
-          description: The ID of the metadata template.
         type:
+          description: The value will always be `metadata_template`.
           type: string
-          description: '`metadata_template`'
           example: metadata_template
           enum:
           - metadata_template
         scope:
+          description: The scope of the metadata template can either be `global` or `enterprise_*`. The `global` scope is used for templates that are available to any Box enterprise. The `enterprise_*` scope represents templates that have been created within a specific enterprise, where `*` will be the ID of that enterprise.
           type: string
-          description: 'The scope of the metadata template can either be `global` or
-
-            `enterprise_*`. The `global` scope is used for templates that are
-
-            available to any Box enterprise. The `enterprise_*` scope represents
-
-            templates that have been created within a specific enterprise, where `*`
-
-            will be the ID of that enterprise.'
           example: enterprise_123456
         templateKey:
+          description: A unique identifier for the template. This identifier is unique across the `scope` of the enterprise to which the metadata template is being applied, yet is not necessarily unique across different enterprises.
           type: string
           example: productInfo
-          description: 'A unique identifier for the template. This identifier is unique across
-
-            the `scope` of the enterprise to which the metadata template is being
-
-            applied, yet is not necessarily unique across different enterprises.'
           maxLength: 64
           pattern: ^[a-zA-Z_][-a-zA-Z0-9_]*$
         displayName:
+          description: The display name of the template. This can be seen in the Box web app and mobile apps.
           type: string
-          description: 'The display name of the template. This can be seen in the Box web app
-
-            and mobile apps.'
-          maxLength: 4096
           example: Product Info
+          maxLength: 4096
         hidden:
+          description: Defines if this template is visible in the Box web app UI, or if it is purely intended for usage through the API.
           type: boolean
           example: true
-          description: 'Defines if this template is visible in the Box web app UI, or if
-
-            it is purely intended for usage through the API.'
         fields:
+          description: An ordered list of template fields which are part of the template. Each field can be a regular text field, date field, number field, as well as a single or multi-select list.
           type: array
-          description: 'An ordered list of template fields which are part of the template. Each
-
-            field can be a regular text field, date field, number field, as well as a
-
-            single or multi-select list.'
           items:
             type: object
-            description: 'A field within a metadata template. Fields can be a basic text, date, or
-
-              number field, or a list of options.'
+            description: A field within a metadata template. Fields can be a basic text, date, or number field, or a list of options.
             allOf:
             - title: Metadata Field (Read)
-              description: 'A field within a metadata template. Fields can be a basic text, date, or
-
-                number field, or a list of options.'
+              description: A field within a metadata template. Fields can be a basic text, date, or number field, a list of options, or a taxonomy.
               required:
               - type
               - key
@@ -883,63 +923,47 @@ components:
               type: object
               properties:
                 type:
+                  description: 'The type of field. The basic fields are a `string` field for text, a `float` field for numbers, and a `date` fields to present the user with a date-time picker.
+
+
+                    Additionally, metadata templates support an `enum` field for a basic list of items, and `multiSelect` field for a similar list of items where the user can select more than one value.
+
+
+                    Metadata taxonomies are also supported as a `taxonomy` field type with a specific set of additional properties, which describe its structure.
+
+
+                    **Note**: The `integer` value is deprecated. It is still present in the response, but cannot be used in the POST request.'
                   type: string
                   example: string
-                  description: 'The type of field. The basic fields are a `string` field for text, a
-
-                    `float` field for numbers, and a `date` fields to present the user with a
-
-                    date-time picker.
-
-
-                    Additionally, metadata templates support an `enum` field for a basic list
-
-                    of items, and ` multiSelect` field for a similar list of items where the
-
-                    user can select more than one value.
-
-
-                    **Note**: The `integer` value is deprecated.
-
-                    It is still present in the response,
-
-                    but cannot be used in the POST request.'
                   enum:
                   - string
                   - float
                   - date
                   - enum
                   - multiSelect
+                  - taxonomy
                   - integer
                 key:
+                  description: A unique identifier for the field. The identifier must be unique within the template to which it belongs.
                   type: string
                   example: category
-                  description: 'A unique identifier for the field. The identifier must
-
-                    be unique within the template to which it belongs.'
                   maxLength: 256
                 displayName:
+                  description: The display name of the field as it is shown to the user in the web and mobile apps.
                   type: string
                   example: Category
-                  description: 'The display name of the field as it is shown to the user in the web and
-
-                    mobile apps.'
                   maxLength: 4096
                 description:
+                  description: A description of the field. This is not shown to the user.
                   type: string
                   example: The category
-                  description: A description of the field. This is not shown to the user.
                   maxLength: 4096
                 hidden:
+                  description: Whether this field is hidden in the UI for the user and can only be set through the API instead.
                   type: boolean
                   example: true
-                  description: 'Whether this field is hidden in the UI for the user and can only be set
-
-                    through the API instead.'
                 options:
-                  description: 'A list of options for this field. This is used in combination with the
-
-                    `enum` and `multiSelect` field types.'
+                  description: A list of options for this field. This is used in combination with the `enum` and `multiSelect` field types.
                   type: array
                   items:
                     title: Metadata Option (Write)
@@ -947,72 +971,89 @@ components:
                     description: 'An option for a Metadata Template Field.
 
 
-                      Options only need to be provided for fields of type `enum` and `multiSelect`.
-
-                      Options represent the value(s) a user can select for the field either through
-
-                      the UI or through the API.'
+                      Options only need to be provided for fields of type `enum` and `multiSelect`. Options represent the value(s) a user can select for the field either through the UI or through the API.'
                     required:
                     - key
                     properties:
                       key:
-                        description: 'The text value of the option. This represents both the display name of the
-
-                          option and the internal key used when updating templates.'
-                        example: Category 1
+                        description: The text value of the option. This represents both the display name of the option and the internal key used when updating templates.
                         type: string
+                        example: Category 1
+                taxonomyKey:
+                  description: The unique key of the metadata taxonomy to use for this taxonomy field. This property is required when the field `type` is set to `taxonomy`.
+                  type: string
+                  example: locationTaxonomy
+                taxonomyId:
+                  description: The unique ID of the metadata taxonomy to use for this taxonomy field. This property is required when the field `type` is set to `taxonomy`.
+                  type: string
+                  example: 05ece6d7-fec4-4d3f-bfd2-36fd4dddea97
+                namespace:
+                  description: The namespace of the metadata taxonomy to use for this taxonomy field. This property is required when the field `type` is set to `taxonomy`.
+                  type: string
+                  example: enterprise_123456
+                optionsRules:
+                  description: An object defining additional rules for the options of the taxonomy field. This property is required when the field `type` is set to `taxonomy`.
+                  type: object
+                  properties:
+                    multiSelect:
+                      description: Whether to allow users to select multiple values.
+                      type: boolean
+                      example: true
+                    selectableLevels:
+                      description: An array of integers defining which levels of the taxonomy are selectable by users.
+                      type: array
+                      items:
+                        type: integer
+                      example:
+                      - 1
+                      - 2
             - properties:
                 id:
+                  description: The unique ID of the metadata template field.
                   type: string
                   example: 822227e0-47a5-921b-88a8-494760b2e6d2
-                  description: The unique ID of the metadata template field.
                 options:
-                  description: 'A list of options for this field. This is used in combination
-
-                    with the `enum` and `multiSelect` field types.'
+                  description: A list of options for this field. This is used in combination with the `enum` and `multiSelect` field types.
                   type: array
                   items:
                     type: object
                     description: 'An option for a Metadata Template Field.
 
 
-                      Options are only present for fields of type `enum` and
-
-                      `multiSelect`. Options represent the value(s) a user can
-
-                      select for the field either through the UI or through the API.'
+                      Options are only present for fields of type `enum` and `multiSelect`. Options represent the value(s) a user can select for the field either through the UI or through the API.'
                     allOf:
                     - title: Metadata Option (Write)
                       type: object
                       description: 'An option for a Metadata Template Field.
 
 
-                        Options only need to be provided for fields of type `enum` and `multiSelect`.
-
-                        Options represent the value(s) a user can select for the field either through
-
-                        the UI or through the API.'
+                        Options only need to be provided for fields of type `enum` and `multiSelect`. Options represent the value(s) a user can select for the field either through the UI or through the API.'
                       required:
                       - key
                       properties:
                         key:
-                          description: 'The text value of the option. This represents both the display name of the
-
-                            option and the internal key used when updating templates.'
-                          example: Category 1
+                          description: The text value of the option. This represents both the display name of the option and the internal key used when updating templates.
                           type: string
+                          example: Category 1
                     - properties:
                         id:
+                          description: The internal unique identifier of the option.
                           type: string
                           example: 45dc2849-a4a7-40a9-a751-4a699a589190
-                          description: The internal unique identifier of the the option.
         copyInstanceOnItemCopy:
-          type: boolean
           description: Whether or not to include the metadata when a file or folder is copied.
+          type: boolean
           example: true
+      required:
+      - type
+      - id
+      title: Metadata template
+      x-box-resource-id: metadata_template
+      x-box-tag: metadata_templates
   securitySchemes:
     OAuth2Security:
       type: oauth2
+      description: The access token received from the authorization server in the OAuth 2.0 flow.
       flows:
         authorizationCode:
           authorizationUrl: https://account.box.com/api/oauth2/authorize
@@ -1028,5 +1069,8 @@ components:
             manage_data_retention: Manage data retention polices
             manage_legal_hold: Manage Legal Holds
 externalDocs:
-  description: Box Developer Documentation
+  description: Box Developer Documentation.
   url: https://developer.box.com
+x-mint:
+  mcp:
+    enabled: true

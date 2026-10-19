@@ -1,134 +1,137 @@
 openapi: 3.2.0
 info:
-  title: Box Platform User Avatars API
+  title: Box Platform User avatars API
   description: Box Platform provides functionality to provide access to content stored within Box. It provides endpoints for basic manipulation of files and folders, management of users within an enterprise, as well as more complex topics such as legal holds and retention policies.
   termsOfService: https://cloud.app.box.com/s/rmwxu64h1ipr41u49w3bbuvbsa29wku9
   contact:
     name: Box, Inc
-    url: https://box.dev
+    url: https://developer.box.com
     email: devrel@box.com
   license:
     name: Apache-2.0
-    url: http://www.apache.org/licenses/LICENSE-2.0
-  version: 2.0.0
-  x-box-commit-hash: '5819125043'
+    url: https://www.apache.org/licenses/LICENSE-2.0
+  version: '2024.0'
+  x-box-commit-hash: 53bdced3cd
 servers:
 - url: https://api.box.com/2.0
-  description: Box Platform API server
+  description: Box Platform API server.
 security:
 - OAuth2Security: []
 tags:
-- name: User Avatars
-  description: 'User avatars are JPG or PNG files
-
-    uploaded to Box to represent the
-
-    user image. They are then displayed
-
-    in the user account.'
+- name: User avatars
+  description: User avatars are JPG or PNG files uploaded to Box to represent the user image. They are then displayed in the user account.
   x-box-tag: avatars
 paths:
   /users/{user_id}/avatar:
     get:
       operationId: get_users_id_avatar
-      x-box-tag: avatars
-      summary: Box Get user avatar
-      tags:
-      - User Avatars
+      summary: Get user avatar
       description: Retrieves an image of a the user's avatar.
       parameters:
       - name: user_id
-        description: The ID of the user.
-        example: '12345'
         in: path
+        description: The ID of the user.
         required: true
         schema:
           type: string
+        example: '12345'
       responses:
         '200':
-          description: 'When an avatar can be found for the user the
-
-            image data will be returned in the body of the
-
-            response.'
+          description: When an avatar can be found for the user the image data will be returned in the body of the response.
           content:
             image/jpg:
               schema:
+                description: The avatar.
                 type: string
                 format: binary
-                description: The avatar
         default:
           description: An unexpected client error.
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ClientError'
+      x-box-tag: avatars
+      tags:
+      - User avatars
+      x-codeSamples:
+      - lang: curl
+        label: Get user avatar
+        source: "curl -i -X GET \"https://api.box.com/2.0/users/12345/avatar\" \\\n     -H \"authorization: Bearer <ACCESS_TOKEN>\""
+      - lang: dotnet
+        label: Get user avatar
+        source: 'await client.Avatars.GetUserAvatarAsync(userId: user.Id);'
+      - lang: swift
+        label: Get user avatar
+        source: 'try await client.avatars.getUserAvatar(userId: user.id, downloadDestinationUrl: destinationPath)'
+      - lang: java
+        label: Get user avatar
+        source: client.getAvatars().getUserAvatar(user.getId())
+      - lang: node
+        label: Get user avatar
+        source: await client.avatars.getUserAvatar(user.id);
+      - lang: python
+        label: Get user avatar
+        source: client.avatars.get_user_avatar(user.id)
     post:
       operationId: post_users_id_avatar
-      x-box-tag: avatars
-      summary: Box Add or update user avatar
-      tags:
-      - User Avatars
+      summary: Add or update user avatar
       description: Adds or updates a user avatar.
       parameters:
       - name: user_id
-        description: The ID of the user.
-        example: '12345'
         in: path
+        description: The ID of the user.
         required: true
         schema:
           type: string
+        example: '12345'
       requestBody:
         content:
           multipart/form-data:
             schema:
               type: object
-              required:
-              - pic
               properties:
                 pic:
+                  description: The image file to be uploaded to Box. Accepted file extensions are `.jpg` or `.png`. The maximum file size is 1MB.
                   type: string
                   format: binary
-                  description: 'The image file to be uploaded to Box.
-
-                    Accepted file extensions are `.jpg` or `.png`.
-
-                    The maximum file size is 1MB.'
+              required:
+              - pic
       responses:
         '200':
-          description: '* `ok`: Returns the `pic_urls` object with URLs to existing
-
-            user avatars that were updated.'
+          description: '`ok`: Returns the `pic_urls` object with URLs to existing user avatars that were updated.'
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/UserAvatar'
         '201':
-          description: '* `created`: Returns the `pic_urls` object with URLS to user avatars
-
-            uploaded to Box with the request.'
+          description: '`created`: Returns the `pic_urls` object with URLS to user avatars uploaded to Box with the request.'
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/UserAvatar'
         '400':
-          description: "* `bad_request`: Returns an error when:\n    * An image is not included in the request\n    * The uploaded file is empty\n    * The image size exceeds 1024 * 1024 pixels\n    or 1MB\n    * The file extension is other than `.jpg` or `.png`."
+          description: '`bad_request`: Returns an error when:
+
+
+            - An image is not included in the request
+
+            - The uploaded file is empty
+
+            - The image size exceeds 1024 \* 1024 pixels or 1MB
+
+            - The file extension is other than `.jpg` or `.png`.'
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ClientError'
         '403':
-          description: '* `forbidden`: Returns an error if the user does not have permissions
-
-            necessary to upload an avatar or is not activated.'
+          description: '`forbidden`: Returns an error if the user does not have permissions necessary to upload an avatar or is not activated.'
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ClientError'
         '404':
-          description: '* `not_found`: Returns an error if the user
-
-            does not exist or cannot be found.'
+          description: '`not_found`: Returns an error if the user does not exist or cannot be found.'
           content:
             application/json:
               schema:
@@ -139,34 +142,51 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ClientError'
+      x-box-tag: avatars
+      tags:
+      - User avatars
+      x-codeSamples:
+      - lang: curl
+        label: Add or update user avatar
+        source: "curl -i -L -X POST \"https://api.box.net/2.0/users/12345/avatar\" \\\n     -H \"authorization: Bearer <ACCESS_TOKEN>\" \\\n     --form 'pic=@\"path/to/file/file.jpeg\"'"
+      - lang: dotnet
+        label: Add or update user avatar
+        source: 'await client.Avatars.CreateUserAvatarAsync(userId: user.Id, requestBody: new CreateUserAvatarRequestBody(pic: Utils.DecodeBase64ByteStream(data: "iVBORw0KGgoAAAANSUhEUgAAAQAAAAEAAQMAAABmvDolAAAAA1BMVEW10NBjBBbqAAAAH0lEQVRoge3BAQ0AAADCoPdPbQ43oAAAAAAAAAAAvg0hAAABmmDh1QAAAABJRU5ErkJggg==")) { PicContentType = "image/png", PicFileName = "avatar.png" });'
+      - lang: swift
+        label: Add or update user avatar
+        source: 'try await client.avatars.createUserAvatar(userId: user.id, requestBody: CreateUserAvatarRequestBody(pic: Utils.decodeBase64ByteStream(data: "iVBORw0KGgoAAAANSUhEUgAAAQAAAAEAAQMAAABmvDolAAAAA1BMVEW10NBjBBbqAAAAH0lEQVRoge3BAQ0AAADCoPdPbQ43oAAAAAAAAAAAvg0hAAABmmDh1QAAAABJRU5ErkJggg=="), picContentType: "image/png", picFileName: "avatar.png"))'
+      - lang: java
+        label: Add or update user avatar
+        source: client.getAvatars().createUserAvatar(user.getId(), new CreateUserAvatarRequestBody.Builder(decodeBase64ByteStream("iVBORw0KGgoAAAANSUhEUgAAAQAAAAEAAQMAAABmvDolAAAAA1BMVEW10NBjBBbqAAAAH0lEQVRoge3BAQ0AAADCoPdPbQ43oAAAAAAAAAAAvg0hAAABmmDh1QAAAABJRU5ErkJggg==")).picFileName("avatar.png").picContentType("image/png").build())
+      - lang: node
+        label: Add or update user avatar
+        source: "await client.avatars.createUserAvatar(user.id, {\n  pic: decodeBase64ByteStream(\n    'iVBORw0KGgoAAAANSUhEUgAAAQAAAAEAAQMAAABmvDolAAAAA1BMVEW10NBjBBbqAAAAH0lEQVRoge3BAQ0AAADCoPdPbQ43oAAAAAAAAAAAvg0hAAABmmDh1QAAAABJRU5ErkJggg==',\n  ),\n  picContentType: 'image/png',\n  picFileName: 'avatar.png',\n} satisfies CreateUserAvatarRequestBody);"
+      - lang: python
+        label: Add or update user avatar
+        source: "client.avatars.create_user_avatar(\n    user.id,\n    decode_base_64_byte_stream(\n        \"iVBORw0KGgoAAAANSUhEUgAAAQAAAAEAAQMAAABmvDolAAAAA1BMVEW10NBjBBbqAAAAH0lEQVRoge3BAQ0AAADCoPdPbQ43oAAAAAAAAAAAvg0hAAABmmDh1QAAAABJRU5ErkJggg==\"\n    ),\n    pic_file_name=\"avatar.png\",\n    pic_content_type=\"image/png\",\n)"
     delete:
       operationId: delete_users_id_avatar
-      x-box-tag: avatars
-      summary: Box Delete user avatar
-      tags:
-      - User Avatars
-      description: 'Removes an existing user avatar.
-
-        You cannot reverse this operation.'
+      summary: Delete user avatar
+      description: Removes an existing user avatar. You cannot reverse this operation.
       parameters:
       - name: user_id
-        description: The ID of the user.
-        example: '12345'
         in: path
+        description: The ID of the user.
         required: true
         schema:
           type: string
+        example: '12345'
       responses:
         '204':
-          description: '* `no_content`: Removes the avatar and returns an empty response.'
+          description: '`no_content`: Removes the avatar and returns an empty response.'
         '403':
-          description: "* `forbidden`: Returned if the user does not have necessary permissions\n or is not activated."
+          description: '`forbidden`: Returned if the user does not have necessary permissions or is not activated.'
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ClientError'
         '404':
-          description: "* `not_found`: Returned if the user or user avatar does not exist\n or cannot be found."
+          description: '`not_found`: Returned if the user or user avatar does not exist or cannot be found.'
           content:
             application/json:
               schema:
@@ -177,30 +197,47 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ClientError'
+      x-box-tag: avatars
+      tags:
+      - User avatars
+      x-codeSamples:
+      - lang: curl
+        label: Delete user avatar
+        source: "curl -i -X DELETE -L \"https://api.box.net/2.0/users/12345/avatar\" \\\n     -H \"authorization: Bearer <ACCESS_TOKEN>\""
+      - lang: dotnet
+        label: Delete user avatar
+        source: 'await client.Avatars.DeleteUserAvatarAsync(userId: user.Id);'
+      - lang: swift
+        label: Delete user avatar
+        source: 'try await client.avatars.deleteUserAvatar(userId: user.id)'
+      - lang: java
+        label: Delete user avatar
+        source: client.getAvatars().deleteUserAvatar(user.getId())
+      - lang: node
+        label: Delete user avatar
+        source: await client.avatars.deleteUserAvatar(user.id);
+      - lang: python
+        label: Delete user avatar
+        source: client.avatars.delete_user_avatar(user.id)
 components:
   schemas:
     UserAvatar:
-      title: User avatar
+      description: A resource holding URLs to the avatar uploaded to a Box application.
       type: object
-      x-box-resource-id: user_avatar
-      x-box-tag: avatars
-      description: 'A resource holding URLs to the
-
-        avatar uploaded to a Box application.'
       properties:
         pic_urls:
-          type: object
           description: Represents an object with user avatar URLs.
+          type: object
           properties:
             small:
-              type: string
               description: The location of a small-sized avatar.
+              type: string
               example: 'https://app.box.com/index.php?rm=pic_storage_auth&pic=euks! pac3kv01!7B6R5cZLmurEV_xB-KkycPk8Oi7oENUX2O_qUtIuO4342CG IldyCto9hqiQP7uxqYU5V2w63Ft4ln4UVVLDtDZu903OqzkflY2O-Lq00 ubA29xU-RJ6b_KzJEWRYgUhX1zEl3dzWo12g8eWRE2rStf123DF7AYahNqM 1BmLmviL_nODc7SDQHedTXPAjxURUAra5BvtLe7B05AizbNXdPlCNp-LNh _S-eZ_RjDXcGO-MkRWd_3BOMHnvjf450t5BfKoJ15WhEfiMlfXH1tmouHXrsC 66cT6-pzF9E40Iir_zThqSlrFxzP_xcmXzHapr_k-0E2qr2TXp4iC396TSlEw
 
                 '
             large:
-              type: string
               description: The location of a large-sized avatar.
+              type: string
               example: 'https://app.box.com/index.php?rm=pic_storage_auth&pic=euks
 
                 pac3kv01!lipGQlQQOtCTCoB6zCOArUjVWLFJtLr5tn6aOZMCybhRx0NNuFQbVI36nw
@@ -211,8 +248,8 @@ components:
 
                 ao1emv8r_fmufaUgSndeMYmyZj-KqOYsLBrBNgdeiK5tZmPOQggAEUmyQPkrd8W92TQ6sSlIp0r'
             preview:
-              type: string
               description: The location of the avatar preview.
+              type: string
               example: 'https://app.box.com/index.php?rm=pic_storage_auth&pic=euks!
 
                 pac3kv01!8UcNPweOOAWj2DtHk_dCQB4wJpzyPkl7mT5nHj5ZdjY92ejYCBBZc95--403b29CW
@@ -224,27 +261,28 @@ components:
                 sSJDSTI74LGXqeZb3EY_As34VFC95F10uozoTOSubZmPYylPlaKXoKWk2f9wYQso1ZTN7sh-Gc
 
                 9Kp43zMLhArIWhok0Im6FlRAuWOQ03KYgL-k4L5EZp4Gw6B7uqVRwcBbsTwMIorWq1g'
+      title: User avatar
+      x-box-resource-id: user_avatar
+      x-box-tag: avatars
     ClientError:
-      title: Client error
+      description: A generic error.
       type: object
-      x-box-resource-id: client_error
-      description: A generic error
       properties:
         type:
-          description: error
-          example: error
+          description: The value will always be `error`.
           type: string
+          example: error
           enum:
           - error
         status:
           description: The HTTP status of the response.
-          example: 400
           type: integer
           format: int32
+          example: 400
         code:
-          description: A Box-specific error code
-          example: item_name_invalid
+          description: A Box-specific error code.
           type: string
+          example: item_name_invalid
           enum:
           - created
           - accepted
@@ -258,6 +296,7 @@ components:
           - method_not_allowed
           - conflict
           - precondition_failed
+          - unprocessable_entity
           - too_many_requests
           - internal_server_error
           - unavailable
@@ -265,35 +304,30 @@ components:
           - insufficient_scope
         message:
           description: A short message describing the error.
-          example: Method Not Allowed
           type: string
+          example: Method Not Allowed
         context_info:
-          description: 'A free-form object that contains additional context
-
-            about the error. The possible fields are defined on
-
-            a per-endpoint basis. `message` is only one example.'
+          description: A free-form object that contains additional context about the error. The possible fields are defined on a per-endpoint basis. `message` is only one example.
           type:
           - object
           - 'null'
-          properties:
-            message:
-              type: string
-              description: More details on the error.
-              example: Something went wrong.
+          example:
+            message: Something went wrong
+          additionalProperties: {}
         help_url:
           description: A URL that links to more information about why this error occurred.
-          example: https://developer.box.com/guides/api-calls/permissions-and-errors/common-errors/
           type: string
+          example: https://developer.box.com/guides/api-calls/permissions-and-errors/common-errors/
         request_id:
-          description: 'A unique identifier for this response, which can be used
-
-            when contacting Box support.'
+          description: A unique identifier for this response, which can be used when contacting Box support.
           type: string
           example: abcdef123456
+      title: Client error
+      x-box-resource-id: client_error
   securitySchemes:
     OAuth2Security:
       type: oauth2
+      description: The access token received from the authorization server in the OAuth 2.0 flow.
       flows:
         authorizationCode:
           authorizationUrl: https://account.box.com/api/oauth2/authorize
@@ -309,5 +343,8 @@ components:
             manage_data_retention: Manage data retention polices
             manage_legal_hold: Manage Legal Holds
 externalDocs:
-  description: Box Developer Documentation
+  description: Box Developer Documentation.
   url: https://developer.box.com
+x-mint:
+  mcp:
+    enabled: true
