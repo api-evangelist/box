@@ -15,50 +15,6 @@
   relationship: distribution-channel
   status: not-a-workflow
   arazzo: null
-- slug: box-hightouch
-  label: Hightouch
-  partner: hightouch
-  partner_name: Hightouch
-  type: coverage
-  marketplace: coverage
-  channel: partner-built
-  evidence: https://hightouch.com/docs/destinations/box
-  source: edge
-  relationship: connector-coverage
-  status: not-a-workflow
-  arazzo: null
-- slug: box-edugain
-  label: eduGAIN
-  partner_name: eduGAIN
-  category: research and education identity federation
-  type: register
-  channel: standard-directory
-  evidence: https://technical.edugain.org/api.php?action=list_entities&type=sp&format=json
-  source: edge
-  relationship: network-participant
-  contract_reference:
-    network: eduGAIN (GÉANT interfederation)
-    spec_file: null
-    roles:
-    - service-provider
-    role: service-provider
-    federations:
-    - INCOMMON
-    matched_by: domain:box.com
-    entities:
-    - entity_id: https://services.box.com/sp
-      role: service-provider
-      federation: INCOMMON
-      display_name: Box, Inc
-      entity_categories:
-      - '43'
-      - '76'
-      sirtfi: true
-      coco: true
-    detected_by: sweep-higher-ed.py
-    detected: '2026-10-15'
-  status: not-a-workflow
-  arazzo: null
 - slug: box-guidewire-own
   label: Guidewire (own)
   partner: guidewire
@@ -72,80 +28,125 @@
   relationship: platform-app
   status: not-a-workflow
   arazzo: null
-- slug: box-zapier
-  label: Zapier
-  partner: zapier
-  partner_name: Zapier
+- slug: box-google-workspace-own
+  label: Google Workspace (own)
+  partner: google-workspace
+  partner_name: Google Workspace (own)
+  category: Google Workspace app
   type: marketplace
-  marketplace: zapier-directory
-  channel: ipaas-listing
-  evidence: https://zapier.com/apps/box/integrations
+  marketplace: own
+  channel: partner-built
+  evidence: https://workspace.google.com/marketplace/app/box/828801433755
+  source: edge
+  relationship: platform-app
+  status: not-a-workflow
+  arazzo: null
+- slug: box-microsoft-teams-own
+  label: Microsoft Teams (own)
+  partner: microsoft-teams
+  partner_name: Microsoft Teams (own)
+  category: Microsoft Teams app
+  type: marketplace
+  marketplace: own
+  channel: partner-built
+  evidence: https://appsource.microsoft.com/en-us/product/office/WA200001458
+  source: edge
+  relationship: platform-app
+  status: not-a-workflow
+  arazzo: null
+- slug: box-slack-own
+  label: Slack (own)
+  partner: slack
+  partner_name: Slack (own)
+  category: Slack app
+  type: marketplace
+  marketplace: own
+  channel: partner-built
+  evidence: https://slack.com/marketplace/ALQ9XG76D-box
+  source: edge
+  relationship: platform-app
+  status: not-a-workflow
+  arazzo: null
+- slug: box-zoom-own
+  label: Zoom (own)
+  partner: zoom
+  partner_name: Zoom (own)
+  category: Zoom app
+  type: marketplace
+  marketplace: own
+  channel: partner-built
+  evidence: https://marketplace.zoom.us/apps/FOJY4CbUS0GUG9yM9PWvBg
+  source: edge
+  relationship: platform-app
+  status: not-a-workflow
+  arazzo: null
+- slug: box-hightouch
+  label: Hightouch
+  partner: hightouch
+  partner_name: Hightouch
+  type: coverage
+  marketplace: coverage
+  channel: partner-built
+  evidence: https://hightouch.com/docs/destinations/box
+  source: edge
+  relationship: connector-coverage
+  status: not-a-workflow
+  arazzo: null
+- slug: box-airbyte
+  label: Airbyte
+  partner: airbyte
+  partner_name: Airbyte
+  type: marketplace
+  marketplace: airbyte-registry
+  channel: elt-connector
+  evidence: https://docs.airbyte.com/integrations/sources/box
   source: edge
   relationship: ipaas-bridge
   contract_reference:
-    register: Zapier app directory (zapier.com/api/v4/apps)
+    register: Airbyte connector registry (connectors.airbyte.com cloud_registry.json + oss_registry.json)
     spec_file: null
-    role: ipaas-connector:zapier
+    role: elt-connector:airbyte-community
     registered_name: Box
     matched_domain: box.com
     matched_by: domain
-    detected_by: sweep-workflow-automation.py
-    detected: '2026-10-15'
-    signal_note: one edge per (provider, platform); actions, triggers and usage counts are context, never read
-    app_slug: box
-    beta: false
-    builder: unknown (not in the directory record)
+    detected_by: sweep-data-integration.py
+    detected: '2026-10-18'
+    signal_note: one edge per (provider, platform); connectors, streams, packages and usage are context, never read
+    connectors:
+    - airbyte/source-box
+    - airbyte/source-box-data-extract
+    support_level:
+    - community
+    release_stage:
+    - alpha
+    in_cloud: true
+    builder: unknown (community connector; contributor not in the record)
   status: not-a-workflow
   arazzo: null
-- slug: box-n8n
-  label: n8n
-  partner: n8n
-  partner_name: n8n
+- slug: box-fivetran
+  label: Fivetran
+  partner: fivetran
+  partner_name: Fivetran
   type: marketplace
-  marketplace: n8n-nodes-base
-  channel: open-source-node
-  evidence: https://github.com/n8n-io/n8n/tree/860f1273ebd73fabbd668cbec2c49ed9b48a286d/packages/nodes-base/nodes/Box
+  marketplace: fivetran-connectors
+  channel: elt-connector
+  evidence: https://fivetran.com/docs/connectors/files/box
   source: edge
   relationship: ipaas-bridge
   contract_reference:
-    register: n8n built-in nodes (n8n-io/n8n packages/nodes-base)
+    register: Fivetran connectors (fivetran.com/docs/connectors, docs-sitemap.xml + Partner-Built program)
     spec_file: null
-    role: ipaas-connector:n8n-nodes-base
+    role: elt-connector:fivetran
     registered_name: Box
     matched_domain: box.com
     matched_by: domain
-    detected_by: sweep-workflow-automation.py
-    detected: '2026-10-15'
-    signal_note: one edge per (provider, platform); actions, triggers and usage counts are context, never read
-    node_path: Box
-    trigger: true
-    builder: n8n (built-in node)
-  status: not-a-workflow
-  arazzo: null
-- slug: box-pipedream
-  label: Pipedream
-  partner: pipedream
-  partner_name: Pipedream
-  type: marketplace
-  marketplace: pipedream-components
-  channel: open-source-node
-  evidence: https://github.com/PipedreamHQ/pipedream/tree/94800dd6de6640b942c65ea7ee655f71ac56d438/components/box
-  source: edge
-  relationship: ipaas-bridge
-  contract_reference:
-    register: Pipedream components (PipedreamHQ/pipedream components/)
-    spec_file: null
-    role: ipaas-connector:pipedream
-    registered_name: box
-    matched_domain: box.com
-    matched_by: domain
-    detected_by: sweep-workflow-automation.py
-    detected: '2026-10-15'
-    signal_note: one edge per (provider, platform); actions, triggers and usage counts are context, never read
-    app_slug: box
-    actions: true
-    sources: true
-    builder: Pipedream repo (component)
+    detected_by: sweep-data-integration.py
+    detected: '2026-10-18'
+    signal_note: one edge per (provider, platform); connectors, streams, packages and usage are context, never read
+    connector_paths:
+    - connectors/files/box
+    vendor_link: https://www.box.com/
+    builder: Fivetran
   status: not-a-workflow
   arazzo: null
 - slug: box-fedramp
@@ -223,112 +224,111 @@
       latest_authorization: '2022-06-06'
   status: not-a-workflow
   arazzo: null
-- slug: box-airbyte
-  label: Airbyte
-  partner: airbyte
-  partner_name: Airbyte
+- slug: box-edugain
+  label: eduGAIN
+  partner_name: eduGAIN
+  category: research and education identity federation
+  type: register
+  channel: standard-directory
+  evidence: https://technical.edugain.org/api.php?action=list_entities&type=sp&format=json
+  source: edge
+  relationship: network-participant
+  contract_reference:
+    network: eduGAIN (GÉANT interfederation)
+    spec_file: null
+    roles:
+    - service-provider
+    role: service-provider
+    federations:
+    - INCOMMON
+    matched_by: domain:box.com
+    entities:
+    - entity_id: https://services.box.com/sp
+      role: service-provider
+      federation: INCOMMON
+      display_name: Box, Inc
+      entity_categories:
+      - '43'
+      - '76'
+      sirtfi: true
+      coco: true
+    detected_by: sweep-higher-ed.py
+    detected: '2026-10-19'
+  status: not-a-workflow
+  arazzo: null
+- slug: box-zapier
+  label: Zapier
+  partner: zapier
+  partner_name: Zapier
   type: marketplace
-  marketplace: airbyte-registry
-  channel: elt-connector
-  evidence: https://docs.airbyte.com/integrations/sources/box
+  marketplace: zapier-directory
+  channel: ipaas-listing
+  evidence: https://zapier.com/apps/box/integrations
   source: edge
   relationship: ipaas-bridge
   contract_reference:
-    register: Airbyte connector registry (connectors.airbyte.com cloud_registry.json + oss_registry.json)
+    register: Zapier app directory (zapier.com/api/v4/apps)
     spec_file: null
-    role: elt-connector:airbyte-community
+    role: ipaas-connector:zapier
     registered_name: Box
     matched_domain: box.com
     matched_by: domain
-    detected_by: sweep-data-integration.py
-    detected: '2026-10-18'
-    signal_note: one edge per (provider, platform); connectors, streams, packages and usage are context, never read
-    connectors:
-    - airbyte/source-box
-    - airbyte/source-box-data-extract
-    support_level:
-    - community
-    release_stage:
-    - alpha
-    in_cloud: true
-    builder: unknown (community connector; contributor not in the record)
+    detected_by: sweep-workflow-automation.py
+    detected: '2026-10-15'
+    signal_note: one edge per (provider, platform); actions, triggers and usage counts are context, never read
+    app_slug: box
+    beta: false
+    builder: unknown (not in the directory record)
   status: not-a-workflow
   arazzo: null
-- slug: box-fivetran
-  label: Fivetran
-  partner: fivetran
-  partner_name: Fivetran
+- slug: box-n8n
+  label: n8n
+  partner: n8n
+  partner_name: n8n
   type: marketplace
-  marketplace: fivetran-connectors
-  channel: elt-connector
-  evidence: https://fivetran.com/docs/connectors/files/box
+  marketplace: n8n-nodes-base
+  channel: open-source-node
+  evidence: https://github.com/n8n-io/n8n/tree/f73dc337f8dc61a4fd44aebe41c55faafe4f53a4/packages/nodes-base/nodes/Box
   source: edge
   relationship: ipaas-bridge
   contract_reference:
-    register: Fivetran connectors (fivetran.com/docs/connectors, docs-sitemap.xml + Partner-Built program)
+    register: n8n built-in nodes (n8n-io/n8n packages/nodes-base)
     spec_file: null
-    role: elt-connector:fivetran
+    role: ipaas-connector:n8n-nodes-base
     registered_name: Box
     matched_domain: box.com
     matched_by: domain
-    detected_by: sweep-data-integration.py
-    detected: '2026-10-18'
-    signal_note: one edge per (provider, platform); connectors, streams, packages and usage are context, never read
-    connector_paths:
-    - connectors/files/box
-    vendor_link: https://www.box.com/
-    builder: Fivetran
+    detected_by: sweep-workflow-automation.py
+    detected: '2026-10-15'
+    signal_note: one edge per (provider, platform); actions, triggers and usage counts are context, never read
+    node_path: Box
+    trigger: true
+    builder: n8n (built-in node)
   status: not-a-workflow
   arazzo: null
-- slug: box-google-workspace-own
-  label: Google Workspace (own)
-  partner: google-workspace
-  partner_name: Google Workspace (own)
-  category: Google Workspace app
+- slug: box-pipedream
+  label: Pipedream
+  partner: pipedream
+  partner_name: Pipedream
   type: marketplace
-  marketplace: own
-  channel: partner-built
-  evidence: https://workspace.google.com/marketplace/app/box/828801433755
+  marketplace: pipedream-components
+  channel: open-source-node
+  evidence: https://github.com/PipedreamHQ/pipedream/tree/d5872355ef27b4efa769f05352f2820c299a456e/components/box
   source: edge
-  relationship: platform-app
-  status: not-a-workflow
-  arazzo: null
-- slug: box-microsoft-teams-own
-  label: Microsoft Teams (own)
-  partner: microsoft-teams
-  partner_name: Microsoft Teams (own)
-  category: Microsoft Teams app
-  type: marketplace
-  marketplace: own
-  channel: partner-built
-  evidence: https://appsource.microsoft.com/en-us/product/office/WA200001458
-  source: edge
-  relationship: platform-app
-  status: not-a-workflow
-  arazzo: null
-- slug: box-slack-own
-  label: Slack (own)
-  partner: slack
-  partner_name: Slack (own)
-  category: Slack app
-  type: marketplace
-  marketplace: own
-  channel: partner-built
-  evidence: https://slack.com/marketplace/ALQ9XG76D-box
-  source: edge
-  relationship: platform-app
-  status: not-a-workflow
-  arazzo: null
-- slug: box-zoom-own
-  label: Zoom (own)
-  partner: zoom
-  partner_name: Zoom (own)
-  category: Zoom app
-  type: marketplace
-  marketplace: own
-  channel: partner-built
-  evidence: https://marketplace.zoom.us/apps/FOJY4CbUS0GUG9yM9PWvBg
-  source: edge
-  relationship: platform-app
+  relationship: ipaas-bridge
+  contract_reference:
+    register: Pipedream components (PipedreamHQ/pipedream components/)
+    spec_file: null
+    role: ipaas-connector:pipedream
+    registered_name: box
+    matched_domain: box.com
+    matched_by: domain
+    detected_by: sweep-workflow-automation.py
+    detected: '2026-10-15'
+    signal_note: one edge per (provider, platform); actions, triggers and usage counts are context, never read
+    app_slug: box
+    actions: true
+    sources: true
+    builder: Pipedream repo (component)
   status: not-a-workflow
   arazzo: null
