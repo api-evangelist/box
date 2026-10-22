@@ -43,6 +43,11 @@ checked:
 - https://raw.githubusercontent.com/<repo>/HEAD/manifest.json
 - https://raw.githubusercontent.com/obsidianmd/obsidian-releases/793b52114f54b055b760ef47761ec5c93d689804/community-plugin-stats.json
 - https://raw.githubusercontent.com/obsidianmd/obsidian-releases/793b52114f54b055b760ef47761ec5c93d689804/community-plugins.json
+- https://api.apis.guru/v2/list.json
+- https://api.apis.guru/v2/providers.json
+- https://csrc.nist.gov/projects/cryptographic-module-validation-program/modules-in-process/modules-in-process-list
+- https://csrc.nist.gov/projects/cryptographic-module-validation-program/validated-modules/search/all
+- https://csrc.nist.gov/projects/cryptographic-module-validation-program/validated-modules/search?SearchMode=Advanced&Standard=140-2&CertificateStatus=Historical&ValidationYear=0
 marketplace_apps: []
 edges:
 - partner_name: AWS Marketplace
@@ -599,5 +604,80 @@ edges:
     detected_by: sweep-obsidian-community-plugins.py
     detected: '2026-10-22'
   detected_by: sweep-obsidian-community-plugins.py
+  first_seen: '2026-10-22'
+- partner_name: APIs.guru OpenAPI Directory
+  partner: apis-guru
+  partner_match: register
+  type: register
+  channel: standard-directory
+  relationship: standard-participant
+  direction: third-party
+  evidence: https://apis.guru/
+  category: API definition directory listing (OpenAPI)
+  contract_reference:
+    register: APIs.guru OpenAPI Directory
+    spec_file: null
+    standard: APIs.guru OpenAPI Directory
+    role: listed-in-directory
+    directory_provider: box.com
+    matched_domain: box.com
+    matched_by: domain
+    apis_listed: 1
+    version_count: 1
+    first_added: '2019-05-02'
+    last_updated: '2023-03-06'
+    origin_publisher_hosted: true
+    origin_hosts:
+    - opensource.box.com
+    categories:
+    - cloud
+    own_openapi_files: 73
+    listings:
+    - key: box.com
+      title: Box Platform API
+      preferred: 2.0.0
+      versions: 1
+      swagger_url: https://api.apis.guru/v2/specs/box.com/2.0.0/openapi.json
+      origin_url: https://opensource.box.com/box-openapi/openapi.json
+      openapi_version: 3.0.2
+    signal_note: 'participation only: a community directory listing (APIs.guru collects definitions; the provider
+      did not file them). Signals: version_count, apis_listed, origin_publisher_hosted.'
+    detected_by: sweep-openapi-directory-apis-guru.py
+    detected: '2026-10-22'
+  detected_by: sweep-openapi-directory-apis-guru.py
+  first_seen: '2026-10-22'
+- partner_name: NIST Cryptographic Module Validation Program (FIPS 140)
+  partner: null
+  partner_match: register
+  type: register
+  channel: standard-directory
+  relationship: standard-participant
+  direction: partner-built
+  evidence: https://csrc.nist.gov/projects/cryptographic-module-validation-program/validated-modules/search/all
+  category: FIPS 140 cryptographic module validation (NIST / CCCS CMVP)
+  contract_reference:
+    register: 'NIST CMVP validated cryptographic modules (csrc.nist.gov validated-modules search: active + historical)
+      and Modules In Process list'
+    standard: FIPS 140-2
+    spec_file: null
+    role: fips-140-validated-vendor
+    registered_name: Box, Inc.
+    matched_domain: box.com
+    matched_by: domain
+    signal_note: 'certified_products = one entry per (FIPS 140 edition, CMVP module type) held; a pair whose certificates
+      are all on the historical list is lapsed: true; Modules In Process are listing only (in_process), never certified;
+      certificate and module counts are context, never counted'
+    detected_by: sweep-nist-cmvp-fips-140-modules.py
+    detected: '2026-10-22'
+    certified_products:
+    - product: FIPS 140-2 Software cryptographic module
+      product_type: Software
+      standard: FIPS 140-2
+      status: Historical
+      lapsed: true
+      validated: '2016-03-21'
+    vendor_country: USA
+    identity_source: register website (CMVP certificate Vendor panel)
+  detected_by: sweep-nist-cmvp-fips-140-modules.py
   first_seen: '2026-10-22'
 source: https://hightouch.com/docs/destinations/box
